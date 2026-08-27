@@ -1,0 +1,301 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Cosmos DB Account module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-cosmosdbaccount'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-cosmosdbaccount",
+  "module_type": "service",
+  "azure_service": "Cosmosdbaccount",
+  "module_name": "Cosmos DB Account module",
+  "latest_tag": "1.2.4",
+  "available_tags": [
+    "1.2.4",
+    "1.2.3",
+    "1.2.2",
+    "1.2.1",
+    "1.1.1"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cosmosdbaccount.git//?ref=1.2.4",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "resource group",
+    "versionless Key Vault Key ID"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_cosmosdb_account.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "cosmosdbaccount",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cosmosdbaccount.git//?ref=1.2.4",
+      "version": "1.2.4",
+      "available_versions": [
+        "1.2.4",
+        "1.2.3",
+        "1.2.2",
+        "1.2.1",
+        "1.1.1"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "consistency_policy",
+      "customer_managed_key",
+      "environment",
+      "geo_location",
+      "identity",
+      "kind",
+      "location",
+      "offer_type",
+      "org_id",
+      "resource_group_name",
+      "schema_type",
+      "total_throughput_limit"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "backup": {
+        "type": "object({ type = string tier = optional(string) interval_in_minutes = optional(number) retention_in_hours = optional(number) storage_redundancy = optional(string) })",
+        "description": "(Optional) object({ type = (Required) The type of the backup. Possible values are Continuous and Periodic. Migration of Periodic to Continuous is one-way, changing Continuous to Periodic forces a new resource to be created. tier = (Optional) The continuous backup tier. Possible values are Continuous7Days and Continuous30Days. interval_in_minutes = (Optional) The interval in minutes between two backups. This is configurable only when type is Periodic. Possible values are between 60 and 1440. retention_in_hours = (Optional) The time in hours that each backup is retained. This is configurable only when type is Periodic. Possible values are between 8 and 720. storage_redundancy = (Optional) The storage redundancy is used to indicate the type of backup residency. This is configurable only when type is Periodic. Possible values are Geo, Local and Zone. })",
+        "required": false,
+        "default": "null"
+      },
+      "capabilities": {
+        "type": "map(object({ name = string }))",
+        "description": "(Optional) Configures the capabilities to be enabled for this Cosmos DB account map(object({ name = (Required) The capability to enable - Possible values are AllowSelfServeUpgradeToMongo36, DisableRateLimitingResponses, EnableAggregationPipeline, EnableCassandra, EnableGremlin, EnableMongo, EnableMongo16MBDocumentSupport, EnableMongoRetryableWrites, EnableMongoRoleBasedAccessControl, EnablePartialUniqueIndex, EnableServerless, EnableTable, EnableTtlOnCustomPath, EnableUniqueCompoundNestedDocs, MongoDBv3.4 and mongoEnableDocLevelTTL. }))",
+        "required": false,
+        "default": "null"
+      },
+      "cmk_key_name": {
+        "type": "string",
+        "description": "(optional) Key name to be used (max 127 chars)",
+        "required": false,
+        "default": "null"
+      },
+      "combined_policy": {
+        "type": "object({ free_tier_enabled = bool analytical_storage_enabled = bool automatic_failover_enabled = bool is_virtual_network_filter_enabled = bool multiple_write_locations_enabled = bool access_key_metadata_writes_enabled = bool mongo_server_version = string network_acl_bypass_for_azure_services = bool network_acl_bypass_ids = list(string) })",
+        "description": "(Optional) object({ free_tier_enabled = (Required) Enable the Free Tier pricing option for this Cosmos DB account. Defaults to false. Changing this forces a new resource to be created. analytical_storage_enabled = (Optional) Enable Analytical Storage option for this Cosmos DB account. Defaults to false. Enabling and then disabling analytical storage forces a new resource to be created. automatic_failover_enabled = (Required) Enable automatic failover for this Cosmos DB account. is_virtual_network_filter_enabled = (Optional) Enables virtual network filtering for this Cosmos DB account. multiple_write_locations_enabled = (Required) Enable multiple write locations for this Cosmos DB account. access_key_metadata_writes_enabled = (Optional) Is write operations on metadata resources (databases, containers, throughput) via account keys enabled? Defaults to true. mongo_server_version = (Optional) The Server Version of a MongoDB account. Possible values are 4.2, 4.0, 3.6, and 3.2. network_acl_bypass_for_azure_services = (Optional) If Azure services can bypass ACLs. Defaults to false. network_acl_bypass_ids = (Optional) The list of resource Ids for Network Acl Bypass for this Cosmos DB account. })",
+        "required": false,
+        "default": "{ \"access_key_metadata_writes_enabled\": true, \"analytical_storage_enabled\": false, \"automatic_failover_enabled\": null, \"free_tier_enabled\": false, \"is_virtual_network_filter_enabled\": null, \"mongo_server_version\": null, \"multiple_write_locations_enabled\": null, \"network_acl_bypass_for_azure_services\": false, \"network_acl_bypass_ids\": null }"
+      },
+      "consistency_policy": {
+        "type": "object({ consistency_level = string max_interval_in_seconds = optional(number, 5) max_staleness_prefix = optional(number, 100) })",
+        "description": "(Required) used to define the consistency policy for this CosmosDB account object({ consistency_level = (Required) The Consistency Level to use for this CosmosDB Account - can be either BoundedStaleness, Eventual, Session, Strong or ConsistentPrefix. max_interval_in_seconds = (Optional) When used with the Bounded Staleness consistency level, this value represents the time amount of staleness (in seconds) tolerated. The accepted range for this value is 5 - 86400 (1 day). Defaults to 5. Required when consistency_level is set to BoundedStaleness. max_staleness_prefix = (Optional) When used with the Bounded Staleness consistency level, this value represents the number of stale requests tolerated. The accepted range for this value is 10 – 2147483647. Defaults to 100. Required when consistency_level is set to BoundedStaleness. })",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "cors_rule": {
+        "type": "object({ allowed_headers = list(string) allowed_methods = list(string) allowed_origins = list(string) exposed_headers = list(string) max_age_in_seconds = optional(number) })",
+        "description": "(Optional) object({ allowed_headers = (Required) A list of headers that are allowed to be a part of the cross-origin request. allowed_methods = (Required) A list of HTTP headers that are allowed to be executed by the origin. Valid options are DELETE, GET, HEAD, MERGE, POST, OPTIONS, PUT or PATCH. allowed_origins = (Required) A list of origin domains that will be allowed by CORS. exposed_headers = (Required) A list of response headers that are exposed to CORS clients. max_age_in_seconds = (Optional) The number of seconds the client should cache a preflight response. Possible values are between 1 and 2147483647. })",
+        "required": false,
+        "default": "null"
+      },
+      "create_mode": {
+        "type": "string",
+        "description": "(Optional) The creation mode for the CosmosDB Account. Possible values are Default and Restore. Changing this forces a new resource to be created. Create_mode only works when backup.type is Continuous.",
+        "required": false,
+        "default": "null"
+      },
+      "create_role_assignment": {
+        "type": "bool",
+        "description": "(Optional) Whether to create a role assignment to the service identity to allow access to the key vault keys.",
+        "required": false,
+        "default": "true"
+      },
+      "customer_managed_key": {
+        "type": "object({ key_vault_id = string expiration_date = string identity_principal_id = string })",
+        "description": "(Required) An customer_managed_key block as defined below object({ key_vault_id = \"(Required) The resource ID of the Key Vault where the Key Vault Key resides.\" expiration_date = \"(Required) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').\" identity_principal_id = \"(Required) The principal ID of the User Assigned Identity that has access to the key.\" })",
+        "required": true
+      },
+      "default_identity_type": {
+        "type": "string",
+        "description": "(Optional) The default identity for accessing Key Vault. Possible values are FirstPartyIdentity, SystemAssignedIdentity or UserAssignedIdentity. Defaults to FirstPartyIdentity. When default_identity_type is a UserAssignedIdentity it must include the User Assigned Identity ID in the following format: UserAssignedIdentity=/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{userAssignedIdentityName}.",
+        "required": false,
+        "default": "\"FirstPartyIdentity\""
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "geo_location": {
+        "type": "map(object({ location = string failover_priority = number zone_redundant = optional(bool, false) }))",
+        "description": "(Required) used to define where data should be replicated with the failover_priority map(object({ location = (Required) The name of the Azure region to host replicated data. failover_priority = (Required) The failover priority of the region. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists. Changing this causes the location to be re-provisioned and cannot be changed for the location with failover priority 0. zone_redundant = (Optional) Should zone redundancy be enabled for this region? Defaults to false. }))",
+        "required": true
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = list(string) })",
+        "description": "(Required) object({ type = (Required) The Type of Managed Identity assigned to this Cosmos account. Possible values are SystemAssigned, UserAssigned and SystemAssigned, UserAssigned. identity_ids = (Optional) Specifies a list of User Assigned Managed Identity IDs to be assigned to this Cosmos Account. })",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "ip_range_filter": {
+        "type": "set(string)",
+        "description": "(Optional) CosmosDB Firewall Support: This value specifies the set of IP addresses or IP address ranges in CIDR form to be included as the allowed list of client IPs for a given database account.",
+        "required": false,
+        "default": "[]"
+      },
+      "key_vault_tags": {
+        "type": "map(any)",
+        "description": "(Optional) Key Vault related tags to be set on key vault child resources.",
+        "required": false,
+        "default": "{}"
+      },
+      "kind": {
+        "type": "string",
+        "description": "(Required) Specifies the Kind of CosmosDB to create - possible values are GlobalDocumentDB, MongoDB and Parse. Defaults to GlobalDocumentDB. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "local_authentication_disabled": {
+        "type": "bool",
+        "description": "Controls whether local authentication is disabled for CosmosDB. Defaults to true except for MongoDB accounts.",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "offer_type": {
+        "type": "string",
+        "description": "(Required) Specifies the Offer Type to use for this CosmosDB Account; currently, this can only be set to Standard.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "restore": {
+        "type": "object({ source_cosmosdb_account_id = string restore_timestamp_in_utc = string database = object({ name = string collection_names = optional(list(string)) }) })",
+        "description": "(Optional) object({ source_cosmosdb_account_id = (Required) The resource ID of the restorable database account from which the restore has to be initiated. Changing this forces a new resource to be created. restore_timestamp_in_utc = (Required) The creation time of the database or the collection (Datetime Format RFC 3339). Changing this forces a new resource to be created. database = (Optional) database block name = (Required) The database name for the restore request. Changing this forces a new resource to be created. collection_names = (Optional) A list of the collection names for the restore request. Changing this forces a new resource to be created. })",
+        "required": false,
+        "default": "null"
+      },
+      "rotation_policy": {
+        "type": "object({ notify_before_expiry = string time_before_expiry = string time_after_creation = optional(string, null) expire_after = string })",
+        "description": "(Optional) A rotation policy block as defined below object({ notify_before_expiry = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" time_before_expiry = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" time_after_creation = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" expire_after = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" })",
+        "required": false,
+        "default": "{ \"expire_after\": \"P365D\", \"notify_before_expiry\": \"P358D\", \"time_after_creation\": null, \"time_before_expiry\": \"P7D\" }"
+      },
+      "schema_type": {
+        "type": "string",
+        "description": "(Required) The schema type of the Analytical Storage for this Cosmos DB account. Possible values are FullFidelity and WellDefined.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "total_throughput_limit": {
+        "type": "number",
+        "description": "(Required) The total throughput limit imposed on this Cosmos DB account (RU/s). Possible values are at least -1. -1 means no limit.",
+        "required": true
+      },
+      "virtual_network_rule": {
+        "type": "object({ id = string ignore_missing_vnet_service_endpoint = optional(bool, false) })",
+        "description": "(Optional) Configures the virtual network subnets allowed to access this Cosmos DB account object({ id = (Required) The ID of the virtual network subnet. ignore_missing_vnet_service_endpoint = (Optional) If set to true, the specified subnet will be added as a virtual network rule even if its CosmosDB service endpoint is not active. Defaults to false. })",
+        "required": false,
+        "default": "null"
+      }
+    }
+  },
+  "outputs": {
+    "endpoint": {
+      "description": "The endpoint used to connect to the CosmosDB account."
+    },
+    "id": {
+      "description": "The CosmosDB Account ID."
+    },
+    "name": {
+      "description": "The CosmosDB Account name."
+    },
+    "primary_key": {
+      "description": "The Primary key for the CosmosDB Account."
+    },
+    "primary_mongodb_connection_string": {
+      "description": "Primary Mongodb connection string for the CosmosDB Account."
+    },
+    "primary_readonly_key": {
+      "description": "The Primary read-only Key for the CosmosDB Account."
+    },
+    "primary_readonly_mongodb_connection_string": {
+      "description": "Primary readonly Mongodb connection string for the CosmosDB Account."
+    },
+    "primary_readonly_sql_connection_string": {
+      "description": "Primary readonly SQL connection string for the CosmosDB Account."
+    },
+    "primary_sql_connection_string": {
+      "description": "Primary SQL connection string for the CosmosDB Account."
+    },
+    "resource": {
+      "description": "The CosmosDB Account resource."
+    },
+    "secondary_key": {
+      "description": "The Secondary key for the CosmosDB Account."
+    },
+    "secondary_mongodb_connection_string": {
+      "description": "Secondary Mongodb connection string for the CosmosDB Account."
+    },
+    "secondary_readonly_key": {
+      "description": "The Secondary read-only Key for the CosmosDB Account."
+    },
+    "secondary_readonly_mongodb_connection_string": {
+      "description": "Secondary readonly Mongodb connection string for the CosmosDB Account."
+    },
+    "secondary_readonly_sql_connection_string": {
+      "description": "Secondary readonly SQL connection string for the CosmosDB Account."
+    },
+    "secondary_sql_connection_string": {
+      "description": "Secondary SQL connection string for the CosmosDB Account."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Cosmosdbaccount' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "resource group",
+      "versionless Key Vault Key ID"
+    ]
+  }
+}

@@ -1,0 +1,153 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Bastion Host module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-bastionhost'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-bastionhost",
+  "module_type": "service",
+  "azure_service": "Bastionhost",
+  "module_name": "Bastion Host module",
+  "latest_tag": "1.0.0",
+  "available_tags": [
+    "1.0.0",
+    "0.4.0",
+    "0.3.1",
+    "0.3.0",
+    "0.2.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-bastionhost.git//?ref=1.0.0",
+  "terraform_requirements": {
+    "azurerm": ">= 3.51",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Virtual Network",
+    "Azure Bastion Subnet",
+    "Public IP"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_bastion_host.bastion_host",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "bastionhost",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-bastionhost.git//?ref=1.0.0",
+      "version": "1.0.0",
+      "available_versions": [
+        "1.0.0",
+        "0.4.0",
+        "0.3.1",
+        "0.3.0",
+        "0.2.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "ip_configuration_name",
+      "location",
+      "org_id",
+      "public_ip_address_id",
+      "resource_group_name",
+      "subnet_id"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "ip_configuration_name": {
+        "type": "string",
+        "description": "(Required) The name of the IP configuration. Changing this forces a new resource to be created. The Subnet used for the Bastion Host must have the name AzureBastionSubnet and the subnet mask must be at least a /26.",
+        "required": true
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "public_ip_address_id": {
+        "type": "string",
+        "description": "(Required) Reference to a Public IP Address to associate with this Bastion Host. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "scale_units": {
+        "type": "number",
+        "description": "(Optional) The number of scale units with which to provision the Bastion Host. Possible values are between 2 and 50. Defaults to 2. `scale_units` only can be changed when `sku` is `Standard`. `scale_units` is always `2` when `sku` is `Basic`.",
+        "required": false,
+        "default": "2"
+      },
+      "subnet_id": {
+        "type": "string",
+        "description": "(Required) Reference to a subnet in which this Bastion Host has been created. Changing this forces a new resource to be created. The Subnet used for the Bastion Host must have the name AzureBastionSubnet and the subnet mask must be at least a /26.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "dns_name": {
+      "description": "The FQDN for the Bastion Host."
+    },
+    "id": {
+      "description": "The ID of the created Bastion Host."
+    },
+    "name": {
+      "description": "The name of the created Bastion Host."
+    },
+    "resource": {
+      "description": "The Bastion Host resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Bastionhost' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Virtual Network",
+      "Azure Bastion Subnet",
+      "Public IP"
+    ]
+  }
+}

@@ -1,0 +1,505 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: __Application Gateway Container app postgresql Pattern__ module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvcpat-appgatewaycontainerapppostgresqlserver'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvcpat-appgatewaycontainerapppostgresqlserver",
+  "module_type": "service-pattern",
+  "azure_service": "Appgatewaycontainerapppostgresqlserver",
+  "module_name": "__Application Gateway Container app postgresql Pattern__ module",
+  "latest_tag": "",
+  "available_tags": [],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-appgatewaycontainerapppostgresqlserver.git//",
+  "terraform_requirements": {
+    "azapi": ">= 2.7.0",
+    "azurerm": ">= 4.33",
+    "random": ">= 3.6.3",
+    "time": ">= 0.12.1"
+  },
+  "prerequisites": [
+    "resource_group",
+    "virtual_network"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_private_dns_a_record.cae_a_record_1",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_private_dns_a_record.cae_a_record_2",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "null_resource.acr_import",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "null_resource.delay_rbac_destroy",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "null_resource.wait_for_keyvault_objects",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "random_password.password",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.keyvault_pe",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.postgres_replica_server",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.postgres_subnet",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.acr_pe",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.subnet_appgw",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.subnet_ca",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.subnet_pg",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.keyvault_access",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.keyvault_replica_pe",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.storage",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_client_config.current",
+      "type": "data source"
+    },
+    {
+      "terraform_resource": "azurerm_resource_group.crossregion",
+      "type": "data source"
+    },
+    {
+      "terraform_resource": "azurerm_resource_group.paired",
+      "type": "data source"
+    },
+    {
+      "terraform_resource": "azurerm_resource_group.this",
+      "type": "data source"
+    },
+    {
+      "terraform_resource": "azurerm_subnet.subnets",
+      "type": "data source"
+    },
+    {
+      "terraform_resource": "azurerm_virtual_network.vnets",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "appgatewaycontainerapppostgresqlserver",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-appgatewaycontainerapppostgresqlserver.git//",
+      "version": "latest",
+      "available_versions": []
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "container_apps",
+      "environment",
+      "location",
+      "org_id",
+      "postgres_server",
+      "private_dns_zone_vnet_links",
+      "resource_group_name",
+      "user_assigned_identity"
+    ],
+    "properties": {
+      "acr_server": {
+        "type": "string",
+        "description": "n/a",
+        "required": false,
+        "default": "\"a1a51310devcrpvdepuks101.azurecr.io\""
+      },
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "app_secrets": {
+        "type": "map(object({ name = string key_vault_secret_id = string }) )",
+        "description": "n/a",
+        "required": false,
+        "default": "{}"
+      },
+      "application_gateway": {
+        "type": "object({ zones = optional(list(number)) # (Optional) Specifies a list of Availability Zones in which this Application Gateway should be located. Changing this forces a new Application Gateway to be created. capacity = optional(number) # (Optional) The Capacity of the SKU to use for this Application Gateway. When using a V1 SKU this value must be between 1 and 32, and 1 to 125 for a V2 SKU. This property is optional if autoscale_configuration is set. fips_enabled = optional(bool) # (Optional) Is FIPS enabled on the Application Gateway? global = optional(object({ request_buffering_enabled = bool # (Required) Whether Application Gateway's Request buffer is enabled. response_buffering_enabled = bool # (Required) Whether Application Gateway's Response buffer is enabled. })) private_link_configuration = optional(list(object({ name = string # (Required) The name of the private link configuration. ip_configuration = list(object({ name = string # (Required) The name of the IP configuration. subnet_id = string # (Required) The ID of the subnet the private link configuration should connect to. private_ip_address_allocation = string # (Required) The allocation method used for the Private IP Address. Possible values are Dynamic and Static. primary = bool # (Required) Is this the Primary IP Configuration? private_ip_address = optional(string) # (Optional) The Static IP Address which should be used. })) }))) trusted_client_certificate = optional(list(object({ name = string # (Required) The name of the Trusted Client Certificate that is unique within this Application Gateway. data = string # (Required) The base-64 encoded certificate. }))) trusted_root_certificate = optional(list(object({ name = string # (Required) The Name of the Trusted Root Certificate to use. data = optional(string) # (Optional) The contents of the Trusted Root Certificate which should be used. Required if key_vault_secret_id is not set. key_vault_secret_id = optional(string) # (Optional) The Secret ID of (base-64 encoded unencrypted pfx) Secret or Certificate object stored in Azure KeyVault. Required if data is not set. }))) autoscale_configuration = optional(object({ min_capacity = number # (Required) Minimum capacity for autoscaling. Accepted values are in the range 0 to 100. max_capacity = optional(number) # (Optional) Maximum capacity for autoscaling. Accepted values are in the range 2 to 125. })) frontend_ports = list(object({ name = string # (Required) The name of the Frontend Port. port = number # (Required) The port used for this Frontend Port. })) frontend_ip_configurations = map(object({ name = string # (Required) The name of the Frontend IP Configuration. subnet_id = optional(string) # (Optional) The ID of the Subnet. private_ip_address = optional(string) # (Optional) The Private IP Address to use for the Application Gateway. private_ip_address_allocation = optional(string) # (Optional) The Allocation Method for the Private IP Address. Possible values are Dynamic and Static. private_ip_address_version = optional(string) # (Optional) The version of the private IP address (IPv4 or IPv6). public_ip_address_id = optional(string) # (Optional) The ID of a Public IP Address which the Application Gateway should use. })) backend_address_pools = list(object({ name = string # (Required) The name of the Backend Address Pool. fqdns = optional(list(string)) # (Optional) A list of FQDN's which should be part of the Backend Address Pool. ip_addresses = optional(list(string)) # (Optional) A list of IP Addresses which should be part of the Backend Address Pool. })) backend_http_settings = list(object({ name = string # (Required) The name of the Backend HTTP Settings Collection. cookie_based_affinity = string # (Required) Is Cookie-Based Affinity enabled? Possible values are Enabled and Disabled. path = optional(string) # (Optional) The Path which should be used as a prefix for all HTTP requests. port = number # (Required) The port which should be used for this Backend HTTP Settings Collection. request_timeout = optional(number) # (Optional) The request timeout in seconds, which must be between 1 and 86400 seconds. Defaults to 30. probe_name = optional(string) # (Optional) The name of an associated HTTP Probe. host_name = optional(string) # (Optional) Host header to be sent to backend servers. pick_host_name_from_backend_address = optional(bool, false) # (Optional) Whether host header should be picked from the host name of the backend server. Defaults to false. affinity_cookie_name = optional(string) # (Optional) The name of the affinity cookie. trusted_root_certificate_names = optional(list(string)) # (Optional) A list of trusted_root_certificate names. authentication_certificate = optional(list(object({ name = string # (Required) The Name of the Authentication Certificate to use. })), []) connection_draining = optional(object({ enabled = bool # (Required) If connection draining is enabled or not. drain_timeout_sec = number # (Required) The number of seconds connection draining is active. Acceptable values are from 1 second to 3600 seconds. }), null) })) http_listeners = list(object({ name = string # (Required) The Name of the HTTP Listener. frontend_ip_configuration_name = string # (Required) The Name of the Frontend IP Configuration used for this HTTP Listener. frontend_port_name = string # (Required) The Name of the Frontend Port use for this HTTP Listener. ssl_certificate_name = optional(string) # (Optional) The name of the associated SSL Certificate which should be used for this HTTP Listener. protocol = string # (Required) The Protocol to use for this HTTP Listener. Possible values are Http and Https. require_sni = optional(bool) # (Optional) Should Server Name Indication be Required? Defaults to false. listener_type = optional(string) # (Optional) The listener type which should be used. Possible values are MultiSite and Basic. host_name = optional(string) # (Optional) The Hostname which should be used for this HTTP Listener. host_names = optional(list(string), null) # (Optional) A list of Hostnames which should be used for this HTTP Listener. firewall_policy_id = optional(string) # (Optional) The firewall policy id which should be used as a HTTP Listener. ssl_profile_name = optional(string) # (Optional) The name of the associated SSL Profile which should be used for this HTTP Listener. })) request_routing_rules = list(object({ name = string # (Required) The Name of this Request Routing Rule. rule_type = string # (Required) The Type of Routing that should be used for this Rule. Possible values are Basic and PathBasedRouting. listener_name = string # (Required) The Name of the HTTP Listener which should be used for this Routing Rule. backend_address_pool_name = optional(string) # (Optional) The Name of the Backend Address Pool which should be used for this Routing Rule. priority = optional(number) # (Optional) Rule evaluation order can be dictated by specifying an integer value from 1 to 20000. backend_http_settings_name = optional(string) # (Optional) The Name of the Backend HTTP Settings Collection which should be used for this Routing Rule. redirect_configuration_name = optional(string) # (Optional) The Name of the Redirect Configuration which should be used for this Routing Rule. url_path_map_name = optional(string) # (Optional) The Name of the URL Path Map which should be associated with this Routing Rule. rewrite_rule_set_name = optional(string) # (Optional) The Name of the Rewrite Rule Set which should be used for this Routing Rule. })) url_path_maps = list(object({ name = string # (Required) The Name of the URL Path Map. default_backend_http_settings_name = optional(string) # (Optional) The Name of the Default Backend HTTP Settings Collection. default_backend_address_pool_name = optional(string) # (Optional) The Name of the Default Backend Address Pool. default_redirect_configuration_name = optional(string) # (Optional) The Name of the Default Redirect Configuration. default_rewrite_rule_set_name = optional(string) # (Optional) The Name of the Default Rewrite Rule Set. path_rules = list(object({ name = string # (Required) The Name of the Path Rule. paths = list(string) # (Required) A list of Paths used in this Path Rule. backend_http_settings_name = optional(string) # (Optional) The Name of the Backend HTTP Settings Collection. backend_address_pool_name = optional(string) # (Optional) The Name of the Backend Address Pool. redirect_configuration_name = optional(string) # (Optional) The Name of a Redirect Configuration. rewrite_rule_set_name = optional(string) # (Optional) The Name of the Rewrite Rule Set. firewall_policy_id = optional(string) # (Optional) The ID of the Web Application Firewall Policy. })) })) probes = list(object({ name = string # (Required) The Name of the Probe. path = string # (Required) The Path used for this Probe. interval = number # (Required) The Interval between two consecutive probes in seconds. protocol = string # (Required) The Protocol used for this Probe. Possible values are Http and Https. timeout = number # (Required) The Timeout used for this Probe. unhealthy_threshold = optional(number) # (Optional) The Unhealthy Threshold for this Probe. host = optional(string) # (Optional) The Hostname used for this Probe. pick_host_name_from_backend_http_settings = optional(bool) # (Optional) Whether the host header should be picked from the backend HTTP settings. port = optional(number) # (Optional) Custom port which will be used for probing the backend servers. minimum_servers = optional(number, 0) # (Optional) The minimum number of servers that are always marked as healthy. match = optional(object({ body = optional(string, null) # (Optional) A snippet from the Response Body which must be present in the Response. status_code = list(string) # (Required) A list of allowed status codes for this Health Probe. }), { status_code = [\"200-399\"] }) })) redirect_configurations = list(object({ name = string # (Required) Unique name of the redirect configuration block. redirect_type = string # (Required) The type of redirect. Possible values are Permanent, Temporary, Found and SeeOther. target_listener_name = optional(string) # (Optional) The name of the listener to redirect to. target_url = optional(string) # (Optional) The Url to redirect the request to. include_path = optional(bool) # (Optional) Whether or not to include the path in the redirected Url. include_query_string = optional(bool) # (Optional) Whether or not to include the query string in the redirected Url. })) rewrite_rule_sets = list(object({ name = string # (Required) Unique name of the rewrite rule set block. rewrite_rules = optional(list(object({ name = string # (Required) Unique name of the rewrite rule block. rule_sequence = number # (Required) Rule sequence of the rewrite rule that determines the order of execution in a set. conditions = optional(list(object({ variable = string # (Required) The variable of the condition. pattern = string # (Required) The pattern, either fixed string or regular expression. ignore_case = optional(bool) # (Optional) Perform a case-insensitive comparison. negate = optional(bool) # (Optional) Negate the result of the condition evaluation. }))) request_header_configurations = optional(list(object({ header_name = string # (Required) Header name of the header configuration. header_value = string # (Required) Header value of the header configuration. }))) response_header_configurations = optional(list(object({ header_name = string # (Required) Header name of the header configuration. header_value = string # (Required) Header value of the header configuration. }))) url = optional(object({ path = optional(string, null) # (Optional) The URL path to rewrite. query_string = optional(string, null) # (Optional) The query string to rewrite. components = optional(string, null) # (Optional) The components used to rewrite the URL. reroute = optional(string, null) # (Optional) Whether the URL path map should be reevaluated after this rewrite has been applied. }), null) }))) })) ssl_profile = optional(object({ name = string # (Required) The name of the SSL Profile that is unique within this Application Gateway. trusted_client_certificate_names = optional(list(string), []) # (Optional) The name of the Trusted Client Certificate that will be used to authenticate requests from clients. verify_client_cert_issuer_dn = optional(bool, false) # (Optional) Should client certificate issuer DN be verified? Defaults to false. verify_client_certificate_revocation = optional(string) # (Optional) Specify the method to check client certificate revocation status. ssl_policy = optional(object({ disabled_protocols = optional(list(string), []) # (Optional) A list of SSL Protocols which should be disabled on this Application Gateway. policy_type = optional(string) # (Optional) The Type of the Policy. policy_name = optional(string) # (Optional) The Name of the Policy. cipher_suites = optional(list(string), []) # (Optional) A List of accepted cipher suites. })) })) network_interface_ids = optional(map(object({ network_interface_id = string # (Required) The ID of the Network Interface. ip_configuration_name = string # (Required) The Name of the IP Configuration within the Network Interface. }))) ssl_certificates = optional(list(object({ name = optional(string) key_vault_secret_id = optional(string) data = optional(string) password = optional(string) }))) firewall_policy_id = optional(string) # (Optional) ID of a Web Application Firewall Policy. identity_ids = optional(list(string)) # (Optional) A list of User Assigned Managed Identity IDs to be assigned to this Firewall Policy. pool_to_app_key = optional(map(string)) # (Optional) A map of pool names to application keys. })",
+        "description": "n/a",
+        "required": false,
+        "default": "{ \"autoscale_configuration\": null, \"backend_address_pools\": [], \"backend_http_settings\": [], \"capacity\": null, \"fips_enabled\": null, \"firewall_policy_id\": null, \"frontend_ip_configurations\": {}, \"frontend_ports\": [], \"gateway_ip_configurations\": [], \"global\": null, \"http_listeners\": [], \"identity_ids\": null, \"network_interface_ids\": {}, \"pool_to_app_key\": {}, \"private_link_configuration\": [], \"probes\": [], \"redirect_configurations\": [], \"request_routing_rules\": [], \"rewrite_rule_sets\": [], \"ssl_certificates\": [], \"ssl_profile\": null, \"trusted_client_certificate\": [], \"trusted_root_certificate\": [], \"url_path_maps\": [], \"zones\": null }"
+      },
+      "container_app_env": {
+        "type": "object({ dapr_connectionstring = optional(string, null) zone_redundancy_enabled = optional(bool, false) log_analytics_workspace_id = optional(string, null) workload_profile = optional(map(object({ name = string workload_profile_type = string maximum_count = number minimum_count = number })), null) dapr_components = optional(map(object({ name = string type = string version = string ignore_errors = optional(bool, false) init_timeout = optional(string) scopes = optional(list(string)) metadata = optional(map(object({ name = string secret_name = optional(string) value = optional(string) }))) secret = optional(map(object({ name = string value = string }))) })), null) environment_storage = optional(map(object({ name = optional(string) account_name = optional(string) access_key = optional(string) share_name = optional(string) access_mode = optional(string) }))) })",
+        "description": "(Required) Object containing variables for configuring a Container App Environment: dapr_connectionstring = \"(Optional) Application Insights connection string used by Dapr to export Service to Service communication telemetry.\" zone_redundancy_enabled = \"(Optional) Should the Container App Environment be created with Zone Redundancy enabled? Defaults to false. Changing this forces a new resource to be created. Can only be set to true if infrastructure_subnet_id is specified.\" log_analytics_workspace_id = \"(Optional) The ID for the Log Analytics Workspace to link this Container Apps Managed Environment to. Changing this forces a new resource to be created.\" workload_profile = \"(Optional) Map of workload profiles for the Container App Environment: name = '(Required) The name of the workload profile.' workload_profile_type = '(Required) Workload profile type for the workloads to run on. Possible values include Consumption, D4, D8, D16, D32, E4, E8, E16, and E32.' maximum_count = '(Required) The maximum number of instances of workload profile that can be deployed in the Container App Environment.' minimum_count = '(Required) The minimum number of instances of workload profile that can be deployed in the Container App Environment.' dapr_components = \"(Optional) Map of Dapr components for the Container App Environment: name = '(Required) The name for this Dapr component. Changing this forces a new resource to be created.' type = '(Required) The Dapr Component Type. For example, state.azure.blobstorage. Changing this forces a new resource to be created.' version = '(Required) The version of the component.' ignore_errors = '(Optional) Should the Dapr sidecar continue initialization if the component fails to load? Defaults to false.' init_timeout = '(Optional) The timeout for component initialization as an ISO8601 formatted string. Defaults to 5s.' scopes = '(Optional) A list of scopes to which this component applies.' metadata = '(Optional) Map of metadata for the Dapr component: name = '(Required) The name of the Metadata configuration item.' secret_name = '(Optional) The name of a secret specified in the secrets block that contains the value for this metadata configuration item.' value = '(Optional) The value for this metadata configuration item.' secret = '(Optional) Map of secrets for the Dapr component: name = '(Required) The Secret name.' value = '(Required) The value for this secret.' environment_certificate = \"(Optional) Map of certificates for the Container App Environment: name = '(Required) The name of the Container Apps Environment Certificate. Changing this forces a new resource to be created.' certificate_blob_base64 = '(Required) The Certificate Private Key as a base64 encoded PFX or PEM. Changing this forces a new resource to be created.' certificate_password = '(Required) The password for the Certificate. Changing this forces a new resource to be created.' tags = '(Optional) A mapping of tags to assign to the resource.' environment_storage = \"(Optional) Map of storage configurations for the Container App Environment: name = '(Required) The name for this Container App Environment Storage. Changing this forces a new resource to be created.' account_name = '(Required) The Azure Storage Account in which the Share to be used is located. Changing this forces a new resource to be created.' access_key = '(Required) The Storage Account Access Key.' share_name = '(Required) The name of the Azure Storage Share to use. Changing this forces a new resource to be created.' access_mode = '(Required) The access mode to connect this storage to the Container App. Possible values include ReadOnly and ReadWrite. Changing this forces a new resource to be created.'",
+        "required": false,
+        "default": "{ \"dapr_components\": null, \"dapr_connectionstring\": null, \"environment_certificate\": null, \"environment_storage\": {}, \"log_analytics_workspace_id\": null, \"workload_profile\": null, \"zone_redundancy_enabled\": false }"
+      },
+      "container_apps": {
+        "type": "object({ identity_type = string # (Required) The type of managed identity to assign. Possible values are SystemAssigned, UserAssigned, and SystemAssigned, UserAssigned (to enable both). identity_ids = optional(list(string), null) # (Optional) A list of one or more Resource IDs for User Assigned Managed identities to assign. Required when identity_type is set to UserAssigned or SystemAssigned, UserAssigned. create_container_apps = bool # (Required) Specifies whether to create container apps. apps = map(object({ instance_number = string # (Required) The instance number for the container app. revision_mode = string # (Required) The revisions operational mode for the Container App. Possible values include Single and Multiple. external_enabled = optional(bool, false) # (Optional) Are connections to this Ingress from outside the Container App Environment enabled? Defaults to `false`. revision_suffix = optional(string, null) # (Optional) The suffix for the revision. This value must be unique for the lifetime of the Resource. ingress_exposed_port = number # (Required) The exposed port on the container for the Ingress traffic. Exposed_port can only be specified when transport is set to tcp. container_registry_id = string # (Required) The private container registry for the Container Instances. workload_profile_name = optional(string) # (Optional) The name of the Workload Profile in the Container App Environment to place this Container App. min_replicas = optional(number, null) # (Optional) The minimum number of replicas for this container. max_replicas = optional(number, null) # (Optional) The maximum number of replicas for this container. init_container = optional(object({ args = optional(list(string), []) # (Optional) A list of extra arguments to pass to the container. command = optional(list(string), []) # (Optional) A command to pass to the container to override the default. cpu = number # (Required) The amount of vCPU to allocate to the container. image = string # (Required) The image to use to create the container. memory = string # (Required) The amount of memory to allocate to the container. name = string # (Required) The name of the container. volume_mounts = optional(object({ name = string # (Required) The name of the Volume to be mounted in the container. path = string # (Required) The path in the container at which to mount this volume. }), null) env = optional(map(object({ name = string # (Required) The name of the environment variable for the container. secret_name = optional(string) # (Optional) The name of the secret that contains the value for this environment variable. })), null) }), null) container = map(object({ args = optional(list(string), []) # (Optional) A list of extra arguments to pass to the container. command = optional(list(string), []) # (Optional) A command to pass to the container to override the default. cpu = number # (Required) The amount of vCPU to allocate to the container. env = optional(map(object({ name = string # (Required) The name of the environment variable for the container. secret_name = optional(string) # (Optional) The name of the secret that contains the value for this environment variable. })), null) image = string # (Required) The image to use to create the container. liveness_probe = optional(object({ failure_count_threshold = optional(number, 3) # (Optional) The number of consecutive failures required to consider this probe as failed. header = optional(object({ name = string # (Required) The HTTP Header Name. value = string # (Required) The HTTP Header value. }), null) host = optional(string) # (Optional) The probe hostname. initial_delay = optional(number) # (Optional) The time in seconds to wait after the container has started before the probe is started. interval_seconds = optional(number, 10) # (Optional) How often, in seconds, the probe should run. path = optional(string, \"/\") # (Optional) The URI to use with the host for http type probes. port = number # (Required) The port number on which to connect. timeout = optional(number, 1) # (Optional) Time in seconds after which the probe times out. transport = string # (Required) Type of probe. Possible values are TCP, HTTP, and HTTPS. }), null) memory = string # (Required) The amount of memory to allocate to the container. name = string # (Required) The name of the container. readiness_probe = optional(object({ failure_count_threshold = optional(number, 3) # (Optional) The number of consecutive failures required to consider this probe as failed. header = optional(object({ name = string # (Required) The HTTP Header Name. value = string # (Required) The HTTP Header Value. }), null) host = optional(string) # (Optional) The probe hostname. interval_seconds = optional(number, 10) # (Optional) How often, in seconds, the probe should run. path = optional(string, \"/\") # (Optional) The URI to use for http type probes. port = number # (Required) The port number on which to connect. success_count_threshold = optional(number, 3) # (Optional) The number of consecutive successful responses required to consider this probe as successful. timeout = optional(number, 1) # (Optional) Time in seconds after which the probe times out. transport = string # (Required) Type of probe. Possible values are TCP, HTTP, and HTTPS. }), null) startup_probe = optional(object({ failure_count_threshold = optional(number, 3) # (Optional) The number of consecutive failures required to consider this probe as failed. header = optional(object({ name = string # (Required) The HTTP Header Name. value = string # (Required) The HTTP Header Value. }), null) host = optional(string) # (Optional) The probe hostname. interval_seconds = optional(number, 10) # (Optional) How often, in seconds, the probe should run. path = optional(string, \"/\") # (Optional) The URI to use with the host for http type probes. port = number # (Required) The port number on which to connect. timeout = optional(number, 1) # (Optional) Time in seconds after which the probe times out. transport = string # (Required) Type of probe. Possible values are TCP, HTTP, and HTTPS. }), null) volume_mounts = optional(object({ name = string # (Required) The name of the Volume to be mounted in the container. path = string # (Required) The path in the container at which to mount this volume. }), null) })) azure_queue_scale_rule = optional(map(object({ name = string # (Required) The name of the Scaling Rule. queue_name = string # (Required) The name of the Azure Queue. queue_length = number # (Required) The value of the length of the queue to trigger scaling actions. authentication = map(object({ secret_name = string # (Required) The name of the Container App Secret to use for this Scale Rule Authentication. trigger_parameter = string # (Required) The Trigger Parameter name to use the supply the value retrieved from the secret_name. })) })), null) custom_scale_rule = optional(map(object({ name = string # (Required) The name of the Scaling Rule. custom_rule_type = string # (Required) The Custom rule type. metadata = map(string) # (Required) A map of string key-value pairs to configure the Custom Scale Rule. authentication = optional(map(object({ secret_name = string # (Required) The name of the Container App Secret to use for this Scale Rule Authentication. trigger_parameter = string # (Required) The Trigger Parameter name to use the supply the value retrieved from the secret_name. })), null) })), null) http_scale_rule = optional(map(object({ name = string # (Required) The name of the Scaling Rule. concurrent_requests = number # (Required) The number of concurrent requests to trigger scaling. authentication = optional(map(object({ secret_name = string # (Required) The name of the Container App Secret to use for this Scale Rule Authentication. trigger_parameter = string # (Required) The Trigger Parameter name to use the supply the value retrieved from the secret_name. })), null) })), null) tcp_scale_rule = optional(map(object({ name = string # (Required) The name of the Scaling Rule. concurrent_requests = number # (Required) The number of concurrent requests to trigger scaling. authentication = optional(map(object({ secret_name = string # (Required) The name of the Container App Secret to use for this Scale Rule Authentication. trigger_parameter = string # (Required) The Trigger Parameter name to use the supply the value retrieved from the secret_name. })), null) })), null) volume = optional(map(object({ name = string # (Required) The name of the volume. storage_name = optional(string) # (Optional) The name of the AzureFile storage. storage_type = optional(string, \"EmptyDir\") # (Optional) The type of storage volume. Defaults to EmptyDir. })), null) dapr = optional(object({ app_id = string # (Required) The Dapr Application Identifier. app_port = optional(number) # (Optional) The port which the application is listening on. app_protocol = optional(string, \"http\") # (Optional) The protocol for the app. Defaults to http. }), null) ingress_ext = object({ fqdn = optional(string) # (Optional) The FQDN of the ingress. target_port = number # (Required) The target port on the container for the Ingress traffic. transport = optional(string, \"auto\") # (Optional) The transport method for the Ingress. Defaults to auto. }) ingress_custom_domain = optional(map(object({ name = string # (Required) The hostname of the Certificate. certificate_binding_type = optional(string, \"Disabled\") # (Optional) The Binding type. Defaults to Disabled. certificate_id = string # (Required) The ID of the Container App Environment Certificate. })), null) ingress_traffic_weight = list(object({ label = optional(string) # (Optional) The label to apply to the revision as a name prefix for routing traffic. latest_revision = optional(bool) # (Optional) This traffic Weight relates to the latest stable Container Revision. revision_suffix = optional(string) # (Optional) The suffix string to which this traffic_weight applies. percentage = number # (Required) The percentage of traffic which should be sent this revision. })) identity = optional(object({ type = optional(string, \"SystemAssigned\") # (Optional) The type of managed identity to assign. Defaults to SystemAssigned. identity_ids = optional(list(string), null) # (Optional) A list of one or more Resource IDs for User Assigned Managed identities to assign. }), null) secret = optional(map(object({ name = string # (Required) The Secret name. identity = optional(string) # (Optional) The identity to use for accessing the Key Vault secret reference. key_vault_secret_id = optional(string) # (Optional) The ID of a Key Vault secret. })), null) })) })",
+        "description": "--------------------------- - Container App Variables ---------------------------",
+        "required": true
+      },
+      "container_registry": {
+        "type": "object({ create_default_image = optional(bool, false) sku_tier = string trust_policy_enabled = bool zone_redundancy_enabled = bool data_endpoint_enabled = bool network_rule_set = object({ default_action = string ip_rule = list(object({ ip_range = string action = string })) virtual_network = list(object({ subnet_id = string action = string })) }) encryption = object({ enabled = bool key_vault_key_id = string identity_client_id = string }) georeplications = list(object({ location = string zone_redundancy_enabled = bool tags = map(string) })) identity = optional(object({ type = optional(string, \"SystemAssigned\") identity_ids = optional(string, null) }), null) retention_policy_in_days = number })",
+        "description": "(Required) Object containing variables for configuring a Container Registry: create_default_image = \"(Optional) Specifies whether to create a default image for the container app. Defaults to false.\" sku_tier = \"(Required) The SKU name of the container registry. Possible values are Basic, Standard, and Premium.\" trust_policy_enabled = '(Optional) Boolean value that indicates whether the trust policy is enabled. Defaults to false.**NOTE**: Trust Policy is only supported on resources with the `Premium` SKU.' zone_redundancy_enabled = \"(Optional) Whether zone redundancy is enabled for this Container Registry. Defaults to false. This is only supported on resources with the Premium SKU.\" data_endpoint_enabled = \"(Optional) Whether to enable dedicated data endpoints for this Container Registry. This is only supported on resources with the Premium SKU.\" network_rule_set = \"(Optional) Network rule set configuration: default_action = '(Required) The behavior for requests matching no rules. Possible values are Allow or Deny. Defaults to Deny.' ip_rule = '(Optional) A list of IP rules: ip_range = '(Required) The CIDR block from which requests will match the rule.' action = '(Required) The behavior for requests matching this rule. At this time, the only supported value is Allow.' virtual_network = '(Optional) A list of virtual network rules: subnet_id = '(Required) The subnet ID from which requests will match the rule.' action = '(Required) The behavior for requests matching this rule. At this time, the only supported value is Allow.' encryption = \"(Optional) Encryption configuration: enabled = '(Optional) Indicates whether encryption is enabled. Defaults to false.' key_vault_key_id = '(Required) The ID of the Key Vault key used for encryption.' identity_client_id = '(Required) The client ID of the managed identity associated with the encryption key.' georeplications = \"(Optional) A list of Azure locations where the container registry should be geo-replicated: location = '(Required) A location where the container registry should be geo-replicated.' zone_redundancy_enabled = '(Optional) Whether zone redundancy is enabled for the given location. Defaults to false.' tags = '(Optional) A mapping of tags to assign to this replication location.' container_reg_identity = \"(Required) Identity configuration: type = '(Required) Specifies the type of Managed Service Identity. Possible values are SystemAssigned, UserAssigned, or SystemAssigned, UserAssigned.' identity_ids = '(Optional) Specifies a list of User Assigned Managed Identity IDs to be assigned to this resource.' retention_policy_in_days = '(Required) The number of days to retain an untagged manifest after which it gets purged. Defaults to 7.'",
+        "required": false,
+        "default": "{ \"create_default_image\": false, \"data_endpoint_enabled\": false, \"encryption\": { \"enabled\": false, \"identity_client_id\": null, \"key_vault_key_id\": null }, \"georeplications\": [ { \"location\": \"ukwest\", \"tags\": {}, \"zone_redundancy_enabled\": false } ], \"identity\": { \"identity_ids\": null, \"type\": \"SystemAssigned\" }, \"network_rule_set\": { \"default_action\": \"Deny\", \"ip_rule\": [], \"virtual_network\": [] }, \"retention_policy_in_days\": 7, \"sku_tier\": \"Basic\", \"trust_policy_enabled\": false, \"zone_redundancy_enabled\": false }"
+      },
+      "containerapp_env_certificate": {
+        "type": "map(object({ name = string certificate_blob_base64 = string certificate_password = string tags = optional(map(string)) }))",
+        "description": "n/a",
+        "required": false,
+        "default": "null"
+      },
+      "context": {
+        "type": "string",
+        "description": "(optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "context_prefix": {
+        "type": "string",
+        "description": "(optional) Application context prefix information for the resource(s).",
+        "required": false,
+        "default": "\"pv\""
+      },
+      "context_suffix": {
+        "type": "string",
+        "description": "(optional) Application context suffix information for the resource(s) (max 2 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "dependencies": {
+        "type": "map(string)",
+        "description": "(Optional) Existing dependencies.",
+        "required": false,
+        "default": "{ \"resource_group_name_ukw\": \"a1a-51310-dev-rg-cpfpvt-ukw-01\", \"virtual_network_id\": \"/subscriptions/83abe317-59cb-467c-b228-35f4859cf3ca/resourceGroups/a1a-51310-dev-rg-shared-uks-01/providers/Microsoft.Network/virtualNetworks/a1a-51310-dev-vnet-nonrtbl-uks-01\", \"virtual_network_id_ukw\": \"/subscriptions/83abe317-59cb-467c-b228-35f4859cf3ca/resourceGroups/a1a-51310-dev-rg-shared-ukw-01/providers/Microsoft.Network/virtualNetworks/a1a-51310-dev-vnet-nonrtbl-ukw-01\" }"
+      },
+      "enable_postgres_replica": {
+        "type": "bool",
+        "description": "(Optional) Enable creation of PostgreSQL replica server with all dependent resources.",
+        "required": false,
+        "default": "false"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "key_vault": {
+        "type": "object({ public_network_access_enabled = optional(string, false) kv_private_end_point_instance = optional(string, \"001\") acr_private_end_point_instance = optional(string, \"002\") storage_private_end_point_instance = optional(string, \"003\") network_acls = optional(object({ bypass = string # (Required) Specifies which traffic can bypass the network rules. Example: \"AzureServices\". default_action = string # (Required) The default action to apply when no rules match. Example: \"Deny\". ip_rules = list(string) # (Optional) A list of IP rules to allow access. virtual_network_subnet_ids = optional(list(string)) # (Optional) A list of virtual network subnet IDs to allow access. })) })",
+        "description": "n/a",
+        "required": false,
+        "default": "{ \"acr_private_end_point_instance\": \"002\", \"kv_private_end_point_instance\": \"001\", \"network_acls\": null, \"public_network_access_enabled\": false, \"storage_private_end_point_instance\": \"003\" }"
+      },
+      "key_vault_certificate": {
+        "type": "object({ import_certificate = bool path_of_certificate = string password = string issuer_parameters_name = string ec_key_required = bool curve = string key_type = string key_size = number reuse_key = bool action_type = string content_type = string key_usage = list(string) trigger = object({ days_before_expiry = number lifetime_percentage = string }) x509_certificate_properties = object({ extended_key_usage = optional(list(string)) subject = string subject_alternative_names = optional(object({ dns_names = optional(list(string)) emails = optional(list(string)) upns = optional(list(string)) })) validity_in_months = optional(string) }) })",
+        "description": "(Required) Object containing variables for configuring a Key Vault Certificate: import_certificate = \"(Required) Choose to import certificate or to generate one.\" path_of_certificate = \"(Optional) Provide the path of the existing certificate. (Required) if `import_certificate` is `true`.\" password = \"(Optional) The password associated with the certificate. Sensitive.\" issuer_parameters_name = \"(Required) The name of the Certificate Issuer. Must be 'Self' (for self-signed certificates) or 'Unknown' (for certificate issuing authorities like Let's Encrypt or Azure-supported ones).\" ec_key_required = \"(Required) Indicates whether to create an EC key.\" curve = \"(Optional) Specifies the curve to use when creating an EC key. Possible values: P-256, P-256K, P-384, P-521. Defaults to 'P-256'.\" key_type = \"(Required) Specifies the type of key. Possible values: EC, EC-HSM, RSA, RSA-HSM, oct.\" key_size = \"(Optional) The size of the key used in the certificate. Required for RSA keys. Allowed values: 2048, 3072, 4096 for RSA; 256, 384, 521 for EC. Defaults to 2048.\" reuse_key = \"(Required) Indicates whether the key is reusable.\" action_type = \"(Required) The type of action to perform when the lifetime trigger is triggered. Possible values: AutoRenew, EmailContacts.\" content_type = \"(Required) The Content-Type of the Certificate, such as 'application/x-pkcs12' for PFX or 'application/x-pem-file' for PEM.\" key_usage = \"(Required) A list of uses associated with this Key. Possible values: cRLSign, dataEncipherment, decipherOnly, digitalSignature, encipherOnly, keyAgreement, keyCertSign, keyEncipherment, nonRepudiation.\" trigger = \"(Optional) Object containing variables for configuring certificate triggers: days_before_expiry = '(Optional) The number of days before the Certificate expires that the action should run.' lifetime_percentage = '(Optional) The percentage of the Certificate's lifetime at which the action should run.' x509_certificate_properties = \"(Optional) Object containing variables for x509 certificate properties: extended_key_usage = '(Optional) A list of Extended/Enhanced Key Usages.' subject = '(Required) The Certificate's Subject.' subject_alternative_names = \"(Optional) Object containing alternative names: dns_names = '(Optional) A list of alternative DNS names (FQDNs).' emails = '(Optional) A list of email addresses.' upns = '(Optional) A list of User Principal Names.' validity_in_months = '(Required) The Certificate's Validity Period in Months.'",
+        "required": false,
+        "default": "{ \"action_type\": \"AutoRenew\", \"content_type\": \"application/x-pkcs12\", \"curve\": \"P-256\", \"ec_key_required\": false, \"import_certificate\": false, \"issuer_parameters_name\": \"Self\", \"key_size\": 2048, \"key_type\": \"RSA\", \"key_usage\": [ \"digitalSignature\", \"keyEncipherment\" ], \"password\": null, \"path_of_certificate\": null, \"reuse_key\": true, \"trigger\": { \"days_before_expiry\": 30, \"lifetime_percentage\": \"80\" }, \"x509_certificate_properties\": { \"extended_key_usage\": [ \"serverAuth\", \"clientAuth\" ], \"subject\": \"CN=example.com\", \"subject_alternative_names\": { \"dns_names\": [ \"example.com\", \"www.example.com\" ], \"emails\": [ \"admin@example.com\" ], \"upns\": [] }, \"validity_in_months\": \"12\" } }"
+      },
+      "key_vault_secrets": {
+        "type": "map(object({ secret_number = string value = string content_type = optional(string, null) not_before_date = optional(string, null) expiration_date = optional(string, null) }))",
+        "description": "(optional) A map of key vault secrets to be created with following variables: secret_number = \"(Required) Specifies secret number for multiple secrets to be created.\" value = \"(Required) Specifies the value of the Key Vault Secret. Changing this will create a new version of the Key Vault Secret.\" content_type = \"(optional) Specifies the content type of the Key Vault Secret.\" not_before_date = \"(optional) Key not usable before the provided UTC datetime (Y-m-d'T'H:M:S'Z').\" expiration_date = \"(optional) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').\"",
+        "required": false,
+        "default": "{}"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "name": {
+        "type": "string",
+        "description": "(optional) Key name to be used (max 127 chars)",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "postgres_replica_server": {
+        "type": "object({ location = string virtual_network_id = string instance = string address_prefix = string key_vault_id = optional(string) kv_subnet_address_prefix = optional(string) # Address prefix for KV private endpoint subnet zone = optional(string) sku_name = optional(string) create_mode = optional(string, \"Replica\") resource_group_name_crossregion = string })",
+        "description": "(Required if enable_postgres_replica is true) PostgreSQL replica server configuration with location, virtual network, address prefix, and instance in different region. If key_vault_id is not provided, a new Key Vault will be automatically created with a private endpoint in a separate subnet.",
+        "required": false,
+        "default": "null"
+      },
+      "postgres_server": {
+        "type": "object({ paired_location = string server_version = string key_vault_geo_id = string sku_name = string storage_mb = number zone = string cmk_expiration_date = string geo_redundant_backup_enabled = bool password_auth_enabled = bool admin_principal_name = string admin_object_id = string identity_ids = string identity_type = string instance_geo_backup = string subnet_geo_address_prefix = string postgresqldatabase_collation = optional(string, \"en_US.utf8\") postgresqldatabase_charset = optional(string, \"UTF8\") backup_retention_days = optional(number, 7) create_mode = optional(string, \"Default\") source_server_id = optional(string) point_in_time_restore_time = optional(string) ssl_enforcement_enabled = optional(bool, true) ssl_minimal_tls_version = optional(string, \"TLSEnforcedVersion12\") admin_login = object({ administrator_login = string administrator_password = string }) vnet_integration = object({ delegated_subnet_id = optional(string) private_dns_zone_id = optional(string) }) active_directory = object({ principal_type = string }) high_availability = object({ mode = string standby_availability_zone = optional(string) }) configuration = object({ name = string value = string }) maintenance_window = optional(object({ day_of_week = optional(number, 0) start_hour = optional(number, 0) start_minute = optional(number, 0) })) })",
+        "description": "n/a",
+        "required": true
+      },
+      "private_dns_zone_vnet_links": {
+        "type": "map(object({ vnet_id = string registration_enabled = optional(bool, false) }))",
+        "description": "n/a",
+        "required": true
+      },
+      "public_ip": {
+        "type": "object({ allocation_method = string sku = string zones = optional(list(string), null) public_ip_prefix_id = string ddos_protection_plan_id = string })",
+        "description": "(Required) Object containing variables for configuring a Public IP: allocation_method = \"(Required) Defines the allocation method for this IP address. Possible values are `Static` or `Dynamic`.\" sku = \"(Optional) The SKU of the Public IP. Accepted values are `Basic` and `Standard`. Defaults to `Standard`.\" zones = \"(Optional) The availability zone to allocate the Public IP in. Possible values are `1`, `2`, `3`. Defaults to `null`.\" public_ip_prefix_id = \"(Optional) The ID of the public IP prefix associated with the public IP.\" ddos_protection_plan_id = \"(Optional) The ID of the DDoS protection plan associated with the public IP.\"",
+        "required": false,
+        "default": "{ \"allocation_method\": \"Static\", \"ddos_protection_plan_id\": \"\", \"public_ip_prefix_id\": null, \"sku\": \"Standard\", \"zones\": null }"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "storage_account": {
+        "type": "object({ storage_account_name = string storage_account_key = string enable_key_access = bool kv_secret_expiration_date = string enable_file_share_AADDS_authentication = bool account_tier = string account_kind = string account_replication_type = string customer_managed_key_expiration_date = string identity_ids = string identity_type = string static_website = object({ index_document = optional(string) error_404_document = optional(string) }) rules = map(object({ name = string enabled = bool filters = object({ prefix_match = list(string) blob_types = list(string) }) actions = object({ base_blob = object({ tier_to_cool_after_days_since_modification_greater_than = number tier_to_archive_after_days_since_modification_greater_than = number delete_after_days_since_modification_greater_than = number }) snapshot = object({ delete_after_days_since_creation_greater_than = number }) }) })) })",
+        "description": "(Required) Object containing variables for configuring a Storage Account: storage_account_name = \"(Required) The name of the storage account.\" storage_account_key = \"(Required) The access key for the storage account.\" enable_key_access = \"(Required) Specifies whether key access is enabled.\" kv_secret_expiration_date = \"(Required) The expiration date for the Key Vault secret.\" enable_file_share_AADDS_authentication = \"(Required) Specifies whether to enable authentication to file shares via Active Directory Domain Services.\" account_tier = \"(Required) The tier of the storage account. Possible values: `Standard`, `Premium`.\" account_kind = \"(Required) The kind of storage account. Possible values: `BlobStorage`, `BlockBlobStorage`, `FileStorage`, `Storage`, `StorageV2`.\" account_replication_type = \"(Required) The replication type of the storage account. Possible values: `LRS`, `GRS`, `RAGRS`, `ZRS`, `GZRS`, `RAGZRS`.\" customer_managed_key_expiration_date = \"(Required) The expiration date for the customer-managed key.\" identity_ids = \"(Required) The IDs of the identities associated with the storage account.\" identity_type = \"(Required) The type of identity associated with the storage account.\" static_website = \"(Optional) Configuration for the static website feature of the storage account.\" index_document = \"(Optional) The default document for the static website.\" error_404_document = \"(Optional) The error document for the static website.\" rules = \"(Optional) A map of rules for managing storage account policies.\" name = \"(Required) The name of the rule.\" enabled = \"(Required) Whether the rule is enabled.\" filters = \"(Required) Filters for the rule.\" prefix_match = \"(Required) A list of prefixes to match.\" blob_types = \"(Required) A list of blob types to match.\" actions = \"(Required) Actions to perform for the rule.\" base_blob = \"(Required) Actions for base blobs.\" tier_to_cool_after_days_since_modification_greater_than = \"(Required) Number of days after modification to move to cool tier.\" tier_to_archive_after_days_since_modification_greater_than = \"(Required) Number of days after modification to move to archive tier.\" delete_after_days_since_modification_greater_than = \"(Required) Number of days after modification to delete.\" snapshot = \"(Required) Actions for snapshots.\" delete_after_days_since_creation_greater_than = \"(Required) Number of days after creation to delete.\"",
+        "required": false,
+        "default": "{ \"account_kind\": \"StorageV2\", \"account_replication_type\": \"LRS\", \"account_tier\": \"Standard\", \"customer_managed_key_expiration_date\": \"2025-12-31T23:59:59Z\", \"enable_file_share_AADDS_authentication\": true, \"enable_key_access\": false, \"identity_ids\": \"\", \"identity_type\": \"SystemAssigned\", \"kv_secret_expiration_date\": \"2025-12-31T23:59:59Z\", \"rules\": { \"example_rule\": { \"actions\": { \"base_blob\": { \"delete_after_days_since_modification_greater_than\": 365, \"tier_to_archive_after_days_since_modification_greater_than\": 90, \"tier_to_cool_after_days_since_modification_greater_than\": 30 }, \"snapshot\": { \"delete_after_days_since_creation_greater_than\": 180 } }, \"enabled\": true, \"filters\": { \"blob_types\": [ \"blockBlob\" ], \"prefix_match\": [ \"example-prefix\" ] }, \"name\": \"example-rule\" } }, \"static_website\": { \"error_404_document\": \"404.html\", \"index_document\": \"index.html\" }, \"storage_account_key\": \"\", \"storage_account_name\": \"\" }"
+      },
+      "subnets": {
+        "type": "map(object({ use_existing = bool # (Optional) Specifies whether to use an existing subnet. route_table_id = optional(string, null) # (Optional) The ID of the route table associated with the subnet. instance = optional(string, null) # (Optional) The instance name for the subnet. nsg_id = optional(string, null) # (Optional) The ID of the network security group associated with the subnet. name = optional(string, null) # (Optional) The name of the subnet. address_prefix = optional(string, null) # (Optional) The address prefix for the subnet. routes = optional(list(object({ route_name = string # (Required) The name of the route. address_prefix_rt = string # (Required) The address prefix for the route. next_hop_type = string # (Required) The type of the next hop (e.g., VirtualAppliance, Internet, etc.). next_hop_in_ip_address = optional(string, null) # (Optional) The IP address of the next hop. })), []) subnet_id = string # (Required) The ID of the subnet. enforce_private_link_endpoint_network_policies = optional(string, null) # (Optional) Whether to enforce private link endpoint network policies. private_link_service_network_policies_enabled = optional(bool, false) # (Optional) Whether private link service network policies are enabled. Defaults to false. delegation = optional(list(object({ delegation_name = string # (Required) The name of the delegation. service_delegation_name = string # (Required) The name of the service delegation. service_delegation_action = list(string) # (Required) A list of actions for the service delegation. })), []) # (Optional) A list of delegations for the subnet. security_rules = optional(map(object({ name = string # (Required) The name of the security rule. description = optional(string) # (Optional) A description of the security rule. protocol = string # (Required) The protocol for the rule (e.g., TCP, UDP, or * for all). source_port_range = optional(string) # (Optional) The source port range for the rule. source_port_ranges = optional(list(string)) # (Optional) A list of source port ranges for the rule. destination_port_range = optional(string) # (Optional) The destination port range for the rule. destination_port_ranges = optional(list(string)) # (Optional) A list of destination port ranges for the rule. source_address_prefix = optional(string) # (Optional) The source address prefix for the rule. source_address_prefixes = optional(list(string)) # (Optional) A list of source address prefixes for the rule. source_application_security_group_ids = optional(list(string)) # (Optional) A list of source application security group IDs. destination_address_prefix = optional(string) # (Optional) The destination address prefix for the rule. destination_address_prefixes = optional(list(string)) # (Optional) A list of destination address prefixes for the rule. destination_application_security_group_ids = optional(list(string)) # (Optional) A list of destination application security group IDs. access = string # (Required) Whether the rule allows or denies traffic. Possible values: Allow, Deny. priority = number # (Required) The priority of the rule. Must be between 100 and 4096. direction = string # (Required) The direction of the rule. Possible values: Inbound, Outbound. })), {}) # (Optional) A map of security rules for the subnet. }))",
+        "description": "(Required) A map of subnet configurations. Each key represents a subnet name, and the value is an object containing the following attributes: use_existing = \"(Required) Specifies whether to use an existing subnet.\" route_table_id = \"(Optional) The ID of the route table associated with the subnet.\" instance = \"(Optional) The instance name for the subnet.\" nsg_id = \"(Optional) The ID of the network security group associated with the subnet.\" name = \"(Optional) The name of the subnet.\" route_name = \"(Optional) The name of the route associated with the subnet.\" address_prefix = \"(Optional) The address prefix for the subnet.\" address_prefix_rt = \"(Optional) The address prefix for the route table.\" next_hop_type = \"(Optional) The type of the next hop for the route.\" next_hop_in_ip_address = \"(Optional) The IP address of the next hop for the route.\" subnet_id = \"(Required) The ID of the subnet.\" enforce_private_link_endpoint_network_policies = \"(Optional) Whether to enforce private link endpoint network policies.\" private_link_service_network_policies_enabled = \"(Optional) Whether private link service network policies are enabled. Defaults to false.\" delegation = \"(Optional) A list of delegations for the subnet: delegation_name = '(Required) The name of the delegation.' service_delegation_name = '(Required) The name of the service delegation.' service_delegation_action = '(Required) A list of actions for the service delegation.' security_rules = \"(Optional) A map of security rules for the subnet: name = '(Required) The name of the security rule.' description = '(Optional) A description of the security rule.' protocol = '(Required) The protocol for the rule (e.g., TCP, UDP, or * for all).' source_port_range = '(Optional) The source port range for the rule.' source_port_ranges = '(Optional) A list of source port ranges for the rule.' destination_port_range = '(Optional) The destination port range for the rule.' destination_port_ranges = '(Optional) A list of destination port ranges for the rule.' source_address_prefix = '(Optional) The source address prefix for the rule.' source_address_prefixes = '(Optional) A list of source address prefixes for the rule.' source_application_security_group_ids = '(Optional) A list of source application security group IDs.' destination_address_prefix = '(Optional) The destination address prefix for the rule.' destination_address_prefixes = '(Optional) A list of destination address prefixes for the rule.' destination_application_security_group_ids = '(Optional) A list of destination application security group IDs.' access = '(Required) Whether the rule allows or denies traffic. Possible values: Allow, Deny.' priority = '(Required) The priority of the rule. Must be between 100 and 4096.' direction = '(Required) The direction of the rule. Possible values: Inbound, Outbound.'",
+        "required": false,
+        "default": "{ \"appgw_subnet\": { \"address_prefix\": null, \"address_prefix_rt\": null, \"delegation\": [], \"enforce_private_link_endpoint_network_policies\": null, \"instance\": null, \"name\": null, \"next_hop_in_ip_address\": null, \"next_hop_type\": null, \"nsg_id\": null, \"private_link_service_network_policies_enabled\": false, \"route_name\": null, \"route_table_id\": null, \"security_rules\": {}, \"subnet_id\": \"appgw-subnet-id\", \"use_existing\": false }, \"ca_subnet\": { \"address_prefix\": null, \"address_prefix_rt\": null, \"delegation\": [ { \"delegation_name\": \"ca-delegation\", \"service_delegation_action\": [ \"read\", \"write\" ], \"service_delegation_name\": \"Microsoft.ContainerApp\" } ], \"enforce_private_link_endpoint_network_policies\": null, \"instance\": null, \"name\": null, \"next_hop_in_ip_address\": null, \"next_hop_type\": null, \"nsg_id\": null, \"private_link_service_network_policies_enabled\": false, \"route_name\": null, \"route_table_id\": null, \"security_rules\": {}, \"subnet_id\": \"ca-subnet-id\", \"use_existing\": false }, \"pg_subnet\": { \"address_prefix\": null, \"address_prefix_rt\": null, \"delegation\": [ { \"delegation_name\": \"pg-delegation\", \"service_delegation_action\": [ \"read\", \"write\" ], \"service_delegation_name\": \"Microsoft.DBforPostgreSQL\" } ], \"enforce_private_link_endpoint_network_policies\": null, \"instance\": null, \"name\": null, \"next_hop_in_ip_address\": null, \"next_hop_type\": null, \"nsg_id\": null, \"private_link_service_network_policies_enabled\": false, \"route_name\": null, \"route_table_id\": null, \"security_rules\": {}, \"subnet_id\": \"pg-subnet-id\", \"use_existing\": false }, \"pg_subnet_geo\": { \"address_prefix\": null, \"address_prefix_rt\": null, \"delegation\": [ { \"delegation_name\": \"pg-delegation-geo\", \"service_delegation_action\": [ \"read\", \"write\" ], \"service_delegation_name\": \"Microsoft.DBforPostgreSQL\" } ], \"enforce_private_link_endpoint_network_policies\": null, \"instance\": null, \"name\": null, \"next_hop_in_ip_address\": null, \"next_hop_type\": null, \"nsg_id\": null, \"private_link_service_network_policies_enabled\": false, \"route_name\": null, \"route_table_id\": null, \"security_rules\": {}, \"subnet_id\": \"pg-subnet-geo-id\", \"use_existing\": false }, \"workload_subnet\": { \"address_prefix\": null, \"address_prefix_rt\": null, \"delegation\": [], \"enforce_private_link_endpoint_network_policies\": null, \"instance\": null, \"name\": null, \"next_hop_in_ip_address\": null, \"next_hop_type\": null, \"nsg_id\": null, \"private_link_service_network_policies_enabled\": false, \"route_name\": null, \"route_table_id\": null, \"security_rules\": {}, \"subnet_id\": \"workload-subnet-id\", \"use_existing\": false } }"
+      },
+      "subnets_fetch": {
+        "type": "map(object({ virtual_network_name = string resource_group_name = string }))",
+        "description": "(Optional) Map of subnet names to their virtual network and resource group information. When provided, subnets will be fetched from data blocks instead of using IDs directly. Example: subnets_fetch = { \"subnet-name-01\" = { virtual_network_name = \"vnet-name-01\" resource_group_name = \"rg-name-01\" } \"subnet-name-02\" = { virtual_network_name = \"vnet-name-01\" resource_group_name = \"rg-name-01\" } }",
+        "required": false,
+        "default": "{}"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "use_existing": {
+        "type": "object({ key_vault = optional(object({ enabled = optional(bool, false) id = optional(string, null) }), {}) storage_account = optional(object({ enabled = optional(bool, false) id = optional(string, null) }), {}) public_ip = optional(object({ enabled = optional(bool, false) id = optional(string, null) }), {}) application_gateway = optional(object({ enabled = optional(bool, false) id = optional(string, null) }), {}) container_registry = optional(object({ enabled = optional(bool, false) id = optional(string, null) }), {}) })",
+        "description": "(Optional) Consolidated object containing configuration for using existing resources. Defaults to creating all new resources. Structure: { key_vault = { enabled = (Optional) Whether to use existing Key Vault. Defaults to false. id = (Optional) The ID of the existing Key Vault. } storage_account = { enabled = (Optional) Whether to use existing Storage Account. Defaults to false. id = (Optional) The ID of the existing Storage Account. } public_ip = { enabled = (Optional) Whether to use existing Public IP. Defaults to false. id = (Optional) The ID of the existing Public IP. } application_gateway = { enabled = (Optional) Whether to use existing Application Gateway. Defaults to false. id = (Optional) The ID of the existing Application Gateway. } container_registry = { enabled = (Optional) Whether to use existing Container Registry. Defaults to false. id = (Optional) The ID of the existing Container Registry. } }",
+        "required": false,
+        "default": "{}"
+      },
+      "user_assigned_identity": {
+        "type": "object({ use_existing = bool uai_id = string principal_id = string })",
+        "description": "n/a",
+        "required": true
+      },
+      "virtual_network_id": {
+        "type": "string",
+        "description": "n/a",
+        "required": false,
+        "default": "\"/subscriptions/83abe317-59cb-467c-b228-35f4859cf3ca/resourceGroups/a1a-51310-dev-rg-shared-uks-01/providers/Microsoft.Network/virtualNetworks/a1a-51310-dev-vnet-nonrtbl-uks-01\""
+      },
+      "virtual_networks": {
+        "type": "map(string)",
+        "description": "(Optional) Map of virtual network names to their resource group names. When provided, virtual networks will be fetched from data blocks instead of using IDs directly. Example: virtual_networks = { \"vnet-name-01\" = \"rg-name-01\" \"vnet-name-02\" = \"rg-name-02\" }",
+        "required": false,
+        "default": "{}"
+      },
+      "web_application_firewall_policy": {
+        "type": "object({ # Custom Rules custom_rules = map(object({ action = string # (Required) Type of action. Possible values are `Allow`, `Block`, and `Log`. priority = number # (Required) Describes the priority of the rule. Rules with a lower value are evaluated first. rule_type = string # (Required) Describes the type of rule. Possible values are `MatchRule` and `Invalid`. name = optional(string) # (Optional) Name of the custom rule. enabled = optional(bool) # (Optional) Whether the rule is enabled. Defaults to `true`. rate_limit_threshold = optional(number, 1) # (Optional) Specifies the threshold value for the rate limit policy. Must be >= 1. rate_limit_duration = optional(string) # (Optional) Specifies the duration for the rate limit policy. group_rate_limit_by = optional(string) # (Optional) Specifies what grouping the rate limit will count requests by. Possible values: `GeoLocation`, `ClientAddr`, and `None`. match_conditions = map(object({ match_values = optional(list(string)) # (Optional) A list of match values. operator = string # (Required) Describes the operator to be matched. Possible values: `IPMatch`, `GeoMatch`, `Equal`, `Contains`, etc. negation_condition = optional(bool) # (Optional) Whether this is a negate condition. transforms = optional(list(string)) # (Optional) A list of transformations to apply before the match. Possible values: `HtmlEntityDecode`, `Lowercase`, etc. match_variables = map(object({ variable_name = string # (Required) The name of the match variable. Possible values: `RemoteAddr`, `RequestMethod`, etc. selector = optional(string) # (Optional) Describes the field of the match variable collection. })) })) })) # Policy Settings policy_settings = object({ enabled = optional(bool) # (Optional) Whether the policy is enabled. Defaults to `true`. file_upload_limit_in_mb = optional(number) # (Optional) The file upload limit in MB. Defaults to `100`. max_request_body_size_in_kb = optional(number) # (Optional) The maximum request body size in KB. Defaults to `128`. request_body_inspect_limit_in_kb = optional(number) # (Optional) The maximum request body inspection limit in KB. Defaults to `128`. log_scrubbing_rule = optional(map(object({ enabled = optional(bool) # (Optional) Whether log scrubbing is enabled. Defaults to `true`. match_variable = string # (Required) Specifies the variable to be scrubbed from the logs. selector_match_operator = optional(string) # (Optional) Specifies the operator for matching the selector. selector = optional(string) # (Optional) Specifies which elements in the collection this rule applies to. })), null) }) # Default Rate Limit Rule Property default_rate_limit_rule_property = object({ group_rate_limit_by = optional(string) # (Optional) Specifies what grouping the rate limit will count requests by. Possible values: `GeoLocation`, `ClientAddr`, and `None`. match_conditions = map(object({ match_values = optional(list(string)) # (Optional) A list of match values. operator = string # (Required) Describes the operator to be matched. negation_condition = optional(bool) # (Optional) Whether this is a negate condition. transforms = optional(list(string)) # (Optional) A list of transformations to apply before the match. match_variables = map(object({ variable_name = string # (Required) The name of the match variable. selector = optional(string) # (Optional) Describes the field of the match variable collection. })) })) }) # Exclusions exclusion = map(object({ match_variable = string # (Required) The name of the match variable. selector = string # (Required) Describes the field of the match variable collection. selector_match_operator = string # (Required) Describes the operator to be matched. excluded_rule_set = object({ type = optional(string, null) # (Optional) The rule set type. Possible values: `Microsoft_DefaultRuleSet` and `OWASP`. version = optional(string, null) # (Optional) The rule set version. Defaults to `3.2`. rule_group = map(object({ rule_group_name = string # (Required) The name of the rule group for exclusion. excluded_rules = optional(list(string), []) # (Optional) A list of rule IDs for exclusion. })) }) })) # Managed Rule Set manage_rule_set = map(object({ type = optional(string) # (Optional) The rule set type. Defaults to `OWASP`. version = string # (Required) The rule set version. rule_group_override = optional(list(object({ # Changed from list to map rule_group_name = string # (Required) The name of the rule group for override. rule = optional(list(object({ # Changed from list to map id = string # (Required) Identifier for the managed rule. enabled = optional(bool) # (Optional) Whether the managed rule is enabled. action = optional(string) # (Optional) The override action to be applied when the rule matches. })), []) # Default to an empty map if no rules are provided. })), []) # Default to an empty map if no overrides are provided. })) # Other Settings bot_manager_ruleset_version = string # (Optional) The rule set version for the bot manager. Defaults to `1.0`. })",
+        "description": "n/a",
+        "required": false,
+        "default": "{ \"bot_manager_ruleset_version\": \"1.0\", \"custom_rules\": {}, \"default_rate_limit_rule_property\": { \"group_rate_limit_by\": \"ClientAddr\", \"match_conditions\": { \"mc1\": { \"match_values\": [ \"0.0.0.0\" ], \"match_variables\": { \"mv1\": { \"selector\": null, \"variable_name\": \"RemoteAddr\" } }, \"negation_condition\": false, \"operator\": \"IPMatch\", \"transforms\": null } } }, \"exclusion\": {}, \"manage_rule_set\": {}, \"policy_settings\": { \"enabled\": true, \"file_upload_limit_in_mb\": 100, \"log_scrubbing_rule\": null, \"max_request_body_size_in_kb\": 128, \"request_body_inspect_limit_in_kb\": 128 } }"
+      }
+    }
+  },
+  "outputs": {
+    "applicationgateway": {
+      "description": "The name of the web application gateway."
+    },
+    "applicationgateway_name": {
+      "description": "The name of the web application gateway."
+    },
+    "azurerm_resource_group_name": {
+      "description": "The name of the Resource Group."
+    },
+    "container_app_resource": {
+      "description": "The Container App resource."
+    },
+    "container_apps_name": {
+      "description": "The Resource ID of the Container App Environment."
+    },
+    "containerappenvironment": {
+      "description": "The name of the Container App Environment."
+    },
+    "containerappenvironment_name": {
+      "description": "The name of the Container App Environment."
+    },
+    "containerregistry": {
+      "description": "The name of the Container registry."
+    },
+    "containerregistry_name": {
+      "description": "The name of the Container registry."
+    },
+    "key_vault_certificates": {
+      "description": "The ID's of the Key Vault Certificate."
+    },
+    "key_vault_secrets": {
+      "description": "The ID's of the Key Vault Secret."
+    },
+    "keyvault": {
+      "description": "Name of the keyvault"
+    },
+    "keyvault_id": {
+      "description": "ID of the keyvault"
+    },
+    "keyvault_name": {
+      "description": "Name of the keyvault"
+    },
+    "keyvault_replica": {
+      "description": "The keyvault resource for replica (only if enabled)"
+    },
+    "keyvault_replica_id": {
+      "description": "ID of the keyvault for replica (only if enabled)"
+    },
+    "keyvault_replica_name": {
+      "description": "Name of the keyvault for replica (only if enabled)"
+    },
+    "networksecuritygroup_appgw": {
+      "description": "The name of the Networ security group for Keyvault."
+    },
+    "networksecuritygroup_ca": {
+      "description": "The name of the Networ security group for Container App."
+    },
+    "networksecuritygroup_keyvault": {
+      "description": "The name of the Networ security group for Keyvault."
+    },
+    "networksecuritygroup_pg": {
+      "description": "The name of the Networ security group for Postgres."
+    },
+    "networksecuritygroup_pg_replica": {
+      "description": "The name of the Network security group for Postgres replica (only if enabled)."
+    },
+    "postgresqldatabase": {
+      "description": "The name of postgresql flexible server Database."
+    },
+    "postgresqldatabase_name": {
+      "description": "The name of postgresql flexible server Database."
+    },
+    "postgresqlserver": {
+      "description": "The name of postgresql flexible server."
+    },
+    "postgresqlserver_name": {
+      "description": "The name of postgresql flexible server."
+    },
+    "postgresqlserver_replica": {
+      "description": "The postgresql flexible server replica resource (only if enabled)."
+    },
+    "postgresqlserver_replica_name": {
+      "description": "The name of postgresql flexible server replica (only if enabled)."
+    },
+    "privateendpoint_acr": {
+      "description": "The name of the ACR Private endpoint."
+    },
+    "privateendpoint_keyvault": {
+      "description": "The name of the Key Vault private end point."
+    },
+    "privateendpoint_share": {
+      "description": "The name of the Private end point share."
+    },
+    "publicip_name": {
+      "description": "The name of the Public IP."
+    },
+    "routetable_appgw": {
+      "description": "The name of the route table for App Gateway."
+    },
+    "routetable_ca": {
+      "description": "The name of the route table for Container App."
+    },
+    "routetable_keyvault": {
+      "description": "The name of the route table for keyvault."
+    },
+    "routetable_pg": {
+      "description": "The name of the route table for Postgres."
+    },
+    "routetable_pg_replica": {
+      "description": "The name of the route table for Postgres replica (only if enabled)."
+    },
+    "storageaccount": {
+      "description": "The name of the Storage account."
+    },
+    "storageaccount_name": {
+      "description": "The name of the Storage account."
+    },
+    "storageshare": {
+      "description": "The name of the Storage Share."
+    },
+    "storageshare_name": {
+      "description": "The name of the Storage Share."
+    },
+    "subnet_appgw": {
+      "description": "The name of the app gateway subnet."
+    },
+    "subnet_ca": {
+      "description": "The name of the app gateway subnet."
+    },
+    "subnet_keyvault_workload": {
+      "description": "The name of the Key Vault subnet."
+    },
+    "subnet_pg": {
+      "description": "The name of postgres subnet."
+    },
+    "subnet_pg_replica": {
+      "description": "The name of postgres replica subnet (only if enabled)."
+    },
+    "userassignedidentity": {
+      "description": "The name of the user assigned identity."
+    },
+    "userassignedidentity_name": {
+      "description": "The name of the user assigned identity."
+    },
+    "userassignedidentity_replica": {
+      "description": "The user assigned identity resource for replica (only if enabled)."
+    },
+    "userassignedidentity_replica_name": {
+      "description": "The name of the user assigned identity for replica (only if enabled)."
+    },
+    "webapplicationfirewallpolicy": {
+      "description": "The name of the web application firewall policy."
+    },
+    "webapplicationfirewallpolicy_name": {
+      "description": "The name of the web application firewall policy."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Appgatewaycontainerapppostgresqlserver' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a service pattern module. It bundles multiple related services/configurations.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "resource_group",
+      "virtual_network"
+    ]
+  }
+}

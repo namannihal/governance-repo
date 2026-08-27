@@ -1,0 +1,217 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Load Balancer Module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-loadbalancer'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-loadbalancer",
+  "module_type": "service",
+  "azure_service": "Loadbalancer",
+  "module_name": "Load Balancer Module",
+  "latest_tag": "1.1.0",
+  "available_tags": [
+    "1.1.0",
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.5.2"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-loadbalancer.git//?ref=1.1.0",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Subnet",
+    "virtual network"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_lb.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_lb_backend_address_pool.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_lb_nat_pool.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_lb_nat_rule.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_lb_probe.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_lb_rule.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "loadbalancer",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-loadbalancer.git//?ref=1.1.0",
+      "version": "1.1.0",
+      "available_versions": [
+        "1.1.0",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.5.2"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "lb_probes",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "backend_pool_names": {
+        "type": "list(string)",
+        "description": "(Optional) List of backend pool names for the Load Balancer.",
+        "required": false,
+        "default": "[]"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "lb_frontend_ip_configurations": {
+        "type": "list(object({ subnet_id = string name = string zones = optional(list(number)) private_ip_address = optional(string) private_ip_address_allocation = optional(string, \"Dynamic\") private_ip_address_version = optional(string, \"IPv4\") gateway_load_balancer_frontend_ip_configuration_id = optional(string) }))",
+        "description": "\"(Optional) List containing load balancer frontend ip configuration parameters\" object({ name = \"(Required) Specifies the name of the frontend IP configuration.\" subnet_id = \"(Required)The ID of the Subnet which should be associated with the IP Configuration.\" zones = \"(Optional) Specifies a list of Availability Zones in which the IP Address for this Load Balancer should be located.\" private_ip_address = \"(Optional) Private IP Address to assign to the Load Balancer. The last one and first four IPs in any range are reserved and cannot be manually assigned.\" private_ip_address_allocation = \"(Optional) The allocation method for the Private IP Address used by this Load Balancer. Possible values as Dynamic and Static.\" gateway_load_balancer_frontend_ip_configuration_id = \"(Optional) The Frontend IP Configuration ID of a Gateway SKU Load Balancer.\" })",
+        "required": false,
+        "default": "[]"
+      },
+      "lb_nat_pools": {
+        "type": "map(object({ protocol = string frontend_ip_configuration_name = string frontend_port_start = number frontend_port_end = number backend_port = number }))",
+        "description": "\"(Optional) Map containing load balancer nat pool parameters\" object({ protocol = \"(Required) The transport protocol for the external endpoint. Possible values are Udp or Tcp.\" frontend_ip_configuration_name = \"(Required) frontend ip name of the load balancer\" frontend_port_start = \"(Required) The first port number in the range of external ports that will be used to provide Inbound NAT to NICs associated with this Load Balancer. Possible values range between 1 and 65534.\" frontend_port_end = \"(Required) The last port number in the range of external ports that will be used to provide Inbound NAT to NICs associated with this Load Balancer. Possible values range between 1 and 65534\" backend_port = \"(Required) The port used for internal connections on the endpoint.Values between 0 and 65535.\" })",
+        "required": false,
+        "default": "{}"
+      },
+      "lb_nat_rules": {
+        "type": "map(object({ protocol = string frontend_ip_configuration_name = string frontend_port = number backend_port = number idle_timeout_in_minutes = optional(number) enable_floating_ip = optional(bool, false) enable_tcp_reset = optional(bool, false) }))",
+        "description": "(Optional) Map containing load balancer nat rules object({ protocol = \"(Required) The transport protocol for the external endpoint. Possible values are `\\\"Tcp, Udp or All\\\" frontend_ip_configuration_name = \"(Required) frontend ip name of the load balancer\" backend_pool_name = \"(Required) backendpool name of the load balancer\" frontend_port = \"(Required) port used for External connections on the endpoint. Values between 0 and 65534.\" backend_port = \"(Required) The port used for internal connections on the endpoint.Values between 0 and 65535.\" idle_timeout_in_minutes = \"(Optional) Specifies the idle timeout in minutes for TCP connections. Values are between 4 and 30 minutes\" enable_floating_ip = \"(Optional) Are the Floating IPs enabled for this Load Balncer Rule? A `\\\"floating\\\"` IP is reassigned to a secondary server in case the primary server fails. Required to configure a SQL AlwaysOn Availability Group. Defaults to false\" enable_tcp_reset = \"(Optional) Is TCP Reset enabled for this Load Balancer Rule? Defaults to false.\" }) `",
+        "required": false,
+        "default": "{}"
+      },
+      "lb_probes": {
+        "type": "map(object({ protocol = string port = number request_path = optional(string) interval_in_seconds = optional(number) number_of_probes = optional(number) probe_threshold = optional(number) }))",
+        "description": "\"(Required) Map containing load balancer probes parameters\" object({ protocol = \"(Required) The transport protocol for the external endpoint. Possible values are Udp or Tcp.\" port = \"(Required) Port on which the Probe queries the backend endpoint. Values between 0 and 65535, inclusive.\" request_path = \"(Optional) The URI used for requesting health status from the backend endpoint. Required if probe_protocol is set to Http\" interval_in_seconds = \"(Optional) The interval, in seconds between probes to the backend endpoint for health status.\" number_of_probes = \"(Optional, deprecated) The number of failed probe attempts after which the backend endpoint is removed from rotation.\" probe_threshold = \"(Optional) The number of consecutive successful or failed probes that allow or deny traffic to this endpoint.\" })",
+        "required": true
+      },
+      "lb_rules": {
+        "type": "map(object({ frontend_ip_configuration_name = string backend_pool_name = string protocol = string frontend_port = string backend_port = number probe_name = optional(string) enable_floating_ip = optional(bool, false) disable_outbound_snat = optional(bool, false) enable_tcp_reset = optional(bool, false) load_distribution = optional(string) idle_timeout_in_minutes = optional(number) }))",
+        "description": "(Optional) Map containing load balancer rule and probe object({ frontend_ip_configuration_name = \"(Required) frontend ip name of the load balancer\" backend_pool_name = \"(Required) backendpool name of the load balancer\" protocol = \"(Required) The transport protocol for the external endpoint. Possible values are `\\\"Tcp, Udp or All\\\" frontend_port = \"(Required) The port for the external endpoint. Port numbers for each Rule must be unique within the Load Balancer. Set this frontend port to 0 if lb_protocol is set to `\\\"All\\\"`. Values between `\\\"0 and 65535\\\" backend_port = \"(Required) The port used for internal connections on the endpoint. Set this backend port to 0 if lb_protocol is set to \\\"All\\\". probe_name = \"(Optional) The name of a Probe used by this Load Balancing Rule.\" enable_floating_ip = \"(Optional) Are the Floating IPs enabled for this Load Balncer Rule? A `\\\"floating\\\"` IP is reassigned to a secondary server in case the primary server fails. Required to configure a SQL AlwaysOn Availability Group. Defaults to false\" disable_outbound_snat = \"(Optional) Is snat enabled for this Load Balancer Rule? Default false.\" enable_tcp_reset = \"(Optional) Is TCP Reset enabled for this Load Balancer Rule? Defaults to false.\" load_distribution = \"(Optional) Specifies the load balancing distribution type to be used by the Load Balancer. Possible values are `\\\"Default,SourceIP,SourceIPProtocol\\\"`.\" idle_timeout_in_minutes = \"(Optional) Specifies the idle timeout in minutes for TCP connections. Values are between 4 and 30 minutes\" })",
+        "required": false,
+        "default": "{}"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "sku": {
+        "type": "string",
+        "description": "(Optional) The SKU of the Azure Load Balancer. Accepted values are Basic and Standard. Defaults to Basic.",
+        "required": false,
+        "default": "\"Standard\""
+      },
+      "sku_tier": {
+        "type": "string",
+        "description": "(Optional) The Sku Tier of this Load Balancer. Possible values are Global and Regional.",
+        "required": false,
+        "default": "\"Regional\""
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "backend_ids": {
+      "description": "The list of backend pool address IDs."
+    },
+    "backend_map_ids": {
+      "description": "The map of backend pool address IDs."
+    },
+    "frontend_ip_configurations": {
+      "description": "The list of frontend configurations names."
+    },
+    "frontend_ip_configurations_map": {
+      "description": "The map of frontend configurations."
+    },
+    "id": {
+      "description": "The Resource ID of the Load Balancer."
+    },
+    "name": {
+      "description": "The Name of the Load Balancer."
+    },
+    "natrule_map_ids": {
+      "description": "The map of NAT rules."
+    },
+    "private_ip_addresses": {
+      "description": "The list of private IP addresses assigned to the frontend configuration names."
+    },
+    "probe_ids": {
+      "description": "The list of Probe IDs."
+    },
+    "probe_map_ids": {
+      "description": "The map of Load Balancer Probes."
+    },
+    "resource": {
+      "description": "The Load Balancer resource."
+    },
+    "rule_ids": {
+      "description": "The list of Load Balancer rules IDs."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Loadbalancer' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Subnet",
+      "virtual network"
+    ]
+  }
+}

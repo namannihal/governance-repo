@@ -1,0 +1,145 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Backup Vault Protected Item module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-dataprotectionbackupinstance'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-dataprotectionbackupinstance",
+  "module_type": "service",
+  "azure_service": "Dataprotectionbackupinstance",
+  "module_name": "Azure Backup Vault Protected Item module",
+  "latest_tag": "3.0.1",
+  "available_tags": [
+    "3.0.1",
+    "3.0.0",
+    "2.0.0",
+    "1.0.1",
+    "1.0.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-dataprotectionbackupinstance.git//?ref=3.0.1",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Virtual Network",
+    "Route Table",
+    "Subnet",
+    "Network Security Group",
+    "Keyvault",
+    "Privateendpoint",
+    "Role assignment",
+    "Keyvault Secret",
+    "Disk Encryption",
+    "Windows Virtual Machine",
+    "Managed Disk",
+    "time_sleep",
+    "random_password",
+    "User assigned identity",
+    "PostgreSQL Flexible Server",
+    "Data protection backupvault"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_data_protection_backup_instance_blob_storage.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_data_protection_backup_instance_disk.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_data_protection_backup_instance_postgresql_flexible_server.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "dataprotectionbackupinstance",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-dataprotectionbackupinstance.git//?ref=3.0.1",
+      "version": "3.0.1",
+      "available_versions": [
+        "3.0.1",
+        "3.0.0",
+        "2.0.0",
+        "1.0.1",
+        "1.0.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "resource_group_name"
+    ],
+    "properties": {
+      "blobstorage_backup_instances": {
+        "type": "map(object({ name = string location = string vault_id = string storage_account_id = string backup_policy_id = string storage_account_container_names = optional(list(string), []) }))",
+        "description": "(Optional) Map of Blob Storage Backup Instances to create. If null, no blob storage backup instances will be created. map(object({ name = \"(Required) Specifies the name of the Backup Instance for the Blob Storage. Changing this forces a new resource to be created.\" location = \"(Required) The location of the source storage account. Changing this forces a new resource to be created.\" vault_id = \"(Required) The ID of the Backup Vault within which the Blob Storage Backup Instance should exist. Changing this forces a new resource to be created.\" storage_account_id = \"(Required) The ID of the source storage account. Changing this forces a new resource to be created.\" backup_policy_id = \"(Required) The ID of the Backup Policy.\" storage_account_container_names = \"(Optional) The list of the container names of the source Storage Account.\" }))",
+        "required": false,
+        "default": "null"
+      },
+      "disk_backup_instances": {
+        "type": "map(object({ name = string location = string vault_id = string disk_id = string snapshot_resource_group_name = string backup_policy_id = string }))",
+        "description": "(Optional) Map of Disk Backup Instances to create. If null, no disk backup instances will be created. map(object({ name = \"(Required) The name which should be used for this Backup Instance Disk. Changing this forces a new Backup Instance Disk to be created.\" location = \"(Required) The Azure Region where the Backup Instance Disk should exist. Changing this forces a new Backup Instance Disk to be created.\" vault_id = \"(Required) The ID of the Backup Vault within which the Backup Instance Disk should exist. Changing this forces a new Backup Instance Disk to be created.\" disk_id = \"(Required) The ID of the source Disk. Changing this forces a new Backup Instance Disk to be created.\" snapshot_resource_group_name = \"(Required) The name of the Resource Group where snapshots are stored. Changing this forces a new Backup Instance Disk to be created.\" backup_policy_id = \"(Required) The ID of the Backup Policy.\" }))",
+        "required": false,
+        "default": "null"
+      },
+      "postgresql_backup_instances": {
+        "type": "map(object({ name = string location = string vault_id = string server_id = string backup_policy_id = string }))",
+        "description": "(Optional) Map of PostgreSQL Flexible Server Backup Instances to create. If null, no PostgreSQL backup instances will be created. map(object({ name = \"(Required) Specifies the name of the Backup Instance for the PostgreSQL Flexible Server. Changing this forces a new resource to be created.\" location = \"(Required) The location of the source database. Changing this forces a new resource to be created.\" vault_id = \"(Required) The ID of the Backup Vault within which the PostgreSQL Flexible Server Backup Instance should exist. Changing this forces a new resource to be created.\" server_id = \"(Required) The ID of the source server. Changing this forces a new resource to be created.\" backup_policy_id = \"(Required) The ID of the Backup Policy.\" }))",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      }
+    }
+  },
+  "outputs": {
+    "blobstorage_backup_instance_resources": {
+      "description": "The Azure Data Protection Backup Instance resources for Blob Storage."
+    },
+    "blobstorage_backup_instances": {
+      "description": "Map of Blob Storage Backup Instances with their IDs and names."
+    },
+    "disk_backup_instance_resources": {
+      "description": "The Azure Data Protection Backup Disk Instance resources."
+    },
+    "disk_backup_instances": {
+      "description": "Map of Disk Backup Instances with their IDs and names."
+    },
+    "postgresql_backup_instance_resources": {
+      "description": "The Azure Data Protection Backup Instance resources for PostgreSQL Flexible Server."
+    },
+    "postgresql_backup_instances": {
+      "description": "Map of PostgreSQL Flexible Server Backup Instances with their IDs and names."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Dataprotectionbackupinstance' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Virtual Network",
+      "Route Table",
+      "Subnet",
+      "Network Security Group",
+      "Keyvault",
+      "Privateendpoint",
+      "Role assignment",
+      "Keyvault Secret",
+      "Disk Encryption",
+      "Windows Virtual Machine",
+      "Managed Disk",
+      "time_sleep",
+      "random_password",
+      "User assigned identity",
+      "PostgreSQL Flexible Server",
+      "Data protection backupvault"
+    ]
+  }
+}

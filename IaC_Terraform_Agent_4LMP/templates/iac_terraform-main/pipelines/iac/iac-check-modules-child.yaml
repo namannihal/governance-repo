@@ -1,0 +1,34 @@
+default:
+  tags: [$TF_CORE_DEPLOYMENT_RUNNER_TAGS]
+
+include:
+  - project: ci/stable/security/vault-service
+    ref: 4.5.6
+    file:
+      - templates/vault-service-artifacts.yml
+  - project: ci/stable/iac/terraform-core
+    ref: 4.4.3                                    # https://gitlab.dx1.lseg.com/ci/stable/iac/terraform-core/-/tags
+    file:
+      - templates/azure.yml
+  - project: ci/stable/security/wiz
+    ref: 0.0.4                                    # https://gitlab.dx1.lseg.com/ci/stable/security/wiz/-/tags
+    file:
+      - 'templates/wiz-scan.yml'
+  - project: 'app/itc-93303/bas-cicd-templates'
+    ref: templates-0.0.29
+    file:
+      - 'templates/combined-unversioned-includes.yaml'
+
+1-check-tf-module-versions:
+  extends: [.build-pdf-from-markdown]
+  stage: build
+  extends: [.terraform-core-ext-check-modules]
+  variables:
+    MANIFEST_FILE: "${BAS_CICD_PROJECT_DIR}/environments/${ENV}/manifest.yaml"
+    TERRAFORM_PATH: "${BAS_CICD_PROJECT_DIR}/terraform"
+    TERRAFORM_STACKS: "nonrtbl-network database linux-vm"
+  tags: 
+    - Refinitiv
+    - Linux
+    - Medium
+  when: manual

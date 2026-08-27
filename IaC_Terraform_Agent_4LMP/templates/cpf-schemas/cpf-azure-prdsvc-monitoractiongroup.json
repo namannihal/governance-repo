@@ -1,0 +1,197 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Monitor Action Group ReadME",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-monitoractiongroup'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-monitoractiongroup",
+  "module_type": "service",
+  "azure_service": "Monitoractiongroup",
+  "module_name": "Monitor Action Group ReadME",
+  "latest_tag": "1.0.3",
+  "available_tags": [
+    "1.0.3",
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.1.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-monitoractiongroup.git//?ref=1.0.3",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_monitor_action_group.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "monitoractiongroup",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-monitoractiongroup.git//?ref=1.0.3",
+      "version": "1.0.3",
+      "available_versions": [
+        "1.0.3",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.1.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name",
+      "short_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "arm_role_receivers": {
+        "type": "list(object({ name = string role_id = string use_common_alert_schema = optional(bool, false) }))",
+        "description": "(Optional) A list of ARM role receivers for the action group. list(object({ name = \"(Required) The name of the ARM role receiver.\" role_id = \"(Required) The ARM role ID to notify.\" use_common_alert_schema = \"(Optional) Whether to use the common alert schema for ARM role notifications.\" }))",
+        "required": false,
+        "default": "[]"
+      },
+      "automation_runbook_receivers": {
+        "type": "list(object({ name = string automation_account_id = string runbook_name = string webhook_resource_id = string is_global_runbook = bool service_uri = string use_common_alert_schema = optional(bool, false) }))",
+        "description": "(Optional) A list of automation runbook receivers for the action group. list(object({ name = \"(Required) The name of the automation runbook receiver.\" automation_account_id = \"(Required) The resource ID of the automation account.\" runbook_name = \"(Required) The name of the runbook to execute.\" webhook_resource_id = \"(Required) The resource ID of the webhook.\" is_global_runbook = \"(Required) Whether the runbook is a global runbook.\" service_uri = \"(Required) The URI of the webhook service.\" use_common_alert_schema = \"(Optional) Whether to use the common alert schema for automation runbook notifications.\" }))",
+        "required": false,
+        "default": "[]"
+      },
+      "azure_app_push_receivers": {
+        "type": "list(object({ name = string email_address = string }))",
+        "description": "(Optional) A list of Azure app push receivers for the action group. list(object({ name = \"(Required) The name of the Azure app push receiver.\" email_address = \"(Required) The email address associated with the Azure mobile app account.\" }))",
+        "required": false,
+        "default": "[]"
+      },
+      "azure_function_receivers": {
+        "type": "list(object({ name = string function_app_id = string function_name = string function_key = string use_common_alert_schema = optional(bool, false) }))",
+        "description": "(Optional) A list of Azure Function receivers for the action group. list(object({ name = \"(Required) The name of the Azure Function receiver.\" function_app_id = \"(Required) The resource ID of the Azure Function App.\" function_name = \"(Required) The name of the Azure Function to invoke.\" function_key = \"(Required) The key for the Azure Function.\" use_common_alert_schema = \"(Optional) Whether to use the common alert schema for Azure Function notifications.\" }))",
+        "required": false,
+        "default": "[]"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 71 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "email_receivers": {
+        "type": "list(object({ name = string email_address = string use_common_alert_schema = optional(bool, false) }))",
+        "description": "(Optional) A list of email receivers for the action group. list(object({ name = \"(Required) The name of the email receiver.\" email_address = \"(Required) The email address of the receiver.\" use_common_alert_schema = \"(Optional) Whether to use the common alert schema for email notifications.\" }))",
+        "required": false,
+        "default": "[]"
+      },
+      "enabled": {
+        "type": "bool",
+        "description": "(Optional) Whether the action group is enabled. When disabled, no notifications will be sent.",
+        "required": false,
+        "default": "true"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "event_hub_receivers": {
+        "type": "list(object({ name = string event_hub_name = optional(string, null) event_hub_namespace = optional(string, null) subscription_id = optional(string, null) tenant_id = optional(string, null) use_common_alert_schema = optional(bool, false) }))",
+        "description": "(Optional) A list of Event Hub receivers for the action group. list(object({ name = \"(Required) The name of the Event Hub receiver.\" event_hub_namespace = \"(Optional) The name of the Event Hub namespace.\" event_hub_name = \"(Optional) The name of the Event Hub.\" subscription_id = \"(Optional) The subscription ID where the Event Hub is located.\" tenant_id = \"(Optional) The tenant ID for the Event Hub.\" use_common_alert_schema = \"(Optional) Whether to use the common alert schema for Event Hub notifications.\" }))",
+        "required": false,
+        "default": "[]"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "itsm_receivers": {
+        "type": "list(object({ name = string workspace_id = string connection_id = string ticket_configuration = string region = string }))",
+        "description": "(Optional) A list of ITSM (IT Service Management) receivers for the action group. list(object({ name = \"(Required) The name of the ITSM receiver.\" workspace_id = \"(Required) The workspace ID of the ITSM connection.\" connection_id = \"(Required) The connection ID of the ITSM connection.\" ticket_configuration = \"(Required) The JSON string that defines the ticket configuration.\" region = \"(Required) The region of the ITSM connection.\" }))",
+        "required": false,
+        "default": "[]"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "logic_app_receivers": {
+        "type": "list(object({ name = string resource_id = string callback_url = string use_common_alert_schema = optional(bool, false) }))",
+        "description": "(Optional) A list of logic app receivers for the action group. list(object({ name = \"(Required) The name of the logic app receiver.\" resource_id = \"(Required) The resource ID of the logic app.\" callback_url = \"(Required) The callback URL of the logic app.\" use_common_alert_schema = \"(Optional) Whether to use the common alert schema for logic app notifications.\" }))",
+        "required": false,
+        "default": "[]"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "short_name": {
+        "type": "string",
+        "description": "(Required) A short name for the action group. This will be used for SMS and other notifications that have character limits.",
+        "required": true
+      },
+      "sms_receivers": {
+        "type": "list(object({ name = string country_code = string phone_number = string }))",
+        "description": "(Optional) A list of SMS receivers for the action group. list(object({ name = \"(Required) The name of the SMS receiver.\" country_code = \"(Required) The country code for the phone number (e.g., '1' for US, '44' for UK).\" phone_number = \"(Required) The phone number without the country code.\" }))",
+        "required": false,
+        "default": "[]"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "voice_receivers": {
+        "type": "list(object({ name = string country_code = string phone_number = string }))",
+        "description": "(Optional) A list of voice call receivers for the action group. list(object({ name = \"(Required) The name of the voice receiver.\" country_code = \"(Required) The country code for the phone number (e.g., '1' for US, '44' for UK).\" phone_number = \"(Required) The phone number without the country code.\" }))",
+        "required": false,
+        "default": "[]"
+      },
+      "webhook_receivers": {
+        "type": "list(object({ name = string service_uri = string use_common_alert_schema = optional(bool, false) aad_auth = optional(object({ object_id = string identifier_uri = optional(string, null) tenant_id = optional(string, null) }), null) }))",
+        "description": "(Optional) A list of webhook receivers for the action group. list(object({ name = \"(Required) The name of the webhook receiver.\" service_uri = \"(Required) The URI where the webhook payload will be sent.\" use_common_alert_schema = \"(Optional) Whether to use the common alert schema for webhook notifications.\" aad_auth = \"(Optional) Azure AD authentication settings for the webhook receiver. Includes: object_id = \"(Required) The Azure AD object ID of the service principal or managed identity to authenticate the webhook.\" identifier_uri = \"(Optional) The Azure AD application identifier URI.\" tenant_id = \"(Optional) The Azure AD tenant ID.\" ) }))",
+        "required": false,
+        "default": "[]"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The ID of the created Monitor Action Group."
+    },
+    "name": {
+      "description": "The name of the created Monitor Action Group."
+    },
+    "resource": {
+      "description": "The name of the resource group where the Monitor Action Group is created."
+    },
+    "short_name": {
+      "description": "The short name of the Monitor Action Group."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Monitoractiongroup' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

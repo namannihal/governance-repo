@@ -1,0 +1,28 @@
+.qa_pipeline_vars:
+  variables:
+    #----------------------------------------------------------------------------
+    # Vault
+    #----------------------------------------------------------------------------
+    LMP_ASSET_ID: app-52161
+    LSEG_PPE_VAULT: "true"
+    LSEG_PROD_VAULT: "false"
+    #----------------------------------------------------------------------------
+    # One Policy Engine (Wiz)
+    #----------------------------------------------------------------------------
+    WIZ_OPE_ENV: "dev" # description: Mandatory: Configure the Wiz environment. This is closely tied with the extraction of Wiz secrets from Vault. Default: "dev".# Allowed Values: "dev", "ppr" and "prd" ref- https://gitlab.dx1.lseg.com/ci/stable/security/wiz/-/tree/main
+    WIZ_OPE_APP_ID: "app-52161"
+    #----------------------------------------------------------------------------
+    # Terraform
+    #----------------------------------------------------------------------------
+    # TERRAFORM_IMAGE: registry.dx1.lseg.com/app/app-51310/azure/cicd/gitlab/template/build-scan-push-container-images/azurecli-terraform-git:3.0.0
+    #----------------------------------------------------------------------------
+    # BAS pipeline settings
+    #----------------------------------------------------------------------------
+    BAS_CICD_PROJECT_DIR: "$CI_PROJECT_DIR"
+    BAS_ENABLE_DYNAMIC_OPE: "true"
+    BAS_ENABLE_DESTROY: "true"
+    BAS_SHOW_IMPORT_JOB: "true"
+    BAS_SHOW_REMOVE_JOB: "true"
+    BAS_ENABLE_CHECK_PLAN: "true"
+    BAS_ENABLE_TESTS: "true"
+    BAS_ENABLE_DEBUG: "true"

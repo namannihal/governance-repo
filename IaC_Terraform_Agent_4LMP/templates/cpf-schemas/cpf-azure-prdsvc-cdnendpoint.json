@@ -1,0 +1,235 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: CDN Profile and CDN Endpoint module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-cdnendpoint'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-cdnendpoint",
+  "module_type": "service",
+  "azure_service": "Cdnendpoint",
+  "module_name": "CDN Profile and CDN Endpoint module",
+  "latest_tag": "0.3.0",
+  "available_tags": [
+    "0.3.0",
+    "0.2.2",
+    "0.2.1",
+    "0.2.0",
+    "0.1.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cdnendpoint.git//?ref=0.3.0",
+  "terraform_requirements": {
+    "azurerm": ">= 3.51",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_cdn_endpoint.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_cdn_endpoint_custom_domain.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_cdn_profile.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "cdnendpoint",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cdnendpoint.git//?ref=0.3.0",
+      "version": "0.3.0",
+      "available_versions": [
+        "0.3.0",
+        "0.2.2",
+        "0.2.1",
+        "0.2.0",
+        "0.1.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "custom_domain_resource_name",
+      "custom_hostname",
+      "enable_custom_domain",
+      "environment",
+      "location",
+      "org_id",
+      "origin",
+      "resource_group_name",
+      "sku"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "content_types_to_compress": {
+        "type": "list(string)",
+        "description": "(Optional) An array of strings that indicates a content types on which compression will be applied. The value for the elements should be MIME types.",
+        "required": false,
+        "default": "null"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "custom_domain_resource_name": {
+        "type": "string",
+        "description": "(Required) The name which should be used for this CDN Endpoint Custom Domain. Changing this forces a new CDN Endpoint Custom Domain to be created.",
+        "required": true
+      },
+      "custom_hostname": {
+        "type": "string",
+        "description": "(Required) The host name of the custom domain. Changing this forces a new CDN Endpoint Custom Domain to be created.",
+        "required": true
+      },
+      "delivery_rule": {
+        "type": "map(object({ name = string order = number cache_expiration_action = optional(object({ behavior = string duration = optional(string) })) cache_key_query_string_action = optional(object({ behavior = string parameters = optional(list(string)) })) cookies_condition = optional(object({ selector = string operator = string negate_condition = optional(bool) match_values = optional(list(string)) transforms = optional(list(string)) })) device_condition = optional(object({ operator = optional(string) negate_condition = optional(bool) match_values = list(string) })) http_version_condition = optional(object({ operator = optional(string) negate_condition = optional(bool) match_values = list(string) })) modify_request_header_action = optional(object({ action = string name = string value = optional(string) })) modify_response_header_action = optional(object({ action = string name = string value = optional(string) })) post_arg_condition = optional(object({ selector = string operator = string negate_condition = optional(bool) match_values = optional(list(string)) transforms = optional(list(string)) })) query_string_condition = optional(object({ operator = string negate_condition = optional(bool) match_values = optional(list(string)) transforms = optional(list(string)) })) remote_address_condition = optional(object({ operator = string negate_condition = optional(bool) match_values = optional(list(string)) })) request_body_condition = optional(object({ operator = string negate_condition = optional(bool) match_values = optional(list(string)) transforms = optional(list(string)) })) request_header_condition = optional(object({ selector = string operator = string negate_condition = optional(bool) match_values = optional(list(string)) transforms = optional(list(string)) })) request_method_condition = optional(object({ operator = optional(string) negate_condition = optional(bool) match_values = list(string) })) request_scheme_condition = optional(object({ operator = optional(string) negate_condition = optional(bool) match_values = list(string) })) request_uri_condition = optional(object({ operator = string negate_condition = optional(bool) match_values = optional(list(string)) transforms = optional(list(string)) })) url_file_extension_condition = optional(object({ operator = string negate_condition = optional(bool) match_values = optional(list(string)) transforms = optional(list(string)) })) url_file_name_condition = optional(object({ operator = string negate_condition = optional(bool) match_values = optional(list(string)) transforms = optional(list(string)) })) url_path_condition = optional(object({ operator = string negate_condition = optional(bool) match_values = optional(list(string)) transforms = optional(list(string)) })) url_redirect_action = optional(object({ redirect_type = string protocol = optional(string) hostname = optional(string) path = optional(string) fragment = optional(string) query_string = optional(string) })) url_rewrite_action = optional(object({ source_pattern = string destination = string preserve_unmatched_path = optional(bool) })) }))",
+        "description": "(Optional) Rules for the rules engine. An endpoint can contain up until 4 of those rules that consist of conditions and actions. A delivery_rule blocks as defined below. name = (Required) The Name which should be used for this Delivery Rule. order = (Required) The order used for this rule. The order values should be sequential and begin at 1. cache_expiration_action = object({ behavior = (Required) The behavior of the cache. Valid values are BypassCache, Override and SetIfMissing. duration = (Optional) Duration of the cache. Only allowed when behavior is set to Override or SetIfMissing. Format: [d.]hh:mm:ss }) cache_key_query_string_action = object({ behavior = (Required) The behavior of the cache key for query strings. Valid values are Exclude, ExcludeAll, Include and IncludeAll. parameters = (Optional) Comma separated list of parameter values. }) cookies_condition = object({ selector = (Required) Name of the cookie. operator = (Required) Valid values are Any, BeginsWith, Contains, EndsWith, Equal, GreaterThan, GreaterThanOrEqual, LessThan and LessThanOrEqual. negate_condition = (Optional) Defaults to false. match_values = (Optional) List of values for the cookie. This is required if operator is not Any. transforms = (Optional) A list of transforms. Valid values are Lowercase and Uppercase. }) device_condition = object({ operator = (Optional) Valid values are Equal. Defaults to Equal. negate_condition = (Optional) Defaults to false. match_values = (Required) Valid values are Desktop and Mobile. }) http_version_condition = object({ operator = (Optional) Valid values are Equal. Defaults to Equal. negate_condition = (Optional) Defaults to false. match_values = (Required) Valid values are 0.9, 1.0, 1.1 and 2.0. }) modify_request_header_action = object({ action = (Required) Action to be executed on a header value. Valid values are Append, Delete and Overwrite. name = (Required) The header name. value = (Optional) The value of the header. Only needed when action is set to Append or overwrite. }) modify_response_header_action = object({ action = (Required) Action to be executed on a header value. Valid values are Append, Delete and Overwrite. name = (Required) The header name. value = (Optional) The value of the header. Only needed when action is set to Append or overwrite. }) post_arg_condition = object({ selector = (Required) Name of the post arg. operator = (Required) Valid values are Any, BeginsWith, Contains, EndsWith, Equal, GreaterThan, GreaterThanOrEqual, LessThan and LessThanOrEqual. negate_condition = (Optional) Defaults to false. match_values = (Optional) List of string values. This is required if operator is not Any. transforms = (Optional) A list of transforms. Valid values are Lowercase and Uppercase. }) query_string_condition = object({ operator = (Required) Valid values are Any, BeginsWith, Contains, EndsWith, Equal, GreaterThan, GreaterThanOrEqual, LessThan and LessThanOrEqual. negate_condition = (Optional) Defaults to false. match_values = (Optional) List of string values. This is required if operator is not Any. transforms = (Optional) A list of transforms. Valid values are Lowercase and Uppercase. }) remote_address_condition = object({ operator = (Required) Valid values are Any, GeoMatch and IPMatch. negate_condition = (Optional) Defaults to false. match_values = (Optional) List of string values. For GeoMatch operator this should be a list of country codes (e.g. US or DE). List of IP address if operator equals to IPMatch. This is required if operator is not Any. }) request_body_condition = object({ operator = (Required) Valid values are Any, BeginsWith, Contains, EndsWith, Equal, GreaterThan, GreaterThanOrEqual, LessThan and LessThanOrEqual. negate_condition = (Optional) Defaults to false. match_values = (Optional) List of string values. This is required if operator is not Any. transforms = (Optional) A list of transforms. Valid values are Lowercase and Uppercase. }) request_header_condition = object({ selector = (Required) Header name. operator = (Required) Valid values are Any, BeginsWith, Contains, EndsWith, Equal, GreaterThan, GreaterThanOrEqual, LessThan and LessThanOrEqual. negate_condition = (Optional) Defaults to false. match_values = (Optional) List of header values. This is required if operator is not Any. transforms = (Optional) A list of transforms. Valid values are Lowercase and Uppercase. }) request_method_condition = object({ operator = (Optional) Valid values are Equal. Defaults to Equal. negate_condition = (Optional) Defaults to false. match_values = (Required) Valid values are DELETE, GET, HEAD, OPTIONS, POST and PUT. }) request_scheme_condition = object({ operator = (Optional) Valid values are Equal. Defaults to Equal. negate_condition = (Optional) Defaults to false. match_values = (Required) Valid values are HTTP and HTTPS. }) request_uri_condition = object({ operator = (Required) Valid values are Any, BeginsWith, Contains, EndsWith, Equal, GreaterThan, GreaterThanOrEqual, LessThan and LessThanOrEqual. negate_condition = (Optional) Defaults to false. match_values = (Optional) List of string values. This is required if operator is not Any. transforms = (Optional) A list of transforms. Valid values are Lowercase and Uppercase. }) url_file_extension_condition = object({ operator = (Required) Valid values are Any, BeginsWith, Contains, EndsWith, Equal, GreaterThan, GreaterThanOrEqual, LessThan and LessThanOrEqual. negate_condition = (Optional) Defaults to false. match_values = (Optional) List of string values. This is required if operator is not Any. transforms = (Optional) A list of transforms. Valid values are Lowercase and Uppercase. }) url_file_name_condition = object({ operator = (Required) Valid values are Any, BeginsWith, Contains, EndsWith, Equal, GreaterThan, GreaterThanOrEqual, LessThan and LessThanOrEqual. negate_condition = (Optional) Defaults to false. match_values = (Optional) List of string values. This is required if operator is not Any. transforms = (Optional) A list of transforms. Valid values are Lowercase and Uppercase. }) url_path_condition = object({ operator = (Required) Valid values are Any, BeginsWith, Contains, EndsWith, Equal, GreaterThan, GreaterThanOrEqual, LessThan, LessThanOrEqual, RegEx and Wildcard. negate_condition = (Optional) Defaults to false. match_values = (Optional) List of string values. This is required if operator is not Any. transforms = (Optional) A list of transforms. Valid values are Lowercase and Uppercase. }) url_redirect_action = object({ redirect_type = (Required) Type of the redirect. Valid values are Found, Moved, PermanentRedirect and TemporaryRedirect. protocol = (Optional) Specifies the protocol part of the URL. Valid values are MatchRequest, Http and Https. Defaults to MatchRequest. hostname = (Optional) Specifies the hostname part of the URL. path = (Optional) Specifies the path part of the URL. This value must begin with a /. fragment = (Optional) Specifies the fragment part of the URL. This value must not start with a #. query_string = (Optional) Specifies the query string part of the URL. This value must not start with a ? or & and must be in = format separated by &. }) url_rewrite_action = object({ source_pattern = (Required) This value must start with a / and can't be longer than 260 characters. destination = (Required) This value must start with a / and can't be longer than 260 characters. preserve_unmatched_path = (Optional) Whether preserve an unmatched path. Defaults to true. })",
+        "required": false,
+        "default": "null"
+      },
+      "enable_custom_domain": {
+        "type": "bool",
+        "description": "(Required) Specifies if custom domain resource block is enabled or not.",
+        "required": true
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "geo_filter": {
+        "type": "list(object({ relative_path = string action = string country_codes = string }))",
+        "description": "(Optional) A set of Geo Filters for this CDN Endpoint.",
+        "required": false,
+        "default": "null"
+      },
+      "global_delivery_rule": {
+        "type": "object({ cache_expiration_action = optional(object({ behavior = string duration = optional(string) })) cache_key_query_string_action = optional(object({ behavior = string parameters = optional(list(string)) })) modify_request_header_action = optional(object({ action = string name = string value = optional(string) })) modify_response_header_action = optional(object({ action = string name = string value = optional(string) })) url_redirect_action = optional(object({ redirect_type = string protocol = optional(string) hostname = optional(string) path = optional(string) fragment = optional(string) query_string = optional(string) })) url_rewrite_action = optional(object({ source_pattern = string destination = string preserve_unmatched_path = optional(bool) })) })",
+        "description": "(Optional) Actions that are valid for all resources regardless of any conditions. A global_delivery_rule block as defined below. cache_expiration_action = object({ behavior = (Required) The behavior of the cache. Valid values are BypassCache, Override and SetIfMissing. duration = (Optional) Duration of the cache. Only allowed when behavior is set to Override or SetIfMissing. Format: [d.]hh:mm:ss }) cache_key_query_string_action = object({ behavior = (Required) The behavior of the cache key for query strings. Valid values are Exclude, ExcludeAll, Include and IncludeAll. parameters = (Optional) Comma separated list of parameter values. }) modify_request_header_action = object({ action = (Required) Action to be executed on a header value. Valid values are Append, Delete and Overwrite. name = (Required) The header name. value = (Optional) The value of the header. Only needed when action is set to Append or overwrite. }) modify_response_header_action = object({ action = (Required) Action to be executed on a header value. Valid values are Append, Delete and Overwrite. name = (Required) The header name. value = (Optional) The value of the header. Only needed when action is set to Append or overwrite. }) url_redirect_action = object({ redirect_type = (Required) Type of the redirect. Valid values are Found, Moved, PermanentRedirect and TemporaryRedirect. protocol = (Optional) Specifies the protocol part of the URL. Valid values are MatchRequest, Http and Https. Defaults to MatchRequest. hostname = (Optional) Specifies the hostname part of the URL. path = (Optional) Specifies the path part of the URL. This value must begin with a /. fragment = (Optional) Specifies the fragment part of the URL. This value must not start with a #. query_string = (Optional) Specifies the query string part of the URL. This value must not start with a ? or & and must be in = format separated by &. }) url_rewrite_action = object({ source_pattern = (Required) This value must start with a / and can't be longer than 260 characters. destination = (Required) This value must start with a / and can't be longer than 260 characters. preserve_unmatched_path = (Optional) Whether preserve an unmatched path. Defaults to true. })",
+        "required": false,
+        "default": "null"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "is_compression_enabled": {
+        "type": "bool",
+        "description": "(Optional) Indicates whether compression is to be enabled.",
+        "required": false,
+        "default": "null"
+      },
+      "is_http_allowed": {
+        "type": "bool",
+        "description": "(Optional) Specifies if http allowed. Defaults to false.",
+        "required": false,
+        "default": "false"
+      },
+      "is_https_allowed": {
+        "type": "bool",
+        "description": "(Optional) Specifies if https allowed. Defaults to true.",
+        "required": false,
+        "default": "true"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "optimization_type": {
+        "type": "string",
+        "description": "\"(Optional) What types of optimization should this CDN Endpoint optimize for? Possible values include DynamicSiteAcceleration, GeneralMediaStreaming, GeneralWebDelivery, LargeFileDownload and VideoOnDemandMediaStreaming.\"",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "origin": {
+        "type": "list(object({ name = string host_name = string http_port = optional(number, 80) https_port = optional(number, 443) }))",
+        "description": "\"(Required) The set of origins of the CDN endpoint. When multiple origins exist, the first origin will be used as primary and rest will be used as failover options. Each origin block supports fields documented below. Changing this forces a new resource to be created. list(object({ name = (Required) The name of the origin. This is an arbitrary value. However, this value needs to be unique under the endpoint. Changing this forces a new resource to be created. host_name = (Required) A string that determines the hostname/IP address of the origin server. This string can be a domain name, Storage Account endpoint, Web App endpoint, IPv4 address or IPv6 address. Changing this forces a new resource to be created. http_port = (Optional) The HTTP port of the origin. Defaults to 80. Changing this forces a new resource to be created. https_port = (Optional) The HTTPS port of the origin. Defaults to 443. Changing this forces a new resource to be created. }))\"",
+        "required": true
+      },
+      "origin_host_header": {
+        "type": "string",
+        "description": "(Optional) The host header CDN provider will send along with content requests to origins.",
+        "required": false,
+        "default": "null"
+      },
+      "origin_path": {
+        "type": "string",
+        "description": "(Optional) The path used at for origin requests.",
+        "required": false,
+        "default": "null"
+      },
+      "probe_path": {
+        "type": "string",
+        "description": "\"(Optional) the path to a file hosted on the origin which helps accelerate delivery of the dynamic content and calculate the most optimal routes for the CDN. This is relative to the origin_path.\"",
+        "required": false,
+        "default": "null"
+      },
+      "querystring_caching_behaviour": {
+        "type": "string",
+        "description": "\"(Optional) Sets query string caching behavior. Allowed values are IgnoreQueryString, BypassCaching and UseQueryString. NotSet value can be used for Premium Verizon CDN profile. Defaults to IgnoreQueryString.\"",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "sku": {
+        "type": "string",
+        "description": "\"(Required) The pricing related information of current CDN profile. Accepted values are Standard_Akamai, Standard_ChinaCdn, Standard_Microsoft, Standard_Verizon or Premium_Verizon. Changing this forces a new resource to be created.\"",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "endpoint_custom_domain_resource": {
+      "description": "The CDN Endpoint Custom Domain resource."
+    },
+    "endpoint_name": {
+      "description": "The Name of the CDN Endpoint."
+    },
+    "endpoint_resource": {
+      "description": "The CDN Endpoint resource."
+    },
+    "id": {
+      "description": "The Resource ID of the CDN Endpoint."
+    },
+    "profile_name": {
+      "description": "The Name of the CDN Profile."
+    },
+    "profile_resource": {
+      "description": "The CDN Endpoint resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Cdnendpoint' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

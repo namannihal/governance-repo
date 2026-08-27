@@ -1,0 +1,183 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Key Vault Module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-keyvault'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-keyvault",
+  "module_type": "service",
+  "azure_service": "Keyvault",
+  "module_name": "Key Vault Module",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.8.5",
+    "0.8.4"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-keyvault.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Virtual Network",
+    "Private Endpoint"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_key_vault.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_client_config.this",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "keyvault",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-keyvault.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.8.5",
+        "0.8.4"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "enabled_for_deployment": {
+        "type": "bool",
+        "description": "(Optional) Specifies whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key vault.",
+        "required": false,
+        "default": "false"
+      },
+      "enabled_for_disk_encryption": {
+        "type": "bool",
+        "description": "(Optional) Specifies whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys.",
+        "required": false,
+        "default": "false"
+      },
+      "enabled_for_template_deployment": {
+        "type": "bool",
+        "description": "(Optional) Specifies whether Azure Resource Manager is permitted to retrieve secrets from the key vault.",
+        "required": false,
+        "default": "false"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "kv_admin_role_app_spn_object_id": {
+        "type": "string",
+        "description": "(Optional) The object id of the Service Principal.",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "network_acls": {
+        "type": "object({ bypass = optional(string, \"None\") ip_rules = optional(list(string), []) virtual_network_subnet_ids = optional(list(string), []) })",
+        "description": "(Optional) The network ACL configuration for the Key Vault. If not specified then the Key Vault will be created with a firewall that blocks access. Specify `null` to create the Key Vault with no firewall. - `bypass` - (Optional) Should Azure Services bypass the ACL. Possible values are `AzureServices` and `None`. Defaults to `None`. - `ip_rules` - (Optional) A list of IP rules in CIDR format. Defaults to `[]`. - `virtual_network_subnet_ids` - (Optional) When using with Service Endpoints, a list of subnet IDs to associate with the Key Vault. Defaults to `[]`.",
+        "required": false,
+        "default": "{}"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "public_network_access_enabled": {
+        "type": "bool",
+        "description": "Specifies whether public network access is enabled for the Key Vault.",
+        "required": false,
+        "default": "false"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "sku_name": {
+        "type": "string",
+        "description": "(Optional) The Name of the Sku used for the Key Vault. Possible values are standard and premium.",
+        "required": false,
+        "default": "\"premium\""
+      },
+      "soft_delete_retention_days": {
+        "type": "number",
+        "description": "(Optional) The number of days that items should be retained for once soft-deleted.",
+        "required": false,
+        "default": "30"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The resource ID of the Key Vault."
+    },
+    "name": {
+      "description": "The Name of the Key Vault."
+    },
+    "resource": {
+      "description": "The Key Vault resource."
+    },
+    "vault_uri": {
+      "description": "The URI of the Key Vault, used for performing operations on keys and secrets."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Keyvault' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Virtual Network",
+      "Private Endpoint"
+    ]
+  }
+}

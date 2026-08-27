@@ -1,0 +1,10 @@
+4-build-pdf-from-markdown:
+  extends: [.build-pdf-from-markdown]
+  stage: build
+  tags: 
+    - Refinitiv
+    - Linux
+    - Medium
+  when: manual
+  only:
+    - main

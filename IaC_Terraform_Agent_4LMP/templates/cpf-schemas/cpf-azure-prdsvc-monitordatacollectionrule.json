@@ -1,0 +1,181 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Monitor Data Collection rule",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-monitordatacollectionrule'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-monitordatacollectionrule",
+  "module_type": "service",
+  "azure_service": "Monitordatacollectionrule",
+  "module_name": "Azure Monitor Data Collection rule",
+  "latest_tag": "1.1.1",
+  "available_tags": [
+    "1.1.1",
+    "1.1.0",
+    "1.0.2",
+    "1.0.1",
+    "1.0.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-monitordatacollectionrule.git//?ref=1.1.1",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_monitor_data_collection_rule.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_monitor_data_collection_rule_association.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_resource_group.this",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "monitordatacollectionrule",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-monitordatacollectionrule.git//?ref=1.1.1",
+      "version": "1.1.1",
+      "available_versions": [
+        "1.1.1",
+        "1.1.0",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "association_targets": {
+        "type": "list(object({ target_resource_id = string description = optional(string) }))",
+        "description": "(Optional) List of target resources for Data Collection Rule associations. target_resource_id = \"(Required) Resource ID of the target to associate with the DCR.\" description = \"(Optional) Description for the association target.\"",
+        "required": false,
+        "default": "[]"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "data_collection_endpoint_id": {
+        "type": "string",
+        "description": "(Optional) Resource ID of the Data Collection Endpoint (DCE) to attach to the Data Collection Rule. Required when using logfiles/iislogs/windowsfirewalllogs data sources.",
+        "required": false,
+        "default": "null"
+      },
+      "data_flow": {
+        "type": "list(object({ destinations = list(string) streams = list(string) built_in_transform = optional(string, null) output_stream = optional(string, null) transform_kql = optional(string, null) }))",
+        "description": "(Required) A data flow in a Data Collection Rule defines how collected data streams are routed and optionally transformed before being sent to specified destinations. object({ destinations = \"(Required) List of destination names where the data streams are sent.\" streams = \"(Required) List of streams to route in the data flow.\" built_in_transform = \"(Optional) Built-in transformation for the data flow.\" output_stream = \"(Optional) Output stream after transformation for the data flow.\" transform_kql = \"(Optional) KQL query to transform the data before transformation.\" })",
+        "required": false,
+        "default": "[]"
+      },
+      "data_sources": {
+        "type": "object({ data_import = optional(list(object({ event_hub_data_source = list(object({ name = string stream = string consumer_group = optional(string, null) })) })), null) extension = optional(list(object({ extension_name = string name = string streams = list(string) extension_json = optional(string, null) input_data_sources = optional(list(string), null) })), null) iis_log = optional(list(object({ name = string streams = list(string) log_directories = optional(list(string), null) })), null) log_file = optional(list(object({ name = string streams = list(string) file_patterns = list(string) format = string settings = optional(object({ text = object({ record_start_timestamp_format = string }) }), null) })), null) performance_counter = optional(list(object({ counter_specifiers = list(string) name = string sampling_frequency_in_seconds = number streams = list(string) })), null) platform_telemetry = optional(list(object({ name = string streams = list(string) })), null) syslog = optional(list(object({ facility_names = list(string) log_levels = list(string) name = string streams = optional(list(string), null) })), null) windows_event_log = optional(list(object({ name = string streams = list(string) x_path_queries = list(string) })), null) })",
+        "description": "(Optional) Data sources configuration for the Monitor Data Collection Rule. object({ data_import = optional(list(object({ event_hub_data_source = list(object({ name = \"(Required) Name of the Event Hub data source.\" stream = \"(Required) Stream name for the Event Hub data source.\" consumer_group = \"(Optional) Consumer group for the Event Hub data source.\" })) }))) extension = optional(list(object({ extension_name = \"(Required) Name of the extension.\" name = \"(Required) Name of the extension data source.\" streams = \"(Required) List of streams for the extension.\" extension_json = \"(Optional) JSON configuration for the extension.\" input_data_sources = \"(Optional) List of input data sources for the extension.\" }))) iis_log = optional(list(object({ name = \"(Required) Name of the IIS log data source.\" streams = \"(Required) List of streams for the IIS log.\" log_directories = \"(Optional) List of log directories for the IIS log.\" }))) log_file = optional(list(object({ name = \"(Required) Name of the log file data source.\" streams = \"(Required) List of streams for the log file.\" file_patterns = \"(Required) List of file patterns for the log file.\" format = \"(Required) Format of the log file.\" settings = (Optional)object({ text = object({ record_start_timestamp_format = \"(Required) Timestamp format for the start of each record.\" }) }) }))) performance_counter = optional(list(object({ counter_specifiers = \"(Required) List of counter specifiers.\" name = \"(Required) Name of the performance counter data source.\" sampling_frequency_in_seconds = \"(Required) Sampling frequency in seconds.\" streams = \"(Required) List of streams for the performance counter.\" }))) platform_telemetry = optional(list(object({ name = \"(Required) Name of the platform telemetry data source.\" streams = \"(Required) List of streams for the platform telemetry.\" }))) syslog = optional(list(object({ facility_names = \"(Required) List of facility names for syslog.\" log_levels = \"(Required) List of log levels for syslog.\" name = \"(Required) Name of the syslog data source.\" streams = \"(Optional) List of streams for syslog.\" }))) windows_event_log = optional(list(object({ name = \"(Required) Name of the Windows event log data source.\" streams = \"(Required) List of streams for the Windows event log.\" x_path_queries = \"(Required) List of XPath queries for the Windows event log.\" }))) })",
+        "required": false,
+        "default": "null"
+      },
+      "description": {
+        "type": "string",
+        "description": "(Optional) Description of the Data Collection Rule.",
+        "required": false,
+        "default": "null"
+      },
+      "destinations": {
+        "type": "object({ azure_monitor_metrics = optional(list(object({ name = string })), null) event_hub = optional(list(object({ event_hub_id = string name = string })), null) event_hub_direct = optional(list(object({ event_hub_id = string name = string })), null) log_analytics = optional(list(object({ name = string workspace_resource_id = string })), null) monitor_account = optional(list(object({ monitor_account_id = string name = string })), null) storage_blob = optional(list(object({ container_name = string name = string storage_account_id = string })), null) storage_table_direct = optional(list(object({ table_name = string name = string storage_account_id = string })), null) storage_blob_direct = optional(list(object({ name = string storage_account_id = string container_name = string })), null) })",
+        "description": "(Optional) Destinations configuration for the Monitor Data Collection Rule. object({ azure_monitor_metrics = optional(list(object({ name = \"(Required) Name of the Azure Monitor Metrics destination.\" }))) event_hub = optional(list(object({ name = \"(Required) Name of the Event Hub destination.\" event_hub_id = \"(Required) Resource ID of the Event Hub.\" }))) event_hub_direct = optional(list(object({ name = \"(Required) Name of the Event Hub destination.\" event_hub_id = \"(Required) Resource ID of the Event Hub.\" })) log_analytics = optional(list(object({ name = \"(Required) Name of the Log Analytics destination.\" workspace_resource_id = \"(Required) Resource ID of the Log Analytics workspace.\" }))) monitor_account = optional(list(object({ monitor_account_id = \"(Required) Resource ID of the Monitor Account.\" name = \"(Required) Name of the Monitor Account destination.\" }))) storage_blob = optional(list(object({ container_name = \"(Required) Name of the Blob container.\" name = \"(Required) Name of the Storage Blob destination.\" storage_account_id = \"(Required) Resource ID of the Storage Account.\" }))) storage_blob_direct = optional(list(object({ container_name = \"(Required) Name of the Blob container.\" name = \"(Required) Name of the Storage Blob destination.\" storage_account_id = \"(Required) Resource ID of the Storage Account.\" }))) storage_table_direct = optional(list(object({ table_name = \"(Required) Name of the Table.\" name = \"(Required) Name of the Storage Table destination.\" storage_account_id = \"(Required) Resource ID of the Storage Account.\" })) })",
+        "required": false,
+        "default": "{}"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = optional(list(string)) })",
+        "description": "(Optional) An identity block as defined below object({ type = \"(Required) Specifies the type of Managed Service Identity that should be configured on this Recovery Services Vault. Possible values are `SystemAssigned`, `UserAssigned`.\" identity_ids = \"(Optional) A list of User Assigned Managed Identity IDs to be assigned to this Data Collection Rule. Currently, up to 1 identity is supported.. This is required when `type` is set to `UserAssigned`\" })",
+        "required": false,
+        "default": "{ \"identity_ids\": null, \"type\": \"SystemAssigned\" }"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "kind": {
+        "type": "string",
+        "description": "(Optional) The kind of the Data Collection Rule. Possible values are 'Linux', 'Windows', 'AgentDirectToStore', and 'WorkspaceTransforms'. A rule of kind 'Linux' does not allow for windows_event_log data sources. A rule of kind 'Windows' does not allow for syslog data sources. If kind is not specified, all kinds of data sources are allowed.",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) The Azure Region where the Data Collection Rule should exist. Changing this forces a new Data Collection Rule to be created.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) A three letter code representing organization, tenant, or CSP.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) The name of the Resource Group where the Data Collection Rule is created. Changing this forces a new Data Collection Rule to be created.",
+        "required": true
+      },
+      "stream_declarations": {
+        "type": "list(object({ stream_name = string columns = list(object({ name = string type = string })) }))",
+        "description": "(Optional) Stream declaration configuration for the Monitor Data Collection Rule. list(object({ stream_name = \"(Required) Name of the stream.\" columns = \"(Required) List of columns for the stream. Each column has a name and type.\" columns = list(object({ name = \"(Required) Name of the column.\" type = \"(Required) Type of the column.\" })) }))",
+        "required": false,
+        "default": "null"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "azurerm_monitor_data_collection_rule_association_id": {
+      "description": "The Resource IDs of the Monitor Data Collection Rule Associations."
+    },
+    "id": {
+      "description": "The Resource ID of the Monitor Data Collection Rule."
+    },
+    "name": {
+      "description": "The Name of the Monitor Data Collection Rule."
+    },
+    "resource": {
+      "description": "The Monitor Data Collection Rule resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Monitordatacollectionrule' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

@@ -1,0 +1,130 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Monitor Diagnostic Setting module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-monitordiagnosticsetting'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-monitordiagnosticsetting",
+  "module_type": "service",
+  "azure_service": "Monitordiagnosticsetting",
+  "module_name": "Azure Monitor Diagnostic Setting module",
+  "latest_tag": "1.0.1",
+  "available_tags": [
+    "1.0.1",
+    "1.0.0",
+    "0.2.3",
+    "0.2.2",
+    "0.2.1"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-monitordiagnosticsetting.git//?ref=1.0.1",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_monitor_diagnostic_setting.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_monitor_diagnostic_categories.amds_diag_catg",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "monitordiagnosticsetting",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-monitordiagnosticsetting.git//?ref=1.0.1",
+      "version": "1.0.1",
+      "available_versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.2.3",
+        "0.2.2",
+        "0.2.1"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "diagnostics_resource_ids",
+      "environment",
+      "location",
+      "org_id"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "diagnostics_resource_ids": {
+        "type": "object({ target_resource_id = string storage_account_id = optional(string, null) log_analytics_workspace_id = optional(string, null) eventhub_name = optional(string, null) eventhub_authorization_rule_id = optional(string, null) metric_enabled = optional(bool, true) })",
+        "description": "\"(Required) The map of diagnostics arguments required to configure Diagnostic Settings: object({ target_resource_id = \"(Required) The ID of the resource for which to enable the diagnostic setting.\" storage_account_id = \"(Optional) Specifies the id of a Storage Account where Diagnostics Data should be sent.\" log_analytics_workspace_id = \"(Optional) Specifies the id of a Log Analytics Workspace.\" eventhub_name = \"(Optional) Name of the EventHub.\" eventhub_authorization_rule_id = \"(Optional) Event Hub Authorizaation ID.\" metric_enabled = \"(Optional) Specifies if metrics enabled or not.\" })",
+        "required": true
+      },
+      "enabled_log_category_group": {
+        "type": "string",
+        "description": "(Optional) The name of a Diagnostic Log Category Group for this Resource. If set, only category_group will be used in enabled_log block; otherwise, all available categories will be used.",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "log_analytics_destination_type": {
+        "type": "string",
+        "description": "(Optional) Specifies the destination type for Log Analytics. Use 'Dedicated' for resource-specific tables or 'AzureDiagnostics' for the default table.",
+        "required": false,
+        "default": "\"AzureDiagnostics\""
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The Resource ID of the Diagnostic Setting for Azure resources."
+    },
+    "name": {
+      "description": "The Name of the Diagnostic Setting."
+    },
+    "resource": {
+      "description": "The Diagnostic Setting resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Monitordiagnosticsetting' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group"
+    ]
+  }
+}

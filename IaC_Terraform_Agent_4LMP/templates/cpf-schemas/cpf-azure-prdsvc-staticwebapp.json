@@ -1,0 +1,174 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Web Static App",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-staticwebapp'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-staticwebapp",
+  "module_type": "service",
+  "azure_service": "Staticwebapp",
+  "module_name": "Azure Web Static App",
+  "latest_tag": "2.1.2",
+  "available_tags": [
+    "2.1.2",
+    "2.1.1",
+    "2.1.0",
+    "2.0.0",
+    "1.0.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-staticwebapp.git//?ref=2.1.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_static_web_app.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "staticwebapp",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-staticwebapp.git//?ref=2.1.2",
+      "version": "2.1.2",
+      "available_versions": [
+        "2.1.2",
+        "2.1.1",
+        "2.1.0",
+        "2.0.0",
+        "1.0.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "app_settings": {
+        "type": "object({ })",
+        "description": "(Optional) A map of app settings to be applied to the static site.",
+        "required": false,
+        "default": "null"
+      },
+      "basic_auth": {
+        "type": "object({ password = string environments = string })",
+        "description": "(Optional) A Identity block as defined below. password = \"(Required) The password for the basic authentication access.\" environments = \"(Required) The Environment types to use the Basic Auth for access.\"",
+        "required": false,
+        "default": "null"
+      },
+      "configuration_file_changes_enabled": {
+        "type": "bool",
+        "description": "(Optional) Should changes to the configuration file be permitted.",
+        "required": false,
+        "default": "\"true\""
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = optional(list(string)) })",
+        "description": "(Optional) An identity block as defined below object({ type = \"(Required) Specifies the type of Managed Service Identity that should be configured on this Static Web App. Possible values are `SystemAssigned`, `UserAssigned`, `SystemAssigned, UserAssigned` (to enable both).\" identity_ids = \"(Optional) Specifies a list of User Assigned Managed Identity IDs to be assigned to this App Configuration. This is required when `type` is set to `UserAssigned` or `SystemAssigned, UserAssigned`.\" })",
+        "required": false,
+        "default": "{ \"identity_ids\": null, \"type\": \"SystemAssigned\" }"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "name": {
+        "type": "string",
+        "description": "(Optional) The name of the Azure Static Web App. If not provided, the name will be auto-generated using the resource naming module based on org_id, app_id, location, environment, context, and instance.",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "preview_environments_enabled": {
+        "type": "bool",
+        "description": "(Optional) Are Preview (Staging) environments enabled.",
+        "required": false,
+        "default": "\"true\""
+      },
+      "public_network_access_enabled": {
+        "type": "bool",
+        "description": "(Optional) Should public network access be enabled for the Static Web App.",
+        "required": false,
+        "default": "false"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "sku_size": {
+        "type": "string",
+        "description": "(Optional) The pricing size of the Azure Static Web App.",
+        "required": false,
+        "default": "\"Standard\""
+      },
+      "sku_tier": {
+        "type": "string",
+        "description": "(Optional) The pricing tier of the Azure Static Web App.",
+        "required": false,
+        "default": "\"Standard\""
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The ID of the Static Web App."
+    },
+    "name": {
+      "description": "The Name of the Static Web App."
+    },
+    "resource": {
+      "description": "The Static Web App resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Staticwebapp' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group"
+    ]
+  }
+}

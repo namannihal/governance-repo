@@ -1,0 +1,36 @@
+.ppr_subscription_vars_eus2:
+  variables:
+    ENV: ppr
+    LSEG_PROD_VAULT: "false"
+    LSEG_PPE_VAULT: "true"
+    AZURE_ACCOUNT: "a1a-52161-ppr-staging-sub-estimates-01"
+    BAS_UNLOCK_ID: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" # Set to default here - for use set in trigger job
+    BAS_IMPORT_TF_RESOURCE: "" # Set to default here - for use set in trigger job
+    BAS_IMPORT_AZURE_RESOURCE: "" # Set to default here - for use set in trigger job
+    BAS_REMOVE_TF_RESOURCE: "true" # Set to default here - for use set in trigger job
+    BAS_ENABLE_DESTROY: "true" # Set to default here - for use set in trigger job
+    BAS_ALLOW_OPE_FAILURE: "true" # Set to default here - for use set in trigger job
+    BAS_ENABLE_DEBUG: "false" # Set to default here - for use set in trigger job
+    TF_CORE_DEPLOYMENT_RUNNER_TAGS: "estimates_ppr_linux_eus2" # Gitlab BYO Runner tag
+    TF_STATE_BACKEND_AZURE_RESOURCE_GROUP: "a1a-52161-ppr-rg-estimates-eus2-01" # Terraform state storage resource group name
+    TF_STATE_BACKEND_AZURE_STORAGE_ACCOUNT: "a1a52161pprsttfsteus201" # Terraform state storage account name
+    TF_STATE_BACKEND_AZURE_STORAGE_CONTAINER: "terraform" # Terraform state storage account container
+
+
+.ppr_subscription_vars_cus:
+  variables:
+    ENV: ppr
+    LSEG_PROD_VAULT: "false"
+    LSEG_PPE_VAULT: "true"
+    AZURE_ACCOUNT: "a1a-52161-ppr-staging-sub-estimates-01"
+    BAS_UNLOCK_ID: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" # Set to default here - for use set in trigger job
+    BAS_IMPORT_TF_RESOURCE: "" # Set to default here - for use set in trigger job
+    BAS_IMPORT_AZURE_RESOURCE: "" # Set to default here - for use set in trigger job
+    BAS_REMOVE_TF_RESOURCE: "true" # Set to default here - for use set in trigger job
+    BAS_ENABLE_DESTROY: "true" # Set to default here - for use set in trigger job
+    BAS_ALLOW_OPE_FAILURE: "true" # Set to default here - for use set in trigger job
+    BAS_ENABLE_DEBUG: "false" # Set to default here - for use set in trigger job
+    TF_CORE_DEPLOYMENT_RUNNER_TAGS: "estimates_ppr_linux_cus" # Gitlab BYO Runner tag
+    TF_STATE_BACKEND_AZURE_RESOURCE_GROUP: "a1a-52161-ppr-rg-estimates-cus-01" # Terraform state storage resource group name
+    TF_STATE_BACKEND_AZURE_STORAGE_ACCOUNT: "a1a52161pprsttfstcus01" # Terraform state storage account name
+    TF_STATE_BACKEND_AZURE_STORAGE_CONTAINER: "terraform" # Terraform state storage account container

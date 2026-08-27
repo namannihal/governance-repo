@@ -1,0 +1,615 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: azure-prdsvc-terraform-recoveryservicesvault",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-recoveryservicesvault'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-recoveryservicesvault",
+  "module_type": "service",
+  "azure_service": "Recoveryservicesvault",
+  "module_name": "azure-prdsvc-terraform-recoveryservicesvault",
+  "latest_tag": "1.0.0",
+  "available_tags": [
+    "1.0.0",
+    "0.12.1",
+    "0.12.0",
+    "0.11.0",
+    "0.10.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-recoveryservicesvault.git//?ref=1.0.0",
+  "terraform_requirements": {
+    "azapi": ">= 1.9",
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azapi_update_resource.disable_cross_subscription_restore",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_backup_policy_file_share.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_backup_policy_vm.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_private_endpoint.rsv",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_recovery_services_vault.recovery_vault",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.cmk",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.recovery_Contributor",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.recovery_Data_Contributor",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_site_recovery_fabric.primary",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_site_recovery_fabric.secondary",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_site_recovery_network_mapping.network-mapping",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_site_recovery_protection_container.primary",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_site_recovery_protection_container.secondary",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_site_recovery_protection_container_mapping.container-mapping",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_site_recovery_replicated_vm.vm-replication",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_site_recovery_replication_policy.policy",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.this",
+      "type": "data source"
+    },
+    {
+      "terraform_resource": "azurerm_resource_group.secondary",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "recoveryservicesvault",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-recoveryservicesvault.git//?ref=1.0.0",
+      "version": "1.0.0",
+      "available_versions": [
+        "1.0.0",
+        "0.12.1",
+        "0.12.0",
+        "0.11.0",
+        "0.10.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "backup_frequency",
+      "backup_time",
+      "create_rsv",
+      "customer_managed_key",
+      "environment",
+      "filesharebackup_frequency",
+      "filesharebackup_time",
+      "instant_restore_resource_group_prefix",
+      "location",
+      "org_id",
+      "resource_group_name",
+      "sku"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "application_consistent_snapshot_frequency_in_minutes": {
+        "type": "number",
+        "description": "(Optional) Frequency in minutes for application-consistent snapshots.",
+        "required": false,
+        "default": "240"
+      },
+      "backup_frequency": {
+        "type": "string",
+        "description": "(Required) Frequency of backups",
+        "required": true
+      },
+      "backup_time": {
+        "type": "string",
+        "description": "(Required) Time of day for backups",
+        "required": true
+      },
+      "cmk_key_name": {
+        "type": "string",
+        "description": "(optional) Key name to be used (max 127 chars)",
+        "required": false,
+        "default": "null"
+      },
+      "cmk_rotation_policy": {
+        "type": "object({ notify_before_expiry = string time_before_expiry = string time_after_creation = optional(string, null) expire_after = string })",
+        "description": "(Optional) A rotation policy block as defined below object({ notify_before_expiry = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" time_before_expiry = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" time_after_creation = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" expire_after = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" })",
+        "required": false,
+        "default": "{ \"expire_after\": \"P365D\", \"notify_before_expiry\": \"P358D\", \"time_after_creation\": null, \"time_before_expiry\": \"P7D\" }"
+      },
+      "container_mapping_name": {
+        "type": "string",
+        "description": "(Optional) Name of the container mapping",
+        "required": false,
+        "default": "null"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "create_file_backup_policy": {
+        "type": "bool",
+        "description": "(Optional) Set to true to enable file backup policy, false otherwise.",
+        "required": false,
+        "default": "true"
+      },
+      "create_rsv": {
+        "type": "bool",
+        "description": "(Required) Whether to Create RSV When RSV is already exists",
+        "required": true
+      },
+      "create_site_recovery_replicated_vm": {
+        "type": "bool",
+        "description": "(Optional) Flag to create the Azure Site Recovery replicated VM",
+        "required": false,
+        "default": "false"
+      },
+      "create_vm_backup_policy": {
+        "type": "bool",
+        "description": "(Optional) Set to true to enable VM backup policy, false otherwise.",
+        "required": false,
+        "default": "true"
+      },
+      "cross_region_restore_enabled": {
+        "type": "bool",
+        "description": "(Optional) Cross region restore is a feature that allows you to restore data from a Recovery Services Vault in one region to a Recovery Services Vault in another region.",
+        "required": false,
+        "default": "true"
+      },
+      "cross_subscription_restore_state": {
+        "type": "string",
+        "description": "(Optional) State for cross subscription restore. Allowed values: Enabled, Disabled. Default is Disabled.",
+        "required": false,
+        "default": "\"Disabled\""
+      },
+      "customer_managed_key": {
+        "type": "object({ key_vault_id = string infrastructure_encryption_enabled = bool expiration_date = string identity_id = optional(string) identity_principal_id = optional(string) use_system_assigned_identity = optional(bool, false) })",
+        "description": "(Required) An customer_managed_key block as defined below object({ key_vault_id = \"(Required) The resource ID of the Key Vault where the Key Vault Key resides.\" infrastructure_encryption_enabled = \"(Required) Used to specify whether enable Infrastructure Encryption (Double Encryption). Changing this forces a new resource to be created.\" expiration_date = \"(Required) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').\" identity_id = \"(Optional) The resource ID of the User Assigned Identity that has access to the key. To be used if `use_system_assigned_identity` is set to `false`\" identity_principal_id = \"(Optional) The principal ID of the User Assigned Identity that has access to the key. To be used if `use_system_assigned_identity` is set to `false`\" use_system_assigned_identity = \"(Optional) Indicate that system assigned identity should be used for CMK or not. Defaults to `false`\" })",
+        "required": true
+      },
+      "data_disks": {
+        "type": "list(object({ disk_id = string staging_storage_account_id = string target_disk_type = string target_replica_disk_type = string target_disk_encryption_set_id = string }))",
+        "description": "(Optional) List of data disk configurations for replication",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "existing_rsv": {
+        "type": "object({ existing_rsv_name = optional(string) existing_rsv_rg = optional(string) })",
+        "description": "(Optional) An existing_Recovery Service Vaults block supports the following: existing_rsv_name = \"(Optional) The name of the existing Recovery Service Vaults.\" existing_rsv_rg = \"(Optional) The name of the existing Resource Group in which the Recovery Service Vaults exists.\"",
+        "required": false,
+        "default": "{}"
+      },
+      "fabric_name": {
+        "type": "string",
+        "description": "(Optional) Name of the recovery fabric",
+        "required": false,
+        "default": "null"
+      },
+      "fabric_secondary_name": {
+        "type": "string",
+        "description": "(Optional) Name of the secondary recovery fabric",
+        "required": false,
+        "default": "null"
+      },
+      "filesharebackup_frequency": {
+        "type": "string",
+        "description": "(Required) Frequency of backups",
+        "required": true
+      },
+      "filesharebackup_time": {
+        "type": "string",
+        "description": "(Required) Time of day for backups",
+        "required": true
+      },
+      "fileshareretention_daily_count": {
+        "type": "number",
+        "description": "(Optional) Number of daily backups to retain",
+        "required": false,
+        "default": "7"
+      },
+      "fileshareretention_monthly_count": {
+        "type": "number",
+        "description": "(Optional) Number of monthly backups to retain",
+        "required": false,
+        "default": "12"
+      },
+      "fileshareretention_monthly_weekdays": {
+        "type": "list(string)",
+        "description": "(Optional) Weekdays for monthly backups retention",
+        "required": false,
+        "default": "\"Monday\""
+      },
+      "fileshareretention_monthly_weeks": {
+        "type": "list(string)",
+        "description": "(Optional) Weeks for monthly backups retention",
+        "required": false,
+        "default": "\"First\""
+      },
+      "fileshareretention_weekly_count": {
+        "type": "number",
+        "description": "(Optional) Number of weekly backups to retain",
+        "required": false,
+        "default": "4"
+      },
+      "fileshareretention_weekly_weekdays": {
+        "type": "list(string)",
+        "description": "(Optional) Weekdays for weekly backups retention",
+        "required": false,
+        "default": "\"Monday\", \"Friday\""
+      },
+      "fileshareretention_yearly_count": {
+        "type": "number",
+        "description": "(Optional) Number of yearly backups to retain",
+        "required": false,
+        "default": "5"
+      },
+      "fileshareretention_yearly_months": {
+        "type": "list(string)",
+        "description": "(Optional) Months for yearly backups retention",
+        "required": false,
+        "default": "\"January\""
+      },
+      "fileshareretention_yearly_weekdays": {
+        "type": "list(string)",
+        "description": "(Optional) Weekdays for yearly backups retention",
+        "required": false,
+        "default": "\"Monday\""
+      },
+      "fileshareretention_yearly_weeks": {
+        "type": "list(string)",
+        "description": "(Optional) Weeks for yearly backups retention",
+        "required": false,
+        "default": "\"First\""
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = optional(list(string)) })",
+        "description": "(Optional) An identity block as defined below object({ type = \"(Required) Specifies the type of Managed Service Identity that should be configured on this Recovery Services Vault. Possible values are `SystemAssigned`, `UserAssigned`, `SystemAssigned, UserAssigned` (to enable both).\" identity_ids = \"(Optional) Specifies a list of User Assigned Managed Identity IDs to be assigned to this App Configuration. This is required when `type` is set to `UserAssigned` or `SystemAssigned, UserAssigned`.\" })",
+        "required": false,
+        "default": "{ \"identity_ids\": null, \"type\": \"SystemAssigned\" }"
+      },
+      "immutability": {
+        "type": "string",
+        "description": "(Optional) Immutability Settings of vault, possible values include: Locked, Unlocked and Disabled.",
+        "required": false,
+        "default": "\"Locked\""
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "instant_restore_resource_group_prefix": {
+        "type": "string",
+        "description": "(Required) Prefix for instant restore resource group",
+        "required": true
+      },
+      "instant_restore_resource_group_suffix": {
+        "type": "string",
+        "description": "(Optional) Suffix for instant restore resource group",
+        "required": false,
+        "default": "\"restore\""
+      },
+      "instant_restore_retention_days": {
+        "type": "number",
+        "description": "(Optional) Specifies the instant restore retention range in days",
+        "required": false,
+        "default": "1"
+      },
+      "key_vault_tags": {
+        "type": "map(any)",
+        "description": "(Optional) Key Vault related tags to be set on key vault child resources.",
+        "required": false,
+        "default": "{}"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "monitoring": {
+        "type": "object({ alerts_for_all_job_failures_enabled = optional(bool, true) alerts_for_critical_operation_failures_enabled = optional(bool, true) })",
+        "description": "(Optional) A monitoring block as defined below. object({ alerts_for_all_job_failures_enabled = \"(Optional) Enabling/Disabling built-in Azure Monitor alerts for security scenarios and job failure scenarios. Defaults to `true`.\" alerts_for_critical_operation_failures_enabled = \"(Optional) Enabling/Disabling alerts from the older (classic alerts) solution. Defaults to `true`.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "network_mapping_name": {
+        "type": "string",
+        "description": "(Optional) The name of the network mapping for Azure Site Recovery.",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "os_disk_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the OS disk.",
+        "required": false,
+        "default": "null"
+      },
+      "policy_type": {
+        "type": "string",
+        "description": "(Optional) Type of BackupPolicy",
+        "required": false,
+        "default": "\"V2\""
+      },
+      "primary_location": {
+        "type": "string",
+        "description": "(Optional) The primary location for the Azure resources.",
+        "required": false,
+        "default": "null"
+      },
+      "primary_network_id": {
+        "type": "string",
+        "description": "(Optional) ID of the primary network",
+        "required": false,
+        "default": "null"
+      },
+      "protection_container_name": {
+        "type": "string",
+        "description": "(Optional) Name of the protection container",
+        "required": false,
+        "default": "null"
+      },
+      "protection_container_secondary_name": {
+        "type": "string",
+        "description": "(Optional) Name of the secondary protection container",
+        "required": false,
+        "default": "null"
+      },
+      "recovery_point_retention_in_minutes": {
+        "type": "number",
+        "description": "(Optional) The retention period for recovery points in minutes.",
+        "required": false,
+        "default": "1440"
+      },
+      "replication_name": {
+        "type": "string",
+        "description": "(Optional) Name of the replication",
+        "required": false,
+        "default": "null"
+      },
+      "replication_policy_name": {
+        "type": "string",
+        "description": "(Optional) Name of the replication policy",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "resource_group_name_secondary": {
+        "type": "string",
+        "description": "(Optional) Name of the Resource Group in which to create the resource.",
+        "required": false,
+        "default": "null"
+      },
+      "retention_daily_count": {
+        "type": "number",
+        "description": "(Optional) Number of daily backups to retain",
+        "required": false,
+        "default": "7"
+      },
+      "retention_monthly_count": {
+        "type": "number",
+        "description": "(Optional) Number of monthly backups to retain",
+        "required": false,
+        "default": "12"
+      },
+      "retention_monthly_weekdays": {
+        "type": "list(string)",
+        "description": "(Optional) Weekdays for monthly backups retention",
+        "required": false,
+        "default": "\"Monday\""
+      },
+      "retention_monthly_weeks": {
+        "type": "list(string)",
+        "description": "(Optional) Weeks for monthly backups retention",
+        "required": false,
+        "default": "\"First\""
+      },
+      "retention_weekly_count": {
+        "type": "number",
+        "description": "(Optional) Number of weekly backups to retain",
+        "required": false,
+        "default": "4"
+      },
+      "retention_weekly_weekdays": {
+        "type": "list(string)",
+        "description": "(Optional) Weekdays for weekly backups retention",
+        "required": false,
+        "default": "\"Monday\", \"Friday\""
+      },
+      "retention_yearly_count": {
+        "type": "number",
+        "description": "(Optional) Number of yearly backups to retain",
+        "required": false,
+        "default": "5"
+      },
+      "retention_yearly_months": {
+        "type": "list(string)",
+        "description": "(Optional) Months for yearly backups retention",
+        "required": false,
+        "default": "\"January\""
+      },
+      "retention_yearly_weekdays": {
+        "type": "list(string)",
+        "description": "(Optional) Weekdays for yearly backups retention",
+        "required": false,
+        "default": "\"Monday\""
+      },
+      "retention_yearly_weeks": {
+        "type": "list(string)",
+        "description": "(Optional) Weeks for yearly backups retention",
+        "required": false,
+        "default": "\"First\""
+      },
+      "rsv_subnet_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the subnet for the Recovery Services Vault.",
+        "required": false,
+        "default": "null"
+      },
+      "secondary_location": {
+        "type": "string",
+        "description": "(Optional)The secondary location for the resources.",
+        "required": false,
+        "default": "null"
+      },
+      "sku": {
+        "type": "string",
+        "description": "(Required) The SKU for the Recovery Services Vault.",
+        "required": true
+      },
+      "source_vm_id": {
+        "type": "string",
+        "description": "(Optional) ID of the source VM",
+        "required": false,
+        "default": "null"
+      },
+      "staging_storage_account_id": {
+        "type": "string",
+        "description": "(Optional) ID of the staging storage account",
+        "required": false,
+        "default": "null"
+      },
+      "storage_account_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the storage account.",
+        "required": false,
+        "default": "null"
+      },
+      "storage_mode_type": {
+        "type": "string",
+        "description": "(Optional) The storage type of the Recovery Services Vault.",
+        "required": false,
+        "default": "\"GeoRedundant\""
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "target_disk_type": {
+        "type": "string",
+        "description": "(Optional) The type of the target disk.",
+        "required": false,
+        "default": "null"
+      },
+      "target_encryption_set_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the target disk encryption set.",
+        "required": false,
+        "default": "null"
+      },
+      "target_network_id": {
+        "type": "string",
+        "description": "(Optional) ID of the target network",
+        "required": false,
+        "default": "null"
+      },
+      "target_replica_disk_type": {
+        "type": "string",
+        "description": "(Optional) The type of the target replica disk.",
+        "required": false,
+        "default": "null"
+      },
+      "timezone": {
+        "type": "string",
+        "description": "(Optional) Specifies the Timezone",
+        "required": false,
+        "default": "\"UTC\""
+      }
+    }
+  },
+  "outputs": {
+    "fileshare_policy_id": {
+      "description": "The ID of the FileShare Backup Policy"
+    },
+    "fileshare_policy_name": {
+      "description": "The ID of the FileShare Backup Policy"
+    },
+    "id": {
+      "description": "The ID of the Recovery Service vault."
+    },
+    "name": {
+      "description": "The Name of the Recovery Service Vault."
+    },
+    "resource": {
+      "description": "The Recovery Service vault Resource"
+    },
+    "vm_policy_id": {
+      "description": "The ID of the VM Backup Policy"
+    },
+    "vm_policy_name": {
+      "description": "The ID of the VM Backup Policy"
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Recoveryservicesvault' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

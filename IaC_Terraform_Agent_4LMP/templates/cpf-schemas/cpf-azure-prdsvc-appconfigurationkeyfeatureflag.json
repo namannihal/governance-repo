@@ -1,0 +1,167 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure App Configuration Key and Featureflag module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-appconfigurationkeyfeatureflag'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-appconfigurationkeyfeatureflag",
+  "module_type": "service",
+  "azure_service": "Appconfigurationkeyfeatureflag",
+  "module_name": "Azure App Configuration Key and Featureflag module",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.1.1",
+    "0.1.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-appconfigurationkeyfeatureflag.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Virtual Network",
+    "Network Security Group",
+    "Subnet",
+    "Key Vault",
+    "Private Endpoint",
+    "Azure App Configuration Store"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_app_configuration_feature.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_app_configuration_key.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_resource_group.this",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "appconfigurationkeyfeatureflag",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-appconfigurationkeyfeatureflag.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.1.1",
+        "0.1.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "appconfiguration_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "appconfiguration_id": {
+        "type": "string",
+        "description": "(Required) The ID of the App Configuration store where the keys will be created.",
+        "required": true
+      },
+      "config_keys": {
+        "type": "map(object({ key = string label = optional(string, null) value = optional(string, null) content_type = optional(string, null) locked = optional(bool, false) type = optional(string, \"kv\") vault_key_reference = optional(string, null) }))",
+        "description": "(Optional) A map of App Configuration keys to create. Each key in the map represents a configuration entry with the following structure: map(object({ key = \"(Required) The name of the App Configuration Key to create. Changing this forces a new resource to be created.\" label = \"(Optional) The label of the App Configuration Key. Changing this forces a new resource to be created.\" value = \"(Optional) The value of the App Configuration Key.\" content_type = \"(Optional) The content type of the App Configuration Key.\" locked = \"(Optional) Should this App Configuration Key be Locked to prevent changes. Defaults to false.\" type = \"(Optional) The type of the App Configuration Key. It can either be kv (simple key/value) or vault (where the value is a reference to a Key Vault Secret). Defaults to kv.\" vault_key_reference = \"(Optional) The ID of the vault secret this App Configuration Key refers to. This should only be set when type is set to vault.\" }))",
+        "required": false,
+        "default": "{}"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "feature_flags": {
+        "type": "map(object({ name = string key = optional(string, null) label = optional(string, null) enabled = optional(bool, false) description = optional(string, null) locked = optional(bool, false) percentage_filter_value = optional(number, null) targeting_filter = optional(object({ default_rollout_percentage = number groups = optional(list(object({ name = string rollout_percentage = number }))) users = optional(list(string)) })) timewindow_filter = optional(object({ start = string end = string })) }))",
+        "description": "(Optional) A map of App Configuration feature flags to create. map(object({ name = \"(Required) The name of the App Configuration Feature. Changing this forces a new resource to be created.\" key = \"(Optional) The key of the App Configuration Feature. The value for name will be used if this is unspecified. Changing this forces a new resource to be created.\" label = \"(Optional) The label of the App Configuration Feature Flag. Changing this forces a new resource to be created.\" enabled = \"(Optional) The state of the Feature Flag. Defaults to false.\" description = \"(Optional) The description of the Feature Flag.\" locked = \"(Optional) Should this App Configuration Feature Flag be Locked to prevent changes? Defaults to false.\" percentage_filter_value = \"(Optional) A number representing a percentage of the user base for which this feature should be enabled. Valid values are between 0 and 100.\" targeting_filter = optional(object({ default_rollout_percentage = \"(Required) A number representing a percentage of the user base for which this feature should be enabled by default.\" groups = optional(list(object({ name = \"(Required) The name of the group.\" rollout_percentage = \"(Required) Percentage of the group for which the feature should be enabled.\" }))) users = \"(Optional) A list of users to target for this feature flag.\" })) timewindow_filter = optional(object({ start = \"(Required) The start time of the time window. Should be in RFC3339 format.\" end = \"(Required) The end time of the time window. Should be in RFC3339 format.\" })) }))",
+        "required": false,
+        "default": "{}"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "app_configuration_feature_flag_ids": {
+      "description": "The IDs of the managed app configuration feature flags."
+    },
+    "app_configuration_feature_flag_names": {
+      "description": "The names of the managed app configuration feature flags."
+    },
+    "app_configuration_key_ids": {
+      "description": "The IDs of the managed app configuration keys."
+    },
+    "app_configuration_key_names": {
+      "description": "The names of the managed app configuration keys."
+    },
+    "resource_feature_flag": {
+      "description": "The azure app configuration feature flag resources (map of all feature flags)."
+    },
+    "resource_key": {
+      "description": "The azure app configuration key resources (map of all keys)."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Appconfigurationkeyfeatureflag' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Virtual Network",
+      "Network Security Group",
+      "Subnet",
+      "Key Vault",
+      "Private Endpoint",
+      "Azure App Configuration Store"
+    ]
+  }
+}

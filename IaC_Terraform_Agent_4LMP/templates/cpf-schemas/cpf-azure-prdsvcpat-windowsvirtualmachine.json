@@ -1,0 +1,459 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Windows VM Service Pattern",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvcpat-windowsvirtualmachine'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvcpat-windowsvirtualmachine",
+  "module_type": "service-pattern",
+  "azure_service": "Windowsvirtualmachine",
+  "module_name": "Windows VM Service Pattern",
+  "latest_tag": "",
+  "available_tags": [],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-windowsvirtualmachine.git//",
+  "terraform_requirements": {
+    "tls": ">= 3.0.0",
+    "azurerm": ">= 4.33",
+    "time": "~> 0.11.1",
+    "random": "~> 3.6.0",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_virtual_machine_extension.AADLoginForWindows",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_virtual_machine_run_command.remove_aad_login",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "random_password.password",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_keyvault_pe",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_client_config.current",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "windowsvirtualmachine",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-windowsvirtualmachine.git//",
+      "version": "latest",
+      "available_versions": []
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "admin_username",
+      "app_id",
+      "environment",
+      "key_vault_config",
+      "location",
+      "org_id",
+      "os_disk",
+      "resource_group_id",
+      "shared_nrtbl_vnet_id",
+      "size"
+    ],
+    "properties": {
+      "additional_disk": {
+        "type": "map(object({ context = optional(string, null) instance = optional(string, null) attach_disk_to_vm = optional(bool, true) enable_disk_backup = optional(bool, true) storage_account_type = optional(string, \"StandardSSD_LRS\") source_uri = optional(string, \"\") source_resource_id = optional(string, \"\") image_reference_id = optional(string, \"\") availability_zone = optional(string, null) os_type = optional(string, null) disk_encryption_set_id = optional(string, null) disk_size_gb = optional(string, \"128\") caching = optional(string, \"ReadWrite\") lun = optional(number, 0) ultra_ssd_disk_iops_read_write = optional(string, null) ultra_ssd_disk_mbps_read_write = optional(string, null) data_access_auth_mode = optional(string, \"AzureActiveDirectory\") disk_iops_read_write = optional(number, null) disk_mbps_read_write = optional(number, null) disk_iops_read_only = optional(number, null) disk_mbps_read_only = optional(number, null) }))",
+        "description": "n/a",
+        "required": false,
+        "default": "null"
+      },
+      "admin_username": {
+        "type": "string",
+        "description": "(Required) The username of the local administrator used for the Virtual Machine.",
+        "required": true
+      },
+      "allowed_vm_sizes": {
+        "type": "list(string)",
+        "description": "(Optional) Specifies the supported sizes of Virtual Machines that can be created in the Proximity Placement Group.",
+        "required": false,
+        "default": "null"
+      },
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "availability_set": {
+        "type": "object({ deploy_availability_set = optional(bool, false) availability_set_id = optional(string, null) update_domain = optional(number) fault_domain = optional(number) managed = optional(bool) })",
+        "description": "Specifies the Availability Set configuration: - update_domain: (Optional) Number of update domains (default 5). Changing this forces a new resource to be created. - fault_domain: (Optional) Number of fault domains (default 3). Changing this forces a new resource to be created. - managed: (Optional) true for Managed/Aligned, false for Classic. Default is true.",
+        "required": false,
+        "default": "{ \"availability_set_id\": null, \"deploy_availability_set\": false, \"fault_domain\": null, \"managed\": null, \"update_domain\": null }"
+      },
+      "azure_backup": {
+        "type": "object({ context = optional(string, null) instance = optional(string, null) create_disk_backup_policy = optional(bool, true) create_backup_vault = optional(bool, true) datastore_type = optional(string, \"VaultStore\") redundancy = optional(string, \"LocallyRedundant\") identity_type = optional(string, \"SystemAssigned\") existing_backup_vault_id = optional(string, null) enable_backup = optional(bool, false) backup_repeating_time_intervals = optional(list(string), [\"R/2023-11-22T11:40:16+00:00/PT4H\"]) default_retention_duration = optional(string, \"P7D\") rulename = optional(string, \"backupdaily\") duration = optional(string, \"P2D\") priority = optional(number, 25) vault_identity_principal_id = optional(string, null) enable_resource_group_role_assignment = optional(bool, false) retentiondurationindays = optional(number, 30) expiration_date = optional(string) disk_backup_policy = optional(object({ backup_repeating_time_intervals = optional(list(string)) default_retention_duration = optional(string) time_zone = optional(string) retention_rule = list(object({ name = optional(string, null) duration = optional(string, null) priority = optional(number, 0) criteria = object({ absolute_criteria = optional(string, null) }) })) })) immutability_state = optional(string, \"Locked\") soft_delete_state = optional(string, \"AlwaysOn\") encryption_state = optional(string, \"Disabled\") cross_subscription_restore_state = optional(string, \"Disabled\") })",
+        "description": "(Required) Configuration for the Azure backup for the windows VM backup Data Disk. ({ context = (Optional) Context to be used for Azure Backup. instance = (Optional) Instance to be used for Azure Backup. create_disk_backup_policy = (Optional) Set to true to enable VM backup policy, false otherwise. create_backup_vault = (Optional) Whethere to Create Backup Vault When Backup Vault is already exists. datastore_type = (Optional) Specifies the type of the data store.Possible values are ArchiveStore, SnapshotStore and VaultStore. redundancy = (Optional) Specifies the backup storage redundancy. Possible values are GeoRedundant and LocallyRedundant. identity_type = (Optional) Specifies the type of Managed Service Identity that should be configured on this Backup Vault.The only possible value is SystemAssigned. existing_backup_vault_id = (Optional) The ID of the an existing Backup Vault. retentiondurationindays = (Optional) Soft Delete retention Duration in Days. vault_identity_principal_id =(Optional) To support backup being enabled using an existing backup vault enable_resource_group_role_assignment =(Optional) If the role Disk Snapshot Contributor is not enabled to the resource group of the existing backup vault, this option should be enabled disk_backup_policy = optional(object({ backup_repeating_time_intervals = \"(Optional) Specifies a list of repeating time interval. It should follow ISO 8601 repeating time interval.\" default_retention_duration = \"(Optional) Default retention duration in ISO 8601 format.\" time_zone = \"(Optional) Specifies the Time Zone which should be used by the backup schedule.\" retention_rule = optional(list(object({ name = (Optional) The name which should be used for this retention rule. duration = (Optional) Duration of deletion after given timespan. priority = (Optional) Retention Tag priority. criteria = object({ absolute_criteria = (Optional) Possible values are FirstOfDay and FirstOfWeek. }) }))) })) soft_delete_state = (Optional) The state for soft delete settings. Possible values are AlwaysOn, Off, On immutability_state = (Optional) The state for immutability settings. Possible values are Disabled, Locked, Unlocked. encryption_state = (Optional) The state for encryption settings. Possible values are Disabled, Enabled. cross_subscription_restore_state = (Optional) The state for cross subscription restore settings. Possible value is Disabled. expiration_date = \"(Required) Expiration UTC datetime (Y-m-d'T'H:M:S'Z'). })",
+        "required": false,
+        "default": "{ \"backup_repeating_time_intervals\": null, \"context\": null, \"create_backup_vault\": false, \"create_disk_backup_policy\": false, \"cross_subscription_restore_state\": null, \"datastore_type\": null, \"default_retention_duration\": null, \"disk_backup_policy\": null, \"duration\": null, \"enable_backup\": false, \"enable_resource_group_role_assignment\": null, \"encryption_state\": null, \"existing_backup_vault_id\": null, \"expiration_date\": null, \"identity_type\": null, \"immutability_state\": null, \"instance\": null, \"priority\": null, \"redundancy\": null, \"retentiondurationindays\": null, \"rulename\": null, \"soft_delete_state\": null, \"vault_identity_principal_id\": null }"
+      },
+      "backend_address_pool_id": {
+        "type": "list(string)",
+        "description": "(Optional) The ID of the Load Balancer Backend Address Pool with the Network Interface should be connected to. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "[]"
+      },
+      "boot_diagnostics_storage_account_uri": {
+        "type": "string",
+        "description": "(Optional) The Primary/Secondary Endpoint for the Azure Storage Account which should be used to store Boot Diagnostics.",
+        "required": false,
+        "default": "null"
+      },
+      "bypass_platform_safety_checks_on_user_schedule_enabled": {
+        "type": "bool",
+        "description": "(Optional) Specify whether to skip platform scheduled patching when a user schedule is associated with the VM. Defaults to false.",
+        "required": false,
+        "default": "false"
+      },
+      "capacity_reservation_groups": {
+        "type": "object({ context = optional(string, null) instance = optional(string, null) zones = optional(list(string), null) deploy_capacity_reservation_groups = optional(bool, false) capacity_reservation_group_id = optional(string, null) reservations = optional(map(object({ sku = optional(object({ name = string capacity = string })) zone = optional(string) })), {}) })",
+        "description": "context = (Optional) capacity reservation context information for the resource(s) (max 10 chars). instance = (Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int). zones =\"(Optional) Specifies a list of Availability Zones for this Capacity Reservation Group. Changing this forces a new resource to be created.\" reservations= map(object({ reservations for the reservation group being created. sku = optional(object({ name = (Required) Name of the sku, such as Standard_F2. Changing this forces a new resource to be created. capacity = (Required) Specifies the number of instances to be reserved. It must be greater than or equal to 0 and not exceed the quota in the subscription. })) zone = (Optional) Specifies the Availability Zone for this Capacity Reservation. Changing this forces a new resource to be created. tags = (Optional) A mapping of tags to assign to the the reservation. }))",
+        "required": false,
+        "default": "{ \"capacity_reservation_group_id\": null, \"context\": null, \"deploy_capacity_reservation_groups\": false, \"instance\": null, \"reservations\": null, \"zones\": null }"
+      },
+      "cmk_key_name": {
+        "type": "string",
+        "description": "(optional) Key name to be used (max 127 chars)",
+        "required": false,
+        "default": "null"
+      },
+      "computer_name": {
+        "type": "string",
+        "description": "(Optional) Specifies the Hostname which should be used for this Virtual Machine.",
+        "required": false,
+        "default": "null"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "create_role_assignments": {
+        "type": "bool",
+        "description": "(Optional) Whether to create role assignments for Key Vault Crypto Service Encryption User. Set to false if the role assignments are managed externally.",
+        "required": false,
+        "default": "true"
+      },
+      "custom_data": {
+        "type": "string",
+        "description": "(Optional) The Base64-Encoded Custom Data which should be used for this Virtual Machine. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "dedicated_host_group_id": {
+        "type": "string",
+        "description": "(Optional) The ID of a Dedicated Host Group that this Windows Virtual Machine should be run within. Conflicts with `dedicated_host_id`.",
+        "required": false,
+        "default": "null"
+      },
+      "dedicated_host_id": {
+        "type": "string",
+        "description": "(Optional) The ID of a Dedicated Host where this machine should be run on. Conflicts with `dedicated_host_group_id`.",
+        "required": false,
+        "default": "null"
+      },
+      "default_outbound_access": {
+        "type": "bool",
+        "description": "(Optional) Specifies the default outbound access setting for the subnet.",
+        "required": false,
+        "default": "false"
+      },
+      "deploy_proximityplacementgroup": {
+        "type": "bool",
+        "description": "Boolean to deploy new proximity placement groupfor Windows VM",
+        "required": false,
+        "default": "true"
+      },
+      "des_identity": {
+        "type": "object({ identity_ids = optional(set(string)) })",
+        "description": "(Optional) An identity block as defined below for Disk Encryption Set. When null, it falls back to `identity` for the VM. object({ identity_ids = \"(Optional) Specifies a list of existing User Assigned Managed Identity IDs to be assigned to this Disk Encryption Set.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "des_identity_type": {
+        "type": "string",
+        "description": "(Optional). Identity type to use for the Disk Encryption Set. When null, it falls back to `identity_type`. Possible values are 'UserAssigned' or 'SystemAssigned, UserAssigned'.",
+        "required": false,
+        "default": "null"
+      },
+      "disk_encryption_set": {
+        "type": "object({ context = string instance = string expiration_date = string create_role_assignments = optional(bool, true) cmk_key_name = optional(string, null) })",
+        "description": "(Required) The Disk Encryption Set which should be used to Encrypt this Disks. ({ context = (Optional) Context to be used for Disk Encryption Set. instance = (Optional) Instance to be used for Disk Encryption Set. expiration_date = (Required) Expiration date of the Key })",
+        "required": false,
+        "default": "null"
+      },
+      "enable_entra_auth": {
+        "type": "bool",
+        "description": "(Optional) The boolean to enable entra authentication for Windows Virtual Machine.",
+        "required": false,
+        "default": "true"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "firewall_private_ip_address": {
+        "type": "string",
+        "description": "(Optional). Azure firewall private Ip Address. Used when creating routes to firewall during route table creation.",
+        "required": false,
+        "default": "null"
+      },
+      "identity": {
+        "type": "object({ identity_ids = optional(set(string)) })",
+        "description": "(Optional) An identity block as defined below object({ identity_ids = \"(Optional) Specifies a list of existing System Assigned or User Assigned Managed Identity IDs to be assigned to this Windows Virtual Machine.\" })",
+        "required": false,
+        "default": "{ \"identity_ids\": [] }"
+      },
+      "identity_type": {
+        "type": "string",
+        "description": "(Optional). Identity type to use for the Virtual Machine. Possible values are 'UserAssigned' or 'SystemAssigned, UserAssigned'.",
+        "required": false,
+        "default": "\"SystemAssigned, UserAssigned\""
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "key_vault_config": {
+        "type": "object({ context = optional(string, null) instance = optional(string, null) deploy_kv_and_pe = optional(bool, true) key_vault_id = optional(string, null) enabled_for_deployment = optional(bool, false) enabled_for_disk_encryption = optional(bool, true) enabled_for_template_deployment = optional(bool, false) soft_delete_retention_days = optional(number, 30) sku_name = optional(string, \"premium\") public_network_access_enabled = optional(bool, false) network_acls = optional(object({ bypass = optional(string, \"None\") default_action = optional(string, \"Deny\") ip_rules = optional(list(string), []) virtual_network_subnet_ids = optional(list(string), []) }), {}) private_endpoint = optional(object({ is_manual_connection = optional(bool, false) static_ip_required = optional(bool, false) private_connection_resource_id = optional(string, null) private_connection_resource_alias = optional(string, null) group_ids = optional(list(string), null) kv_ip_configuration = optional(map(object({ private_ip_address = string subresource_name = optional(string, \"vault\") member_name = optional(string, \"default\") })), {}) }), null) })",
+        "description": "(Required). Object with cofigration for the Keyvault. As defined below context = context to be used for KeyVaults being deployed resources. instance = instance to be used for KeyVaults being deployed resources. deploy_kv_and_pe = (Optional). Boolean to deploy KeyVault and Private Endpoint for KeyVault. Default is true. key_vault_id = (Optional). KeyVault ID to be used for Private Endpoint for KeyVault. Required if deploy_kv_and_pe is false. enabled_for_deployment = (Optional). Boolean to enable KeyVault for deployment. Default is false. enabled_for_disk_encryption = (Optional). Boolean to enable KeyVault for disk encryption. Default is true. enabled_for_template_deployment = (Optional). Boolean to enable KeyVault for template deployment. Default is false. soft_delete_retention_days = (Optional) The number of days that items should be retained for once soft-deleted. sku_name = (Optional). Sku name for KeyVault. Default is premium. public_network_access_enabled = (optional). Specifies whether public network access is enabled for the Key Vault. network_acls = (Optional). Object with network ACLs for KeyVault. As defined below { bypass = (Optional). Specifies whether traffic is bypassed for Azure services. Default is None. Possible values are None, AzureServices, Logging, Metrics, or AzureServices,Logging,Metrics. default_action = (Optional). Specifies the default action of allow or deny when no other rules match. Default is Deny. Possible values are Allow and Deny. ip_rules = (Optional). List of IP addresses or CIDR ranges to whitelist. Only IPV4 addresses are allowed. This list must not include IP address ranges within Azure services. This list can include IP addresses ranges from on-premises ranges. virtual_network_subnet_ids = (Optional). List of virtual network subnet ids to whitelist. This list must not include IP address ranges within Azure services. } private_endpoint = (Optional). Object with private endpoint configuration for KeyVault. As defined below { is_manual_connection = (Optional). Boolean to indicate if the connection is manual. Default is false. static_ip_required = (Optional). Boolean to indicate if static IP is required. Default is false. private_connection_resource_id = (Optional). Resource ID of the private connection. Required if is_manual_connection is true. private_connection_resource_alias = (Optional). Resource alias of the private connection. Required if is_manual_connection is true. group_ids = (Optional) A list of subresource names which the Private Endpoint is able to connect to. subresource_names corresponds to group_id. kv_ip_configuration = (Optional). Object with IP configuration for KeyVault. As defined below { private_ip_address = (Required). Private IP address of the IP configuration. subresource_name = (Optional). Subresource name of the IP configuration. Default is vault. member_name = (Optional). Member name of the IP configuration. Default is default. } }",
+        "required": true
+      },
+      "key_vault_tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "license_type": {
+        "type": "string",
+        "description": "(Optional) Specifies the type of on-premise license (also known as Azure Hybrid Use Benefit) which should be used for this Virtual Machine.",
+        "required": false,
+        "default": "\"None\""
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "maintenance_assignment_required": {
+        "type": "bool",
+        "description": "(Optional) Specify whether the Maintenance Configuration should be assigned for this Virtual Machine. Defaults to false.",
+        "required": false,
+        "default": "false"
+      },
+      "maintenance_configuration_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the Maintenance Configuration to assign to the Virtual Machine.",
+        "required": false,
+        "default": "null"
+      },
+      "network_config": {
+        "type": "object({ context = optional(string, null) instance = optional(string, null) use_existing_subnet = optional(bool, false) winvm_subnet_address_prefix = optional(string, null) subnet_id = optional(string, null) special_subnet_name = optional(string, null) service_endpoints = optional(list(string), []) security_rules = optional(map(object({ name = string description = string priority = number direction = string access = string protocol = string source_port_range = string destination_port_range = string source_address_prefix = string destination_address_prefix = string source_application_security_group_ids = list(string) destination_application_security_group_ids = list(string) })), {}) route_table = optional(object({ route_table_id = optional(string, null) bgp_route_propagation_enabled = optional(bool, true) route = optional(map(object({ name = string address_prefix = string next_hop_type = string next_hop_in_ip_address = string })), null) }), { route_table_id = null route = null }) })",
+        "description": "(Required). Object with cofigration for the Storage Account. As defined below context = context to be used for Storage Account being deployed resources. instance = instance to be used for Storage Account being deployed resources. use_existing_subnet = (Required) Boolean to use existing subnet for the Virtial Machine deployments. winvm_subnet_address_prefix = (Required). Address prefix for the subnet where windows Virtual Machines will be deployed. Must be passed as `null` if `use_existing_subnet` is `true`. subnet_id = (Required) The ID of the Subnet where the VM Network Interface should be located in. security_rules = (Optional). Map of objects mentioned below security rules of the NSG to be deployed and attached with Virtual Machiine Subnet. As defined below { name = \"(Required) The name of the security rule.\" description = \"(Optional) A description for this rule. Restricted to 140 characters.\" priority = \"(Required) Specifies the priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each rule in the collection. The lower the priority number, the higher the priority of the rule.\" direction = \"(Required) The direction specifies if rule will be evaluated on incoming or outgoing traffic. Possible values are Inbound and Outbound.\" access = \"(Required) Specifies whether network traffic is allowed or denied. Possible values are Allow and Deny.\" protocol = \"(Required) Network protocol this rule applies to. Possible values include Tcp, Udp, Icmp, Esp, Ah or * (which matches all).\" source_port_range = \"(Optional) Source Port or Range. Integer or range between 0 and 65535 or * to match any. This is required if source_port_ranges is not specified.\" destination_port_range = \"(Optional) Destination Port or Range. Integer or range between 0 and 65535 or * to match any. This is required if destination_port_ranges is not specified.\" source_address_prefix = \"(Optional) CIDR or source IP range or * to match any IP. Tags such as VirtualNetwork, AzureLoadBalancer and Internet can also be used. This is required if source_address_prefixes is not specified.\" destination_address_prefix = \"(Optional) CIDR or destination IP range or * to match any IP. Tags such as VirtualNetwork, AzureLoadBalancer and Internet can also be used. This is required if destination_address_prefixes is not specified.\" source_application_security_group_ids = \"(Optional) A List of source Application Security Group IDs\" destination_application_security_group_ids = \"(Optional) A List of destination Application Security Group IDs\" } route_table = (Optional). Object with route table configuration for Virtual Machine Subnet. As defined below { bgp_route_propagation_enabled = (Optional) Boolean flag which controls propagation of routes learned by BGP on that route table. route_table_id = (Optional). Route table ID to be used for PSQL Subnet. Required if route is not provided. route = (Optional). A Map of objects mentioned below for route configuration of the route table. { name = \"(Required) The name of the route.\" address_prefix = \"(Required) The destination CIDR to which the route applies.\" next_hop_type = \"(Required) The type of Azure hop the packet should be sent to. Possible values are VirtualNetworkGateway, VnetLocal, Internet, VirtualAppliance and None.\" next_hop_in_ip_address = \"(Optional) The IP address packets should be forwarded to. Next hop values are only allowed in routes where the next hop type is VirtualAppliance.\" } } }",
+        "required": false,
+        "default": "null"
+      },
+      "network_interface": {
+        "type": "object({ ip_configurations = list(object({ private_ip_address = optional(string) private_ip_address_version = optional(string, \"IPv4\") private_ip_address_allocation = optional(string, \"Dynamic\") subnet_id = optional(string) primary = optional(bool, false) gateway_load_balancer_frontend_ip_configuration_id = optional(string) })) dns_servers = optional(list(string)) edge_zone = optional(string) accelerated_networking_enabled = optional(bool, false) ip_forwarding_enabled = optional(bool, false) internal_dns_name_label = optional(string) })",
+        "description": "A Network Interface that should be created and attached to this Virtual Machine. ip_configurations = list(object({ private_ip_address = \"(Optional) The Static IP Address which should be used. When `private_ip_address_allocation` is set to `Static` this field can be configured.\" private_ip_address_version = \"(Optional) The IP Version to use. Possible values are `IPv4` or `IPv6`. Defaults to `IPv4`.\" private_ip_address_allocation = \"(Optional) The allocation method used for the Private IP Address. Possible values are `Dynamic` and `Static`. Defaults to `Dynamic`.\" subnet_id = \"(Optional) The ID of the Subnet where the VM Network Interface should be located in.\" primary = \"(Optional) Is this the Primary IP Configuration? Must be `true` for the first `ip_configuration`. Defaults to `false`.\" gateway_load_balancer_frontend_ip_configuration_id = \"(Optional) The Frontend IP Configuration ID of a Gateway SKU Load Balancer.\" })) dns_servers = \"(Optional) A list of IP Addresses defining the DNS Servers which should be used for this Network Interface. Configuring DNS Servers on the Network Interface will override the DNS Servers defined on the Virtual Network.\" edge_zone = \"(Optional) Specifies the Edge Zone within the Azure Region where this Network Interface should exist. Changing this forces a new Network Interface to be created.\" accelerated_networking_enabled = \"(Optional) Should Accelerated Networking be enabled? Defaults to `false`. Only certain Virtual Machine sizes are supported for Accelerated Networking - [more information can be found in this document](https://docs.microsoft.com/azure/virtual-network/create-vm-accelerated-networking-cli). To use Accelerated Networking in an Availability Set, the Availability Set must be deployed onto an Accelerated Networking enabled cluster.\" ip_forwarding_enabled = \"(Optional) Should IP Forwarding be enabled? Defaults to `false`.\" internal_dns_name_label = \"(Optional) The (relative) DNS Name used for internal communications between Virtual Machines in the same Virtual Network.\"",
+        "required": false,
+        "default": "{ \"accelerated_networking_enabled\": null, \"dns_servers\": null, \"edge_zone\": null, \"internal_dns_name_label\": null, \"ip_configurations\": [ { \"gateway_load_balancer_frontend_ip_configuration_id\": null, \"primary\": true, \"private_ip_address\": null, \"private_ip_address_allocation\": null, \"private_ip_address_version\": null, \"subnet_id\": null } ], \"ip_forwarding_enabled\": false }"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "os_disk": {
+        "type": "object({ storage_account_type = optional(string, \"StandardSSD_LRS\") disk_size_gb = optional(number, 127) caching = optional(string, \"ReadWrite\") network_access_policy = optional(string, \"DenyAll\") public_network_access = optional(string, \"Disabled\") })",
+        "description": "(Required) A os_disk for the VM. The block supports the following object({ storage_account_type = \"(Optional) The Type of Storage Account which should back this the Internal OS Disk. Possible values are Standard_LRS, StandardSSD_LRS, Premium_LRS, StandardSSD_ZRS and Premium_ZRS.\" disk_size_gb = \"(Optional) The Size of the Internal OS Disk in GB, if you wish to vary from the size used in the image this Virtual Machine is sourced from.\" caching = \"(Optional) The Type of Caching which should be used for the Internal OS Disk. Possible values are None, ReadOnly and ReadWrite.\" network_access_policy = \"(Optional) Policy for accessing the disk via network. Possible values are AllowAll, AllowPrivate and DenyAll.\" public_network_access = \"(Optional) Policy for controlling export on the disk. Possible values are Disabled and Enabled.\" })",
+        "required": true
+      },
+      "password_expiration_date": {
+        "type": "string",
+        "description": "(Optional) Expiration UTC datetime of the VM password (Y-m-d'T'H:M:S'Z').",
+        "required": false,
+        "default": "null"
+      },
+      "password_not_before_date": {
+        "type": "string",
+        "description": "(Optional) Password activation UTC datetime of the VM password (Y-m-d'T'H:M:S'Z').",
+        "required": false,
+        "default": "null"
+      },
+      "patch_assessment_mode": {
+        "type": "string",
+        "description": "(Optional) Specify the mode of VM Guest Patching for the Virtual Machine. Possible values are `AutomaticByPlatform` or `ImageDefault`. Defaults to `ImageDefault`.",
+        "required": false,
+        "default": "\"ImageDefault\""
+      },
+      "patch_mode": {
+        "type": "string",
+        "description": "(Optional) Specify the mode of in-guest patching to this Windows Virtual Machine. Possible values are `Manual`, `AutomaticByOS` and `AutomaticByPlatform`. Defaults to `AutomaticByOS`.",
+        "required": false,
+        "default": "\"AutomaticByOS\""
+      },
+      "privateendpoint_subnet_id": {
+        "type": "string",
+        "description": "(Optional) Specify the subnet id where the private endpoit will be created.",
+        "required": false,
+        "default": "null"
+      },
+      "proximity_placement_group_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the Proximity Placement Group which the Virtual Machine should be assigned to.",
+        "required": false,
+        "default": "null"
+      },
+      "reboot_setting": {
+        "type": "string",
+        "description": "(Optional) Specify the reboot setting for platform scheduled patching. Possible values are Always, IfRequired and Never, `reboot_setting` can only be set when `patch_mode` is set to `AutomaticByPlatform`.",
+        "required": false,
+        "default": "\"Never\""
+      },
+      "remove_aad_login": {
+        "type": "bool",
+        "description": "(Optional) When true, deploys a VM run command that runs 'dsregcmd /leave' to remove AAD login from the Windows Virtual Machine.",
+        "required": false,
+        "default": "false"
+      },
+      "resource_group_id": {
+        "type": "string",
+        "description": "(Reqired). The Id of the Shared Resources Resource Group. This Resource group usually contains the shared resources(non-routeable vnet).",
+        "required": true
+      },
+      "secure_boot_enabled": {
+        "type": "bool",
+        "description": "(Optional) Specifies if vTPM (virtual Trusted Platform Module) and Trusted Launch is enabled for the Virtual Machine. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "false"
+      },
+      "shared_nrtbl_vnet_id": {
+        "type": "string",
+        "description": "(Required). The ARM Resource Id of the Non-Routeable Virtual Network in shared Resource group.",
+        "required": true
+      },
+      "size": {
+        "type": "string",
+        "description": "(Required) The SKU which should be used for this Virtual Machine.",
+        "required": true
+      },
+      "source_image_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the Image which this Virtual Machine should be created from.",
+        "required": false,
+        "default": "null"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "timezone": {
+        "type": "string",
+        "description": "(Optional) Specifies the Time Zone which should be used by the Virtual Machine, the possible values are defined here (https://jackstromberg.com/2017/01/list-of-time-zones-consumed-by-azure). Changing this forces a new resource to be created.Defaults to UTC.",
+        "required": false,
+        "default": "\"UTC\""
+      },
+      "ultra_ssd_enabled": {
+        "type": "bool",
+        "description": "(Optional) Should the capacity to enable Data Disks of the UltraSSD_LRS storage account type be supported on this Virtual Machine? Defaults to false.",
+        "required": false,
+        "default": "false"
+      },
+      "virtual_machine_extensions": {
+        "type": "map(object({ name = string publisher = string type = string type_handler_version = string auto_upgrade_minor_version = optional(bool, false) automatic_upgrade_enabled = optional(bool, false) settings = optional(string, null) failure_suppression_enabled = optional(bool, false) protected_settings = optional(string, null) provision_after_extensions = optional(list(string), null) protected_settings_from_key_vault = optional(object({ secret_url = string source_vault_id = string }), null) }))",
+        "description": "(Optional) A Virtual Machine Extension block as defined below map(object({ name = \"(Required) The name of the virtual machine extension peering.\" publisher = \"(Required) The publisher of the extension, available publishers can be found by using the Azure CLI.`az vm extension image list --location westus -o table`.\" type = \"(Required) The type of extension, available types for a publisher can be found using the Azure CLI.\" type_handler_version = \"(Required) Specifies the version of the extension to use, available versions can be found using the Azure CLI.\" auto_upgrade_minor_version = \"(Optional) Specifies if the platform deploys the latest minor version update to the type_handler_version specified.\" automatic_upgrade_enabled = \"(Optional) Should the Extension be automatically updated whenever the Publisher releases a new version of this VM Extension?\" settings = \"(Optional) The settings passed to the extension, these are specified as a JSON object in a string.\" failure_suppression_enabled = \"(Optional) Should failures from the extension be suppressed? Possible values are true or false. Defaults to false.\" protected_settings = \"(Optional) The protected_settings passed to the extension, like settings, these are specified as a JSON object in a string.\" provision_after_extensions = \"(Optional) Specifies the collection of extension names after which this extension needs to be provisioned.\" protected_settings_from_key_vault = object({ secret_url = \"(Optional) Specifies the collection of extension names after which this extension needs to be provisioned.\" source_vault_id = \"(Required) The ID of the source Key Vault.\" }) }))",
+        "required": false,
+        "default": "null"
+      },
+      "virtual_machine_scale_set_id": {
+        "type": "string",
+        "description": "(Optional) Specifies the Orchestrated Virtual Machine Scale Set that this Virtual Machine should be created within. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "vm_agent_platform_updates_enabled": {
+        "type": "bool",
+        "description": "(Optional) Specifies whether VMAgent Platform Updates is enabled. Defaults to false.",
+        "required": false,
+        "default": "false"
+      },
+      "vtpm_enabled": {
+        "type": "bool",
+        "description": "(Optional) The value will determine if Virtual Trusted Platform Module (vTPM) is enabled for the VM",
+        "required": false,
+        "default": "false"
+      },
+      "zone": {
+        "type": "string",
+        "description": "(Optional) Specifies the Availability Zone in which this Windows Virtual Machine should be located.",
+        "required": false,
+        "default": "null"
+      }
+    }
+  },
+  "outputs": {
+    "availability_set": {
+      "description": "The availability set module outputs."
+    },
+    "capacity_reservation_group": {
+      "description": "The capacity reservation group module outputs."
+    },
+    "dataprotectionbackupinstance": {
+      "description": "The dataprotectionbackupinstance module outputs."
+    },
+    "dataprotectionbackupvault": {
+      "description": "The dataprotectionbackupvault module outputs."
+    },
+    "diskencryptionset": {
+      "description": "The diskencryptionset module outputs."
+    },
+    "keyvault": {
+      "description": "The keyvault module outputs."
+    },
+    "keyvault_pe": {
+      "description": "The keyvault-pe module outputs."
+    },
+    "networksecuritygroup": {
+      "description": "The networksecuritygroup module outputs."
+    },
+    "proximityplacementgroup": {
+      "description": "The proximityplacementgroup module outputs."
+    },
+    "routetable": {
+      "description": "The routetable module outputs."
+    },
+    "subnet": {
+      "description": "The subnet module outputs."
+    },
+    "userassignedidentity": {
+      "description": "The userassignedidentity module outputs."
+    },
+    "windowsvm": {
+      "description": "The windows vm module outputs."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Windowsvirtualmachine' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a service pattern module. It bundles multiple related services/configurations.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

@@ -1,0 +1,176 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Event Hub Service Pattern",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvcpat-eventhub'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvcpat-eventhub",
+  "module_type": "service-pattern",
+  "azure_service": "Eventhub",
+  "module_name": "Event Hub Service Pattern",
+  "latest_tag": "",
+  "available_tags": [],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-eventhub.git//",
+  "terraform_requirements": {
+    "azurerm": ">= 3.51, < 4.0.0",
+    "time": ">= 0.12.0",
+    "random": ">= 3.6.0",
+    "terraform": ">= 1.5.0",
+    "azuread": ">= 2.53.1"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "time_sleep.wait_ehn_pe",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "eventhub",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-eventhub.git//",
+      "version": "latest",
+      "available_versions": []
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "eventhubnamespace",
+      "key_vault_config",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "eventhub": {
+        "type": "map(object({ context = optional(string, null) instance = optional(string, null) partition_count = number message_retention = number status = optional(string, \"Active\") capture_description = optional(object({ enabled = bool encoding = string interval_in_seconds = optional(number, 300) size_limit_in_bytes = optional(number, 314572800) skip_empty_archives = optional(bool, false) destination = object({ name = string archive_name_format = string blob_container_name = string storage_account_id = string }) }) , null) authorization_rules = optional(map(object({ name = string listen = optional(bool, false) send = optional(bool, false) manage = optional(bool, false) })) , null) consumer_groups = optional(map(object({ name = string user_metadata = optional(string, null) })) , null) }))",
+        "description": "context = context to be used for eventhub being deployed resources. instance = instance to be used for eventhub being deployed resources. partition_count = \"(Required) Specifies the current number of shards on the Event Hub. Changing this will force-recreate the resource.\" message_retention = \"(Required) Specifies the number of days to retain the events for this Event Hub.\" status = \"(Optional) Specifies the status of the Event Hub resource. Possible values are `Active`, `Disabled` and `SendDisabled`.\" capture_description = (Optional) A capture_description block as defined below. object({ enabled = \"(Required) Specifies if the Capture Description is Enabled.\" encoding = \"(Required) Specifies the Encoding used for the Capture Description. Possible values are `Avro` and `AvroDeflate`.\" interval_in_seconds = \"(Optional) Specifies the time interval in seconds at which the capture will happen. Values can be between 60 and 900 seconds.\" size_limit_in_bytes = \"(Optional) Specifies the amount of data built up in your EventHub before a Capture Operation occurs. Value should be between 10485760 and 524288000 bytes.\" skip_empty_archives = \"(Optional) Specifies if empty files should not be emitted if no events occur during the Capture time window.\" destination = (Required) A destination block as defined below. object({ name = \"(Required) The Name of the Destination where the capture should take place. At this time the only supported value is `EventHubArchive.AzureBlockBlob`.\" archive_name_format = \"(Required) The Blob naming convention for archiving. e.g. {Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}.\" blob_container_name = \"(Required) The name of the Container within the Blob Storage Account where messages should be archived.\" storage_account_id = \"(Required) The ID of the Blob Storage Account where messages should be archived.\" }) }) authorization_rules = (Optional) An Event Hub Namespace Authorization Rules configuation as defined below.. object({ name = \"(Required) Specifies the name of the Authorization Rule.\" listen = \"(Optional) Grants listen access to this this Authorization Rule.\" send = \"(Optional) Grants send access to this this Authorization Rule.\" manage = \"(Optional) Grants manage access to this this Authorization Rule. When this property is true - both listen and send must be too.\" }) consumer_groups = (Optional) An Event Hub Consumer Group objects as defined below.. object({ name = \"(Required) Specifies the name of the EventHub Consumer Group resource.\" user_metadata = \"(Optional) Specifies the user metadata.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "eventhubcluster": {
+        "type": "object({ context = optional(string, null) instance = optional(string, null) sku_name = optional(string, \"Dedicated_1\") })",
+        "description": "Object with configuration for the Keyvault. As defined below context = context to be used for eventhubcluster being deployed resources. instance = instance to be used for eventhubcluster being deployed resources. sku_name = (Optional) The SKU name of the EventHub Cluster. The only supported value at this time is `Dedicated_1`. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "eventhubnamespace": {
+        "type": "object({ context = optional(string, null) instance = optional(string, null) sku = optional(string, \"Standard\") capacity = optional(number, 1) auto_inflate_enabled = optional(bool, false) dedicated_cluster_id = optional(string, null) maximum_throughput_units = optional(number, null) zone_redundant = optional(bool, true) trusted_service_access_enabled = optional(bool, true) cmk_expiration_date = string cmk_identity_id = optional(string, null) cmk_identity_principal_id = optional(string, null) cmk_infrastructure_encryption_enabled = bool cmk_use_system_assigned_identity = bool cmk_rotation_policy = optional(object({ notify_before_expiry = string time_before_expiry = string time_after_creation = optional(string, null) expire_after = string }) , { notify_before_expiry = \"P358D\" time_before_expiry = \"P7D\" time_after_creation = null expire_after = \"P365D\" }) disaster_recovery_config = optional(object({ secondary_region = string secondary_resource_group_name = string identity = object({ type = optional(string, \"SystemAssigned\") identity_ids = optional(list(string), null) }) customer_managed_key = object({ identity_id = optional(string, null) identity_principal_id = optional(string, null) }) network_rulesets = optional(object({ default_action = optional(string, \"Allow\") trusted_service_access_enabled = optional(bool, true) virtual_network_rule = optional(list(object({ subnet_id = string ignore_missing_virtual_network_service_endpoint = optional(bool, true) })), []) ip_rule = optional(list(object({ ip_mask = string action = optional(string, \"Allow\") })), []) }), { default_action = \"Allow\" trusted_service_access_enabled = true virtual_network_rule = [] ip_rule = [] }) }) , null) authorization_rules = optional(map(object({ name = string listen = optional(bool, false) send = optional(bool, false) manage = optional(bool, false) })) , null) namespace_schema_group = optional(map(object({ name = string schema_compatibility = optional(string, \"Backward\") schema_type = optional(string, \"Avro\") })) , null) enable_systemassigned_identity = optional(bool, true) })",
+        "description": "context = (Optional) Application context information for the resource(s) (max 10 chars). instance = (Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int). sku = (Optional) Defines which tier to use. Valid options are Basic, Standard, and Premium. Please note that setting this field to Premium will force the creation of a new resource. capacity = (Optional) Specifies the Capacity / Throughput Units for a Standard SKU namespace. Default capacity has a maximum of 2, but can be increased in blocks of 2 on a committed purchase basis. Defaults to 1. auto_inflate_enabled = (Optional) Is Auto Inflate enabled for the EventHub Namespace? dedicated_cluster_id = (Optional) Specifies the ID of the EventHub Dedicated Cluster where this Namespace should created. Changing this forces a new resource to be created. maximum_throughput_units = (Optional) Specifies the maximum number of throughput units when Auto Inflate is Enabled. Valid values range from 1 - 20. trusted_service_access_enabled = (Optional) Whether Trusted Microsoft Services are allowed to bypass firewall. notify_before_expiry = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" time_before_expiry = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" time_after_creation = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" expire_after = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" key_vault_id = \"(Required) The resource ID of the Key Vault where the Key Vault Key resides.\" expiration_date = \"(Required) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').\" identity_id = \"(Optional) The resource ID of the User Assigned Identity that has access to the key. Required if `use_system_assigned_identity` is set to false.\" identity_principal_id = \"(Optional) The principal ID of the User Assigned Identity that has access to the key. Required if `use_system_assigned_identity` is set to false.\" infrastructure_encryption_enabled = \"(Required) Used to specify whether enable Infrastructure Encryption (Double Encryption). Changing this forces a new resource to be created.\" use_system_assigned_identity = \"(Required) Indicate that system assigned identity should be used for CMK or not. Defaults to `false`\" (Optional) A disaster recovery configuration block as defined below. These value are required only when you need to create a secondary Event Hub Namespace for the Disaster Recovery. object({ secondary_region = \"(Required) The name of the Azure region where the secondary event hub namespace will be created. Please choose among the reginal pairs only. identity = object({ type = \"(Optional) Specifies the type of Managed Service Identity that should be configured on this Event Hub Namespace. Possible values are `SystemAssigned` or `UserAssigned`. Defaults to `SystemAssigned`\" identity_ids = \"(Optional) Specifies a list of User Assigned Managed Identity IDs to be assigned to this EventHub namespace.\" }) customer_managed_key = object({ identity_id = \"(Optional) The resource ID of the User Assigned Identity that has access to the key. Required if `use_system_assigned_identity` is set to false.\" identity_principal_id = \"(Optional) The principal ID of the User Assigned Identity that has access to the key. Required if `use_system_assigned_identity` is set to false.\" }) }) network_rulesets = object({ default_action = \"(Optional) The default action of the network ruleset. Possible values are `Allow` and `Deny`. Defaults to `Allow`.\" trusted_service_access_enabled = \"(Optional) Whether Trusted Microsoft Services are allowed to bypass firewall. Defaults to true.\" virtual_network_rule = \"(Optional) A list of Virtual Network Rule objects as defined below.\" list(object({ subnet_id = \"(Required) The ID of the Subnet to which this Virtual Network Rule applies.\" ignore_missing_virtual_network_service_endpoint = \"(Optional) Whether to ignore missing Virtual Network Service Endpoint. Defaults to true.\" })) ip_rule = \"(Optional) A list of IP Rule objects as defined below.\" list(object({ ip_mask = \"(Required) The IP Mask to which this IP Rule applies.\" action = \"(Optional) The action of the IP Rule. Possible values are `Allow` and `Deny`. Defaults to `Allow`.\" })) })",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "key_vault_config": {
+        "type": "object({ context = optional(string, null) instance = optional(string, null) deploy_kv_and_pe = optional(bool, true) key_vault_id = optional(string, null) enabled_for_deployment = optional(bool, false) enabled_for_disk_encryption = optional(bool, true) enabled_for_template_deployment = optional(bool, false) soft_delete_retention_days = optional(number, 30) sku_name = optional(string, \"premium\") kv_secret_expiration_in_months = optional(number, 12) # kv_secret_instance = optional(string, null) network_acls = optional(object({ bypass = optional(string, \"None\") default_action = optional(string, \"Deny\") ip_rules = optional(list(string), []) virtual_network_subnet_ids = optional(list(string), []) }), {}) private_endpoint = optional(object({ is_manual_connection = optional(bool, false) static_ip_required = optional(bool, false) private_connection_resource_alias = optional(string, null) kv_ip_configuration = optional(map(object({ private_ip_address = string subresource_name = optional(string, \"vault\") member_name = optional(string, \"default\") })), {}) }), { is_manual_connection = false static_ip_required = false private_connection_resource_alias = null } ) key_vault_keys = optional(map(object({ key_number = string key_type = optional(string, \"RSA-HSM\") key_size = optional(number, 4096) not_before_date = optional(string, null) expiration_date = string key_opts = list(string) rotation_policy = object({ notify_before_expiry = string time_before_expiry = string time_after_creation = optional(string, null) expire_after = string }) })), {}) key_vault_secrets = optional(map(object({ secret_number = string value = string content_type = optional(string, null) not_before_date = optional(string, null) expiration_date = optional(string, null) })), {}) key_vault_certificates = optional(map(object({ cert_number = string path_of_certificate = optional(string, null) issuer_parameters_name = string ec_key_required = bool curve = optional(string, \"P-256\") key_type = string key_size = optional(number, 2048) reuse_key = bool action_type = string content_type = string key_usage = list(string) trigger = object({ days_before_expiry = optional(number, null) lifetime_percentage = optional(string, null) }) x509_certificate_properties = object({ extended_key_usage = optional(list(string)) subject = string subject_alternative_names = object({ dns_names = optional(list(string)) emails = optional(list(string)) upns = optional(list(string)) }) validity_in_months = string }) })), {}) })",
+        "description": "Object with configuration for the Keyvault. As defined below context = context to be used for KeyVaults being deployed resources. instance = instance to be used for KeyVaults being deployed resources. deploy_kv_and_pe = (Optional). Boolean to deploy KeyVault and Private Endpoint for KeyVault. Default is true. key_vault_id = (Optional). KeyVault ID to be used for Private Endpoint for KeyVault. Required if deploy_kv_and_pe is false. enabled_for_deployment = (Optional). Boolean to enable KeyVault for deployment. Default is false. enabled_for_disk_encryption = (Optional). Boolean to enable KeyVault for disk encryption. Default is true. enabled_for_template_deployment = (Optional). Boolean to enable KeyVault for template deployment. Default is false. soft_delete_retention_days = (Optional) The number of days that items should be retained for once soft-deleted. sku_name = (Optional). Sku name for KeyVault. Default is premium. kv_secret_expiration_in_months = (Required). Number of months for which the secrets in KeyVault should be valid. network_acls = (Optional). Object with network ACLs for KeyVault. As defined below { bypass = (Optional). Specifies whether traffic is bypassed for Azure services. Default is None. Possible values are None, AzureServices, Logging, Metrics, or AzureServices,Logging,Metrics. default_action = (Optional). Specifies the default action of allow or deny when no other rules match. Default is Deny. Possible values are Allow and Deny. ip_rules = (Optional). List of IP addresses or CIDR ranges to whitelist. Only IPV4 addresses are allowed. This list must not include IP address ranges within Azure services. This list can include IP addresses ranges from on-premises ranges. virtual_network_subnet_ids = (Optional). List of virtual network subnet ids to whitelist. This list must not include IP address ranges within Azure services. } private_endpoint = (Optional). Object with private endpoint configuration for KeyVault. As defined below { is_manual_connection = (Optional). Boolean to indicate if the connection is manual. Default is false. static_ip_required = (Optional). Boolean to indicate if static IP is required. Default is false. private_connection_resource_id = (Optional). Resource ID of the private connection. Required if is_manual_connection is true. private_connection_resource_alias = (Optional). Resource alias of the private connection. Required if is_manual_connection is true. kv_ip_configuration = (Optional). Object with IP configuration for KeyVault. As defined below { private_ip_address = (Required). Private IP address of the IP configuration. subresource_name = (Optional). Subresource name of the IP configuration. Default is vault. member_name = (Optional). Member name of the IP configuration. Default is default. } } key_vault_certificates = (Optional) A map of Key vault certificates to be created using following variables: cert_number = \"(Required) Specifies certificate number for multiple certificates to be created.\" import_certificate = \"(Required) Choose to import certificate or to generate one.\" path_of_certificate = \"(Optional) Provide the path of the existing certificate. (Required) in case of import_certificate as True.\" issuer_parameters_name = \"(Required) The name of the Certificate Issuer. Changing this forces a new resource to be created.\" ec_key_required = \"(Required) Do you want to create an `EC` key?\" curve = \"(Optional) Specifies the curve to use when creating an EC key. Possible values are P-256, P-256K, P-384, and P-521.This field will be required in a future release if key_type is EC or EC-HSM. Changing this forces a new resource to be created.\" key_type = \"(Required) Specifies the type of key. Changing this forces a new resource to be created.\" key_size = \"(Optional) The size of the key used in the certificate. This property is required when using RSA keys. Changing this forces a new resource to be created.\" reuse_key = \"(Required) Is the key reusable? Changing this forces a new resource to be created.\" action_type = \"(Required) The Type of action to be performed when the lifetime trigger is triggerec. Changing this forces a new resource to be created.\" content_type = \"(Required) The Content-Type of the Certificate, such as application/x-pkcs12 for a PFX or application/x-pem-file for a PEM. Changing this forces a new resource to be created.\" key_usage = \"(Required) A list of uses associated with this Key. Possible values are cRLSign, dataEncipherment, decipherOnly, digitalSignature, encipherOnly, keyAgreement, keyCertSign, keyEncipherment and nonRepudiation. Changing this forces a new resource to be created.\" trigger = object({ days_before_expiry = optional(number, null) lifetime_percentage = optional(string, null) }) x509_certificate_properties = object({ extended_key_usage = \"(Optional) A list of Extended/Enhanced Key Usages. Changing this forces a new resource to be created.\" subject = \"(Required) The Certificate's Subject. Changing this forces a new resource to be created.\" subject_alternative_names = list(object({ dns_names = \"(Optional) A list of alternative DNS names (FQDNs) identified by the Certificate. Changing this forces a new resource to be created.\" emails = \"(Optional) A list of email addresses identified by this Certificate. Changing this forces a new resource to be created.\" upns = \"(Optional) A list of User Principal Names identified by the Certificate. Changing this forces a new resource to be created.\" })) validity_in_months = \"(Required) The Certificates Validity Period in Months. Changing this forces a new resource to be created.\" }) })) key_vault_keys = (Optional) A map of Key vault key object variables: key_number = \"(Required) Specifies key number for multiple keys to be created.\" key_type = \"(Optional) Specifies the Key Type to use for the Key Vault Key.\" key_size = \"(Optional) Specifies the Size of the RSA key to create in bytes. Allowed values are 1024, 2048, 3072 or 4096.\" not_before_date = \"(Optional) Key not usable before the provided UTC datetime (Y-m-d'T'H:M:S'Z').\" expiration_date = \"(Required) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').\" key_opts = \"(Required) A list of JSON web key operations. Possible values include: decrypt, encrypt, sign, unwrapKey, verify and wrapKey.\" rotation_policy = (Optional) object({ notify_before_expiry = \"(Required) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" time_before_expiry = \"(Required) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" time_after_creation = \"(Optional) Rotate automatically at a duration after create as an ISO 8601 duration.\" expire_after = \"(Required) Expire a Key Vault Key after given duration as an ISO 8601 duration. }) key_vault_secrets = (Optional) A map of key vault secrets to be created with following variables: secret_number = \"(Required) Specifies secret number for multiple secrets to be created.\" value = \"(Required) Specifies the value of the Key Vault Secret. Changing this will create a new version of the Key Vault Secret.\" content_type = \"(Optional) Specifies the content type of the Key Vault Secret.\" not_before_date = \"(Optional) Key not usable before the provided UTC datetime (Y-m-d'T'H:M:S'Z').\" expiration_date = \"(Optional) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').\"",
+        "required": true
+      },
+      "key_vault_tags": {
+        "type": "map(any)",
+        "description": "(Optional) Key Vault related tags to be set on key vault child resources.",
+        "required": false,
+        "default": "{}"
+      },
+      "local_authentication_enabled": {
+        "type": "bool",
+        "description": "(Optional) Enable or disable local authentication for Event Hub Namespace. Defaults to false.",
+        "required": false,
+        "default": "false"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "network_config": {
+        "type": "object({ context = optional(string, null) instance = optional(string, null) private_endpoint = optional(object({ is_manual_connection = optional(bool, false) static_ip_required = optional(bool, false) private_connection_resource_id = optional(string, null) private_connection_resource_alias = optional(string, null) ip_configuration = optional(map(object({ private_ip_address = string subresource_name = optional(string, \"namespace\") member_name = optional(string, \"namespace\") })), {}) }), { is_manual_connection = false static_ip_required = false private_connection_resource_alias = null ip_configuration = {} } ) })",
+        "description": "(Required) Network configuration for the Pattern to be deployed.",
+        "required": false,
+        "default": "null"
+      },
+      "network_rulesets": {
+        "type": "object({ default_action = optional(string, \"Deny\") trusted_service_access_enabled = optional(bool, true) virtual_network_rule = optional(list(object({ subnet_id = string ignore_missing_virtual_network_service_endpoint = optional(bool, true) })), []) ip_rule = optional(list(object({ ip_mask = string action = optional(string, \"Allow\") })), []) })",
+        "description": "(Optional) An object of network_rulesets block as defined below. object({ default_action = \"(Optional) The default action of the network ruleset. Possible values are `Allow` and `Deny`. Defaults to `Allow`.\" trusted_service_access_enabled = \"(Optional) Whether Trusted Microsoft Services are allowed to bypass firewall. Defaults to true.\" virtual_network_rule = \"(Optional) A list of Virtual Network Rule objects as defined below.\" list(object({ subnet_id = \"(Required) The ID of the Subnet to which this Virtual Network Rule applies.\" ignore_missing_virtual_network_service_endpoint = \"(Optional) Whether to ignore missing Virtual Network Service Endpoint. Defaults to true.\" })) ip_rule = \"(Optional) A list of IP Rule objects as defined below.\" list(object({ ip_mask = \"(Required) The IP Mask to which this IP Rule applies.\" action = \"(Optional) The action of the IP Rule. Possible values are `Allow` and `Deny`. Defaults to `Allow`.\" })) })",
+        "required": false,
+        "default": "{ \"default_action\": \"Allow\", \"ip_rule\": [], \"trusted_service_access_enabled\": true, \"virtual_network_rule\": [] }"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "privateendpoint_subnet_id": {
+        "type": "string",
+        "description": "(Required.) The resource id of the subnet to deploy private endpoints into.",
+        "required": false,
+        "default": "null"
+      },
+      "public_network_access_enabled": {
+        "type": "bool",
+        "description": "(Optional) Enable or disable public network access for Event Hub Namespace. Defaults to false.",
+        "required": false,
+        "default": "false"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required). The name of the Application Resource Group. This Resource group usually contains the Application resources(app infra resources).",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "eventhub": {
+      "description": "The eventhub module output - Map."
+    },
+    "eventhubcluster": {
+      "description": "The eventhubcluster module output - Map."
+    },
+    "eventhubnamespace": {
+      "description": "The eventhubnamespace module output."
+    },
+    "eventhubnamespace_privateendpoint": {
+      "description": "The eventhubnamespace private endpoint module output."
+    },
+    "keyvaultprivateendpoint": {
+      "description": "The keyvault service pattern module outputs."
+    },
+    "userassignedidentity-eventhubnamespace": {
+      "description": "The userassignedidentity-eventhubnamespace module outputs."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Eventhub' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a service pattern module. It bundles multiple related services/configurations.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

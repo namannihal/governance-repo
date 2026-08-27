@@ -1,0 +1,114 @@
+default:
+  tags: [$RUNNER_TAG]
+
+include:
+  - project: ci/stable/iac/terraform-core
+    ref: ${TF_CORE_TEMPLATE_VERSION}
+    file:
+      - templates/azure.yml
+  - project: ci/stable/security/vault-service
+    ref: ${VAULT_SERVICE_TEMPLATE_VERSION}
+    file:
+      - templates/vault-service.yml
+  - local: ci/variables.yml
+
+stages:
+  - vault
+  - bams-upload
+  - terraform-apply
+  - terraform-destroy
+  - terraform-state-unlock
+
+# By default, gitlab do not run workflows for merge request pipelines.
+# This configuration ensures that the pipeline runs for merge request events as well as other events.
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - when: always
+
+0-vault-azure-auth:
+  stage: vault
+  extends: [.vault-azure-auth-artifacts]
+  tags: ["LSEG"]
+
+0-upload-bams-scripts:
+  image: $PESTER_IMAGE
+  stage: bams-upload
+  extends: [.vault-artifact-decrypter]
+  needs:        [0-vault-azure-auth]
+  dependencies: [0-vault-azure-auth]
+  script:
+    - | 
+      # Ensure curl and jq are available
+      apt-get update && apt-get install -y curl jq
+ 
+      # Login to Azure using service principal
+      az login --service-principal -u "${ARM_CLIENT_ID}" -p "${ARM_CLIENT_SECRET}" --tenant "${ARM_TENANT_ID}"
+      az account set --subscription ${ARM_SUBSCRIPTION_ID}
+      echo "Using KeyVault: ${KEYVAULT_NAME}"
+      
+      # Fetch BAMS credentials from Key Vault
+      bams_user=$(az keyvault secret show --vault-name ${KEYVAULT_NAME} --name "bams-user" --query "value" -o tsv)
+      bams_password=$(az keyvault secret show --vault-name ${KEYVAULT_NAME} --name "bams-password" --query "value" -o tsv)
+      
+      if [ -z "$bams_user" ] || [ -z "$bams_password" ]; then
+        echo "Error: Failed to retrieve BAMS credentials from Key Vault"
+        exit 1
+      fi
+ 
+      echo "Using BAMS credentials: user=$bams_user (password hidden)"
+      echo "Uploading files from: $BAMS_SCRIPTS_UPLOAD_SOURCE"
+ 
+      # Ensure the directory exists before proceeding
+      if [[ ! -d "$BAMS_SCRIPTS_UPLOAD_SOURCE" ]]; then
+        echo "Error: Directory $BAMS_SCRIPTS_UPLOAD_SOURCE not found. Exiting..."
+        exit 1
+      fi
+       
+      # Upload files
+      for i in $(find "${BAMS_SCRIPTS_UPLOAD_SOURCE}" -type f); do
+        filename=$(basename "$i")
+        echo "Uploading $filename..."
+        curl -s -u "${bams_user}:${bams_password}" -T "$i" "${BAMS_SCRIPTS_UPLOAD_TARGET}/${ENV}/${filename}"
+      done
+
+0-terraform-plan:
+  stage: terraform-apply
+  extends: [.terraform-core-plan, .vault-artifact-decrypter]
+  needs:        [0-vault-azure-auth, 0-upload-bams-scripts]
+  dependencies: [0-vault-azure-auth, 0-upload-bams-scripts]
+  when: manual
+
+1-terraform-apply:
+  stage: terraform-apply
+  extends: [.terraform-core-apply, .vault-artifact-decrypter]
+  needs:        [0-vault-azure-auth, 0-terraform-plan]
+  dependencies: [0-vault-azure-auth, 0-terraform-plan]
+  when: manual
+  environment:
+    name: $ENV
+
+0-terraform-destroy-plan:
+  stage: terraform-destroy
+  extends: [.terraform-core-destroy-plan, .vault-artifact-decrypter]
+  needs: [0-vault-azure-auth]
+  dependencies: [0-vault-azure-auth]
+  when: manual
+
+1-terraform-destroy-apply:
+  stage: terraform-destroy
+  extends: [.terraform-core-destroy-apply, .vault-artifact-decrypter]
+  needs: [0-vault-azure-auth, 0-terraform-destroy-plan]
+  dependencies: [0-vault-azure-auth, 0-terraform-destroy-plan]
+  when: manual
+  environment:
+    name: $ENV
+
+0-terraform-state-unlock:
+  stage: terraform-state-unlock
+  extends: [.terraform-core-unlock, .vault-artifact-decrypter]
+  needs:        [0-vault-azure-auth]
+  dependencies: [0-vault-azure-auth]
+  when: manual
+  environment:
+    name: $ENV

@@ -1,0 +1,280 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: AI Foundry module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-aifoundry'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-aifoundry",
+  "module_type": "service",
+  "azure_service": "Aifoundry",
+  "module_name": "AI Foundry module",
+  "latest_tag": "3.1.3",
+  "available_tags": [
+    "3.1.3",
+    "3.1.2",
+    "3.1.1",
+    "3.1.0",
+    "3.0.3"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-aifoundry.git//?ref=3.1.3",
+  "terraform_requirements": {
+    "azapi": ">= 2.0",
+    "azurerm": ">= 4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azapi_resource.ai_foundry",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azapi_resource_action.ai_foundry_keys",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_cognitive_deployment.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.cmk",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.spn_owner",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.spn_user",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_for_rbac_propagation",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_client_config.current",
+      "type": "data source"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.this",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "aifoundry",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-aifoundry.git//?ref=3.1.3",
+      "version": "3.1.3",
+      "available_versions": [
+        "3.1.3",
+        "3.1.2",
+        "3.1.1",
+        "3.1.0",
+        "3.0.3"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "customer_managed_key",
+      "customsubdomainname",
+      "environment",
+      "kind",
+      "location",
+      "org_id",
+      "resource_group_id",
+      "resource_group_name",
+      "sku"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "cmk_name": {
+        "type": "string",
+        "description": "(optional) Customer managed key name to be used (max 127 chars)",
+        "required": false,
+        "default": "null"
+      },
+      "cmk_rotation_policy": {
+        "type": "object({ notify_before_expiry = string time_before_expiry = string time_after_creation = optional(string, null) expire_after = string })",
+        "description": "(Optional) A rotation policy block as defined below object({ notify_before_expiry = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" time_before_expiry = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" time_after_creation = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" expire_after = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" })",
+        "required": false,
+        "default": "{ \"expire_after\": \"P365D\", \"notify_before_expiry\": \"P358D\", \"time_after_creation\": null, \"time_before_expiry\": \"P7D\" }"
+      },
+      "cognitive_deployments": {
+        "type": "map(object({ deployment_name = string model_format = optional(string, \"OpenAI\") model_name = string model_version = optional(string) dynamic_throttling_enabled = optional(bool) sku = object({ name = string tier = optional(string) size = optional(string) family = optional(string) capacity = optional(number, 1) }) }))",
+        "description": "(Optional) cognitive_deployments block supports below values: map(object({ deployment_name = \"(Required) The name of the Deployment. Changing this forces a new resource to be created.\" model_format = \"(Optional) The format of the Cognitive Services Account Deployment model. Changing this forces a new resource to be created. Possible values can be found by running 'az cognitiveservices account list-models'. Available values may include models from AI21 Labs, Black Forest Labs, Cohere, Core42, DeepSeek, Meta, Microsoft, Mistral AI, OpenAI, and xAI. Defaults to 'OpenAI'.\" model_name = \"(Required) The name of the Deployment model. Example : gpt-35-turbo, gpt-35-turbo-instruct, gpt-4, gpt-4-32k, text-embedding-3-small, text-embedding-3-large, text-embedding-ada-002, gpt-35-turbo-16k, gpt-4o, gpt-4o-mini, gpt-4.1. Changing this forces a new resource to be created.\" model_version = \"(Optional) The version of Deployment model. If version is not specified, the default version of the model at the time will be assigned.\" dynamic_throttling_enabled = \"(Optional) Whether dynamic throttling is enabled.\" sku = \"(Required) SKU block supports below values: object({ name = \"(Required) The name of the SKU. Possible values include Standard, DataZoneBatch, DataZoneStandard, DataZoneProvisionedManaged, GlobalBatch, GlobalProvisionedManaged, GlobalStandard, and ProvisionedManaged. Changing this forces a new resource to be created.\" tier = \"(Optional) Possible values are Free, Basic, Standard, Premium, Enterprise. This property is required only when multiple tiers are available with the SKU name. Changing this forces a new resource to be created.\" size = \"(Optional) The SKU size. When the name field is the combination of tier and some other value, then that can be captured here. Changing this forces a new resource to be created.\" family = \"(Optional) If the service has different generations of hardware, for the same SKU, then that can be captured here. Changing this forces a new resource to be created.\" capacity = \"(Optional) Tokens-per-Minute (TPM). The unit of measure for this field is in the thousands of Tokens-per-Minute. Defaults to 1 which means that the limitation is 1000 tokens per minute. If the resources SKU supports scale in/out then the capacity field should be included in the resources' configuration. If the scale in/out is not supported by the resources SKU then this field can be safely omitted.\" }) }))",
+        "required": false,
+        "default": "{}"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "create_role_assignment_aiconnections": {
+        "type": "bool",
+        "description": "(Optional) Whether to create a role assignment to the service identity to allow proper resource deletion when connections are present.",
+        "required": false,
+        "default": "true"
+      },
+      "create_role_assignment_cmk": {
+        "type": "bool",
+        "description": "(Optional) Whether to create a role assignment to the service identity to allow access to the key vault keys.",
+        "required": false,
+        "default": "true"
+      },
+      "create_role_assignment_spn_owner": {
+        "type": "bool",
+        "description": "(Optional) Whether to create a role assignment to the SPN to allow owner access to the AI Foundry resource.",
+        "required": false,
+        "default": "true"
+      },
+      "customer_managed_key": {
+        "type": "object({ key_vault_id = string key_vault_uri = string expiration_date = string identity_principal_id = string identity_client_id = string })",
+        "description": "(Required) An customer_managed_key block as defined below object({ key_vault_id = \"(Required) The resource ID of the Key Vault where the Key Vault Key resides.\" key_vault_uri = \"(Required) The URI of the Key Vault where the Key Vault Key resides.\" expiration_date = \"(Required) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').\" identity_principal_id = \"(Required) The principal ID (object ID) of the User-Assigned Managed Identity for role assignments.\" identity_client_id = \"(Required) The client ID (application ID) of the User-Assigned Managed Identity for encryption.\" })",
+        "required": true
+      },
+      "customsubdomainname": {
+        "type": "string",
+        "description": "(Required) The subdomain name used for token-based authentication. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "disable_local_auth": {
+        "type": "bool",
+        "description": "(Optional) Specifies whether local authentication is disabled for the Azure AI Foundry resource. Defaults to true as mandated by security control AZU-AIF-IA_010. Setting this to false requires a Cyber exemption.",
+        "required": false,
+        "default": "true"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = optional(list(string)) })",
+        "description": "(Required) An identity block supports the following: object({ type = \"(Required) Specifies the type of Managed Service Identity that should be configured on this resource. Possible values are SystemAssigned, UserAssigned, SystemAssigned, UserAssigned.\" identity_ids = \"(Optional) Specifies a list of User Assigned Managed Identity IDs to be assigned to this resource.\" })",
+        "required": false,
+        "default": "{ \"identity_ids\": null, \"type\": \"SystemAssigned\" }"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "key_vault_tags": {
+        "type": "map(any)",
+        "description": "(Optional) Key Vault related tags to be set on key vault child resources.",
+        "required": false,
+        "default": "{}"
+      },
+      "kind": {
+        "type": "string",
+        "description": "(Required) Kind of the resource. For AI Services Account, only 'AIServices' is valid.",
+        "required": true
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "network_injections": {
+        "type": "object({ subnet_id = string scenario = string })",
+        "description": "(Optional) Controls the Network Injections on this resource. The following properties can be specified: object({ subnet_id = (Required) Full resource id of the Subnet resource. scenario = (Required) The scenario for the network injection. Only `agent` is supported. })",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "principal_ids": {
+        "type": "set(string)",
+        "description": "(Optional) Set of principal IDs (user, group, or service principal) to assign the Azure AI User role.",
+        "required": false,
+        "default": "[]"
+      },
+      "projectmanagementenabled": {
+        "type": "bool",
+        "description": "(Optional) Specifies whether this resource support project management as child resources, used as containers for access management, data isolation and cost in AI Foundry.",
+        "required": false,
+        "default": "true"
+      },
+      "rai_policy_name": {
+        "type": "string",
+        "description": "(Optional) The name of RAI policy.",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_id": {
+        "type": "string",
+        "description": "(Required) The resource ID of the Resource Group in which to create the resource. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "sku": {
+        "type": "string",
+        "description": "(Required) Specifies the SKU Name for this AI Services Account. Possible values are F0, F1, S0, S, S1, S2, S3, S4, S5, S6, P0, P1, P2, E0 and DC0.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "version_upgrade_option": {
+        "type": "string",
+        "description": "(Optional) Deployment model version upgrade option. Possible values are OnceNewDefaultVersionAvailable, OnceCurrentVersionExpired, and NoAutoUpgrade. Defaults to OnceNewDefaultVersionAvailable.",
+        "required": false,
+        "default": "\"OnceNewDefaultVersionAvailable\""
+      }
+    }
+  },
+  "outputs": {
+    "client_id": {
+      "description": "The clientId of the user-assigned managed identity for the Azure AI Foundry resource."
+    },
+    "id": {
+      "description": "The ID of the created Azure AI Foundry resource."
+    },
+    "keys": {
+      "description": "The access keys for the Azure AI Foundry resource."
+    },
+    "name": {
+      "description": "The name of the created Azure AI Foundry resource."
+    },
+    "principal_id": {
+      "description": "The principalId of the user-assigned managed identity for the Azure AI Foundry resource."
+    },
+    "resource": {
+      "description": "The Azure AI Foundry resource object."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Aifoundry' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

@@ -1,0 +1,192 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Event Hub module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-eventhub'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-eventhub",
+  "module_type": "service",
+  "azure_service": "Eventhub",
+  "module_name": "Event Hub module",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.3.2",
+    "0.3.1"
+  ],
+  "gitlab_repository": "https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-eventhubnamespace/-/tree/main",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-eventhub.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Virtual Network",
+    "Subnet",
+    "Network Security Group",
+    "Route Table",
+    "Keyvault",
+    "Privateendpoint",
+    "Eventnamespace",
+    "time_sleep"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_eventhub.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_eventhub_authorization_rule.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_eventhub_consumer_group.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "eventhub",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-eventhub.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.3.2",
+        "0.3.1"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "eventhub_namespace_name",
+      "location",
+      "message_retention",
+      "org_id",
+      "partition_count",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "authorization_rules": {
+        "type": "map(object({ name = string listen = optional(bool, false) send = optional(bool, false) manage = optional(bool, false) }))",
+        "description": "(Optional) An Event Hub Namespace Authorization Rules configuation as defined below.. object({ name = \"(Required) Specifies the name of the Authorization Rule.\" listen = \"(Optional) Grants listen access to this this Authorization Rule.\" send = \"(Optional) Grants send access to this this Authorization Rule.\" manage = \"(Optional) Grants manage access to this this Authorization Rule. When this property is true - both listen and send must be too.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "capture_description": {
+        "type": "object({ enabled = bool encoding = string interval_in_seconds = optional(number, 300) size_limit_in_bytes = optional(number, 314572800) skip_empty_archives = optional(bool, false) destination = object({ name = string archive_name_format = string blob_container_name = string storage_account_id = string }) })",
+        "description": "(Optional) A capture_description block as defined below. object({ enabled = \"(Required) Specifies if the Capture Description is Enabled.\" encoding = \"(Required) Specifies the Encoding used for the Capture Description. Possible values are `Avro` and `AvroDeflate`.\" interval_in_seconds = \"(Optional) Specifies the time interval in seconds at which the capture will happen. Values can be between 60 and 900 seconds.\" size_limit_in_bytes = \"(Optional) Specifies the amount of data built up in your EventHub before a Capture Operation occurs. Value should be between 10485760 and 524288000 bytes.\" skip_empty_archives = \"(Optional) Specifies if empty files should not be emitted if no events occur during the Capture time window.\" destination = (Required) A destination block as defined below. object({ name = \"(Required) The Name of the Destination where the capture should take place. At this time the only supported value is `EventHubArchive.AzureBlockBlob`.\" archive_name_format = \"(Required) The Blob naming convention for archiving. e.g. {Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}.\" blob_container_name = \"(Required) The name of the Container within the Blob Storage Account where messages should be archived.\" storage_account_id = \"(Required) The ID of the Blob Storage Account where messages should be archived.\" }) })",
+        "required": false,
+        "default": "null"
+      },
+      "consumer_groups": {
+        "type": "map(object({ name = string user_metadata = optional(string, null) }))",
+        "description": "(Optional) An Event Hub Consumer Group objects as defined below.. object({ name = \"(Required) Specifies the name of the EventHub Consumer Group resource.\" user_metadata = \"(Optional) Specifies the user metadata.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "eventhub_name": {
+        "type": "string",
+        "description": "(Optional) Specifies the custom name of the EventHub. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "eventhub_namespace_name": {
+        "type": "string",
+        "description": "(Required) Specifies the name of the EventHub Namespace. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "message_retention": {
+        "type": "number",
+        "description": "(Required) Specifies the number of days to retain the events for this Event Hub.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "partition_count": {
+        "type": "number",
+        "description": "(Required) Specifies the current number of shards on the Event Hub. Changing this will force-recreate the resource.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "status": {
+        "type": "string",
+        "description": "(Optional) Specifies the status of the Event Hub resource. Possible values are `Active`, `Disabled` and `SendDisabled`.",
+        "required": false,
+        "default": "\"Active\""
+      }
+    }
+  },
+  "outputs": {
+    "consumer_group_ids": {
+      "description": "The IDs of the Event Hub consumer groups."
+    },
+    "consumer_group_names": {
+      "description": "The names of the Event Hub consumer groups."
+    },
+    "id": {
+      "description": "The ID of the created Event Hub."
+    },
+    "name": {
+      "description": "The name of the created Event Hub."
+    },
+    "resource": {
+      "description": "The Event Hub resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Eventhub' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Virtual Network",
+      "Subnet",
+      "Network Security Group",
+      "Route Table",
+      "Keyvault",
+      "Privateendpoint",
+      "Eventnamespace",
+      "time_sleep"
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+1-create-release-tags:
+  stage: build
+  when: manual
+  environment:
+    name: release
+  trigger:
+    include: 
+      - local: 'pipelines/build/build-pipeline-child.yaml'
+    strategy: depend
+    forward:
+      pipeline_variables: true
+      yaml_variables: true

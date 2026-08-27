@@ -1,0 +1,174 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Private Endpoint Module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-privateendpoint'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-privateendpoint",
+  "module_type": "service",
+  "azure_service": "Privateendpoint",
+  "module_name": "Private Endpoint Module",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.7.5",
+    "0.7.4"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-privateendpoint.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Key Vault"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_private_endpoint.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "privateendpoint",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-privateendpoint.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.7.5",
+        "0.7.4"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "group_ids",
+      "is_manual_connection",
+      "location",
+      "org_id",
+      "resource_group_name",
+      "static_ip_required",
+      "subnet_id"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "group_ids": {
+        "type": "list(string)",
+        "description": "(Required) A list of subresource names which the Private Endpoint is able to connect to. subresource_names corresponds to group_id.",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "ip_configuration": {
+        "type": "map(object({ private_ip_address = string subresource_name = optional(string) member_name = optional(string) }))",
+        "description": "(Optional) An ip_configuration block as defined below map(object({ private_ip_address = \"(Required) Specifies the static IP address within the private endpoint's subnet to be used. Changing this forces a new resource to be created.\" subresource_name = \"(Optional) Specifies the subresource this IP address applies to.\" member_name = \"(Optional) Specifies the member name this IP address applies to.\" }))",
+        "required": false,
+        "default": "{}"
+      },
+      "is_manual_connection": {
+        "type": "bool",
+        "description": "(Required) Does the Private Endpoint require Manual Approval from the remote resource owner? Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "private_connection_resource_alias": {
+        "type": "string",
+        "description": "(Optional) The Service Alias of the Private Link Enabled Remote Resource which this Private Endpoint should be connected to. One of private_connection_resource_id or private_connection_resource_alias must be specified. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "private_connection_resource_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the Private Link Enabled Remote Resource which this Private Endpoint should be connected to. One of `private_connection_resource_id` or `private_connection_resource_alias` must be specified. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "request_message": {
+        "type": "string",
+        "description": "(Optional) A message passed to the owner of the remote resource when the private endpoint attempts to establish the connection to the remote resource. The provider allows a maximum request message length of `140` characters, however the request message maximum length is dependent on the service the private endpoint is connected to. Only valid if `is_manual_connection` is set to true.",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "static_ip_required": {
+        "type": "bool",
+        "description": "(Required) Whether a Static IP is required to be assigned to Private Endpoint or not.",
+        "required": true
+      },
+      "subnet_id": {
+        "type": "string",
+        "description": "(Required) The ID of the Subnet from which Private IP Addresses will be allocated for this Private Endpoint. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "custom_dns_configs": {
+      "description": "The custom DNS configuartions name associated with the private_endpoint."
+    },
+    "custom_network_interface_name": {
+      "description": "The custom network interface name associated with the private_endpoint."
+    },
+    "id": {
+      "description": "The resource ID of the created Private Endpoint."
+    },
+    "name": {
+      "description": "The name of the created Private Endpoint."
+    },
+    "resource": {
+      "description": "The Private Endpoint resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Privateendpoint' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Key Vault"
+    ]
+  }
+}

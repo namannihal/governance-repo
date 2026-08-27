@@ -1,0 +1,297 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Compute Gallery Image Definition module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-sharedimage'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-sharedimage",
+  "module_type": "service",
+  "azure_service": "Sharedimage",
+  "module_name": "Azure Compute Gallery Image Definition module",
+  "latest_tag": "1.0.3",
+  "available_tags": [
+    "1.0.3",
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.1.2"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-sharedimage.git//?ref=1.0.3",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Azure Compute Gallery",
+    "managed_image_id",
+    "os_disk_snapshot_id",
+    "blob_uri",
+    "storage_account_id"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_shared_image.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_shared_image_version.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_resource_group.this",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "sharedimage",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-sharedimage.git//?ref=1.0.3",
+      "version": "1.0.3",
+      "available_versions": [
+        "1.0.3",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.1.2"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "gallery_name",
+      "identifier",
+      "image_name",
+      "location",
+      "org_id",
+      "os_type",
+      "resource_group_name"
+    ],
+    "properties": {
+      "accelerated_network_support_enabled": {
+        "type": "string",
+        "description": "(Optional) Specifies if the Shared Image supports Accelerated Network. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "architecture": {
+        "type": "string",
+        "description": "(Optional) CPU architecture supported by an OS. Possible values are x64 and Arm64. Defaults to x64. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "\"x64\""
+      },
+      "confidential_vm_enabled": {
+        "type": "bool",
+        "description": "(Optional) Specifies if Confidential Virtual Machines enabled. It will enable all the features of trusted, with higher confidentiality features for isolate machines or encrypted data. Available for Gen2 machines. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "confidential_vm_supported": {
+        "type": "bool",
+        "description": "(Optional) Specifies if supports creation of both Confidential virtual machines and Gen2 virtual machines with standard security from a compatible Gen2 OS disk VHD or Gen2 Managed image. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "description": {
+        "type": "string",
+        "description": "(Optional) A description of this Shared Image.",
+        "required": false,
+        "default": "\"\""
+      },
+      "disk_controller_type_nvme_enabled": {
+        "type": "bool",
+        "description": "(Optional) Specifies if the Shared Image supports NVMe disks. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "disk_types_not_allowed": {
+        "type": "list(string)",
+        "description": "(Optional) list of One or more Disk Types not allowed for the Image. Possible values include Standard_LRS and Premium_LRS.",
+        "required": false,
+        "default": "null"
+      },
+      "end_of_life_date": {
+        "type": "string",
+        "description": "(Optional) The end of life date in RFC3339 format of the Image. Format as YYYY-MM-DDTHH:MM:SSZ",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "eula": {
+        "type": "string",
+        "description": "(Optional) The End User Licence Agreement for the Shared Image. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "gallery_name": {
+        "type": "string",
+        "description": "(Required) Specifies the name of the Shared Image Gallery in which this Shared Image should exist. Changing this forces a new resource to be created",
+        "required": true
+      },
+      "hyper_v_generation": {
+        "type": "string",
+        "description": "(Optional) The generation of HyperV that the Virtual Machine used to create the Shared Image is based on. Possible values are V1 and V2. Defaults to V1. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "\"V2\""
+      },
+      "identifier": {
+        "type": "object({ offer = string publisher = string sku = string })",
+        "description": "(Required) Object containing variables for identifier configuration object({ offer = (Required) The Offer Name for this Shared Image. Changing this forces a new resource to be created. publisher = (Required) The Publisher Name for this Gallery Image. Changing this forces a new resource to be created. sku = (Required) The Name of the SKU for this Gallery Image. Changing this forces a new resource to be created. })",
+        "required": true
+      },
+      "image_name": {
+        "type": "string",
+        "description": "(Required) Specifies the name of the Shared Image. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "max_recommended_memory_in_gb": {
+        "type": "number",
+        "description": "(Optional) Maximum memory in GB recommended for the Image.",
+        "required": false,
+        "default": "null"
+      },
+      "max_recommended_vcpu_count": {
+        "type": "number",
+        "description": "(Optional) Maximum count of vCPUs recommended for the Image.",
+        "required": false,
+        "default": "null"
+      },
+      "min_recommended_memory_in_gb": {
+        "type": "number",
+        "description": "(Optional) Minimum memory in GB recommended for the Image.",
+        "required": false,
+        "default": "null"
+      },
+      "min_recommended_vcpu_count": {
+        "type": "number",
+        "description": "(Optional) Minimum count of vCPUs recommended for the Image.",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "os_type": {
+        "type": "string",
+        "description": "(Required) The type of Operating System present in this Shared Image. Possible values are Linux and Windows. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "privacy_statement_uri": {
+        "type": "string",
+        "description": "(Optional) The URI containing the Privacy Statement associated with this Shared Image. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "purchase_plan": {
+        "type": "object({ name = string publisher = optional(string) product = optional(string) })",
+        "description": "(Optional) Object containing variables for purchase plan configuration object({ name = (Required) The Purchase Plan Name for this Shared Image. Changing this forces a new resource to be created. publisher = (Optional) The Purchase Plan Publisher for this Gallery Image. Changing this forces a new resource to be created. product = (Optional) The Purchase Plan Product for this Gallery Image. Changing this forces a new resource to be created. })",
+        "required": false,
+        "default": "null"
+      },
+      "release_note_uri": {
+        "type": "string",
+        "description": "(Optional) The URI containing the Release Notes associated with this Shared Image.",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "shared_image_versions": {
+        "type": "map(object({ image_version_number = string blob_uri = optional(string) storage_account_id = optional(string) end_of_life_date = optional(string) exclude_from_latest = optional(bool, false) managed_image_id = optional(string) os_disk_snapshot_id = optional(string) deletion_of_replicated_locations_enabled = optional(bool, false) replication_mode = optional(string, \"Full\") target_region = map(object({ regional_replica_count = number disk_encryption_set_id = optional(string) exclude_from_latest_enabled = optional(string, false) storage_account_type = optional(string, \"Standard_LRS\") })) }))",
+        "description": "shared_image_versions = (Optional) A map of the 'shared_image_versions' objects used to create 0 or more image versions and supports the following: shared_image_versions = (Optional) object({ image_version_number = (Required) The version number for this Image Version, such as 1.0.0. Changing this forces a new resource to be created. blob_uri = (Optional) URI of the Azure Storage Blob used to create the Image Version. Changing this forces a new resource to be created. storage_account_id = (Optional) The ID of the Storage Account where the Blob exists. Changing this forces a new resource to be created. end_of_life_date = (Optional) The end of life date in RFC3339 format of the Image Version. exclude_from_latest = (Optional) Should this Image Version be excluded from the latest filter? If set to true this Image Version won't be returned for the latest version. Defaults to false. managed_image_id = (Optional) The ID of the Managed Image or Virtual Machine ID which should be used for this Shared Image Version. Changing this forces a new resource to be created.The ID can be sourced from the azurerm_image Data Source or Resource. os_disk_snapshot_id = (Optional) The ID of the OS disk snapshot which should be used for this Shared Image Version. Changing this forces a new resource to be created. deletion_of_replicated_locations_enabled = (Optional) Specifies whether this Shared Image Version can be deleted from the Azure Regions this is replicated to. Defaults to false. Changing this forces a new resource to be created. replication_mode = (Optional) Mode to be used for replication. Possible values are Full and Shallow. Defaults to Full. Changing this forces a new resource to be created. target_region = \"(Required) A map of `target_region` objects for the Windows Web App target_region = (Required) object({ regional_replica_count = (Required) The Publisher Name for this Gallery Image. Changing this forces a new resource to be created. disk_encryption_set_id = (Optional) The ID of the Disk Encryption Set to encrypt the Image Version in the target region. Changing this forces a new resource to be created. exclude_from_latest_enabled = (Optional) Specifies whether this Shared Image Version should be excluded when querying for the latest version. Defaults to false. storage_account_type = (Optional) The storage account type for the image version. Possible values are Standard_LRS, Premium_LRS and Standard_ZRS. Defaults to Standard_LRS. You can store all of your image version replicas in Zone Redundant Storage by specifying Standard_ZRS. }) })",
+        "required": false,
+        "default": "{}"
+      },
+      "specialized": {
+        "type": "bool",
+        "description": "(Optional) Specifies that the Operating System used inside this Image has not been Generalized (for example, sysprep on Windows has not been run). Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "false"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "trusted_launch_enabled": {
+        "type": "bool",
+        "description": "(Optional) Specifies if Trusted Launch has to be enabled for the Virtual Machine created from the Shared Image. Changing this forces a new resource to be created.Only one of trusted_launch_supported, trusted_launch_enabled, confidential_vm_supported and confidential_vm_enabled can be specified.",
+        "required": false,
+        "default": "true"
+      },
+      "trusted_launch_supported": {
+        "type": "bool",
+        "description": "(Optional) Specifies if supports creation of both Trusted Launch virtual machines and Gen2 virtual machines with standard security created from the Shared Image. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The Resource ID of the Compute Gallery Image Definition."
+    },
+    "name": {
+      "description": "The Name of the Compute Gallery Image Definition Name."
+    },
+    "resource": {
+      "description": "The Azure Compute Gallery Image definition resource."
+    },
+    "version_ids": {
+      "description": "The resource version IDs consists of a map of objects of the Azure Compute Gallery Image version IDs"
+    },
+    "version_names": {
+      "description": "The resource version names consists of map of object of the Azure Compute Gallery Image version names"
+    },
+    "version_resources": {
+      "description": "The resource versions consists of map of objects of the Azure Compute Gallery Image version"
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Sharedimage' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Azure Compute Gallery",
+      "managed_image_id",
+      "os_disk_snapshot_id",
+      "blob_uri",
+      "storage_account_id"
+    ]
+  }
+}

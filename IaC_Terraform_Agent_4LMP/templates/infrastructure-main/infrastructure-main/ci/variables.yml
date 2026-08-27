@@ -1,0 +1,30 @@
+variables:
+  PESTER_IMAGE: registry.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-pipelines/pester-image:v1.0.0
+  TF_CORE_TEMPLATE_VERSION: 4.4.7
+  VAULT_SERVICE_TEMPLATE_VERSION: 4.5.0
+  RELEASE_VERSION: 1.0.0
+  BAMS_SCRIPTS_UPLOAD_TARGET: "https://bams-aws.refinitiv.com/artifactory/default.generic.cloud/app-51847/app/ingestion"
+  BAMS_SCRIPTS_UPLOAD_SOURCE: "terraform/templates/scripts"
+
+  # Vault service variables
+  VS_VAULT_NAMESPACE: "azure"
+
+  # Terraform core variables
+  TF_CORE_TERRAFORM_PATH:  "terraform"
+  TF_CORE_STATE_BACKEND_MODE: "azurerm"
+  TF_CORE_STATE_BACKEND_AZURE_STORAGE_CONTAINER: "terraform"
+  TF_CORE_TERRAFORM_PLAN_ARGS: "--var-file=../environments/${ENV}/infra.tfvars"
+
+  # GCF variables
+  APP_ID: "app-51847"
+  WIZ_OPE_APP_ID: "app-51847"
+  LSEG_VAULT_NAMESPACE: "azure"
+  LSEG_PPE_VAULT: "true"
+  VS_VAULT_SELECT: "ppe"
+  TERRAFORM_PATH_LIST: terraform
+  FUNCTIONAL_TEST_DISABLED: "true"
+  OPE_VAULT_INSTANCE: LSEG_PPE
+  OPE_VAULT_NAMESPACE: azure
+  # Trivy requires this variable to execute the trivy-stage
+  # If it’s not specified, you’ll encounter a warning [terraform-parser] message
+  TRIVY_ADDITIONAL_ARGS: "--tf-vars environments/prd-01/infra.tfvars"

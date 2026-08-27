@@ -1,0 +1,259 @@
+#
+# Trigger jobs for IaC pipelines
+#
+# Notes:
+# 1 - pipelines are included so may be local or BAS-BC3 stock versions
+# 2 - pipelines should be pinned using a versioned tag reference. This is especially important when using BAS-BC3 stock pipelines.
+# 3 - include spec variables are only used for labeling stages - they do not control pipeline behaviour. So they can be shortened for readability.
+# 4 - include spec variables cannot be set with CICD default, pipeline, or job variables - this is a limitation of GITLAB
+#
+include:
+  - "/environments/prd/pipeline-vars/pipeline-vars.yaml"
+  - "/environments/prd/subscription-vars/subscription.yaml"
+
+stages:
+  - prd
+## IaC template - used by all jobs
+.iac_prd_deploy_template:
+  stage: prd
+  extends: [.prd_pipeline_vars, .prd_subscription_vars_eus2]
+  variables:
+    REGION: "eus2"
+    MANIFEST_FILE: "${BAS_CICD_PROJECT_DIR}/environments/${ENV}/manifest.yaml"
+    BAS_ENABLE_DYNAMIC_OPE: "true"
+    BAS_ENABLE_DESTROY: "false"
+    BAS_ENABLE_DEBUG: "false"
+  when: manual
+
+###################
+### Subnet  #######
+###################
+deploy-prd-nonrtbl-network-1:
+  extends: [.iac_prd_deploy_template]
+  variables:
+    CLUSTER: "${ENV}_${REGION}_nonrtbl_network_1"
+    TERRAFORM_PATH: "${BAS_CICD_PROJECT_DIR}/terraform/nonrtbl-network"
+    TERRAFORM_VAR_FILE: "${BAS_CICD_PROJECT_DIR}/environments/${ENV}/terraform-vars/eus2/${CLUSTER}.tfvars"
+    TF_CORE_TERRAFORM_PLAN_ARGS: "-var-file=${TERRAFORM_VAR_FILE}"
+    TF_CORE_TERRAFORM_APPLY_ARGS: "-var-file=${TERRAFORM_VAR_FILE} -parallelism=1"
+    TERRAFORM_STATE_FILE: "tfstate/${CI_PROJECT_NAME}/${REGION}/${CLUSTER}.tfstate"
+  trigger:
+    include:
+      - project: 'app/itc-93303/bas-cicd-templates'
+        ref: templates-0.0.59
+        file: 'templates/iac/pipelines/bas-azure-iac-tfcore-production-pipeline-v4.yaml'
+        inputs:
+          env: "prd"
+          rgn: "eus2"
+          svc: "nonrtbl_network"
+    strategy: depend
+    forward:
+      pipeline_variables: true
+      yaml_variables: true
+
+###################
+### Key Vault  ####
+###################
+deploy-prd-key-vault-1:
+  extends: [.iac_prd_deploy_template]
+  variables:
+    CLUSTER: "${ENV}_${REGION}_key_vault_1"
+    TERRAFORM_PATH: "${BAS_CICD_PROJECT_DIR}/terraform/key_vault"
+    TERRAFORM_VAR_FILE: "${BAS_CICD_PROJECT_DIR}/environments/${ENV}/terraform-vars/eus2/${CLUSTER}.tfvars"
+    TF_CORE_TERRAFORM_PLAN_ARGS: "-var-file=${TERRAFORM_VAR_FILE}"
+    TF_CORE_TERRAFORM_APPLY_ARGS: "-var-file=${TERRAFORM_VAR_FILE} -parallelism=1"
+    TERRAFORM_STATE_FILE: "tfstate/${CI_PROJECT_NAME}/${REGION}/${CLUSTER}.tfstate"
+  trigger:
+    include:
+      - project: 'app/itc-93303/bas-cicd-templates'
+        ref: templates-0.0.59
+        file: 'templates/iac/pipelines/bas-azure-iac-tfcore-production-pipeline-v4.yaml'
+        inputs:
+          env: "prd"
+          rgn: "eus2"
+          svc: "key-vault"
+    strategy: depend
+    forward:
+      pipeline_variables: true
+      yaml_variables: true
+
+##############################
+### Azure Compute Gallery ####
+##############################
+deploy-prd-azure-compute-galleries-1:
+  extends: [.iac_prd_deploy_template]
+  variables:
+    CLUSTER: "${ENV}_${REGION}_azure_compute_galleries_1"
+    MANIFEST_FILE: "${BAS_CICD_PROJECT_DIR}/environments/${ENV}/manifest.yaml"
+    TERRAFORM_PATH: "${BAS_CICD_PROJECT_DIR}/terraform/azure_compute_galleries"
+    TERRAFORM_VAR_FILE: "${BAS_CICD_PROJECT_DIR}/environments/${ENV}/terraform-vars/${REGION}/${CLUSTER}.tfvars"
+    TF_CORE_TERRAFORM_PLAN_ARGS: "-var-file=${TERRAFORM_VAR_FILE}"
+    TERRAFORM_STATE_FILE: "tfstate/${CI_PROJECT_NAME}/${REGION}/${CLUSTER}.tfstate"
+  trigger:
+    include:
+      - project: 'app/itc-93303/bas-cicd-templates'
+        ref: templates-0.0.74
+        file: 'templates/iac/pipelines/bas-azure-iac-tfcore-production-pipeline-v3.yaml'
+        inputs:
+          env: "prd"
+          rgn: "eus2"
+          svc: "azure_compute_galleries"
+    strategy: depend
+    forward:
+      pipeline_variables: true
+      yaml_variables: true
+
+###############
+### SQL MI ####
+###############
+deploy-prd-sqlmi-1:
+  extends: [.iac_prd_deploy_template]
+  variables:
+    CLUSTER: "${ENV}_${REGION}_sqlmi_1"
+    TERRAFORM_PATH: "${BAS_CICD_PROJECT_DIR}/terraform/azuresqlmi"
+    TERRAFORM_VAR_FILE: "${BAS_CICD_PROJECT_DIR}/environments/${ENV}/terraform-vars/eus2/${CLUSTER}.tfvars"
+    TF_CORE_TERRAFORM_PLAN_ARGS: "-var-file=${TERRAFORM_VAR_FILE}"
+    TERRAFORM_STATE_FILE: "tfstate/${CI_PROJECT_NAME}/${CLUSTER}.tfstate"
+  trigger:
+    include:
+      - project: 'app/itc-93303/bas-cicd-templates'
+        ref: templates-0.0.59
+        file: 'templates/iac/pipelines/bas-azure-iac-tfcore-production-pipeline-v4.yaml'
+        inputs:
+          env: "prd"
+          rgn: "eus2"
+          svc: "sqlmi"
+    strategy: depend
+    forward:
+      pipeline_variables: true
+      yaml_variables: true
+
+######################
+### Linux Webapp ###
+######################
+deploy-prd-linux_webapp-1:
+  extends: [.iac_prd_deploy_template]
+  variables:
+    CLUSTER: "${ENV}_${REGION}_linux_webapp_1"
+    TERRAFORM_PATH: "${BAS_CICD_PROJECT_DIR}/terraform/linuxwebapp"
+    TERRAFORM_VAR_FILE: "${BAS_CICD_PROJECT_DIR}/environments/${ENV}/terraform-vars/eus2/${CLUSTER}.tfvars"
+    TF_CORE_TERRAFORM_PLAN_ARGS: "-var-file=${TERRAFORM_VAR_FILE}"
+    TERRAFORM_STATE_FILE: "tfstate/${CI_PROJECT_NAME}/${REGION}/${CLUSTER}.tfstate"
+    TF_CORE_TERRAFORM_APPLY_ARGS: "-var-file=${TERRAFORM_VAR_FILE} -parallelism=1"
+  trigger:
+    include:
+      - project: 'app/itc-93303/bas-cicd-templates'
+        ref: templates-0.0.59
+        file: 'templates/iac/pipelines/bas-azure-iac-tfcore-production-pipeline-v4.yaml'
+        inputs:
+          env: "prd"
+          rgn: "eus2"
+          svc: "linux-webapp"
+    strategy: depend
+    forward:
+      pipeline_variables: true
+      yaml_variables: true
+
+######################
+### Windows Webapp ###
+######################
+deploy-prd-windows_webapp-1:
+  extends: [.iac_prd_deploy_template]
+  variables:
+    CLUSTER: "${ENV}_${REGION}_windows_webapp_1"
+    TERRAFORM_PATH: "${BAS_CICD_PROJECT_DIR}/terraform/windowswebapp"
+    TERRAFORM_VAR_FILE: "${BAS_CICD_PROJECT_DIR}/environments/${ENV}/terraform-vars/eus2/${CLUSTER}.tfvars"
+    TF_CORE_TERRAFORM_PLAN_ARGS: "-var-file=${TERRAFORM_VAR_FILE}"
+    TERRAFORM_STATE_FILE: "tfstate/${CI_PROJECT_NAME}/${CLUSTER}.tfstate"
+    TF_CORE_TERRAFORM_APPLY_ARGS: "-var-file=${TERRAFORM_VAR_FILE} -parallelism=1"
+  trigger:
+    include:
+      - project: 'app/itc-93303/bas-cicd-templates'
+        ref: templates-0.0.59
+        file: 'templates/iac/pipelines/bas-azure-iac-tfcore-production-pipeline-v4.yaml'
+        inputs:
+          env: "prd"
+          rgn: "eus2"
+          svc: "windows-webapp"
+    strategy: depend
+    forward:
+      pipeline_variables: true
+      yaml_variables: true
+
+######################
+### Windows VM #######
+######################
+deploy-prd-windows-vm-1:
+  extends: [.iac_prd_deploy_template]
+  variables:
+    CLUSTER: "${ENV}_${REGION}_windowsvm_1"
+    TERRAFORM_PATH: "${BAS_CICD_PROJECT_DIR}/terraform/windowsvm"
+    TERRAFORM_VAR_FILE: "${BAS_CICD_PROJECT_DIR}/environments/${ENV}/terraform-vars/eus2/${CLUSTER}.tfvars"
+    TF_CORE_TERRAFORM_PLAN_ARGS: "-var-file=${TERRAFORM_VAR_FILE}"
+    TERRAFORM_STATE_FILE: "tfstate/${CI_PROJECT_NAME}/${REGION}/${CLUSTER}.tfstate"
+  trigger:
+    include:
+      - project: 'app/itc-93303/bas-cicd-templates'
+        ref: templates-0.0.74
+        file: 'templates/iac/pipelines/bas-azure-iac-tfcore-developer-pipeline-v3.yaml'
+        inputs:
+          env: "prd"
+          rgn: "eus2"
+          svc: "windows-vm"
+    strategy: depend
+    forward:
+      pipeline_variables: true
+      yaml_variables: true
+
+####################
+### Linux VM #######
+####################
+deploy-prd-linux-vm-1:
+  extends: [.iac_prd_deploy_template]
+  variables:
+    CLUSTER: "${ENV}_${REGION}_linuxvm_1"
+    MANIFEST_FILE: "${BAS_CICD_PROJECT_DIR}/environments/${ENV}/manifest.yaml"
+    TERRAFORM_PATH: "${BAS_CICD_PROJECT_DIR}/terraform/linuxvm"
+    TERRAFORM_VAR_FILE: "${BAS_CICD_PROJECT_DIR}/environments/${ENV}/terraform-vars/eus2/${CLUSTER}.tfvars"
+    TF_CORE_TERRAFORM_PLAN_ARGS: "-var-file=${TERRAFORM_VAR_FILE}"
+    TERRAFORM_STATE_FILE: "tfstate/${CI_PROJECT_NAME}/${REGION}/${CLUSTER}.tfstate"
+  trigger:
+    include:
+      - project: 'app/itc-93303/bas-cicd-templates'
+        ref: templates-0.0.74
+        file: 'templates/iac/pipelines/bas-azure-iac-tfcore-production-pipeline-v3.yaml'
+        inputs:
+          env: "prd"
+          rgn: "eus2"
+          svc: "linux-vm"
+    strategy: depend
+    forward:
+      pipeline_variables: true
+      yaml_variables: true
+
+
+############################
+### Application Gateway ####
+############################
+deploy-prd-application-gateway-1:
+  extends: [.iac_prd_deploy_template]
+  variables:
+    CLUSTER: "${ENV}_${REGION}_application_gateway_1"
+    MANIFEST_FILE: "${BAS_CICD_PROJECT_DIR}/environments/${ENV}/manifest.yaml"
+    TERRAFORM_PATH: "${BAS_CICD_PROJECT_DIR}/terraform/application_gateway"
+    TERRAFORM_VAR_FILE: "${BAS_CICD_PROJECT_DIR}/environments/${ENV}/terraform-vars/${REGION}/${CLUSTER}.tfvars"
+    TF_CORE_TERRAFORM_PLAN_ARGS: "-var-file=${TERRAFORM_VAR_FILE}"
+    TERRAFORM_STATE_FILE: "tfstate/${CI_PROJECT_NAME}/${REGION}/${CLUSTER}.tfstate"
+  trigger:
+    include:
+      - project: 'app/itc-93303/bas-cicd-templates'
+        ref: templates-0.0.74
+        file: 'templates/iac/pipelines/bas-azure-iac-tfcore-production-pipeline-v3.yaml'
+        inputs:
+          env: "prd"
+          rgn: "eus2"
+          svc: "application-gateway"
+    strategy: depend
+    forward:
+      pipeline_variables: true
+      yaml_variables: true

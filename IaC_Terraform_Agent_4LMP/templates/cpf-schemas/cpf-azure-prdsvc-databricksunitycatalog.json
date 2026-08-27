@@ -1,0 +1,135 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Databricks Catalog Module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-databricksunitycatalog'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-databricksunitycatalog",
+  "module_type": "service",
+  "azure_service": "Databricksunitycatalog",
+  "module_name": "Databricks Catalog Module",
+  "latest_tag": "0.1.0",
+  "available_tags": [
+    "0.1.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-databricksunitycatalog.git//?ref=0.1.0",
+  "terraform_requirements": {
+    "databricks": ">= 1.40",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "databricks_catalog.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "databricksunitycatalog",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-databricksunitycatalog.git//?ref=0.1.0",
+      "version": "0.1.0",
+      "available_versions": [
+        "0.1.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "name"
+    ],
+    "properties": {
+      "comment": {
+        "type": "string",
+        "description": "(Optional) User-supplied free-form text.",
+        "required": false,
+        "default": "null"
+      },
+      "connection_name": {
+        "type": "string",
+        "description": "(Optional) For Foreign Catalogs: the name of the connection to an external data source. Changes forces creation of a new resource.",
+        "required": false,
+        "default": "null"
+      },
+      "enable_predictive_optimization": {
+        "type": "string",
+        "description": "(Optional) Whether predictive optimization should be enabled for this object and objects under it. Can be ENABLE, DISABLE or INHERIT.",
+        "required": false,
+        "default": "\"DISABLE\""
+      },
+      "force_destroy": {
+        "type": "string",
+        "description": "(Optional) Delete catalog regardless of its contents.",
+        "required": false,
+        "default": "null"
+      },
+      "isolation_mode": {
+        "type": "string",
+        "description": "(Optional) Whether the catalog is accessible from all workspaces or a specific set of workspaces. Can be ISOLATED or OPEN. Setting the catalog to ISOLATED will automatically allow access from the current workspace.",
+        "required": false,
+        "default": "\"OPEN\""
+      },
+      "name": {
+        "type": "string",
+        "description": "(Required) Name of Catalog relative to parent metastore.",
+        "required": true
+      },
+      "options": {
+        "type": "map(string)",
+        "description": "(Optional) For Foreign Catalogs: the name of the entity from an external data source that maps to a catalog. For example, the database name in a PostgreSQL server.",
+        "required": false,
+        "default": "{}"
+      },
+      "owner": {
+        "type": "string",
+        "description": "(Optional) Username/groupname/sp application_id of the catalog owner.",
+        "required": false,
+        "default": "null"
+      },
+      "properties": {
+        "type": "map(any)",
+        "description": "(Optional) Extensible Catalog properties.",
+        "required": false,
+        "default": "{}"
+      },
+      "provider_name": {
+        "type": "string",
+        "description": "(Optional) For Delta Sharing Catalogs: the name of the delta sharing provider. Change forces creation of a new resource.",
+        "required": false,
+        "default": "null"
+      },
+      "share_name": {
+        "type": "string",
+        "description": "(Optional) For Delta Sharing Catalogs: the name of the share under the share provider. Change forces creation of a new resource.",
+        "required": false,
+        "default": "null"
+      },
+      "storage_root": {
+        "type": "string",
+        "description": "(Optional) if storage_root is specified for the metastore) Managed location of the catalog. Location in cloud storage where data for managed tables will be stored. If not specified, the location will default to the metastore root location. Change forces creation of a new resource.",
+        "required": false,
+        "default": "null"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The ID of this catalog - same as the `name`."
+    },
+    "metastore_id": {
+      "description": "The ID of the parent metastore."
+    },
+    "name": {
+      "description": "The name of the created databricks catalog."
+    },
+    "resource": {
+      "description": "The databricks catalog resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Databricksunitycatalog' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

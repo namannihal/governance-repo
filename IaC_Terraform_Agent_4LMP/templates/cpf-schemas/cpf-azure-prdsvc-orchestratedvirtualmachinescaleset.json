@@ -1,0 +1,370 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Virtual Machine Scale Set (Flexible Orchestration mode) module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-orchestratedvirtualmachinescaleset'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-orchestratedvirtualmachinescaleset",
+  "module_type": "service",
+  "azure_service": "Orchestratedvirtualmachinescaleset",
+  "module_name": "Virtual Machine Scale Set (Flexible Orchestration mode) module",
+  "latest_tag": "1.1.3",
+  "available_tags": [
+    "1.1.3",
+    "1.1.2",
+    "1.1.1",
+    "1.1.0",
+    "1.0.2"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-orchestratedvirtualmachinescaleset.git//?ref=1.1.3",
+  "terraform_requirements": {
+    "azapi": ">=1.9",
+    "azurerm": ">=4.33",
+    "time": "~> 0.12",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Virtual Network",
+    "Route Table",
+    "Subnet",
+    "Network Security Group",
+    "Keyvault",
+    "Privateendpoint",
+    "Role assignment",
+    "Keyvault Secret",
+    "User Assigned Identity",
+    "Loadbalancer",
+    "encryptionset",
+    "time_sleep",
+    "tls_private_key"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azapi_resource.linux_vmss",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azapi_resource.windows_vmss",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_orchestrated_virtual_machine_scale_set.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_virtual_machine_scale_set_extension.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "orchestratedvirtualmachinescaleset",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-orchestratedvirtualmachinescaleset.git//?ref=1.1.3",
+      "version": "1.1.3",
+      "available_versions": [
+        "1.1.3",
+        "1.1.2",
+        "1.1.1",
+        "1.1.0",
+        "1.0.2"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name",
+      "sku_name",
+      "user_assigned_identity_ids",
+      "vmss_type"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "automatic_instance_repair": {
+        "type": "object({ enabled = optional(bool, false) grace_period = optional(string, \"PT30M\") repair_action = optional(string, \"Replace\") })",
+        "description": "(Optional) An automatic instance repair configuration for the Virtual Machine Scale Set. object({ enabled = \"(Optional) Should the automatic instance repair be enabled on this Orchestrated Virtual Machine Scale Set?\" grace_period = \"(Optional) Amount of time for which automatic repairs will be delayed. The grace period starts right after the VM is found unhealthy. Possible values are between 30 and 90 minutes.\" repair_action = \"(Optional) The action to take when a VM is found to be unhealthy. Possible values are `Replace` or `Reimage`. Defaults to `Replace`.\" })",
+        "required": false,
+        "default": "{ \"enabled\": false, \"grace_period\": \"PT30M\", \"repair_action\": \"Replace\" }"
+      },
+      "boot_diagnostics": {
+        "type": "object({ storage_account_uri = optional(string, null) })",
+        "description": "object({ storage_account_uri = (Optional) The Primary/Secondary Endpoint for the Azure Storage Account which should be used to store Boot Diagnostics.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "capacity_reservation_group_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the Capacity Reservation Group which the Virtual Machine Scale Set should be allocated from. Note: Cannot be used with proximity_placement_group_id.",
+        "required": false,
+        "default": "null"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "data_classification_tag_value": {
+        "type": "string",
+        "description": "(Optional) A tag to be checked by a policy.",
+        "required": false,
+        "default": "\"\""
+      },
+      "data_disk": {
+        "type": "map(object({ caching = optional(string, \"ReadWrite\") create_option = optional(string, \"Empty\") disk_size_gb = number lun = number storage_account_type = optional(string, \"StandardSSD_LRS\") disk_encryption_set_id = string ultra_disk_iops_read_write = optional(string, null) ultra_disk_mbps_read_write = optional(string, null) write_accelerator_enabled = optional(bool, false) }))",
+        "description": "(Optional) A data disk variable for the Virtual Machine Scale Set to add additional data disks. object({ caching = \"(Optional) The type of Caching which should be used for this Data Disk. Possible values are `None`, `ReadOnly` and `ReadWrite`.\" create_option = \"(Optional) The create option which should be used for this Data Disk. Possible values are `Empty` and `FromImage`. Defaults to `Empty`.\" disk_size_gb = \"(Required) The size of the Data Disk which should be created.\" lun = \"(Required) The Logical Unit Number of the Data Disk, which must be unique within the Virtual Machine.\" storage_account_type = \"(Optional) The Type of Storage Account which should back this Data Disk. Possible values include `Standard_LRS`, `StandardSSD_LRS`, `StandardSSD_ZRS`, `Premium_LRS`, `PremiumV2_LRS`, `Premium_ZRS` and `UltraSSD_LRS`.\" disk_encryption_set_id = \"(Required) The ID of the Disk Encryption Set which should be used to encrypt the Data Disk. Changing this forces a new resource to be created.\" ultra_disk_iops_read_write = \"(Optional) Specifies the Read-Write IOPS for this Data Disk. Only settable when storage_account_type is `PremiumV2_LRS` or `UltraSSD_LRS`.\" ultra_disk_mbps_read_write = \"(Optional) Specifies the bandwidth in MB per second for this Data Disk. Only settable when storage_account_type is `PremiumV2_LRS` or `UltraSSD_LRS`.\" write_accelerator_enabled = \"(Optional) Specifies if Write Accelerator is enabled on the Data Disk. Defaults to `false`.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "enable_IP_Forwarding": {
+        "type": "bool",
+        "description": "(Optional) Should IP forwarding be enabled for the VMSS? Defaults to `false`.",
+        "required": false,
+        "default": "false"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "instances": {
+        "type": "number",
+        "description": "(Optional) The number of Virtual Machines in the Orcestrated Virtual Machine Scale Set.",
+        "required": false,
+        "default": "2"
+      },
+      "linux_configuration": {
+        "type": "object({ admin_username = string admin_password = optional(string, null) computer_name_prefix = string custom_data = optional(string, null) disable_password_authentication = optional(bool, true) patch_assessment_mode = optional(string, \"ImageDefault\") patch_mode = optional(string, \"ImageDefault\") provision_vm_agent = optional(bool, true) admin_ssh_key = object({ public_key = string username = string }) })",
+        "description": "(Optional) A linux configuration variable for the Virtual Machine Scale Set. object({ admin_username = \"(Required) The username of the local administrator on each Orchestrated Virtual Machine Scale Set instance. Changing this forces a new resource to be created.\" admin_password = \"(Optional) The Password which should be used for the local-administrator on this Virtual Machine. Changing this forces a new resource to be created.\" computer_name_prefix = \"(Required) The prefix which should be used for the name of the Virtual Machines in this Scale Set.\" custom_data = \"(Optional) The Custom Data which should be passed to the Virtual Machine. This can be used to pass cloud-init scripts or other configuration data to the Virtual Machine. Changing this forces a new resource to be created.\" disable_password_authentication = \"(Optional) When an admin_password is specified `disable_password_authentication` must be set to `false`. Defaults to `true`.\" patch_assessment_mode = \"(Optional) Specifies the mode of VM Guest Patching for the virtual machines that are associated to the Orchestrated Virtual Machine Scale Set. Possible values are `AutomaticByPlatform` or `ImageDefault`. Defaults to `ImageDefault`.\" patch_mode = \"(Optional) Specifies the mode of in-guest patching of this Windows Virtual Machine. Possible values are `Manual`, `AutomaticByOS` and `AutomaticByPlatform`. Defaults to `AutomaticByOS`.\" provision_vm_agent = \"(Optional) Should the Azure VM Agent be provisioned on each Virtual Machine in the Scale Set? Defaults to `true`.\" admin_ssh_key = object({ public_key = \"(Required) The Public Key which should be used for authentication, which needs to be at least 2048-bit and in ssh-rsa format.\" username = \"(Required) The Username for which this Public SSH Key should be configured.\" }) })",
+        "required": false,
+        "default": "null"
+      },
+      "linux_secrets": {
+        "type": "list(object({ source_vault_id = string certificates = list(object({ certificate_url = string })) }))",
+        "description": "(Optional) A list of secrets to be installed on the Linux Virtual Machine Scale Set. list(object({ source_vault_id = \"(Required) The ID of the Key Vault from which all secrets should be sourced.\" certificates = list(object({ certificate_url = \"(Required) The Secret URL of a Key Vault Certificate. This can be sourced from the secret_id field within the azurerm_key_vault_certificate Resource.\" })) }))",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "network_interface": {
+        "type": "object({ ip_configurations = list(object({ application_gateway_backend_address_pool_ids = optional(list(string), null) application_security_group_ids = optional(list(string), null) load_balancer_backend_address_pool_ids = optional(list(string), null) subnet_id = string primary = optional(bool, false) version = optional(string, \"IPv4\") })) primary = optional(bool, true) dns_servers = optional(list(string), null) enable_accelerated_networking = optional(bool, false) network_api_version = optional(string, \"2023-09-01\") })",
+        "description": "(Optional) A Network Interface that should be created and attached to this Virtual Machine. ip_configurations = list(object({ application_gateway_backend_address_pool_ids = \"(Optional) A list of Backend Address Pools IDs from a Application Gateway which this Orchestrated Virtual Machine Scale Set should be connected to.\" application_security_group_ids = \"(Optional) A list of Application Security Group IDs which this Orchestrated Virtual Machine Scale Set should be connected to.\" load_balancer_backend_address_pool_ids = \"(Optional) A list of Backend Address Pools IDs from a Load Balancer which this Orchestrated Virtual Machine Scale Set should be connected to.\" subnet_id = \"(Required) The ID of the Subnet which this IP Configuration should be connected to.\" primary = \"(Optional) Is this the Primary IP Configuration for this Network Interface? Possible values are `true` and `false`. Defaults to `false`.\" version = \"(Optional) The Internet Protocol Version which should be used for this IP Configuration. Possible values are IPv4 and IPv6. Defaults to IPv4.\" })) primary = \"(Optional) Is this the primary network interface? Defaults to `true`.\" dns_servers = \"(Optional) A list of IP Addresses of DNS Servers which should be assigned to the Network Interface.\" enable_accelerated_networking = \"(Optional) Does this Network Interface support Accelerated Networking? Possible values are `true` and `false`. Defaults to `false`. Only certain Virtual Machine sizes are supported for Accelerated Networking - [more information can be found in this document](https://docs.microsoft.com/azure/virtual-network/create-vm-accelerated-networking-cli). To use Accelerated Networking in an Availability Set, the Availability Set must be deployed onto an Accelerated Networking enabled cluster.\" network_api_version = \"(Optional) Specifies the API version for the network configuration. Used for Linux AzAPI-based VMSS deployments Example 2023-09-01.\"",
+        "required": false,
+        "default": "{ \"dns_servers\": null, \"enable_accelerated_networking\": null, \"ip_configurations\": [ { \"application_gateway_backend_address_pool_ids\": null, \"application_security_group_ids\": null, \"load_balancer_backend_address_pool_ids\": null, \"primary\": false, \"subnet_id\": null, \"version\": \"IPv4\" } ], \"network_api_version\": \"2023-09-01\", \"primary\": true }"
+      },
+      "network_profile": {
+        "type": "object({ network_api_version = string network_interface_configurations = list(object({ primary = optional(bool, false) enable_accelerated_networking = optional(bool, false) ip_configurations = list(object({ subnet_id = string private_ip_address_version = optional(string, \"IPv4\") load_balancer_backend_pool_ids = list(string) application_gateway_backend_address_pool_ids = optional(list(string), []) application_security_group_ids = optional(list(string), []) primary = optional(bool, false) })) dns_settings = optional(object({ dns_servers = optional(list(string), null) })) })) })",
+        "description": "(Required) Network profile for the VMSS. object({ network_api_version = \"(Required) Specifies the API version for the network configuration.\" network_interface_configurations = list(object({ primary = \"(Optional) Indicates whether this is the primary network interface. Defaults to `false`.\" enable_accelerated_networking = \"(Optional) Enables accelerated networking for the interface. Defaults to `false`.\" ip_configurations = list(object({ subnet_id = \"(Required) The ID of the subnet to associate with this IP configuration.\" private_ip_address_version = \"(Optional) Specifies the IP address version (e.g., `IPv4`). Defaults to `IPv4`.\" load_balancer_backend_pool_ids = \"(Required) List of backend pool IDs for the load balancer.\" application_gateway_backend_address_pool_ids = \"(Optional) List of backend pool IDs for the application gateway. Defaults to an empty list.\" application_security_group_ids = \"(Optional) List of application security group IDs. Defaults to an empty list.\" primary = \"(Optional) Indicates whether this is the primary IP configuration. Defaults to `false`.\" })) dns_settings = optional(object({ dns_servers = \"(Optional) List of DNS servers to use. Defaults to `null`.\" })) })) })",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "os_disk": {
+        "type": "object({ caching = optional(string, \"ReadWrite\") storage_account_type = optional(string, \"StandardSSD_LRS\") disk_encryption_set_id = string disk_size_gb = optional(number, 127) write_accelerator_enabled = optional(bool, false) })",
+        "description": "(Optional) object({ caching = \"(Optional) The Type of Caching which should be used for the Internal OS Disk. Possible values are None, `ReadOnly` and `ReadWrite`.\" storage_account_type = \"(Optional) The Type of Storage Account which should back this the Internal OS Disk. Possible values are `Standard_LRS`, `StandardSSD_LRS`, `Premium_LRS`, `StandardSSD_ZRS` and `Premium_ZRS`.\" disk_encryption_set_id = \"(Required) The ID of the Disk Encryption Set which should be used to Encrypt this OS Disk.\" disk_size_gb = \"(Optional) The Size of the Internal OS Disk in GB, if you wish to vary from the size used in the image this Virtual Machine Scale Set is sourced from.\" write_accelerator_enabled = \"(Optional) Specifies if Write Accelerator is enabled on the OS Disk. Defaults to `false`.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "plan": {
+        "type": "object({ name = string publisher = string product = string })",
+        "description": "(Optional) object({ name = \"(Required) Specifies the name of the image from the marketplace. Changing this forces a new resource to be created.\" publisher = \"(Required) Specifies the publisher of the image. Changing this forces a new resource to be created.\" product = \"(Required) Specifies the product of the image from the marketplace. Changing this forces a new resource to be created.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "platform_fault_domain_count": {
+        "type": "number",
+        "description": "(Optional) Specifies the number of fault domains that are used by this Orchestrated Virtual Machine Scale Set.",
+        "required": false,
+        "default": "2"
+      },
+      "proximity_placement_group_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the Proximity Placement Group which the Orchestrated Virtual Machine should be assigned to.",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_id": {
+        "type": "string",
+        "description": "(Required) The ID of the resource group where the VMSS will be created.",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "scheduled_events_profile": {
+        "type": "object({ terminate_notification_profile = object({ enable = optional(bool, false) not_before_timeout = optional(string, \"PT5M\") }) })",
+        "description": "(Optional) Scheduled events profile for the VMSS. object({ terminate_notification_profile = object({ enable = \"(Optional) Enables terminate notifications for the VMSS. Defaults to `false`.\" not_before_timeout = \"(Optional) Specifies the timeout duration before termination (e.g., `PT5M` for 5 minutes). Defaults to `PT5M`.\" }) })",
+        "required": false,
+        "default": "{ \"terminate_notification_profile\": { \"enable\": false, \"not_before_timeout\": \"PT5M\" } }"
+      },
+      "single_placement_group": {
+        "type": "bool",
+        "description": "(Optional) Whether to enable single placement group for the VMSS. Defaults to false.",
+        "required": false,
+        "default": "false"
+      },
+      "sku_name": {
+        "type": "string",
+        "description": "(Required) The name of the SKU to be used by this Orcestrated Virtual Machine Scale Set. Valid values include: any of the General purpose, Compute optimized, Memory optimized, Storage optimized, GPU optimized, FPGA optimized, High performance, or Previous generation virtual machine SKUs.",
+        "required": true
+      },
+      "source_image_id": {
+        "type": "string",
+        "description": "(Optional) The ID of an Image which each Virtual Machine in this Scale Set should be based on.",
+        "required": false,
+        "default": "null"
+      },
+      "source_image_reference": {
+        "type": "object({ publisher = string offer = string sku = string version = string })",
+        "description": "(Optional) object({ publisher = \"(Required) Specifies the publisher of the image used to create the virtual machine scale set. Changing this forces a new resource to be created.\" offer = \"(Required) Specifies the offer of the image used to create the virtual machine scale set. Changing this forces a new resource to be created.\" sku = \"(Required) Specifies the SKU of the image used to create the virtual machine scale set. Changing this forces a new resource to be created.\" version = \"(Required) Specifies the version of the image used to create the virtual machine scale set. Changing this forces a new resource to be created.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "storage_profile": {
+        "type": "object({ image_reference = object({ id = string }) os_disk = object({ create_option = string storage_account_type = string disk_encryption_set_id = string caching = optional(string, \"ReadWrite\") disk_size_gb = optional(number, 127) write_accelerator_enabled = optional(bool, false) }) data_disks = list(object({ lun = number create_option = string disk_size_gb = number storage_account_type = string disk_encryption_set_id = string })) })",
+        "description": "(Required) Storage profile for the VMSS. object({ image_reference = object({ id = \"(Required) The ID of the image to use for the VMSS.\" }) os_disk = object({ create_option = \"(Required) Specifies how the OS disk is created (e.g., `FromImage`).\" storage_account_type = \"(Required) The type of storage account for the OS disk (e.g., `Standard_LRS`).\" disk_encryption_set_id = \"(Required) The ID of the disk encryption set for the OS disk.\" caching = \"(Optional) Specifies the caching mode for the OS disk. Defaults to `ReadWrite`.\" disk_size_gb = \"(Optional) The size of the OS disk in GB. Defaults to `127`.\" write_accelerator_enabled = \"(Optional) Indicates whether write accelerator is enabled for the OS disk. Defaults to `false`.\" }) data_disks = list(object({ lun = \"(Required) The logical unit number (LUN) for the data disk.\" create_option = \"(Required) Specifies how the data disk is created (e.g., `Empty`).\" disk_size_gb = \"(Required) The size of the data disk in GB.\" storage_account_type = \"(Required) The type of storage account for the data disk (e.g., `Standard_LRS`).\" disk_encryption_set_id = \"(Required) The ID of the disk encryption set for the data disk.\" })) })",
+        "required": false,
+        "default": "null"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "termination_notification": {
+        "type": "object({ enabled = optional(bool, false) timeout = optional(string, \"PT5M\") })",
+        "description": "(Optional) A termination notification configuration for the Virtual Machine Scale Set. object({ enabled = \"(Optional) Should the termination notification be enabled on this Virtual Machine Scale Set?\" timeout = \"(Optional) Length of time (in minutes, between 5 and 15) a notification to be sent to the VM on the instance metadata server till the VM gets deleted. The time duration should be specified in ISO 8601 format. Defaults to `PT5M`.\" })",
+        "required": false,
+        "default": "{ \"enabled\": false, \"timeout\": \"PT5M\" }"
+      },
+      "ultra_ssd_enabled": {
+        "type": "bool",
+        "description": "(Optional) Should the capacity to enable Data Disks of the UltraSSD_LRS storage account type be supported on this Orchestrated Virtual Machine Scale Set? Defaults to `false`.",
+        "required": false,
+        "default": "false"
+      },
+      "upgrade_policy_mode": {
+        "type": "string",
+        "description": "(Required) The upgrade policy mode for the VMSS. For example, 'Manual'.",
+        "required": false,
+        "default": "\"Manual\""
+      },
+      "user_assigned_identity_ids": {
+        "type": "list(string)",
+        "description": "(Required) A list of User Managed Identity IDs to be assigned to this Orchestrated Virtual Machine Scale Set.",
+        "required": true
+      },
+      "user_data_base64": {
+        "type": "string",
+        "description": "(Optional) The Base64-Encoded User Data which should be used for this Orchestrated Virtual Machine Scale Set.",
+        "required": false,
+        "default": "null"
+      },
+      "user_data_file": {
+        "type": "string",
+        "description": "(Optional) Path to a text file whose contents will be read and Base64 encoded as User Data for this Virtual Machine. Takes precedence over `user_data` when both are set. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "virtual_machine_profile": {
+        "type": "object({ security_profile = object({ security_type = string encryption_at_host = bool uefi_settings = object({ secure_boot_enabled = bool vtpm_enabled = bool }) }) })",
+        "description": "(Required) Virtual machine profile configuration for the VMSS. object({ security_profile = object({ security_type = \"(Required) Specifies the type of security for the VMSS (e.g., `TrustedLaunch`).\" encryption_at_host = \"(Required) Indicates whether encryption at the host level is enabled.\" uefi_settings = object({ secure_boot_enabled = \"(Required) Enables secure boot for the VMSS.\" vtpm_enabled = \"(Required) Enables virtual Trusted Platform Module (vTPM) for the VMSS.\" }) }) })",
+        "required": false,
+        "default": "{ \"security_profile\": { \"encryption_at_host\": true, \"security_type\": \"TrustedLaunch\", \"uefi_settings\": { \"secure_boot_enabled\": true, \"vtpm_enabled\": true } } }"
+      },
+      "virtual_machine_scale_set_extensions": {
+        "type": "map(object({ name = string publisher = string type = string type_handler_version = string auto_upgrade_minor_version = optional(bool, false) automatic_upgrade_enabled = optional(bool, false) settings = optional(string, null) failure_suppression_enabled = optional(bool, false) protected_settings = optional(string, null) provision_after_extensions = optional(list(string), null) protected_settings_from_key_vault = optional(object({ secret_url = string source_vault_id = string }), null) }))",
+        "description": "(Optional) A Virtual Machine Scale Set Extension block as defined below map(object({ name = \"(Required) The name of the virtual machine extension peering.\" publisher = \"(Required) The publisher of the extension, available publishers can be found by using the Azure CLI.`az vm extension image list --location westus -o table`.\" type = \"(Required) The type of extension, available types for a publisher can be found using the Azure CLI.\" type_handler_version = \"(Required) Specifies the version of the extension to use, available versions can be found using the Azure CLI.\" auto_upgrade_minor_version = \"(Optional) Specifies if the platform deploys the latest minor version update to the type_handler_version specified.\" automatic_upgrade_enabled = \"(Optional) Should the Extension be automatically updated whenever the Publisher releases a new version of this VM Extension?\" settings = \"(Optional) The settings passed to the extension, these are specified as a JSON object in a string.\" failure_suppression_enabled = \"(Optional) Should failures from the extension be suppressed? Possible values are true or false. Defaults to false.\" protected_settings = \"(Optional) The protected_settings passed to the extension, like settings, these are specified as a JSON object in a string.\" provision_after_extensions = \"(Optional) Specifies the collection of extension names after which this extension needs to be provisioned.\" protected_settings_from_key_vault = object({ secret_url = \"(Optional) Specifies the collection of extension names after which this extension needs to be provisioned.\" source_vault_id = \"(Required) The ID of the source Key Vault.\" }) }))",
+        "required": false,
+        "default": "null"
+      },
+      "vmss_type": {
+        "type": "string",
+        "description": "(Required) Type of VMSS to deploy: 'linux', 'linuxtrustedlaunch', or 'windows'",
+        "required": true
+      },
+      "windows_configuration": {
+        "type": "object({ admin_username = string admin_password = string computer_name_prefix = string custom_data = optional(string, null) enable_automatic_updates = optional(bool, true) hotpatching_enabled = optional(bool, false) patch_assessment_mode = optional(string, \"ImageDefault\") patch_mode = optional(string, \"AutomaticByOS\") provision_vm_agent = optional(bool, true) timezone = optional(string, null) })",
+        "description": "(Optional) A windows configuration variable for the Virtual Machine Scale Set. object({ admin_username = \"(Required) The username of the local administrator on each Orchestrated Virtual Machine Scale Set instance. Changing this forces a new resource to be created.\" admin_password = \"(Required) The Password which should be used for the local-administrator on this Virtual Machine. Changing this forces a new resource to be created.\" computer_name_prefix = \"(Required) The prefix which should be used for the name of the Virtual Machines in this Scale Set.\" custom_data = \"(Optional) The Custom Data which should be passed to the Virtual Machine. This can be used to pass cloud-init scripts or other configuration data to the Virtual Machine. Changing this forces a new resource to be created.\" enable_automatic_updates = \"(Optional) Are automatic updates enabled for this Virtual Machine? Defaults to `true`.\" hotpatching_enabled = \"(Optional) Should the VM be patched without requiring a reboot? Possible values are `true` or `false`. Defaults to `false`.\" patch_assessment_mode = \"(Optional) Specifies the mode of VM Guest Patching for the virtual machines that are associated to the Orchestrated Virtual Machine Scale Set. Possible values are `AutomaticByPlatform` or `ImageDefault`. Defaults to `ImageDefault`.\" patch_mode = \"(Optional) Specifies the mode of in-guest patching of this Windows Virtual Machine. Possible values are `Manual`, `AutomaticByOS` and `AutomaticByPlatform`. Defaults to `AutomaticByOS`.\" provision_vm_agent = \"(Optional) Should the Azure VM Agent be provisioned on each Virtual Machine in the Scale Set? Defaults to `true`.\" timezone = \"(Optional) Specifies the time zone of the virtual machine.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "windows_secrets": {
+        "type": "list(object({ source_vault_id = string certificates = list(object({ certificate_url = string certificate_store = string })) }))",
+        "description": "(Optional) A list of secrets to be installed on the Windows Virtual Machine Scale Set. list(object({ source_vault_id = \"(Required) The ID of the Key Vault from which all secrets should be sourced.\" certificates = list(object({ certificate_url = \"(Required) The Secret URL of a Key Vault Certificate. This can be sourced from the secret_id field within the azurerm_key_vault_certificate Resource.\" certificate_store = \"(Required) The certificate store on the Windows Virtual Machine where the certificate should be added. Valid values include: 'My', 'Root', 'CA', 'Trust', 'TrustedPeople', 'TrustedPublisher', 'AuthRoot', 'AddressBook'.\" })) }))",
+        "required": false,
+        "default": "null"
+      },
+      "zone_balance": {
+        "type": "bool",
+        "description": "(Optional) Should the Virtual Machines in this Scale Set be strictly evenly distributed across Availability Zones? Defaults to false.",
+        "required": false,
+        "default": "false"
+      },
+      "zones": {
+        "type": "list(string)",
+        "description": "(Optional) Specifies a list of Availability Zones in which this Orchestrated Virtual Machine should be located. Note: Due to a limitation of the Azure API at this time only one Availability Zone can be defined.",
+        "required": false,
+        "default": "null"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The ID of the created Virtual Machine Scale Set (Linux or Windows)."
+    },
+    "name": {
+      "description": "The name of the created Virtual Machine Scale Set (Linux or Windows)."
+    },
+    "resource": {
+      "description": "The created Virtual Machine Scale Set resource (Linux or Windows)."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Orchestratedvirtualmachinescaleset' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Virtual Network",
+      "Route Table",
+      "Subnet",
+      "Network Security Group",
+      "Keyvault",
+      "Privateendpoint",
+      "Role assignment",
+      "Keyvault Secret",
+      "User Assigned Identity",
+      "Loadbalancer",
+      "encryptionset",
+      "time_sleep",
+      "tls_private_key"
+    ]
+  }
+}

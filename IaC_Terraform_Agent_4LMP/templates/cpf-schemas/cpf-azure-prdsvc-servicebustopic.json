@@ -1,0 +1,212 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Service Bus Topic module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-servicebustopic'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-servicebustopic",
+  "module_type": "service",
+  "azure_service": "Servicebustopic",
+  "module_name": "Service Bus Topic module",
+  "latest_tag": "1.1.2",
+  "available_tags": [
+    "1.1.2",
+    "1.1.1",
+    "1.1.0",
+    "1.0.0",
+    "0.6.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-servicebustopic.git//?ref=1.1.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Virtual Network",
+    "Subnet",
+    "Network Security Group",
+    "Route Table",
+    "Key Vault",
+    "Private Endpoint",
+    "User Assigned Identity",
+    "Service Bus Namespace"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_servicebus_topic.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_servicebus_topic_authorization_rule.name",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "servicebustopic",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-servicebustopic.git//?ref=1.1.2",
+      "version": "1.1.2",
+      "available_versions": [
+        "1.1.2",
+        "1.1.1",
+        "1.1.0",
+        "1.0.0",
+        "0.6.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "namespace_id",
+      "org_id"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "authorization_rules": {
+        "type": "map(object({ listen = optional(bool) send = optional(bool) manage = optional(bool) }))",
+        "description": "(Optional) A map of servicebus_topic_authorization_rule object as defined below. This creates a `azurerm_servicebus_topic_authorization_rule` for each item in the map: Key = \"(Required) Specifies the name of the Service Bus Topic Authorization Rule. Should be unique for each Topic.\" Value = object({ listen = \"(Optional) Grants listen access to this Authorization Rule. Defaults to `false`.\" send = \"(Optional) Grants send access to this Authorization Rule. Defaults to `false`.\" manage = \"(Optional) Grants manage access to this Authorization Rule. When this property is `true` - both `listen` and `send` must be too. Defaults to `false`.\" })",
+        "required": false,
+        "default": "{}"
+      },
+      "auto_delete_on_idle": {
+        "type": "string",
+        "description": "(Optional) The ISO 8601 timespan duration of the idle interval after which the topic is automatically deleted, minimum of 5 minutes.",
+        "required": false,
+        "default": "\"P10675199DT2H48M5.4775807S\""
+      },
+      "batched_operations_enabled": {
+        "type": "bool",
+        "description": "(Optional) Boolean flag which controls whether server-side batched operations are enabled. Defaults to `false`.",
+        "required": false,
+        "default": "false"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "default_message_ttl": {
+        "type": "string",
+        "description": "(Optional) The ISO 8601 timespan duration of TTL of messages sent to this topic if no TTL value is set on the message itself.",
+        "required": false,
+        "default": "\"P10675199DT2H48M5.4775807S\""
+      },
+      "duplicate_detection_history_time_window": {
+        "type": "string",
+        "description": "(Optional) The ISO 8601 timespan duration during which duplicates can be detected. Defaults to 10 minutes (`PT10M`).",
+        "required": false,
+        "default": "\"PT10M\""
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "express_enabled": {
+        "type": "bool",
+        "description": "(Optional) Boolean flag which controls whether the topic is an Express Topic. Defaults to `false`.",
+        "required": false,
+        "default": "false"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "max_message_size_in_kilobytes": {
+        "type": "number",
+        "description": "(Optional) Integer value which controls the maximum size of a message allowed on the topic for Premium SKU. Value must be between `1024` and `102400`.",
+        "required": false,
+        "default": "256"
+      },
+      "max_size_in_megabytes": {
+        "type": "number",
+        "description": "(Optional) Integer value which controls the size of memory allocated for the topic. Defaults to `1024`.",
+        "required": false,
+        "default": "5120"
+      },
+      "name": {
+        "type": "string",
+        "description": "(Optional) Specifies the name of the ServiceBus Topic resource. If not provided, the resource name is created leveraging LSEG variables as per standard naming convention. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "namespace_id": {
+        "type": "string",
+        "description": "(Required) The ID of the Service Bus Namespace to create this topic in. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "partitioning_enabled": {
+        "type": "bool",
+        "description": "(Optional) Boolean flag which controls whether to enable the topic to be partitioned across multiple message brokers. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "false"
+      },
+      "requires_duplicate_detection": {
+        "type": "bool",
+        "description": "(Optional) Boolean flag which controls whether the Topic requires duplicate detection.",
+        "required": false,
+        "default": "true"
+      },
+      "status": {
+        "type": "string",
+        "description": "(Optional) The Status of the Service Bus Topic. Acceptable values are `Active` or `Disabled`. Defaults to `Active`.",
+        "required": false,
+        "default": "\"Active\""
+      },
+      "support_ordering": {
+        "type": "bool",
+        "description": "(Optional) Boolean flag which controls whether the topic supports ordering.",
+        "required": false,
+        "default": "false"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The ID of the Service Bus Topic created."
+    },
+    "name": {
+      "description": "The Name of the Service Bus Topic created."
+    },
+    "resource": {
+      "description": "The Service Bus Topic resource created."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Servicebustopic' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Virtual Network",
+      "Subnet",
+      "Network Security Group",
+      "Route Table",
+      "Key Vault",
+      "Private Endpoint",
+      "User Assigned Identity",
+      "Service Bus Namespace"
+    ]
+  }
+}

@@ -1,0 +1,210 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Oracle on VM Service Pattern ¶",
+  "description": "JSON schema for CPF module 'cpf-azure-prdapppat-oracleonvm'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdapppat-oracleonvm",
+  "module_type": "application-pattern",
+  "azure_service": "Oracleonvm",
+  "module_name": "Oracle on VM Service Pattern ¶",
+  "latest_tag": "1.1.0",
+  "gitlab_repository": "https://gitlab.dx1.lseg.com/app/app-51310/azure/config/yaml/azure-config-yaml-catalogmetadata-backstage/-/tree/main/patterns/azure/prdsvcpat/azure-prdapppat-terraform-oracleonvm",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdapppat/terraform/azure-prdapppat-terraform-oracleonvm.git//?ref=1.1.0",
+  "terraform_requirements": {
+    "tls": "~\\> 3.0",
+    "time": "~\\>0.11.1",
+    "terraform": "\\>= 1.5.0",
+    "azurerm": "\\>= 4.33.0",
+    "random": "3.6.0",
+    "azuread": "\\>= 2.47.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_storage_blob.environment_var",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_storage_blob.stage1_dependency_installation",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_storage_blob.stage2_oraclegrid_installation",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_storage_blob.stage3_oracle_installation",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_virtual_machine_extension.install-oracle",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "random_password.password",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "random_password.password_grid_admin",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_rotating.expiration_date",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_keyvault_pe",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_role_assignment_propagation",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_storage_blob_pe",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_vm_identity_ready",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "tls_private_key.rsa_fsfo",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "tls_private_key.rsa_oem",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "tls_private_key.rsa_ovm",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_client_config.current",
+      "type": "data source"
+    },
+    {
+      "terraform_resource": "azurerm_firewall.afw",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "oracleonvm",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdapppat/terraform/azure-prdapppat-terraform-oracleonvm.git//?ref=1.1.0",
+      "version": "1.1.0"
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [],
+    "properties": {}
+  },
+  "outputs": {
+    "dataprotectionbackupinstance": {
+      "description": "The data protection backup instance module outputs."
+    },
+    "dataprotectionbackupvault": {
+      "description": "The data protection backup vault module outputs."
+    },
+    "diskencryptionset": {
+      "description": "The disk encryption set module outputs."
+    },
+    "fsfo_tls_private_key": {
+      "description": "The tls private key module outputs for fsfo server."
+    },
+    "fsfo_tls_public_key": {
+      "description": "The tls public key module outputs for fsfo server."
+    },
+    "fsfoserver": {
+      "description": "The fsfo server module outputs."
+    },
+    "keyvault": {
+      "description": "The keyvault module outputs."
+    },
+    "keyvault_pe": {
+      "description": "The keyvault-pe module outputs."
+    },
+    "manageddisk_asm_oraclevm": {
+      "description": "The asm disk module outputs for oraclevm."
+    },
+    "manageddisk_backup_oraclevm": {
+      "description": "The backup disk module outputs for oraclevm."
+    },
+    "manageddisk_fsfo_server": {
+      "description": "The managed disk module outputs for fsfo server."
+    },
+    "manageddisk_oem_server": {
+      "description": "The managed disk module outputs for oem server."
+    },
+    "manageddisk_recodisk_oraclevm": {
+      "description": "The reco disk module outputs for oraclevm."
+    },
+    "manageddisk_redodisk1_oraclevm": {
+      "description": "The reco disk module outputs for oraclevm."
+    },
+    "manageddisk_redodisk2_oraclevm": {
+      "description": "The reco disk module outputs for oraclevm."
+    },
+    "manageddisk_swap_oraclevm": {
+      "description": "The swap disk module outputs for oraclevm."
+    },
+    "manageddisk_u01_oraclevm": {
+      "description": "The u01 disk module outputs for oraclevm."
+    },
+    "networksecuritygroup": {
+      "description": "The networksecuritygroup module outputs."
+    },
+    "oem_tls_private_key": {
+      "description": "The tls private key module outputs for oem server."
+    },
+    "oem_tls_public_key": {
+      "description": "The tls public key module outputs for oem server."
+    },
+    "oemserver": {
+      "description": "The oem server module outputs."
+    },
+    "oraclevm": {
+      "description": "The oraclevm module outputs."
+    },
+    "ovm_tls_private_key": {
+      "description": "The tls private key module outputs for oraclevm."
+    },
+    "ovm_tls_public_key": {
+      "description": "The tls public key module outputs for oraclevm."
+    },
+    "privateendpoint_blob": {
+      "description": "The private endpoint module outputs for storage account blob."
+    },
+    "routetable": {
+      "description": "The routetable module outputs."
+    },
+    "storageaccount": {
+      "description": "The storage account module outputs."
+    },
+    "storagecontainer": {
+      "description": "The storage container module outputs for storage account."
+    },
+    "subnet": {
+      "description": "The subnet module outputs."
+    },
+    "userassignedidentity_fsfo": {
+      "description": "The user assigned identity module output for fsfo server."
+    },
+    "userassignedidentity_oem": {
+      "description": "The user assigned identity module output for oem server."
+    },
+    "userassignedidentity_ovm": {
+      "description": "The user assigned identity module output for oracle VM."
+    },
+    "userassignedidentity_sa": {
+      "description": "The user assigned identity module output for storage account."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Oracleonvm' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is an application pattern module. It provisions a full application-ready infrastructure stack.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

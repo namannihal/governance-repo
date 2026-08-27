@@ -1,0 +1,182 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Front Door Route module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-cdnfrontdoorroute'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-cdnfrontdoorroute",
+  "module_type": "service",
+  "azure_service": "Cdnfrontdoorroute",
+  "module_name": "Front Door Route module",
+  "latest_tag": "1.0.1",
+  "available_tags": [
+    "1.0.1",
+    "1.0.0",
+    "0.2.4",
+    "0.2.3",
+    "0.2.2"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cdnfrontdoorroute.git//?ref=1.0.1",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_cdn_frontdoor_route.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "cdnfrontdoorroute",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cdnfrontdoorroute.git//?ref=1.0.1",
+      "version": "1.0.1",
+      "available_versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.2.4",
+        "0.2.3",
+        "0.2.2"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "cdn_frontdoor_endpoint_id",
+      "cdn_frontdoor_origin_group_id",
+      "cdn_frontdoor_origin_ids",
+      "environment",
+      "location",
+      "org_id",
+      "patterns_to_match"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "cache": {
+        "type": "object({ query_string_caching_behavior = optional(string, \"IgnoreQueryString\") query_strings = optional(list(string)) compression_enabled = optional(bool, false) content_types_to_compress = optional(list(string)) })",
+        "description": "object({ query_string_caching_behavior = \"(Optional) Defines how the Front Door Route will cache requests that include query strings. Possible values include IgnoreQueryString, IgnoreSpecifiedQueryStrings, IncludeSpecifiedQueryStrings or UseQueryString. Defaults it IgnoreQueryString.\" query_strings = \"(Optional) Query strings to include or ignore.\" compression_enabled = \"(Optional) Is content compression enabled? Possible values are true or false. Defaults to false.\" compression_enabled = \"(Optional) A list of one or more Content types (formerly known as MIME types) to compress. Possible values include application/eot, application/font, application/font-sfnt, application/javascript, application/json, application/opentype, application/otf, application/pkcs7-mime, application/truetype, application/ttf, application/vnd.ms-fontobject, application/xhtml+xml, application/xml, application/xml+rss, application/x-font-opentype, application/x-font-truetype, application/x-font-ttf, application/x-httpd-cgi, application/x-mpegurl, application/x-opentype, application/x-otf, application/x-perl, application/x-ttf, application/x-javascript, font/eot, font/ttf, font/otf, font/opentype, image/svg+xml, text/css, text/csv, text/html, text/javascript, text/js, text/plain, text/richtext, text/tab-separated-values, text/xml, text/x-script, text/x-component or text/x-java-source.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "cdn_frontdoor_custom_domain_ids": {
+        "type": "list(string)",
+        "description": "(Optional) The IDs of the Front Door Custom Domains which are associated with this Front Door Route.",
+        "required": false,
+        "default": "[]"
+      },
+      "cdn_frontdoor_endpoint_id": {
+        "type": "string",
+        "description": "(Required) The resource ID of the Front Door Endpoint where this Front Door Route should exist. Changing this forces a new Front Door Route to be created.",
+        "required": true
+      },
+      "cdn_frontdoor_origin_group_id": {
+        "type": "string",
+        "description": "(Required) The resource ID of the Front Door Origin Group where this Front Door Route should be created.",
+        "required": true
+      },
+      "cdn_frontdoor_origin_ids": {
+        "type": "list(string)",
+        "description": "(Required) One or more Front Door Origin resource IDs that this Front Door Route will link to.",
+        "required": true
+      },
+      "cdn_frontdoor_origin_path": {
+        "type": "string",
+        "description": "(Optional) A directory path on the Front Door Origin that can be used to retrieve content (e.g. contoso.cloudapp.net/originpath).",
+        "required": false,
+        "default": "null"
+      },
+      "cdn_frontdoor_rule_set_ids": {
+        "type": "list(string)",
+        "description": "(Optional) A list of the Front Door Rule Set IDs which should be assigned to this Front Door Route.",
+        "required": false,
+        "default": "[]"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "enabled": {
+        "type": "bool",
+        "description": "(Optional) Is this Front Door Route enabled? Possible values are true or false. Defaults to true.",
+        "required": false,
+        "default": "true"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "forwarding_protocol": {
+        "type": "string",
+        "description": "(Optional) The Protocol that will be use when forwarding traffic to backends. Possible values are HttpOnly, HttpsOnly or MatchRequest.",
+        "required": false,
+        "default": "\"HttpsOnly\""
+      },
+      "https_redirect_enabled": {
+        "type": "bool",
+        "description": "(Optional) Automatically redirect HTTP traffic to HTTPS traffic? Possible values are true or false. Defaults to true.",
+        "required": false,
+        "default": "true"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "link_to_default_domain": {
+        "type": "bool",
+        "description": "(Optional) Should this Front Door Route be linked to the default endpoint? Possible values include true or false. Defaults to true.",
+        "required": false,
+        "default": "true"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "patterns_to_match": {
+        "type": "list(string)",
+        "description": "(Required) The route patterns of the rule.",
+        "required": true
+      },
+      "supported_protocols": {
+        "type": "list(string)",
+        "description": "(Optional) One or more Protocols supported by this Front Door Route. Possible values are Http or Https.",
+        "required": false,
+        "default": "\"Http\", \"Https\""
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The ID of the created CDN Front Door Route."
+    },
+    "name": {
+      "description": "The name of the created CDN Front Door Route."
+    },
+    "resource": {
+      "description": "The Cdn Frontdoor Route resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Cdnfrontdoorroute' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

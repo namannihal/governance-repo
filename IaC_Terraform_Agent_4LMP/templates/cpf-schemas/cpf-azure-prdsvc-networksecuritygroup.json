@@ -1,0 +1,140 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: ",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-networksecuritygroup'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-networksecuritygroup",
+  "module_type": "service",
+  "azure_service": "Networksecuritygroup",
+  "module_name": "",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.6.3",
+    "0.6.2"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-networksecuritygroup.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Virtual Network",
+    "Subnet"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_network_security_group.nsg",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_subnet_network_security_group_association.nsg",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "networksecuritygroup",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-networksecuritygroup.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.6.3",
+        "0.6.2"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 71 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "security_rules": {
+        "type": "map(object({ name = string description = optional(string) protocol = string source_port_range = optional(string) source_port_ranges = optional(list(string)) destination_port_range = optional(string) destination_port_ranges = optional(list(string)) source_address_prefix = optional(string) source_address_prefixes = optional(list(string)) source_application_security_group_ids = optional(list(string)) destination_address_prefix = optional(string) destination_address_prefixes = optional(list(string)) destination_application_security_group_ids = optional(list(string)) access = string priority = number direction = string }))",
+        "description": "list(object({ name = \"(Required) The name of the security rule.\" description = \"(Optional) A description for this rule. Restricted to 140 characters.\" protocol = \"(Required) Network protocol this rule applies to. Possible values include Tcp, Udp, Icmp, Esp, Ah or * (which matches all).\" source_port_range = \"(Optional) Source Port or Range. Integer or range between 0 and 65535 or * to match any. This is required if source_port_ranges is not specified.\" source_port_ranges = \"(Optional) List of source ports or port ranges. This is required if source_port_range is not specified.\" destination_port_range = \"(Optional) Destination Port or Range. Integer or range between 0 and 65535 or * to match any. This is required if destination_port_ranges is not specified.\" destination_port_ranges = \"(Optional) List of destination ports or port ranges. This is required if destination_port_range is not specified.\" source_address_prefix = \"(Optional) CIDR or source IP range or * to match any IP. Tags such as VirtualNetwork, AzureLoadBalancer and Internet can also be used. This is required if source_address_prefixes is not specified.\" source_address_prefixes = \"(Optional) List of source address prefixes. Tags may not be used. This is required if source_address_prefix is not specified.\" source_application_security_group_ids = \"(Optional) A List of source Application Security Group IDs\" destination_address_prefix = \"(Optional) CIDR or destination IP range or * to match any IP. Tags such as VirtualNetwork, AzureLoadBalancer and Internet can also be used. This is required if destination_address_prefixes is not specified.\" destination_address_prefixes = \"(Optional) List of destination address prefixes. Tags may not be used. This is required if destination_address_prefix is not specified.\" destination_application_security_group_ids = \"(Optional) A List of destination Application Security Group IDs\" access = \"(Required) Specifies whether network traffic is allowed or denied. Possible values are Allow and Deny.\" priority = \"(Required) Specifies the priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each rule in the collection. The lower the priority number, the higher the priority of the rule.\" direction = \"(Required) The direction specifies if rule will be evaluated on incoming or outgoing traffic. Possible values are Inbound and Outbound.\" }))",
+        "required": false,
+        "default": "{}"
+      },
+      "subnet_ids": {
+        "type": "list(string)",
+        "description": "(Optional) IDs of the subnets AzNetworkSecurityGroup can connect to.",
+        "required": false,
+        "default": "[]"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The ID of the created Network Security Group."
+    },
+    "name": {
+      "description": "The name of the created Network Security Group."
+    },
+    "resource": {
+      "description": "The Network Security Group resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Networksecuritygroup' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Virtual Network",
+      "Subnet"
+    ]
+  }
+}

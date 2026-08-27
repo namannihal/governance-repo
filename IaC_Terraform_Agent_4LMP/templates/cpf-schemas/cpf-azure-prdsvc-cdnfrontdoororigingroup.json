@@ -1,0 +1,134 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Front Door Origin Group module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-cdnfrontdoororigingroup'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-cdnfrontdoororigingroup",
+  "module_type": "service",
+  "azure_service": "Cdnfrontdoororigingroup",
+  "module_name": "Front Door Origin Group module",
+  "latest_tag": "1.0.1",
+  "available_tags": [
+    "1.0.1",
+    "1.0.0",
+    "0.3.3",
+    "0.3.2",
+    "0.3.1"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cdnfrontdoororigingroup.git//?ref=1.0.1",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_cdn_frontdoor_origin_group.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "cdnfrontdoororigingroup",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cdnfrontdoororigingroup.git//?ref=1.0.1",
+      "version": "1.0.1",
+      "available_versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.3.3",
+        "0.3.2",
+        "0.3.1"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "cdn_frontdoor_profile_id",
+      "environment",
+      "load_balancing",
+      "location",
+      "org_id"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "cdn_frontdoor_profile_id": {
+        "type": "string",
+        "description": "(Required) The ID of the Front Door Profile within which this Front Door Origin Group should exist. Changing this forces a new Front Door Origin Group to be created.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "health_probe": {
+        "type": "object({ protocol = string interval_in_seconds = number request_type = optional(string, \"HEAD\") path = optional(string, \"/\") })",
+        "description": "object({ protocol = \"(Required) Specifies the protocol to use for health probe. Possible values are Http and Https.\" interval_in_seconds = \"(Required) Specifies the number of seconds between health probes. Possible values are between 5 and 31536000 seconds (inclusive).\" request_type = \"(Optional) Specifies the type of health probe request that is made. Possible values are GET and HEAD. Defaults to HEAD.\" request_type = \"(Optional) Specifies the path relative to the origin that is used to determine the health of the origin. Defaults to /.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "load_balancing": {
+        "type": "object({ additional_latency_in_milliseconds = optional(number, 50) sample_size = optional(number, 4) successful_samples_required = optional(number, 3) })",
+        "description": "object({ additional_latency_in_milliseconds = \"(Optional) Specifies the additional latency in milliseconds for probes to fall into the lowest latency bucket. Possible values are between 0 and 1000 milliseconds (inclusive). Defaults to 50.\" sample_size = \"(Optional) Specifies the number of samples to consider for load balancing decisions. Possible values are between 0 and 255 (inclusive). Defaults to 4.\" successful_samples_required = \"(Optional) Specifies the number of samples within the sample period that must succeed. Possible values are between 0 and 255 (inclusive). Defaults to 3.\" })",
+        "required": true
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "restore_traffic_time_in_minutes": {
+        "type": "number",
+        "description": "(Optional) Specifies the amount of time which should elapse before shifting traffic to another endpoint when a healthy endpoint becomes unhealthy or a new endpoint is added. Possible values are between 0 and 50 minutes (inclusive). Default is 10 minutes.",
+        "required": false,
+        "default": "10"
+      },
+      "session_affinity_enabled": {
+        "type": "bool",
+        "description": "(Optional) Specifies whether session affinity should be enabled on this host. Defaults to true.",
+        "required": false,
+        "default": "true"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The ID of the created Origin Group."
+    },
+    "name": {
+      "description": "The Name of the created Origin Group."
+    },
+    "resource": {
+      "description": "The Cdn Frontdoor Origin Group resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Cdnfrontdoororigingroup' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

@@ -1,0 +1,118 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Data Factory IntegrationRuntime SSIS module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-datafactoryintegrationruntimeazuressis'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-datafactoryintegrationruntimeazuressis",
+  "module_type": "service",
+  "azure_service": "Datafactoryintegrationruntimeazuressis",
+  "module_name": "Azure Data Factory IntegrationRuntime SSIS module",
+  "latest_tag": "1.0.1",
+  "available_tags": [
+    "1.0.1",
+    "1.0.0",
+    "0.1.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-datafactoryintegrationruntimeazuressis.git//?ref=1.0.1",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_data_factory_integration_runtime_azure_ssis.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "datafactoryintegrationruntimeazuressis",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-datafactoryintegrationruntimeazuressis.git//?ref=1.0.1",
+      "version": "1.0.1",
+      "available_versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.1.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "ssis_integration_runtime": {
+        "type": "map(object({ data_factory_id = string location = string node_size = string number_of_nodes = optional(number, 1) credential_name = optional(string, null) max_parallel_executions_per_node = optional(number, 1) edition = optional(string, \"Standard\") license_type = optional(string, \"LicenseIncluded\") catalog_info = optional(object({ server_endpoint = string administrator_login = optional(string, null) administrator_password = optional(string, null) pricing_tier = optional(string, null) elastic_pool_name = optional(string, null) dual_standby_pair_name = optional(string, null) }), null) copy_compute_scale = optional(object({ data_integration_unit = optional(number, null) time_to_live = optional(number, null) }), null) custom_setup_script = optional(object({ blob_container_uri = string sas_token = string }), null) express_vnet_integration = object({ subnet_id = string }) command_key = optional(list(object({ target_name = string user_name = string password = optional(string, null) key_vault_password = optional(object({ linked_service_name = string secret_name = string secret_version = optional(string, null) parameters = optional(map(string), {}) }), null) })), []) component = optional(list(object({ name = string license = optional(string, null) key_vault_license = optional(object({ linked_service_name = string secret_name = string secret_version = optional(string, null) parameters = optional(map(string), {}) }), null) })), []) package_store = optional(list(object({ name = string linked_service_name = string })), []) proxy = optional(object({ self_hosted_integration_runtime_name = string staging_storage_linked_service_name = string path = optional(string, null) }), null) pipeline_external_compute_scale = optional(object({ number_of_external_nodes = optional(number, null) number_of_pipeline_nodes = optional(number, null) time_to_live = optional(number, null) }), null) express_custom_setup = optional(object({ command_key = optional(list(object({ target_name = string user_name = string password = optional(string, null) key_vault_password = optional(object({ linked_service_name = string secret_name = string secret_version = optional(string, null) parameters = optional(map(string), {}) }), null) })), []) component = optional(list(object({ name = string license = optional(string, null) key_vault_license = optional(object({ linked_service_name = string secret_name = string secret_version = optional(string, null) parameters = optional(map(string), {}) }), null) })), []) environment = optional(map(string), {}) powershell_version = optional(string, null) }), null) }))",
+        "description": "(Optional) A map of SSIS Integration Runtime configurations, where the key is the runtime name and the value is the configuration object: data_factory_id = \"(Required) The ID of the Data Factory in which to create the Azure-SSIS Integration Runtime.\" location = \"(Required) Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.\" node_size = \"(Required) The size of the nodes on which the Azure-SSIS Integration Runtime runs. Valid values are: Standard_D2_v3, Standard_D4_v3, Standard_D8_v3, Standard_D16_v3, Standard_D32_v3, Standard_D64_v3, Standard_E2_v3, Standard_E4_v3, Standard_E8_v3, Standard_E16_v3, Standard_E32_v3, Standard_E64_v3, Standard_D1_v2, Standard_D2_v2, Standard_D3_v2, Standard_D4_v2, Standard_A4_v2 and Standard_A8_v2\" number_of_nodes = \"(Optional) Number of nodes for the Azure-SSIS Integration Runtime. Max is 10. Defaults to 1.\" credential_name = \"(Optional) The name of a Data Factory Credential that the SSIS integration will use to access data sources.If credential_name is omitted, the integration runtime will use the Data Factory assigned identity.\" max_parallel_executions_per_node = \"(Optional) Defines the maximum parallel executions per node. Defaults to 1. Max is 1.\" edition = \"(Optional) The Azure-SSIS Integration Runtime edition. Valid values are Standard and Enterprise. Defaults to Standard.\" license_type = \"(Optional) The type of the license that is used. Valid values are LicenseIncluded and BasePrice. Defaults to LicenseIncluded.\" catalog_info = \"(Optional) A catalog_info block for SSIS catalog configuration: server_endpoint = \"(Required) The endpoint of an Azure SQL Server that will be used to host the SSIS catalog.\" administrator_login = \"(Optional) Administrator login name for the SQL Server.\" administrator_password = \"(Optional) Administrator login password for the SQL Server.\" pricing_tier = \"(Optional) Pricing tier for the database that will be created for the SSIS catalog. Valid values are: Basic, S0, S1, S2, S3, S4, S6, S7, S9, S12, P1, P2, P4, P6, P11, P15, GP_S_Gen5_1, GP_S_Gen5_2, GP_S_Gen5_4, GP_S_Gen5_6, GP_S_Gen5_8, GP_S_Gen5_10, GP_S_Gen5_12, GP_S_Gen5_14, GP_S_Gen5_16, GP_S_Gen5_18, GP_S_Gen5_20, GP_S_Gen5_24, GP_S_Gen5_32, GP_S_Gen5_40, GP_Gen5_2, GP_Gen5_4, GP_Gen5_6, GP_Gen5_8, GP_Gen5_10, GP_Gen5_12, GP_Gen5_14, GP_Gen5_16, GP_Gen5_18, GP_Gen5_20, GP_Gen5_24, GP_Gen5_32, GP_Gen5_40, GP_Gen5_80, BC_Gen5_2, BC_Gen5_4, BC_Gen5_6, BC_Gen5_8, BC_Gen5_10, BC_Gen5_12, BC_Gen5_14, BC_Gen5_16, BC_Gen5_18, BC_Gen5_20, BC_Gen5_24, BC_Gen5_32, BC_Gen5_40, BC_Gen5_80, HS_Gen5_2, HS_Gen5_4, HS_Gen5_6, HS_Gen5_8, HS_Gen5_10, HS_Gen5_12, HS_Gen5_14, HS_Gen5_16, HS_Gen5_18, HS_Gen5_20, HS_Gen5_24, HS_Gen5_32, HS_Gen5_40 and HS_Gen5_80. Mutually exclusive with elastic_pool_name.\" elastic_pool_name = \"(Optional) The name of SQL elastic pool where the database will be created for the SSIS catalog. Mutually exclusive with pricing_tier.\" dual_standby_pair_name = \"(Optional) The dual standby Azure-SSIS Integration Runtime pair with SSISDB failover.\" copy_compute_scale = \"(Optional) A copy_compute_scale block for Data Factory Integration Runtime: data_integration_unit = \"(Optional) Specifies the data integration unit number setting reserved for copy activity execution. Supported values are multiples of 4 in range 4-256.\" time_to_live = \"(Optional) Specifies the time to live (in minutes) setting of integration runtime which will execute copy activity. Possible values are at least 5\" custom_setup_script = \"(Optional) A custom_setup_script block for Azure-SSIS Integration Runtime: blob_container_uri = \"(Required) The blob endpoint for the container which contains a custom setup script that will be run on every node on startup.\" sas_token = \"(Required) A container SAS token that gives access to the files.\" express_vnet_integration = \"(Required) An express_vnet_integration block for Azure-SSIS Integration Runtime: subnet_id = \"(Required) ID of the subnet to which the nodes of the Azure-SSIS Integration Runtime will be added.\" command_key = \"(Optional) A list of command_key blocks for Azure-SSIS Integration Runtime: target_name = \"(Required) The target computer or domain name.\" user_name = \"(Required) The username for the target device.\" password = \"(Optional) The password for the target device.\" key_vault_password = \"(Optional) A key_vault_secret_reference block with the following properties: linked_service_name = \"(Required) Specifies the name of an existing Key Vault Data Factory Linked Service.\" secret_name = \"(Required) Specifies the secret name in Azure Key Vault.\" secret_version = \"(Optional) Specifies the secret version in Azure Key Vault.\" parameters = \"(Optional) A map of parameters to associate with the Key Vault Data Factory Linked Service.\" component = \"(Optional) A list of component blocks for Azure-SSIS Integration Runtime: name = \"(Required) The Component Name installed for the Azure-SSIS Integration Runtime.\" license = \"(Optional) The license used for the Component.\" key_vault_license = \"(Optional) A key_vault_secret_reference block with the following properties: linked_service_name = \"(Required) Specifies the name of an existing Key Vault Data Factory Linked Service.\" secret_name = \"(Required) Specifies the secret name in Azure Key Vault.\" secret_version = \"(Optional) Specifies the secret version in Azure Key Vault.\" parameters = \"(Optional) A map of parameters to associate with the Key Vault Data Factory Linked Service.\" package_store = \"(Optional) A list of package_store blocks for Azure-SSIS Integration Runtime: name = \"(Required) Name of the package store.\" linked_service_name = \"(Required) Name of the Linked Service to associate with the packages.\" proxy = \"(Optional) A proxy block for Azure-SSIS Integration Runtime: self_hosted_integration_runtime_name = \"(Required) Name of Self Hosted Integration Runtime as a proxy.\" staging_storage_linked_service_name = \"(Required) Name of Azure Blob Storage linked service to reference the staging data store to be used when moving data between self-hosted and Azure-SSIS integration runtimes.\" path = \"(Optional) The path in the data store to be used when moving data between Self-Hosted and Azure-SSIS Integration Runtimes.\" pipeline_external_compute_scale = \"(Optional) A pipeline_external_compute_scale block for Azure-SSIS Integration Runtime: number_of_external_nodes = \"(Optional) Specifies the number of the external nodes, which should be greater than 0 and less than 11.\" number_of_pipeline_nodes = \"(Optional) Specifies the number of the pipeline nodes, which should be greater than 0 and less than 11.\" time_to_live = \"(Optional) Specifies the time to live (in minutes) setting of integration runtime which will execute copy activity. Possible values are at least 5.\" express_custom_setup = \"(Optional) An express_custom_setup block for Azure-SSIS Integration Runtime: command_key = \"(Optional) A list of command_key blocks with the following properties: target_name = \"(Required) The target computer or domain name.\" user_name = \"(Required) The username for the target device.\" password = \"(Optional) The password for the target device.\" key_vault_password = \"(Optional) A key_vault_secret_reference block with the following properties: linked_service_name = \"(Required) Specifies the name of an existing Key Vault Data Factory Linked Service.\" secret_name = \"(Required) Specifies the secret name in Azure Key Vault.\" secret_version = \"(Optional) Specifies the secret version in Azure Key Vault.\" parameters = \"(Optional) A map of parameters to associate with the Key Vault Data Factory Linked Service.\" component = \"(Optional) A list of component blocks with the following properties: name = \"(Required) The Component Name installed for the Azure-SSIS Integration Runtime.\" license = \"(Optional) The license used for the Component.\" key_vault_license = \"(Optional) A key_vault_secret_reference block with the following properties: linked_service_name = \"(Required) Specifies the name of an existing Key Vault Data Factory Linked Service.\" secret_name = \"(Required) Specifies the secret name in Azure Key Vault.\" secret_version = \"(Optional) Specifies the secret version in Azure Key Vault.\" parameters = \"(Optional) A map of parameters to associate with the Key Vault Data Factory Linked Service.\" environment = \"(Optional) The Environment Variables for the Azure-SSIS Integration Runtime.\" powershell_version = \"(Optional) The version of Azure Powershell installed for the Azure-SSIS Integration Runtime.\"",
+        "required": false,
+        "default": "{}"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "Map of Azure-SSIS Integration Runtime IDs"
+    },
+    "name": {
+      "description": "Map of Azure-SSIS Integration Runtime names"
+    },
+    "resource": {
+      "description": "Map of Azure-SSIS Integration Runtime resources"
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Datafactoryintegrationruntimeazuressis' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

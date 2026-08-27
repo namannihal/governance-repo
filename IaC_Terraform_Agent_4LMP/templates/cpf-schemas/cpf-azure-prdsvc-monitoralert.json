@@ -1,0 +1,166 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Monitor Alerts Module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-monitoralert'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-monitoralert",
+  "module_type": "service",
+  "azure_service": "Monitoralert",
+  "module_name": "Azure Monitor Alerts Module",
+  "latest_tag": "1.1.0",
+  "available_tags": [
+    "1.1.0",
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.1.1"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-monitoralert.git//?ref=1.1.0",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_monitor_activity_log_alert.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_monitor_metric_alert.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_monitor_scheduled_query_rules_alert_v2.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "monitoralert",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-monitoralert.git//?ref=1.1.0",
+      "version": "1.1.0",
+      "available_versions": [
+        "1.1.0",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.1.1"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "instance",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "activity_log_alert_config": {
+        "type": "object({ name = optional(string, null) location = string context = string scopes = list(string) enabled = optional(bool, true) description = optional(string, null) criteria = optional(list(object({ category = string caller = optional(string, null) operation_name = optional(string, null) resource_provider = optional(string, null) resource_providers = optional(list(string), null) resource_type = optional(string, null) resource_types = optional(list(string), null) resource_group = optional(string, null) resource_groups = optional(list(string), null) resource_id = optional(string, null) resource_ids = optional(list(string), null) level = optional(string, null) levels = optional(list(string), null) status = optional(string, null) statuses = optional(list(string), null) sub_status = optional(string, null) sub_statuses = optional(list(string), null) recommendation_type = optional(string, null) recommendation_category = optional(string, null) recommendation_impact = optional(string, null) resource_health = optional(list(object({ current = optional(list(string), null) previous = optional(list(string), null) reason = optional(list(string), null) })), []) service_health = optional(list(object({ events = optional(list(string), null) locations = optional(list(string), null) services = optional(list(string), null) })), []) })), []), actions = optional(list(object({ action_group_id = string webhook_properties = optional(map(string), {}) })), null) })",
+        "description": "(Optional) Configuration for Activity Log Alert. Required when create_activity_log_alert is true. object({ location = \"(Required) Specifies the Azure Region where the Activity Log Alert should exist. Changing this forces a new resource to be created.\" context = \"(Required) Application context information for the Activity Log Alert.\" scopes = \"(Required) The Scope at which the Activity Log should be applied. A list of strings which could be a resource group, a subscription, or a resource ID (such as a Storage Account).\" enabled = \"(Optional) Whether the alert is enabled.\" description = \"(Optional) Description of the activity log alert.\" criteria = \"(Optional) Criteria for the Activity Log Alert. List of object({ category = (Required) The category of the operation. Possible values are Administrative, Autoscale, Policy, Recommendation, ResourceHealth, Security and ServiceHealth. caller = (Optional) The caller of the operation. operation_name = (Optional) The name of the operation. resource_provider = (Optional) The resource provider. resource_providers = (Optional) List of resource providers. resource_type = (Optional) The resource type. resource_types = (Optional) List of resource types. resource_group = (Optional) The resource group. resource_groups = (Optional) List of resource groups. resource_id = (Optional) The resource ID. resource_ids = (Optional) List of resource IDs. level = (Optional) The level of the event. levels = (Optional) List of levels. status = (Optional) The status of the event. statuses = (Optional) List of statuses. sub_status = (Optional) The sub-status of the event. sub_statuses = (Optional) List of sub-statuses. recommendation_type = (Optional) The recommendation type. recommendation_category = (Optional) The recommendation category. recommendation_impact = (Optional) The recommendation impact. resource_health = (Optional) List of resource health objects with fields: { current = (Optional) List of current health states. previous = (Optional) List of previous health states. reason = (Optional) List of reasons for health state. } service_health = (Optional) List of service health objects with fields: { events = (Optional) List of events. locations = (Optional) List of locations. services = (Optional) List of services. } })\" actions = \"(Optional) List of actions to be taken when the alert is triggered. List of object({ action_group_id = (Required) The ID of the Action Group. webhook_properties = (Optional) The map of custom string properties to include with the post operation. These data are appended to the webhook payload. })\" })",
+        "required": false,
+        "default": "null"
+      },
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "create_activity_log_alert": {
+        "type": "bool",
+        "description": "(Optional) Whether to create an Activity Log Alert.",
+        "required": false,
+        "default": "false"
+      },
+      "create_metric_alert": {
+        "type": "bool",
+        "description": "(Optional) Whether to create a Metric Alert.",
+        "required": false,
+        "default": "false"
+      },
+      "create_scheduled_query_rules_alert": {
+        "type": "bool",
+        "description": "(Optional) Whether to create a Scheduled Query Rules Alert.",
+        "required": false,
+        "default": "false"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Required) Instance number for the resource(s).",
+        "required": true
+      },
+      "metric_alert_config": {
+        "type": "object({ name = optional(string, null) location = string context = string scopes = list(string) enabled = optional(bool, true) auto_mitigate = optional(bool, true) description = optional(string, null) frequency = optional(string, \"PT1M\") severity = optional(number, 3) target_resource_type = optional(string, null) target_resource_location = optional(string, null) window_size = optional(string, \"PT5M\") criteria = optional(list(object({ metric_namespace = string metric_name = string aggregation = string operator = string threshold = number skip_metric_validation = optional(bool, false) dimensions = optional(list(object({ name = string operator = string values = list(string) })), []) })), []) dynamic_criteria = optional(list(object({ metric_namespace = string metric_name = string aggregation = string operator = string alert_sensitivity = string evaluation_total_count = optional(number, 4) evaluation_failed_count = optional(number, 4) ignore_data_before = optional(string, null) skip_metric_validation = optional(bool, false) dimensions = optional(list(object({ name = string operator = string values = list(string) })), []) })), []) application_insights_web_test_location_availability_criteria = optional(list(object({ web_test_id = string component_id = string failed_location_count = number })), []) actions = optional(list(object({ action_group_id = string webhook_properties = optional(map(string), {}) })), null) })",
+        "description": "(Optional) Configuration for Metric Alert. Required when create_metric_alert is true. object({ location = \"(Required) Specifies the Azure Region where the Metric Alert should exist. Changing this forces a new resource to be created.\" context = \"(Required) Application context information for the Metric Alert.\" scopes = \"(Required) The Scope at which the Metric Alert should be applied. A list of strings which could be a resource group, a subscription, or a resource ID.\" enabled = \"(Optional) Whether the Metric Alert is enabled.\" auto_mitigate = \"(Optional) Should the alerts be auto resolved?\" description = \"(Optional) Description of the Metric Alert.\" frequency = \"(Optional) The evaluation frequency. Possible values are PT1M, PT5M, PT15M, PT30M and PT1H.\" severity = \"(Optional) The severity of the Metric Alert. Possible values are 0, 1, 2, 3 or 4.\" target_resource_type = \"(Optional) The resource type of the target resource.\" target_resource_location = \"(Optional) The location of the target resource.\" window_size = \"(Optional) The period of time for monitoring alert activity.\" criteria = \"(Optional) A list of metric criteria for the alert. List of object({ metric_namespace = (Required) The namespace of the metric. metric_name = (Required) The name of the metric. aggregation = (Required) The aggregation type. operator = (Required) The operator to use for comparison. threshold = (Required) The threshold value. skip_metric_validation = (Optional) Whether to skip metric validation. dimensions = (Optional) List of dimensions to filter on. List of object({ name = (Required) The name of the dimension. operator = (Required) The operator for the dimension. values = (Required) List of values for the dimension. }) })\" dynamic_criteria = \"(Optional) Dynamic criteria for the alert. Cannot be used with criteria. object({ metric_namespace = (Required) The namespace of the metric. metric_name = (Required) The name of the metric. aggregation = (Required) The aggregation type. operator = (Required) The operator to use for comparison. alert_sensitivity = (Required) The sensitivity of the alert. evaluation_total_count = (Optional) The total number of evaluations. evaluation_failed_count = (Optional) The number of failed evaluations to trigger alert. ignore_data_before = (Optional) Ignore data before this time. skip_metric_validation = (Optional) Whether to skip metric validation. dimensions = (Optional) List of dimensions to filter on. List of object({ name = (Required) The name of the dimension. operator = (Required) The operator for the dimension. values = (Required) List of values for the dimension. }) })\" application_insights_web_test_location_availability_criteria = \"(Optional) Application Insights web test criteria. object({ web_test_id = (Required) The ID of the web test. component_id = (Required) The ID of the Application Insights component. failed_location_count = (Required) The number of failed locations to trigger alert. })\" actions = \"(Optional) List of actions to be taken when the alert is triggered. List of object({ action_group_id = (Required) The ID of the Action Group. webhook_properties = (Optional) The map of custom string properties to include with the post operation. These data are appended to the webhook payload. })\" })",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "scheduled_query_rules_alert_config": {
+        "type": "object({ name = optional(string, null) location = string context = string evaluation_frequency = optional(string, \"PT5M\") scopes = list(string) severity = number window_duration = string auto_mitigation_enabled = optional(bool, false) workspace_alerts_storage_enabled = optional(bool, false) description = optional(string, null) display_name = optional(string, null) enabled = optional(bool, true) mute_actions_after_alert_duration = optional(string, \"PT5M\") query_time_range_override = optional(string, \"PT5M\") skip_query_validation = optional(bool, false) target_resource_types = optional(list(string), null) identity = optional(object({ type = string identity_ids = optional(list(string), null) }), null) criteria = optional(list(object({ query = string time_aggregation_method = string threshold = number operator = string resource_id_column = optional(string, null) metric_measure_column = optional(string, null) failing_periods = optional(list(object({ minimum_failing_periods_to_trigger_alert = number number_of_evaluation_periods = number })), null) dimensions = optional(list(object({ name = string operator = string values = list(string) })), []) })), []) actions = optional(list(object({ action_groups = list(string) custom_properties = optional(map(string), {}) })), null) })",
+        "description": "(Optional) Configuration for Scheduled Query Rules Alert. Required when create_scheduled_query_alert is true. object({ location = \"(Required) Specifies the Azure Region where the Monitor Scheduled Query Rule should exist. Changing this forces a new resource to be created.\" context = \"(Required) Application context information for the scheduled query rule.\" evaluation_frequency = \"(Optional) How often the alert is evaluated. Default is PT5M.\" scopes = \"(Required) Specifies the list of resource IDs that this scheduled query rule is scoped to. Changing this forces a new resource to be created. Currently, the API supports exactly 1 resource ID in the scopes list.\" severity = \"(Required) The severity of the alert. Possible values are 0, 1, 2, 3 or 4.\" window_duration = \"(Required) The period of time for monitoring alert activity.\" auto_mitigation_enabled = \"(Optional) Specifies the flag that indicates whether the alert should be automatically resolved or not. Value should be true or false. The default is false\" workspace_alerts_storage_enabled = \"(Optional) Specifies the flag which indicates whether this scheduled query rule check if storage is configured. Value should be true or false. The default is false.\" description = \"(Optional) Description of the scheduled query rule.\" display_name = \"(Optional) Display name for the scheduled query rule.\" enabled = \"(Optional) Whether the scheduled query rule is enabled.\" mute_actions_after_alert_duration = \"(Optional) Mute actions after alert duration.\" query_time_range_override = \"(Optional) Query time range override.\" skip_query_validation = \"(Optional) Whether to skip query validation.\" target_resource_types = \"(Optional) List of resource types to target.\" identity = \"(Optional) Identity configuration for the scheduled query rule. object({ type = string, identity_ids = optional(list(string)) })\" criteria = \"(Required) Query criteria for the scheduled query rule. object({ query = string, time_aggregation_method = string, threshold = number, operator = string, resource_id_column = (Optional) string, metric_measure_column = (Optional) string, failing_periods = (Optional) list(object({ minimum_failing_periods_to_trigger_alert = number, number_of_evaluation_periods = number})), dimensions = (Optional) list(object({ name = string, operator = string, values = list(string) })) })\" actions = \"(Optional) List of actions to be taken when the alert is triggered. List of object({ action_groups = list(string), custom_properties = (Optional) map(string) }))\" })",
+        "required": false,
+        "default": "null"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "activity_log_alert_id": {
+      "description": "The ID of the Activity Log Alert"
+    },
+    "activity_log_alert_name": {
+      "description": "The name of the Activity Log Alert"
+    },
+    "activity_log_alert_resource": {
+      "description": "The full Activity Log Alert resource"
+    },
+    "metric_alert_id": {
+      "description": "The ID of the Metric Alert"
+    },
+    "metric_alert_name": {
+      "description": "The name of the Metric Alert"
+    },
+    "metric_alert_resource": {
+      "description": "The full Metric Alert resource"
+    },
+    "scheduled_query_rules_alert_id": {
+      "description": "The ID of the Scheduled Query Rules Alert"
+    },
+    "scheduled_query_rules_alert_name": {
+      "description": "The name of the Scheduled Query Rules Alert"
+    },
+    "scheduled_query_rules_alert_resource": {
+      "description": "The full Scheduled Query Rules Alert resource"
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Monitoralert' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

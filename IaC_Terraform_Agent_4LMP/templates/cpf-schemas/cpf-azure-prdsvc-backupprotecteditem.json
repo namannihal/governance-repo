@@ -1,0 +1,217 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Backup Protected Item",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-backupprotecteditem'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-backupprotecteditem",
+  "module_type": "service",
+  "azure_service": "Backupprotecteditem",
+  "module_name": "Azure Backup Protected Item",
+  "latest_tag": "1.0.0",
+  "available_tags": [
+    "1.0.0",
+    "0.6.0",
+    "0.5.2",
+    "0.5.1",
+    "0.5.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-backupprotecteditem.git//?ref=1.0.0",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Virtual Network",
+    "Subnet",
+    "Network Security Group",
+    "Route Table",
+    "Keyvault",
+    "Privateendpoint",
+    "Role assignment",
+    "Keyvault Secret",
+    "Disk Encryption",
+    "Windows Virtual Machine",
+    "Storage Account",
+    "File share",
+    "User Assigned Identity",
+    "Proximity Placement Group",
+    "time_sleep",
+    "random_password"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_backup_container_storage_account.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_backup_protected_file_share.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_backup_protected_vm.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "backupprotecteditem",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-backupprotecteditem.git//?ref=1.0.0",
+      "version": "1.0.0",
+      "available_versions": [
+        "1.0.0",
+        "0.6.0",
+        "0.5.2",
+        "0.5.1",
+        "0.5.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "recovery_vault_name",
+      "resource_group_name",
+      "source_vm_id"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "fileshare_backup_policy_id": {
+        "type": "string",
+        "description": "(Optional for VM Backup) Specifies the ID of the backup policy to use. The policy must be an Azure File Share backup policy.",
+        "required": false,
+        "default": "null"
+      },
+      "fs_backup_enabled": {
+        "type": "bool",
+        "description": "(Optional) Should Fileshare backup enabled or skip as per input.",
+        "required": false,
+        "default": "true"
+      },
+      "include_disk_luns": {
+        "type": "list(number)",
+        "description": "(Optional) A list of LUN IDs to include in protection.",
+        "required": false,
+        "default": "[]"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "recovery_vault_name": {
+        "type": "string",
+        "description": "(Required) Specifies the name of the Recovery Services Vault to use",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "source_file_share_name": {
+        "type": "string",
+        "description": "(Optional for VM Backup) Specifies the name of the file share to backup. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "source_vm_id": {
+        "type": "string",
+        "description": "(Required) Source VM ID of the virtual machine to protect.",
+        "required": true
+      },
+      "storage_account_id": {
+        "type": "string",
+        "description": "(Optional for VM Backup) Specifies the ID of the storage account of the file share to backup.",
+        "required": false,
+        "default": "null"
+      },
+      "vm_backup_enabled": {
+        "type": "bool",
+        "description": "(Optional) Should Virtual machine backup enabled or skip as per input.",
+        "required": false,
+        "default": "true"
+      },
+      "vm_backup_policy_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the Azure Backup policy to associate with the protected VM.",
+        "required": false,
+        "default": "null"
+      }
+    }
+  },
+  "outputs": {
+    "azurerm_backup_protected_file_share_id": {
+      "description": "The ID of the Azure Backup protected file share."
+    },
+    "azurerm_backup_protected_file_share_resource": {
+      "description": "The Azure Backup Protected File Share Resource"
+    },
+    "azurerm_backup_protected_vm_id": {
+      "description": "The ID of the Azure Backup protected VM."
+    },
+    "azurerm_backup_protected_vm_name": {
+      "description": "The Azure Backup protected VM Name"
+    },
+    "azurerm_backup_protected_vm_resource": {
+      "description": "The Azure Backup protected VM Resource"
+    },
+    "azurerm_storage_account_fileshare_name": {
+      "description": "The ID of the Azure Backup protected file share."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Backupprotecteditem' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Virtual Network",
+      "Subnet",
+      "Network Security Group",
+      "Route Table",
+      "Keyvault",
+      "Privateendpoint",
+      "Role assignment",
+      "Keyvault Secret",
+      "Disk Encryption",
+      "Windows Virtual Machine",
+      "Storage Account",
+      "File share",
+      "User Assigned Identity",
+      "Proximity Placement Group",
+      "time_sleep",
+      "random_password"
+    ]
+  }
+}

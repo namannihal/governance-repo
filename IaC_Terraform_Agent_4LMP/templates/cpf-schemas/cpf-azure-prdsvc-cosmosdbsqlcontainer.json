@@ -1,0 +1,249 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: CosmosDB SQL Container module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-cosmosdbsqlcontainer'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-cosmosdbsqlcontainer",
+  "module_type": "service",
+  "azure_service": "Cosmosdbsqlcontainer",
+  "module_name": "CosmosDB SQL Container module",
+  "latest_tag": "2.0.1",
+  "available_tags": [
+    "2.0.1",
+    "2.0.0",
+    "1.2.0",
+    "1.1.0",
+    "1.0.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cosmosdbsqlcontainer.git//?ref=2.0.1",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Virtual Network",
+    "Subnet",
+    "Network Security Group",
+    "Route Table",
+    "Key Vault",
+    "Private Endpoint",
+    "User Assigned Identity",
+    "Cosmos DB Account",
+    "Cosmos SQL DB"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_cosmosdb_sql_container.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_cosmosdb_sql_function.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_cosmosdb_sql_stored_procedure.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_cosmosdb_sql_trigger.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "cosmosdbsqlcontainer",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cosmosdbsqlcontainer.git//?ref=2.0.1",
+      "version": "2.0.1",
+      "available_versions": [
+        "2.0.1",
+        "2.0.0",
+        "1.2.0",
+        "1.1.0",
+        "1.0.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "account_name",
+      "app_id",
+      "database_name",
+      "environment",
+      "location",
+      "org_id",
+      "partition_key_path",
+      "resource_group_name"
+    ],
+    "properties": {
+      "account_name": {
+        "type": "string",
+        "description": "(Required) The name of the Cosmos DB Account to create the container within. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "autoscale_settings": {
+        "type": "object({ max_throughput = optional(number, 1000) })",
+        "description": "(Optional) object({ max_throughput = (Optional) The maximum throughput of the SQL container (RU/s). Must be between 1,000 and 1,000,000. Must be set in increments of 1,000. Conflicts with throughput. })",
+        "required": false,
+        "default": "null"
+      },
+      "combined_attributes": {
+        "type": "object({ partition_key_version = optional(number, 1) throughput = optional(number) default_ttl = optional(number, -1) analytical_storage_ttl = optional(number, null) })",
+        "description": "(optional) object({ partition_key_version = (Optional) Define a partition key version. Changing this forces a new resource to be created. Possible values are 1and 2. This should be set to 2 in order to use large partition keys. throughput = (Optional) The throughput of SQL container (RU/s). Must be set in increments of 100. The minimum value is 400. This must be set upon container creation otherwise it cannot be updated without a manual terraform destroy-apply. default_ttl = (Optional) The default time to live of SQL container. If missing, items are not expired automatically. If present and the value is set to -1, it is equal to infinity, and items don’t expire by default. If present and the value is set to some number n – items will expire n seconds after their last modified time. analytical_storage_ttl = (Optional) The default time to live of Analytical Storage for this SQL container. If present and the value is set to -1, it is equal to infinity, and items don’t expire by default. If present and the value is set to some number n – items will expire n seconds after their last modified time. })",
+        "required": false,
+        "default": "{ \"analytical_storage_ttl\": null, \"default_ttl\": -1, \"partition_key_version\": 1, \"throughput\": 400 }"
+      },
+      "conflict_resolution_policy": {
+        "type": "map(object({ mode = string conflict_resolution_path = optional(string) conflict_resolution_procedure = optional(string) }))",
+        "description": "(Optional) mode = (Required) Indicates the conflict resolution mode. Possible values include: LastWriterWins, Custom. conflict_resolution_path = (Optional) The conflict resolution path in the case of LastWriterWins mode. conflict_resolution_procedure = (Optional) The procedure to resolve conflicts in the case of Custom mode.",
+        "required": false,
+        "default": "null"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "database_name": {
+        "type": "string",
+        "description": "(Required) The name of the Cosmos DB SQL Database to create the container within. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "indexing_policy": {
+        "type": "object({ indexing_mode = optional(string, \"consistent\") included_path = optional(map(object({ path = string }))) excluded_path = optional(map(object({ path = string }))) composite_index = optional(map(object({ index = map(object({ path = string order = string })) }))) spatial_index = optional(map(object({ path = string }))) })",
+        "description": "(Optional) object({ indexing_mode = (Optional) Indicates the indexing mode. Possible values include: consistent and none. Defaults to consistent. included_path = (Optional) One or more included_path blocks as defined below. Either included_path or excluded_path must contain the path /* map(object({ path = (Required) Path for which the indexing behaviour applies to. })) excluded_path = (Optional) One or more excluded_path blocks as defined below. Either included_path or excluded_path must contain the path /* map(object({ path = (Required) Path that is excluded from indexing. })) composite_index = (Optional) One or more composite_index blocks as defined below. map(object({ index = (Required) One or more index blocks as defined below. map(object({ path = (Required) Path for which the indexing behaviour applies to. order = (Required) Order of the index. Possible values are Ascending or Descending. })) })) spatial_index = (Optional) One or more spatial_index blocks as defined below. map(object({ path = (Required) Path for which the indexing behaviour applies to. According to the service design, all spatial types including LineString, MultiPolygon, Point, and Polygon will be applied to the path. })) })",
+        "required": false,
+        "default": "null"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "name": {
+        "type": "string",
+        "description": "(Optional) Specifies the name of the Cosmos DB SQL Container resource. If not provided, the resource name is created leveraging LSEG variables as per standard naming convention. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "partition_key_kind": {
+        "type": "string",
+        "description": "(Optional) Define a partition key kind. Possible values are Hash and MultiHash. Defaults to Hash. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "\"Hash\""
+      },
+      "partition_key_path": {
+        "type": "list(string)",
+        "description": "(Required) Define a partition key. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "sql_function": {
+        "type": "map(object({ name = string body = string }))",
+        "description": "(Optional) map(object({ name = \"(Required) The name which should be used for this SQL User Defined Function. Changing this forces a new SQL User Defined Function to be created.\" body = \"(Required) Body of the User Defined Function.\" }))",
+        "required": false,
+        "default": "null"
+      },
+      "sql_storedprocedure": {
+        "type": "map(object({ name = string body = string account_name = string database_name = string }))",
+        "description": "(Optional) map(object({ name = \"(Required) Specifies the name of the Cosmos DB SQL Stored Procedure. Changing this forces a new resource to be created.\" body = \"(Required) The body of the stored procedure.\" account_name = \"(Required) The name of the cosmosdb account.\" database_name = \"(Required) The name of the cosmosdb sql database.\" }))",
+        "required": false,
+        "default": "null"
+      },
+      "sql_trigger": {
+        "type": "map(object({ name = string body = string operation = string type = string }))",
+        "description": "(Optional) map(object({ name = \"(Required) The name which should be used for this SQL Trigger. Changing this forces a new SQL Trigger to be created.\" body = \"(Required) Body of the SQL Trigger.\" operation = \"(Required) The operation the trigger is associated with. Possible values are All, Create, Update, Delete and Replace.\" type = \"(Required) Type of the Trigger. Possible values are Pre and Post.\" }))",
+        "required": false,
+        "default": "null"
+      },
+      "unique_key": {
+        "type": "map(object({ paths = list(string) }))",
+        "description": "(Optional) map(object({ paths = (Required) A list of paths to use for this unique key. Changing this forces a new resource to be created. }))",
+        "required": false,
+        "default": "null"
+      }
+    }
+  },
+  "outputs": {
+    "function_id": {
+      "description": "The ID of the SQL User Defined Function."
+    },
+    "function_name": {
+      "description": "The name of the SQL User Defined Function."
+    },
+    "function_resource": {
+      "description": "The CosmosDB SQL Function resource."
+    },
+    "id": {
+      "description": "The ID of the CosmosDB SQL Container."
+    },
+    "name": {
+      "description": "The name of the CosmosDB SQL Container."
+    },
+    "resource": {
+      "description": "The CosmosDB SQL Container resource."
+    },
+    "stored_procedure_id": {
+      "description": "The ID of the Cosmos DB SQL Stored Procedure."
+    },
+    "stored_procedure_name": {
+      "description": "The name of the Cosmos DB SQL Stored Procedure."
+    },
+    "stored_procedure_resource": {
+      "description": "The CosmosDB SQL Stored Procedure resource."
+    },
+    "trigger_id": {
+      "description": "The ID of the SQL Trigger."
+    },
+    "trigger_name": {
+      "description": "The name of the SQL Trigger."
+    },
+    "trigger_resource": {
+      "description": "The CosmosDB SQL Trigger resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Cosmosdbsqlcontainer' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Virtual Network",
+      "Subnet",
+      "Network Security Group",
+      "Route Table",
+      "Key Vault",
+      "Private Endpoint",
+      "User Assigned Identity",
+      "Cosmos DB Account",
+      "Cosmos SQL DB"
+    ]
+  }
+}

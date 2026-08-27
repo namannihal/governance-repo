@@ -1,0 +1,192 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: CosmosDb Cassandra Table module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-cosmosdbcassandratable'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-cosmosdbcassandratable",
+  "module_type": "service",
+  "azure_service": "Cosmosdbcassandratable",
+  "module_name": "CosmosDb Cassandra Table module",
+  "latest_tag": "1.0.1",
+  "available_tags": [
+    "1.0.1",
+    "1.0.0",
+    "0.1.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cosmosdbcassandratable.git//?ref=1.0.1",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Virtual Network",
+    "Subnet",
+    "Network Security Group",
+    "Route Table",
+    "Key Vault",
+    "Private Endpoint",
+    "User Assigned Identity",
+    "Cosmos DB Account",
+    "Cassandra Keyspace"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_cosmosdb_cassandra_table.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_resource_group.this",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "cosmosdbcassandratable",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cosmosdbcassandratable.git//?ref=1.0.1",
+      "version": "1.0.1",
+      "available_versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.1.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "cassandra_keyspace_id",
+      "columns",
+      "environment",
+      "location",
+      "org_id",
+      "partition_keys",
+      "resource_group_name",
+      "throughput"
+    ],
+    "properties": {
+      "analytical_storage_ttl": {
+        "type": "number",
+        "description": "(Optional) Analytical storage TTL in seconds; null to omit.",
+        "required": false,
+        "default": "null"
+      },
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "autoscale_max_throughput": {
+        "type": "number",
+        "description": "(Optional) Max RU/s (used when enable_autoscale_settings=true).",
+        "required": false,
+        "default": "null"
+      },
+      "cassandra_keyspace_id": {
+        "type": "string",
+        "description": "(Required) The Resource Id of the Cassandra Keyspace",
+        "required": true
+      },
+      "cluster_keys": {
+        "type": "list(object({ name = optional(string, null), order_by = optional(string, \"Asc\") }))",
+        "description": "\"(Optional) List of columns for a Cosmos DB Cassandra table. list(object({ name = (Optional) The name of the column as it will appear in the Cassandra table. This should follow Cassandra naming conventions—typically lowercase, using underscores for separation (e.g., `user_id`, `created_at`). It must be unique within the table and clearly represent the data it stores. order_by = (Optional) where order_by is Asc/Desc (any case). }))\"",
+        "required": false,
+        "default": "[]"
+      },
+      "columns": {
+        "type": "list(object({ name = string type = string }))",
+        "description": "\"(Required) List of columns for a Cosmos DB Cassandra table. list(object({ name = (Required) The name of the column as it will appear in the Cassandra table. This should follow Cassandra naming conventions—typically lowercase, using underscores for separation (e.g., `user_id`, `created_at`). It must be unique within the table and clearly represent the data it stores. type = (Required) The data type of the column, compatible with Cassandra types such as `text`, `uuid`, `int`, `timestamp`, `boolean`, etc. }))\"",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "default_ttl": {
+        "type": "number",
+        "description": "(Optional) Default TTL in seconds; null to omit.",
+        "required": false,
+        "default": "null"
+      },
+      "enable_table_autoscale_settings": {
+        "type": "bool",
+        "description": "(Optional) true => use autoscale_settings, false => use manual throughput.",
+        "required": false,
+        "default": "false"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "partition_keys": {
+        "type": "list(string)",
+        "description": "(Required) Partition key column names (composite supported).",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "throughput": {
+        "type": "number",
+        "description": "(Required) Manual RU/s (used when enable_autoscale_settings=false).",
+        "required": true
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The Resource Id of the cassandra table."
+    },
+    "name": {
+      "description": "The name of the cassandra table."
+    },
+    "resource": {
+      "description": "The Resource information of the cassandra table."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Cosmosdbcassandratable' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Virtual Network",
+      "Subnet",
+      "Network Security Group",
+      "Route Table",
+      "Key Vault",
+      "Private Endpoint",
+      "User Assigned Identity",
+      "Cosmos DB Account",
+      "Cassandra Keyspace"
+    ]
+  }
+}

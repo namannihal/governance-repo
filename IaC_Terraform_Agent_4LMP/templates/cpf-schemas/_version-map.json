@@ -1,0 +1,2208 @@
+{
+  "generated_at": "2026-07-02T18:15:13Z",
+  "modules": {
+    "cpf-azure-prdsvc-aifoundry": {
+      "version": "3.1.3",
+      "versions": [
+        "3.1.3",
+        "3.1.2",
+        "3.1.1",
+        "3.1.0",
+        "3.0.3"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-aifoundry.git//?ref=3.1.3"
+    },
+    "cpf-azure-prdsvc-aifoundryproject": {
+      "version": "1.3.0",
+      "versions": [
+        "1.3.0",
+        "1.2.3",
+        "1.2.2",
+        "1.2.1",
+        "1.2.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-aifoundryproject.git//?ref=1.3.0"
+    },
+    "cpf-azure-prdsvc-apimanagement": {
+      "version": "1.0.4",
+      "versions": [
+        "1.0.4",
+        "1.0.3",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-apimanagement.git//?ref=1.0.4"
+    },
+    "cpf-azure-prdsvc-appconfiguration": {
+      "version": "1.0.3",
+      "versions": [
+        "1.0.3",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.1.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-appconfiguration.git//?ref=1.0.3"
+    },
+    "cpf-azure-prdsvc-appconfigurationkeyfeatureflag": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.1.1",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-appconfigurationkeyfeatureflag.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-applicationgateway": {
+      "version": "1.1.2",
+      "versions": [
+        "1.1.2",
+        "1.1.1",
+        "1.1.0",
+        "1.0.2",
+        "1.0.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-applicationgateway.git//?ref=1.1.2"
+    },
+    "cpf-azure-prdsvc-applicationinsights": {
+      "version": "1.0.3",
+      "versions": [
+        "1.0.3",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.5.4"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-applicationinsights.git//?ref=1.0.3"
+    },
+    "cpf-azure-prdsvc-applicationsecuritygroup": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.3.3",
+        "0.3.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-applicationsecuritygroup.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-appservicebinding": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.1.1",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-appservicebinding.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-appserviceenvironment": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.3.4",
+        "0.3.3"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-appserviceenvironment.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-appserviceplan": {
+      "version": "1.1.0",
+      "versions": [
+        "1.1.0",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.6.4"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-appserviceplan.git//?ref=1.1.0"
+    },
+    "cpf-azure-prdsvc-arcmachine": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.2.2",
+        "0.2.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-arcmachine.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-automationaccount": {
+      "version": "1.3.1",
+      "versions": [
+        "1.3.1",
+        "1.3.0",
+        "1.2.1",
+        "1.2.0",
+        "1.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-automationaccount.git//?ref=1.3.1"
+    },
+    "cpf-azure-prdsvc-availabilityset": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.3.2",
+        "0.3.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-availabilityset.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-azureaistudiohub": {
+      "version": "0.2.3",
+      "versions": [
+        "0.2.3",
+        "0.2.2",
+        "0.2.1",
+        "0.2.0",
+        "0.1.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-azureaistudiohub.git//?ref=0.2.3"
+    },
+    "cpf-azure-prdsvc-backupprotecteditem": {
+      "version": "1.0.0",
+      "versions": [
+        "1.0.0",
+        "0.6.0",
+        "0.5.2",
+        "0.5.1",
+        "0.5.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-backupprotecteditem.git//?ref=1.0.0"
+    },
+    "cpf-azure-prdsvc-bastionhost": {
+      "version": "1.0.0",
+      "versions": [
+        "1.0.0",
+        "0.4.0",
+        "0.3.1",
+        "0.3.0",
+        "0.2.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-bastionhost.git//?ref=1.0.0"
+    },
+    "cpf-azure-prdsvc-batchaccount": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.9.1",
+        "0.9.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-batchaccount.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-botserviceazurebot": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.6.0",
+        "0.5.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-botserviceazurebot.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-capacityreservationgroups": {
+      "version": "2.0.2",
+      "versions": [
+        "2.0.2",
+        "2.0.1",
+        "2.0.0",
+        "1.0.1",
+        "1.0.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-capacityreservationgroups.git//?ref=2.0.2"
+    },
+    "cpf-azure-prdsvc-cdnendpoint": {
+      "version": "0.3.0",
+      "versions": [
+        "0.3.0",
+        "0.2.2",
+        "0.2.1",
+        "0.2.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cdnendpoint.git//?ref=0.3.0"
+    },
+    "cpf-azure-prdsvc-cdnfrontdoorcustomdomain": {
+      "version": "2.0.1",
+      "versions": [
+        "2.0.1",
+        "2.0.0",
+        "1.1.0",
+        "1.0.1",
+        "1.0.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cdnfrontdoorcustomdomain.git//?ref=2.0.1"
+    },
+    "cpf-azure-prdsvc-cdnfrontdoorcustomdomainassociation": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cdnfrontdoorcustomdomainassociation.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-cdnfrontdoorfirewallpolicy": {
+      "version": "1.1.0",
+      "versions": [
+        "1.1.0",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.9.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cdnfrontdoorfirewallpolicy.git//?ref=1.1.0"
+    },
+    "cpf-azure-prdsvc-cdnfrontdoororigin": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.3.7",
+        "0.3.6",
+        "0.3.5"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cdnfrontdoororigin.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-cdnfrontdoororigingroup": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.3.3",
+        "0.3.2",
+        "0.3.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cdnfrontdoororigingroup.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-cdnfrontdoorprofile": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.8.1",
+        "0.8.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cdnfrontdoorprofile.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-cdnfrontdoorroute": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.2.4",
+        "0.2.3",
+        "0.2.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cdnfrontdoorroute.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-cdnfrontdoorrule": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.2.4",
+        "0.2.3",
+        "0.2.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cdnfrontdoorrule.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-cdnfrontdoorruleset": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.2.3",
+        "0.2.2",
+        "0.2.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cdnfrontdoorruleset.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-cdnfrontdoorsecret": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.2.4",
+        "0.2.3",
+        "0.2.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cdnfrontdoorsecret.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-cdnfrontdoorsecuritypolicy": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.2.4",
+        "0.2.3",
+        "0.2.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cdnfrontdoorsecuritypolicy.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-chaosstudioexperiment": {
+      "version": "2.0.2",
+      "versions": [
+        "2.0.2",
+        "2.0.1",
+        "2.0.0",
+        "1.2.1",
+        "1.2.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-chaosstudioexperiment.git//?ref=2.0.2"
+    },
+    "cpf-azure-prdsvc-cognitiveaccount": {
+      "version": "1.0.6",
+      "versions": [
+        "1.0.6",
+        "1.0.5",
+        "1.0.4",
+        "1.0.3",
+        "1.0.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cognitiveaccount.git//?ref=1.0.6"
+    },
+    "cpf-azure-prdsvc-communicationservice": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.2.2",
+        "0.2.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-communicationservice.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-containerapp": {
+      "version": "1.2.0",
+      "versions": [
+        "1.2.0",
+        "1.1.1",
+        "1.1.0",
+        "1.0.2",
+        "1.0.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-containerapp.git//?ref=1.2.0"
+    },
+    "cpf-azure-prdsvc-containerappenvironment": {
+      "version": "1.2.1",
+      "versions": [
+        "1.2.1",
+        "1.2.0",
+        "1.1.0",
+        "1.0.4",
+        "1.0.3"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-containerappenvironment.git//?ref=1.2.1"
+    },
+    "cpf-azure-prdsvc-containerappjobs": {
+      "version": "1.1.2",
+      "versions": [
+        "1.1.2",
+        "1.1.1",
+        "1.1.0",
+        "1.0.0",
+        "0.1.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-containerappjobs.git//?ref=1.1.2"
+    },
+    "cpf-azure-prdsvc-containergroup": {
+      "version": "1.1.2",
+      "versions": [
+        "1.1.2",
+        "1.1.1",
+        "1.1.0",
+        "1.0.1",
+        "1.0.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-containergroup.git//?ref=1.1.2"
+    },
+    "cpf-azure-prdsvc-containerregistry": {
+      "version": "1.1.4",
+      "versions": [
+        "1.1.4",
+        "1.1.3",
+        "1.1.2",
+        "1.1.1",
+        "1.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-containerregistry.git//?ref=1.1.4"
+    },
+    "cpf-azure-prdsvc-cosmosdbaccount": {
+      "version": "1.2.4",
+      "versions": [
+        "1.2.4",
+        "1.2.3",
+        "1.2.2",
+        "1.2.1",
+        "1.1.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cosmosdbaccount.git//?ref=1.2.4"
+    },
+    "cpf-azure-prdsvc-cosmosdbcassandrakeyspace": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cosmosdbcassandrakeyspace.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-cosmosdbcassandratable": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cosmosdbcassandratable.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-cosmosdbmongodatabase": {
+      "version": "2.1.0",
+      "versions": [
+        "2.1.0",
+        "2.0.0",
+        "1.0.1",
+        "1.0.0",
+        "0.2.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cosmosdbmongodatabase.git//?ref=2.1.0"
+    },
+    "cpf-azure-prdsvc-cosmosdbpostgresqlcluster": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.2.2",
+        "0.2.1",
+        "0.2.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cosmosdbpostgresqlcluster.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-cosmosdbsqlcontainer": {
+      "version": "2.0.1",
+      "versions": [
+        "2.0.1",
+        "2.0.0",
+        "1.2.0",
+        "1.1.0",
+        "1.0.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cosmosdbsqlcontainer.git//?ref=2.0.1"
+    },
+    "cpf-azure-prdsvc-cosmosdbsqldatabase": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.4.0",
+        "0.3.2",
+        "0.3.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cosmosdbsqldatabase.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-databasemigrationservice": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.1.2",
+        "0.1.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-databasemigrationservice.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-databricksaccessconnector": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.2.2",
+        "0.2.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-databricksaccessconnector.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-databricksunitycatalog": {
+      "version": "0.1.0",
+      "versions": "0.1.0",
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-databricksunitycatalog.git//?ref=0.1.0"
+    },
+    "cpf-azure-prdsvc-databricksworkspace": {
+      "version": "1.1.3",
+      "versions": [
+        "1.1.3",
+        "1.1.2",
+        "1.1.1",
+        "1.1.0",
+        "1.0.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-databricksworkspace.git//?ref=1.1.3"
+    },
+    "cpf-azure-prdsvc-datafactory": {
+      "version": "1.0.3",
+      "versions": [
+        "1.0.3",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.11.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-datafactory.git//?ref=1.0.3"
+    },
+    "cpf-azure-prdsvc-datafactorydataset": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-datafactorydataset.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-datafactoryintegrationruntimeazuressis": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-datafactoryintegrationruntimeazuressis.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-datafactorylinkedservice": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.4.0",
+        "0.3.1",
+        "0.3.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-datafactorylinkedservice.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-datafactorypipeline": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-datafactorypipeline.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-datafactorytrigger": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-datafactorytrigger.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-datalakestore": {
+      "version": "1.1.0",
+      "versions": [
+        "1.1.0",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.8.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-datalakestore.git//?ref=1.1.0"
+    },
+    "cpf-azure-prdsvc-dataprotectionbackupinstance": {
+      "version": "3.0.1",
+      "versions": [
+        "3.0.1",
+        "3.0.0",
+        "2.0.0",
+        "1.0.1",
+        "1.0.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-dataprotectionbackupinstance.git//?ref=3.0.1"
+    },
+    "cpf-azure-prdsvc-dataprotectionbackupvault": {
+      "version": "3.0.2",
+      "versions": [
+        "3.0.2",
+        "3.0.1",
+        "3.0.0",
+        "2.2.2",
+        "2.2.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-dataprotectionbackupvault.git//?ref=3.0.2"
+    },
+    "cpf-azure-prdsvc-dedicatedhost": {
+      "version": "1.0.3",
+      "versions": [
+        "1.0.3",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.2.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-dedicatedhost.git//?ref=1.0.3"
+    },
+    "cpf-azure-prdsvc-dedicatedhostgroup": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.1.1",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-dedicatedhostgroup.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-demo_aks": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-demo_aks.git//"
+    },
+    "cpf-azure-prdsvc-demo_azuresql": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-demo_azuresql.git//"
+    },
+    "cpf-azure-prdsvc-demo_connectivity": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-demo_connectivity.git//"
+    },
+    "cpf-azure-prdsvc-demo_vmss": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-demo_vmss.git//"
+    },
+    "cpf-azure-prdsvc-diskencryptionset": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.6.0",
+        "0.5.3"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-diskencryptionset.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-dnszone": {
+      "version": "0.2.1",
+      "versions": [
+        "0.2.1",
+        "0.2.0",
+        "0.1.1",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-dnszone.git//?ref=0.2.1"
+    },
+    "cpf-azure-prdsvc-emailcommunicationservice": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.2.3",
+        "0.2.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-emailcommunicationservice.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-eventgriddomain": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.4.3",
+        "0.4.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-eventgriddomain.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-eventgrideventsubscription": {
+      "version": "2.0.1",
+      "versions": [
+        "2.0.1",
+        "2.0.0",
+        "1.1.0",
+        "1.0.1",
+        "1.0.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-eventgrideventsubscription.git//?ref=2.0.1"
+    },
+    "cpf-azure-prdsvc-eventgridpartnertopics": {
+      "version": "0.1.3",
+      "versions": [
+        "0.1.3",
+        "0.1.2",
+        "0.1.1",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-eventgridpartnertopics.git//?ref=0.1.3"
+    },
+    "cpf-azure-prdsvc-eventgridsystemtopic": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.3.3",
+        "0.3.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-eventgridsystemtopic.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-eventgridtopic": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.3.2",
+        "0.3.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-eventgridtopic.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-eventhub": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.3.2",
+        "0.3.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-eventhub.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-eventhubcluster": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.3.2",
+        "0.3.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-eventhubcluster.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-eventhubnamespace": {
+      "version": "1.2.3",
+      "versions": [
+        "1.2.3",
+        "1.2.2",
+        "1.2.1",
+        "1.2.0",
+        "1.1.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-eventhubnamespace.git//?ref=1.2.3"
+    },
+    "cpf-azure-prdsvc-expressroutecircuit": {
+      "version": "1.0.0",
+      "versions": [
+        "1.0.0",
+        "0.3.0",
+        "0.2.2",
+        "0.2.1",
+        "0.2.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-expressroutecircuit.git//?ref=1.0.0"
+    },
+    "cpf-azure-prdsvc-expressroutecircuitpeering": {
+      "version": "0.3.2",
+      "versions": [
+        "0.3.2",
+        "0.3.1",
+        "0.3.0",
+        "0.2.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-expressroutecircuitpeering.git//?ref=0.3.2"
+    },
+    "cpf-azure-prdsvc-expressrouteport": {
+      "version": "0.3.0",
+      "versions": [
+        "0.3.0",
+        "0.2.1",
+        "0.2.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-expressrouteport.git//?ref=0.3.0"
+    },
+    "cpf-azure-prdsvc-fabriccapacity": {
+      "version": "2.0.2",
+      "versions": [
+        "2.0.2",
+        "2.0.1",
+        "2.0.0",
+        "1.0.1",
+        "1.0.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-fabriccapacity.git//?ref=2.0.2"
+    },
+    "cpf-azure-prdsvc-firewall": {
+      "version": "0.3.2",
+      "versions": [
+        "0.3.2",
+        "0.3.1",
+        "0.3.0",
+        "0.2.1",
+        "0.2.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-firewall.git//?ref=0.3.2"
+    },
+    "cpf-azure-prdsvc-firewallpolicy": {
+      "version": "0.3.3",
+      "versions": [
+        "0.3.3",
+        "0.3.2",
+        "0.3.1",
+        "0.3.0",
+        "0.2.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-firewallpolicy.git//?ref=0.3.3"
+    },
+    "cpf-azure-prdsvc-hdinsighthadoopcluster": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.1.3",
+        "0.1.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-hdinsighthadoopcluster.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-hdinsighthbasecluster": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.1.2",
+        "0.1.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-hdinsighthbasecluster.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-hdinsightkafkacluster": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.2.2",
+        "0.2.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-hdinsightkafkacluster.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-keyvault": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.8.5",
+        "0.8.4"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-keyvault.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-keyvaultcertificate": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.4.3",
+        "0.4.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-keyvaultcertificate.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-keyvaultkey": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.4.4",
+        "0.4.3"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-keyvaultkey.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-keyvaultsecret": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.3.3",
+        "0.3.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-keyvaultsecret.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-kubernetescluster": {
+      "version": "2.1.0",
+      "versions": [
+        "2.1.0",
+        "2.0.4",
+        "2.0.3",
+        "2.0.2",
+        "2.0.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-kubernetescluster.git//?ref=2.1.0"
+    },
+    "cpf-azure-prdsvc-kubernetesclusternodepool": {
+      "version": "1.3.0",
+      "versions": [
+        "1.3.0",
+        "1.2.1",
+        "1.2.0",
+        "1.1.1",
+        "1.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-kubernetesclusternodepool.git//?ref=1.3.0"
+    },
+    "cpf-azure-prdsvc-kustocluster": {
+      "version": "2.0.2",
+      "versions": [
+        "2.0.2",
+        "2.0.1",
+        "2.0.0",
+        "1.1.1",
+        "1.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-kustocluster.git//?ref=2.0.2"
+    },
+    "cpf-azure-prdsvc-kustodatabase": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.1.2",
+        "0.1.1",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-kustodatabase.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-linuxfunctionapp": {
+      "version": "1.5.0",
+      "versions": [
+        "1.5.0",
+        "1.4.0",
+        "1.3.2",
+        "1.3.1",
+        "1.3.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-linuxfunctionapp.git//?ref=1.5.0"
+    },
+    "cpf-azure-prdsvc-linuxvirtualmachine": {
+      "version": "1.1.3",
+      "versions": [
+        "1.1.3",
+        "1.1.2",
+        "1.1.1",
+        "1.1.0",
+        "1.0.4"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-linuxvirtualmachine.git//?ref=1.1.3"
+    },
+    "cpf-azure-prdsvc-linuxvirtualmachinescaleset": {
+      "version": "2.1.3",
+      "versions": [
+        "2.1.3",
+        "2.1.2",
+        "2.1.1",
+        "2.1.0",
+        "2.0.6"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-linuxvirtualmachinescaleset.git//?ref=2.1.3"
+    },
+    "cpf-azure-prdsvc-linuxwebapp": {
+      "version": "1.3.3",
+      "versions": [
+        "1.3.3",
+        "1.3.2",
+        "1.3.1",
+        "1.3.0",
+        "1.2.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-linuxwebapp.git//?ref=1.3.3"
+    },
+    "cpf-azure-prdsvc-loadbalancer": {
+      "version": "1.1.0",
+      "versions": [
+        "1.1.0",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.5.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-loadbalancer.git//?ref=1.1.0"
+    },
+    "cpf-azure-prdsvc-loadtest": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.1.4",
+        "0.1.3"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-loadtest.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-loganalyticsworkspace": {
+      "version": "2.1.0",
+      "versions": [
+        "2.1.0",
+        "2.0.2",
+        "2.0.1",
+        "2.0.0",
+        "1.2.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-loganalyticsworkspace.git//?ref=2.1.0"
+    },
+    "cpf-azure-prdsvc-logicappstandard": {
+      "version": "1.0.3",
+      "versions": [
+        "1.0.3",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.2.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-logicappstandard.git//?ref=1.0.3"
+    },
+    "cpf-azure-prdsvc-logicappworkflow": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.2.4",
+        "0.2.3"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-logicappworkflow.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-machinelearningcomputecluster": {
+      "version": "2.0.3",
+      "versions": [
+        "2.0.3",
+        "2.0.2",
+        "2.0.1",
+        "2.0.0",
+        "1.0.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-machinelearningcomputecluster.git//?ref=2.0.3"
+    },
+    "cpf-azure-prdsvc-machinelearningcomputeinstance": {
+      "version": "1.0.3",
+      "versions": [
+        "1.0.3",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-machinelearningcomputeinstance.git//?ref=1.0.3"
+    },
+    "cpf-azure-prdsvc-machinelearningworkspace": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.5.2",
+        "0.5.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-machinelearningworkspace.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-maintenanceconfiguration": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.1.1",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-maintenanceconfiguration.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-manageddisk": {
+      "version": "1.1.1",
+      "versions": [
+        "1.1.1",
+        "1.1.0",
+        "1.0.1",
+        "1.0.0",
+        "0.9.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-manageddisk.git//?ref=1.1.1"
+    },
+    "cpf-azure-prdsvc-managedredis": {
+      "version": "1.1.3",
+      "versions": [
+        "1.1.3",
+        "1.1.2",
+        "1.1.1",
+        "1.1.0",
+        "1.0.5"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-managedredis.git//?ref=1.1.3"
+    },
+    "cpf-azure-prdsvc-managedredisgeoreplication": {
+      "version": "1.0.0",
+      "versions": "1.0.0",
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-managedredisgeoreplication.git//?ref=1.0.0"
+    },
+    "cpf-azure-prdsvc-managementgroup": {
+      "version": "0.2.1",
+      "versions": [
+        "0.2.1",
+        "0.2.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-managementgroup.git//?ref=0.2.1"
+    },
+    "cpf-azure-prdsvc-mongocluster": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.3.2",
+        "0.3.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-mongocluster.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-monitoractiongroup": {
+      "version": "1.0.3",
+      "versions": [
+        "1.0.3",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-monitoractiongroup.git//?ref=1.0.3"
+    },
+    "cpf-azure-prdsvc-monitoralert": {
+      "version": "1.1.0",
+      "versions": [
+        "1.1.0",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.1.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-monitoralert.git//?ref=1.1.0"
+    },
+    "cpf-azure-prdsvc-monitorautoscalesetting": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.3.3",
+        "0.3.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-monitorautoscalesetting.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-monitordatacollectionendpoint": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.2.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-monitordatacollectionendpoint.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-monitordatacollectionrule": {
+      "version": "1.1.1",
+      "versions": [
+        "1.1.1",
+        "1.1.0",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-monitordatacollectionrule.git//?ref=1.1.1"
+    },
+    "cpf-azure-prdsvc-monitordiagnosticsetting": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.2.3",
+        "0.2.2",
+        "0.2.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-monitordiagnosticsetting.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-monitorprivatelinkscope": {
+      "version": "0.3.1",
+      "versions": [
+        "0.3.1",
+        "0.3.0",
+        "0.2.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-monitorprivatelinkscope.git//?ref=0.3.1"
+    },
+    "cpf-azure-prdsvc-mssqldatabase": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.7.1",
+        "0.7.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-mssqldatabase.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-mssqlelasticpool": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-mssqlelasticpool.git//"
+    },
+    "cpf-azure-prdsvc-mssqlfailovergroup": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.1.3",
+        "0.1.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-mssqlfailovergroup.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-mssqlmanageddatabase": {
+      "version": "1.0.3",
+      "versions": [
+        "1.0.3",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.3.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-mssqlmanageddatabase.git//?ref=1.0.3"
+    },
+    "cpf-azure-prdsvc-mssqlmanagedinstance": {
+      "version": "1.5.0",
+      "versions": [
+        "1.5.0",
+        "1.4.0",
+        "1.3.0",
+        "1.2.3",
+        "1.2.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-mssqlmanagedinstance.git//?ref=1.5.0"
+    },
+    "cpf-azure-prdsvc-mssqlserver": {
+      "version": "1.0.3",
+      "versions": [
+        "1.0.3",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.11.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-mssqlserver.git//?ref=1.0.3"
+    },
+    "cpf-azure-prdsvc-mysqlflexibledatabase": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.2.2",
+        "0.2.1",
+        "0.2.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-mysqlflexibledatabase.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-mysqlflexibleserver": {
+      "version": "1.2.1",
+      "versions": [
+        "1.2.1",
+        "1.2.0",
+        "1.1.2",
+        "1.1.1",
+        "1.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-mysqlflexibleserver.git//?ref=1.2.1"
+    },
+    "cpf-azure-prdsvc-natgateway": {
+      "version": "1.0.0",
+      "versions": [
+        "1.0.0",
+        "0.3.1",
+        "0.3.0",
+        "0.2.2",
+        "0.2.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-natgateway.git//?ref=1.0.0"
+    },
+    "cpf-azure-prdsvc-netappaccount": {
+      "version": "0.2.2",
+      "versions": [
+        "0.2.2",
+        "0.2.1",
+        "0.2.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-netappaccount.git//?ref=0.2.2"
+    },
+    "cpf-azure-prdsvc-netapppool": {
+      "version": "0.2.1",
+      "versions": [
+        "0.2.1",
+        "0.2.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-netapppool.git//?ref=0.2.1"
+    },
+    "cpf-azure-prdsvc-networkddosprotectionplan": {
+      "version": "0.4.1",
+      "versions": [
+        "0.4.1",
+        "0.4.0",
+        "0.3.0",
+        "0.2.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-networkddosprotectionplan.git//?ref=0.4.1"
+    },
+    "cpf-azure-prdsvc-networkinterface": {
+      "version": "1.0.3",
+      "versions": [
+        "1.0.3",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.3.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-networkinterface.git//?ref=1.0.3"
+    },
+    "cpf-azure-prdsvc-networksecuritygroup": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.6.3",
+        "0.6.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-networksecuritygroup.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-networkwatcher": {
+      "version": "0.3.0",
+      "versions": [
+        "0.3.0",
+        "0.2.2",
+        "0.2.1",
+        "0.2.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-networkwatcher.git//?ref=0.3.0"
+    },
+    "cpf-azure-prdsvc-orchestratedvirtualmachinescaleset": {
+      "version": "1.1.3",
+      "versions": [
+        "1.1.3",
+        "1.1.2",
+        "1.1.1",
+        "1.1.0",
+        "1.0.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-orchestratedvirtualmachinescaleset.git//?ref=1.1.3"
+    },
+    "cpf-azure-prdsvc-pipelines": {
+      "version": "1.3.0",
+      "versions": [
+        "1.3.0",
+        "1.2.5",
+        "1.2.4",
+        "1.2.3",
+        "1.2.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-pipelines.git//?ref=1.3.0"
+    },
+    "cpf-azure-prdsvc-postgresqldatabase": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.2.4",
+        "0.2.3"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-postgresqldatabase.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-postgresqlserver": {
+      "version": "1.1.0",
+      "versions": [
+        "1.1.0",
+        "1.0.3",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-postgresqlserver.git//?ref=1.1.0"
+    },
+    "cpf-azure-prdsvc-postgresqlvirtualendpoint": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.1.1",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-postgresqlvirtualendpoint.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-privatednsresolver": {
+      "version": "0.3.1",
+      "versions": [
+        "0.3.1",
+        "0.3.0",
+        "0.2.1",
+        "0.2.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-privatednsresolver.git//?ref=0.3.1"
+    },
+    "cpf-azure-prdsvc-privatednsresolverdnsforwardingruleset": {
+      "version": "0.3.1",
+      "versions": [
+        "0.3.1",
+        "0.3.0",
+        "0.2.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-privatednsresolverdnsforwardingruleset.git//?ref=0.3.1"
+    },
+    "cpf-azure-prdsvc-privatednsresolverforwardingrule": {
+      "version": "0.3.0",
+      "versions": [
+        "0.3.0",
+        "0.2.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-privatednsresolverforwardingrule.git//?ref=0.3.0"
+    },
+    "cpf-azure-prdsvc-privatednsresolverinboundendpoint": {
+      "version": "0.2.1",
+      "versions": [
+        "0.2.1",
+        "0.2.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-privatednsresolverinboundendpoint.git//?ref=0.2.1"
+    },
+    "cpf-azure-prdsvc-privatednsresolveroutboundendpoint": {
+      "version": "0.3.0",
+      "versions": [
+        "0.3.0",
+        "0.2.1",
+        "0.2.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-privatednsresolveroutboundendpoint.git//?ref=0.3.0"
+    },
+    "cpf-azure-prdsvc-privatednsresolvervirtualnetworklink": {
+      "version": "0.3.0",
+      "versions": [
+        "0.3.0",
+        "0.2.1",
+        "0.2.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-privatednsresolvervirtualnetworklink.git//?ref=0.3.0"
+    },
+    "cpf-azure-prdsvc-privatednszone": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.4.3",
+        "0.4.2",
+        "0.4.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-privatednszone.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-privateendpoint": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.7.5",
+        "0.7.4"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-privateendpoint.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-privatelinkservice": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.2.2",
+        "0.2.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-privatelinkservice.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-proximityplacementgroup": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.3.2",
+        "0.3.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-proximityplacementgroup.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-publicip": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.3.3",
+        "0.3.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-publicip.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-publicipprefix": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.3.1",
+        "0.3.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-publicipprefix.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-purviewaccount": {
+      "version": "1.0.5",
+      "versions": [
+        "1.0.5",
+        "1.0.4",
+        "1.0.3",
+        "1.0.2",
+        "1.0.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-purviewaccount.git//?ref=1.0.5"
+    },
+    "cpf-azure-prdsvc-recoveryservicesvault": {
+      "version": "1.0.0",
+      "versions": [
+        "1.0.0",
+        "0.12.1",
+        "0.12.0",
+        "0.11.0",
+        "0.10.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-recoveryservicesvault.git//?ref=1.0.0"
+    },
+    "cpf-azure-prdsvc-rediscache": {
+      "version": "1.1.1",
+      "versions": [
+        "1.1.1",
+        "1.1.0",
+        "1.0.4",
+        "1.0.3",
+        "1.0.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-rediscache.git//?ref=1.1.1"
+    },
+    "cpf-azure-prdsvc-redislinkedserver": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.1.3",
+        "0.1.2",
+        "0.1.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-redislinkedserver.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-relaynamespace": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.2.1",
+        "0.2.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-relaynamespace.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-release": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-release.git//"
+    },
+    "cpf-azure-prdsvc-resourcegroup": {
+      "version": "0.3.3",
+      "versions": [
+        "0.3.3",
+        "0.3.2",
+        "0.3.1",
+        "0.3.0",
+        "0.2.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-resourcegroup.git//?ref=0.3.3"
+    },
+    "cpf-azure-prdsvc-roleassignment": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.2.5",
+        "0.2.4",
+        "0.2.3"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-roleassignment.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-routetable": {
+      "version": "1.0.6",
+      "versions": [
+        "1.0.6",
+        "1.0.5",
+        "1.0.4",
+        "1.0.2",
+        "1.0.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-routetable.git//?ref=1.0.6"
+    },
+    "cpf-azure-prdsvc-searchservice": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.2.3",
+        "0.2.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-searchservice.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-servicebusnamespace": {
+      "version": "1.2.3",
+      "versions": [
+        "1.2.3",
+        "1.2.2",
+        "1.2.1",
+        "1.2.0",
+        "1.1.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-servicebusnamespace.git//?ref=1.2.3"
+    },
+    "cpf-azure-prdsvc-servicebusqueue": {
+      "version": "1.1.2",
+      "versions": [
+        "1.1.2",
+        "1.1.1",
+        "1.1.0",
+        "1.0.0",
+        "0.7.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-servicebusqueue.git//?ref=1.1.2"
+    },
+    "cpf-azure-prdsvc-servicebussubscription": {
+      "version": "1.1.1",
+      "versions": [
+        "1.1.1",
+        "1.1.0",
+        "1.0.0",
+        "0.7.0",
+        "0.6.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-servicebussubscription.git//?ref=1.1.1"
+    },
+    "cpf-azure-prdsvc-servicebustopic": {
+      "version": "1.1.2",
+      "versions": [
+        "1.1.2",
+        "1.1.1",
+        "1.1.0",
+        "1.0.0",
+        "0.6.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-servicebustopic.git//?ref=1.1.2"
+    },
+    "cpf-azure-prdsvc-sharedimage": {
+      "version": "1.0.3",
+      "versions": [
+        "1.0.3",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.1.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-sharedimage.git//?ref=1.0.3"
+    },
+    "cpf-azure-prdsvc-sharedimagegallery": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.2.1",
+        "0.2.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-sharedimagegallery.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-staticwebapp": {
+      "version": "2.1.2",
+      "versions": [
+        "2.1.2",
+        "2.1.1",
+        "2.1.0",
+        "2.0.0",
+        "1.0.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-staticwebapp.git//?ref=2.1.2"
+    },
+    "cpf-azure-prdsvc-storagecontainer": {
+      "version": "1.1.1",
+      "versions": [
+        "1.1.1",
+        "1.1.0",
+        "1.0.0",
+        "0.2.6",
+        "0.2.5"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-storagecontainer.git//?ref=1.1.1"
+    },
+    "cpf-azure-prdsvc-storagedatalakegen2filesystem": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.1.5",
+        "0.1.4",
+        "0.1.3"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-storagedatalakegen2filesystem.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-storagemover": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.2.1",
+        "0.2.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-storagemover.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-storagequeue": {
+      "version": "2.1.0",
+      "versions": [
+        "2.1.0",
+        "2.0.1",
+        "2.0.0",
+        "1.0.1",
+        "1.0.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-storagequeue.git//?ref=2.1.0"
+    },
+    "cpf-azure-prdsvc-storageshare": {
+      "version": "2.0.2",
+      "versions": [
+        "2.0.2",
+        "2.0.1",
+        "2.0.0",
+        "1.0.0",
+        "0.3.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-storageshare.git//?ref=2.0.2"
+    },
+    "cpf-azure-prdsvc-storagetable": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.2.6",
+        "0.2.5",
+        "0.2.4"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-storagetable.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-streamanalyticscluster": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.4.3",
+        "0.4.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-streamanalyticscluster.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-streamanalyticsjob": {
+      "version": "1.0.3",
+      "versions": [
+        "1.0.3",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.10.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-streamanalyticsjob.git//?ref=1.0.3"
+    },
+    "cpf-azure-prdsvc-streamanalyticsjobschedule": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.1.3",
+        "0.1.2",
+        "0.1.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-streamanalyticsjobschedule.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-subnet": {
+      "version": "0.8.5",
+      "versions": [
+        "0.8.5",
+        "0.8.4",
+        "0.8.3",
+        "0.8.2",
+        "0.8.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-subnet.git//?ref=0.8.5"
+    },
+    "cpf-azure-prdsvc-subscription": {
+      "version": "0.2.2",
+      "versions": [
+        "0.2.2",
+        "0.2.1",
+        "0.2.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-subscription.git//?ref=0.2.2"
+    },
+    "cpf-azure-prdsvc-synapseprivatelinkhub": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.1.2",
+        "0.1.1"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-synapseprivatelinkhub.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-synapseroleassignment": {
+      "version": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.1.2",
+        "0.1.1",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-synapseroleassignment.git//?ref=1.0.1"
+    },
+    "cpf-azure-prdsvc-synapseworkspace": {
+      "version": "1.1.2",
+      "versions": [
+        "1.1.2",
+        "1.1.1",
+        "1.1.0",
+        "1.0.1",
+        "1.0.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-synapseworkspace.git//?ref=1.1.2"
+    },
+    "cpf-azure-prdsvc-testissuetemplate": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-testissuetemplate.git//"
+    },
+    "cpf-azure-prdsvc-trafficmanager": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.5.0",
+        "0.4.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-trafficmanager.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-userassignedidentity": {
+      "version": "1.0.2",
+      "versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.4.3",
+        "0.4.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-userassignedidentity.git//?ref=1.0.2"
+    },
+    "cpf-azure-prdsvc-virtualnetwork": {
+      "version": "0.5.0",
+      "versions": [
+        "0.5.0",
+        "0.4.1",
+        "0.4.0",
+        "0.3.1",
+        "0.3.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-virtualnetwork.git//?ref=0.5.0"
+    },
+    "cpf-azure-prdsvc-virtualnetworkgateway": {
+      "version": "0.3.0",
+      "versions": [
+        "0.3.0",
+        "0.2.1",
+        "0.2.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-virtualnetworkgateway.git//?ref=0.3.0"
+    },
+    "cpf-azure-prdsvc-virtualnetworkgatewayconnection": {
+      "version": "0.2.2",
+      "versions": [
+        "0.2.2",
+        "0.2.1",
+        "0.2.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-virtualnetworkgatewayconnection.git//?ref=0.2.2"
+    },
+    "cpf-azure-prdsvc-virtualnetworkpeering": {
+      "version": "0.3.1",
+      "versions": [
+        "0.3.1",
+        "0.3.0",
+        "0.2.1",
+        "0.2.0",
+        "0.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-virtualnetworkpeering.git//?ref=0.3.1"
+    },
+    "cpf-azure-prdsvc-webapplicationfirewallpolicy": {
+      "version": "1.3.1",
+      "versions": [
+        "1.3.1",
+        "1.3.0",
+        "1.2.4",
+        "1.2.3",
+        "1.2.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-webapplicationfirewallpolicy.git//?ref=1.3.1"
+    },
+    "cpf-azure-prdsvc-windowsfunctionapp": {
+      "version": "1.1.4",
+      "versions": [
+        "1.1.4",
+        "1.1.3",
+        "1.1.2",
+        "1.1.1",
+        "1.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-windowsfunctionapp.git//?ref=1.1.4"
+    },
+    "cpf-azure-prdsvc-windowsvirtualmachine": {
+      "version": "1.2.3",
+      "versions": [
+        "1.2.3",
+        "1.2.2",
+        "1.2.1",
+        "1.2.0",
+        "1.1.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-windowsvirtualmachine.git//?ref=1.2.3"
+    },
+    "cpf-azure-prdsvc-windowsvirtualmachinescaleset": {
+      "version": "1.1.4",
+      "versions": [
+        "1.1.4",
+        "1.1.3",
+        "1.1.2",
+        "1.1.1",
+        "1.1.0"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-windowsvirtualmachinescaleset.git//?ref=1.1.4"
+    },
+    "cpf-azure-prdsvc-windowswebapp": {
+      "version": "2.0.1",
+      "versions": [
+        "2.0.1",
+        "2.0.0",
+        "1.1.1",
+        "1.1.0",
+        "1.0.2"
+      ],
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-windowswebapp.git//?ref=2.0.1"
+    },
+    "cpf-azure-prdsvcpat-aca-private": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-aca-private.git//"
+    },
+    "cpf-azure-prdsvcpat-aks-private-deploy-temp": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-aks-private-deploy-temp.git//"
+    },
+    "cpf-azure-prdsvcpat-aks-private": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-aks-private.git//"
+    },
+    "cpf-azure-prdsvcpat-apim": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-apim.git//"
+    },
+    "cpf-azure-prdsvcpat-appgatewaycontainerapppostgresqlserver": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-appgatewaycontainerapppostgresqlserver.git//"
+    },
+    "cpf-azure-prdsvcpat-azuredatafactory": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-azuredatafactory.git//"
+    },
+    "cpf-azure-prdsvcpat-containerapp": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-containerapp.git//"
+    },
+    "cpf-azure-prdsvcpat-cosmosdb": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-cosmosdb.git//"
+    },
+    "cpf-azure-prdsvcpat-databricks-archive": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-databricks-archive.git//"
+    },
+    "cpf-azure-prdsvcpat-eventhub": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-eventhub.git//"
+    },
+    "cpf-azure-prdsvcpat-frontdoor": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-frontdoor.git//"
+    },
+    "cpf-azure-prdsvcpat-keyvaultprivateendpoint": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-keyvaultprivateendpoint.git//"
+    },
+    "cpf-azure-prdsvcpat-linuxcustomvmimage": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-linuxcustomvmimage.git//"
+    },
+    "cpf-azure-prdsvcpat-linuxfunctionapp": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-linuxfunctionapp.git//"
+    },
+    "cpf-azure-prdsvcpat-linuxvirtualmachine": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-linuxvirtualmachine.git//"
+    },
+    "cpf-azure-prdsvcpat-linuxvmdiskkeyvault": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-linuxvmdiskkeyvault.git//"
+    },
+    "cpf-azure-prdsvcpat-mssql": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-mssql.git//"
+    },
+    "cpf-azure-prdsvcpat-mssqlmanagedinstance": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-mssqlmanagedinstance.git//"
+    },
+    "cpf-azure-prdsvcpat-mysqlflexibleserver": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-mysqlflexibleserver.git//"
+    },
+    "cpf-azure-prdsvcpat-oracleonvm": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-oracleonvm.git//"
+    },
+    "cpf-azure-prdsvcpat-orchestratedvmssdiskkeyvault": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-orchestratedvmssdiskkeyvault.git//"
+    },
+    "cpf-azure-prdsvcpat-patterngreenfield-testing": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-patterngreenfield-testing.git//"
+    },
+    "cpf-azure-prdsvcpat-postgresql": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-postgresql.git//"
+    },
+    "cpf-azure-prdsvcpat-rediscache": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-rediscache.git//"
+    },
+    "cpf-azure-prdsvcpat-servicebus": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-servicebus.git//"
+    },
+    "cpf-azure-prdsvcpat-sftp": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-sftp.git//"
+    },
+    "cpf-azure-prdsvcpat-storagekeyvault": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-storagekeyvault.git//"
+    },
+    "cpf-azure-prdsvcpat-streamanalytics": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-streamanalytics.git//"
+    },
+    "cpf-azure-prdsvcpat-windowscustomvmimage": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-windowscustomvmimage.git//"
+    },
+    "cpf-azure-prdsvcpat-windowsfunctionapp": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-windowsfunctionapp.git//"
+    },
+    "cpf-azure-prdsvcpat-windowsvirtualmachine": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-windowsvirtualmachine.git//"
+    },
+    "cpf-azure-prdsvcpat-windowsvmssdiskkeyvault": {
+      "version": "",
+      "versions": null,
+      "pinned_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-windowsvmssdiskkeyvault.git//"
+    }
+  }
+}

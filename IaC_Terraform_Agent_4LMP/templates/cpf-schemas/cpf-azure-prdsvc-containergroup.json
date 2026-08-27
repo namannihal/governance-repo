@@ -1,0 +1,266 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Container Group module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-containergroup'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-containergroup",
+  "module_type": "service",
+  "azure_service": "Containergroup",
+  "module_name": "Container Group module",
+  "latest_tag": "1.1.2",
+  "available_tags": [
+    "1.1.2",
+    "1.1.1",
+    "1.1.0",
+    "1.0.1",
+    "1.0.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-containergroup.git//?ref=1.1.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Container Registry",
+    "Network Security Group",
+    "Subnet",
+    "Key Vault",
+    "Private Endpoint"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_container_group.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.this_cgr",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.this_cmk",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.this",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "containergroup",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-containergroup.git//?ref=1.1.2",
+      "version": "1.1.2",
+      "available_versions": [
+        "1.1.2",
+        "1.1.1",
+        "1.1.0",
+        "1.0.1",
+        "1.0.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "container_registry_id",
+      "containers",
+      "customer_managed_key",
+      "environment",
+      "identity",
+      "image_registry_credential",
+      "location",
+      "org_id",
+      "os_type",
+      "resource_group_name",
+      "sku",
+      "subnet_ids"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "cmk_key_name": {
+        "type": "string",
+        "description": "(optional) Key name to be used (max 127 chars)",
+        "required": false,
+        "default": "null"
+      },
+      "cmk_rotation_policy": {
+        "type": "object({ notify_before_expiry = string time_before_expiry = string time_after_creation = optional(string, null) expire_after = string })",
+        "description": "(Optional) A rotation policy block as defined below object({ notify_before_expiry = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" time_before_expiry = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" time_after_creation = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" expire_after = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" })",
+        "required": false,
+        "default": "{ \"expire_after\": \"P365D\", \"notify_before_expiry\": \"P358D\", \"time_after_creation\": null, \"time_before_expiry\": \"P7D\" }"
+      },
+      "container_registry_id": {
+        "type": "string",
+        "description": "(Required) The private container registry for the Container Instances.",
+        "required": true
+      },
+      "containers": {
+        "type": "map(object({ image = string cpu = number memory = number cpu_limit = optional(number) memory_limit = optional(number) environment_variables = optional(map(string)) secure_environment_variables = optional(map(string)) commands = optional(list(string)) ports = optional(object({ port = optional(number) protocol = optional(string) })) readiness_probe = optional(object({ exec = optional(list(string), null) initial_delay_seconds = optional(number, 10) period_seconds = optional(number, 5) failure_threshold = optional(number, 3) success_threshold = optional(number, 1) timeout_seconds = optional(number, 5) http_get = optional(object({ path = optional(string, \"/\") port = optional(number, 80) scheme = optional(string, \"Http\") http_headers = optional(map(string), null) })) })) liveness_probe = optional(object({ exec = optional(list(string), null) initial_delay_seconds = optional(number, 10) period_seconds = optional(number, 5) failure_threshold = optional(number, 3) success_threshold = optional(number, 1) timeout_seconds = optional(number, 5) http_get = optional(object({ path = optional(string, \"/\") port = optional(number, 80) scheme = optional(string, \"Http\") http_headers = optional(map(string), null) })) })) volumes = optional(map(object({ mount_path = string read_only = optional(bool, false) empty_dir = optional(bool, false) storage_account_name = optional(string) storage_account_key = optional(string) share_name = optional(string) secret = optional(map(string)) git_repo = optional(object({ url = string directory = optional(string) revision = optional(string) }), null) })), {}) security = optional(object({ privilege_enabled = bool })) }))",
+        "description": "(Optional) An container block as defined below name = \"(Required) Specifies the name of the Container. Changing this forces a new resource to be created.\" image = \"(Required) The container image name. Changing this forces a new resource to be created.\" cpu = \"(Required) The required number of CPU cores of the containers. Changing this forces a new resource to be created.\" cpu_limit = \"(Optional) The upper limit of the number of CPU cores of the containers.\" memory = \"(Required) The required memory of the containers in GB. Changing this forces a new resource to be created.\" memory_limit = \"(Optional) The the upper limit of the memory of the containers in GB.\" ports = \"(Optional) A set of public ports for the container. Changing this forces a new resource to be created. Set as documented in the ports block below.\" environment_variables = \"(Optional) A list of environment variables to be set on the container. Specified as a map of name/value pairs. Changing this forces a new resource to be created.\" secure_environment_variables = \"(Optional) A list of sensitive environment variables to be set on the container. Specified as a map of name/value pairs. Changing this forces a new resource to be created.\" commands = \"(Optional) A list of commands which should be run on the container. Changing this forces a new resource to be created.\" (Optional) The readiness_probe block supports: object({ exec = \"(Optional) Commands to be run to validate container readiness. Changing this forces a new resource to be created.\" http_get = \"(Optional) The definition of the http_get for this container as documented in the http_get block below. Changing this forces a new resource to be created.\" object({ path = \"(Optional) Path to access on the HTTP server. Changing this forces a new resource to be created.\" port = \"(Optional) Number of the port to access on the container. Changing this forces a new resource to be created.\" scheme = \"(Optional) Scheme to use for connecting to the host. Possible values are `Http` and `Https` (case-sensitive). Changing this forces a new resource to be created.\" http_headers = \"(Optional) A map of HTTP headers used to access on the container. Changing this forces a new resource to be created.\" }) initial_delay_seconds = \"(Optional) Number of seconds after the container has started before liveness or readiness probes are initiated. Changing this forces a new resource to be created.\" period_seconds = \"(Optional) How often (in seconds) to perform the probe. Changing this forces a new resource to be created.\" failure_threshold = \"(Optional) How many times to try the probe before restarting the container (liveness probe) or marking the container as unhealthy (readiness probe). Changing this forces a new resource to be created.\" success_threshold = \"(Optional) Minimum consecutive successes for the probe to be considered successful after having failed. Changing this forces a new resource to be created.\" timeout_seconds = \"(Optional) Number of seconds after which the probe times out. Changing this forces a new resource to be created.\" }) (Optional) The liveness_probe block supports: object({ exec = \"(Optional) Commands to be run to validate container readiness. Changing this forces a new resource to be created.\" http_get = \"(Optional) The definition of the http_get for this container as documented in the http_get block below. Changing this forces a new resource to be created.\" object({ path = \"(Optional) Path to access on the HTTP server. Changing this forces a new resource to be created.\" port = \"(Optional) Number of the port to access on the container. Changing this forces a new resource to be created.\" scheme = \"(Optional) Scheme to use for connecting to the host. Possible values are `Http` and `Https` (case-sensitive). Changing this forces a new resource to be created.\" http_headers = \"(Optional) A map of HTTP headers used to access on the container. Changing this forces a new resource to be created.\" }) initial_delay_seconds = \"(Optional) Number of seconds after the container has started before liveness or readiness probes are initiated. Changing this forces a new resource to be created.\" period_seconds = \"(Optional) How often (in seconds) to perform the probe. Changing this forces a new resource to be created.\" failure_threshold = \"(Optional) How many times to try the probe before restarting the container (liveness probe) or marking the container as unhealthy (readiness probe). Changing this forces a new resource to be created.\" success_threshold = \"(Optional) Minimum consecutive successes for the probe to be considered successful after having failed. Changing this forces a new resource to be created.\" timeout_seconds = \"(Optional) Number of seconds after which the probe times out. Changing this forces a new resource to be created.\" }) volumes = \"(Optional) A map of `volume` object as defined below.\" Key = \"(Required) Specifies the name of the Volume. Changing this forces a new resource to be created.\" Value = object({ name = \"(Required) The name of the volume mount. Changing this forces a new resource to be created.\" mount_path = \"(Required) The path on which this volume is to be mounted. Changing this forces a new resource to be created.\" read_only = \"(Optional) Specify if the volume is to be mounted as read only or not. The default value is `false`. Changing this forces a new resource to be created.\" empty_dir = \"(Optional) Boolean as to whether the mounted volume should be an empty directory. Defaults to `false`. Changing this forces a new resource to be created.\" storage_account_name = \"(Optional) The Azure storage account from which the volume is to be mounted. Changing this forces a new resource to be created.\" storage_account_key = \"(Optional) The access key for the Azure Storage account specified as above. Changing this forces a new resource to be created.\" share_name = \"(Optional) The Azure storage share that is to be mounted as a volume. This must be created on the storage account specified as above. Changing this forces a new resource to be created.\" secret = \"(Optional) A map of secrets that will be mounted as files in the volume. Changing this forces a new resource to be created.\" git_repo = \"A git_repo block as defined below.\" url = \"(Required) Specifies the Git repository to be cloned. Changing this forces a new resource to be created.\" directory = \"(Optional) Specifies the directory into which the repository should be cloned. Changing this forces a new resource to be created.\" revision = \"(Optional) Specifies the commit hash of the revision to be cloned. If unspecified, the HEAD revision is cloned. Changing this forces a new resource to be created.\" }) security = \"(Optional) A security block as defined below.\" privilege_enabled = \"(Required) Whether the container's permission is elevated to privileged? Changing this forces a new resource to be created.\"",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "create_role_assignment": {
+        "type": "bool",
+        "description": "(Optional) Whether to create a role assignment to the service identity to allow access to the key vault keys.",
+        "required": false,
+        "default": "true"
+      },
+      "customer_managed_key": {
+        "type": "object({ key_vault_id = string expiration_date = string identity_principal_id = string })",
+        "description": "(Required) An customer_managed_key block as defined below object({ key_vault_id = \"(Required) The resource ID of the Key Vault where the Key Vault Key resides.\" expiration_date = \"(Required) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').\" identity_principal_id = \"(Required) Principal id of the User Assigned Identity which should be used to access the CMK encryption key in the Key Vault. This identity will be granted `Key Vault Crypto Service Encryption User` role on the Key vault. This must be the principal id of one of the `User Assigned Identities` assigned to the storage Account. \" })",
+        "required": true
+      },
+      "diagnostics": {
+        "type": "object({ log_analytics = object({ log_type = optional(string) workspace_id = string workspace_key = string metadata = optional(map(string)) }) })",
+        "description": "(Optional) Diagnostic settings for the container group. Changing this forces a new resource to be created. log_analytics block supports: log_type = \"(Optional) The log type which should be used. Possible values are ContainerInsights and ContainerInstanceLogs. Changing this forces a new resource to be created.\" workspace_id = \"(Required) The Workspace ID of the Log Analytics Workspace. Changing this forces a new resource to be created.\" workspace_key = \"(Required) The Workspace Key of the Log Analytics Workspace. Changing this forces a new resource to be created.\" metadata = \"(Optional) Any metadata required for Log Analytics. Changing this forces a new resource to be created.\"",
+        "required": false,
+        "default": "null"
+      },
+      "dns_config": {
+        "type": "object({ nameservers = list(string) search_domains = optional(list(string)) options = optional(list(string)) })",
+        "description": "(Optional) A dns_config block as defined below: nameservers = \"(Required) A list of nameservers the containers will search out to resolve requests. Changing this forces a new resource to be created.\" search_domains = \"(Optional) A list of search domains that DNS requests will search along. Changing this forces a new resource to be created.\" options = \"(Optional) A list of resolver configuration options. Changing this forces a new resource to be created.\"",
+        "required": false,
+        "default": "null"
+      },
+      "dns_name_label": {
+        "type": "string",
+        "description": "(Optional) The DNS label/name for the container group's IP. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "dns_name_label_reuse_policy": {
+        "type": "string",
+        "description": "(Optional) The value representing the security enum. `Noreuse`, `ResourceGroupReuse`, `SubscriptionReuse`, `TenantReuse` or `Unsecure`. Defaults to `Unsecure`.",
+        "required": false,
+        "default": "\"Unsecure\""
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "exposed_ports": {
+        "type": "map(object({ port = optional(string) protocol = optional(string) }))",
+        "description": "(Optional) A map with value as exposed_ports objects defined below Object({ port = (Optional) The port number the container will expose. Changing this forces a new resource to be created. protocol = (Optional) The network protocol associated with port. Possible values are TCP & UDP. Changing this forces a new resource to be created. Defaults to TCP. })",
+        "required": false,
+        "default": "{}"
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = list(string) })",
+        "description": "(Required) An identity block as defined below object({ type = \"(Required) Specifies the type of Managed Service Identity that should be configured on this Container Group. Possible values are `UserAssigned`, `SystemAssigned, UserAssigned` (to enable both).\" identity_ids = \"(Required) Specifies a list of User Assigned Managed Identity IDs to be assigned to this Container Group.\" })",
+        "required": true
+      },
+      "image_registry_credential": {
+        "type": "object({ user_assigned_identity_id = optional(string) username = optional(string) password = optional(string) server = string })",
+        "description": "(Required) A image_registry_credential block as defined below object({ user_assigned_identity_id = \"(Optional) The identity ID for the private registry. Changing this forces a new resource to be created.\" username = \"(Optional) The username with which to connect to the registry. Changing this forces a new resource to be created.\" password = \"(Optional) The password with which to connect to the registry. Changing this forces a new resource to be created.\" server = \"(Required) The address to use to connect to the registry without protocol (\"https\"/\"http\"). For example: \"myacr.acr.io\". Changing this forces a new resource to be created.\" )}",
+        "required": true
+      },
+      "init_container": {
+        "type": "object({ name = string image = string environment_variables = optional(map(string)) secure_environment_variables = optional(map(string)) commands = optional(list(string)) security = optional(object({ privilege_enabled = bool }), null) volumes = optional(map(object({ mount_path = string read_only = optional(bool, false) empty_dir = optional(bool, false) storage_account_name = optional(string) storage_account_key = optional(string) share_name = optional(string) secret = optional(map(string)) git_repo = optional(object({ url = string directory = optional(string) revision = optional(string) }), null) })), {}) })",
+        "description": "(Optional) An init_container block as defined below name = \"(Required) The name of the init container.\" image = \"(Required) The name of the image used to create the init container.\" environment_variables = \"(Optional) A map of environment variables to set in the init container.\" secure_environment_variables = \"(Optional) A map of secure environment variables to set in the init container.\" commands = \"(Optional) A list of commands to execute within the init container.\" security = \"(Optional) A security block as defined below.\" privilege_enabled = \"(Required) Whether the container's permission is elevated to privileged? Changing this forces a new resource to be created.\" volumes = \"(Optional) A map of `volume` object as defined below.\" Key = \"(Required) Specifies the name of the Volume. Changing this forces a new resource to be created.\" Value = object({ name = \"(Required) The name of the volume mount. Changing this forces a new resource to be created.\" mount_path = \"(Required) The path on which this volume is to be mounted. Changing this forces a new resource to be created.\" read_only = \"(Optional) Specify if the volume is to be mounted as read only or not. The default value is `false`. Changing this forces a new resource to be created.\" empty_dir = \"(Optional) Boolean as to whether the mounted volume should be an empty directory. Defaults to `false`. Changing this forces a new resource to be created.\" storage_account_name = \"(Optional) The Azure storage account from which the volume is to be mounted. Changing this forces a new resource to be created.\" storage_account_key = \"(Optional) The access key for the Azure Storage account specified as above. Changing this forces a new resource to be created.\" share_name = \"(Optional) The Azure storage share that is to be mounted as a volume. This must be created on the storage account specified as above. Changing this forces a new resource to be created.\" secret = \"(Optional) A map of secrets that will be mounted as files in the volume. Changing this forces a new resource to be created.\" git_repo = \"A git_repo block as defined below.\" url = \"(Required) Specifies the Git repository to be cloned. Changing this forces a new resource to be created.\" directory = \"(Optional) Specifies the directory into which the repository should be cloned. Changing this forces a new resource to be created.\" revision = \"(Optional) Specifies the commit hash of the revision to be cloned. If unspecified, the HEAD revision is cloned. Changing this forces a new resource to be created.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "key_vault_tags": {
+        "type": "map(any)",
+        "description": "(Optional) Key Vault related tags to be set on key vault child resources.",
+        "required": false,
+        "default": "{}"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "os_type": {
+        "type": "string",
+        "description": "(Required) The OS for the container group. Allowed values are `Linux` and `Windows`. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "restart_policy": {
+        "type": "string",
+        "description": "(Optional) Restart policy for container group. Possible values are `Always`, `OnFailure`, `Never`. Defaults to `Always`.",
+        "required": false,
+        "default": "\"Always\""
+      },
+      "sku": {
+        "type": "string",
+        "description": "(Required) Specifies the sku of the Container Group. Possible values are `Confidential`, `Dedicated` and `Standard`.",
+        "required": true
+      },
+      "subnet_ids": {
+        "type": "list(string)",
+        "description": "(Required) The subnet resource IDs for a container group. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "zones": {
+        "type": "list(string)",
+        "description": "(Optional) A list of Availability Zones in which this Container Group is located. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The Resource ID of the Container Group."
+    },
+    "name": {
+      "description": "The Name of the Container Group."
+    },
+    "resource": {
+      "description": "The Container Group resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Containergroup' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Container Registry",
+      "Network Security Group",
+      "Subnet",
+      "Key Vault",
+      "Private Endpoint"
+    ]
+  }
+}

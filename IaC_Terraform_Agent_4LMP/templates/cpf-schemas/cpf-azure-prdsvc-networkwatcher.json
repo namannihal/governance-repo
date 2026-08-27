@@ -1,0 +1,169 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Network watcher module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-networkwatcher'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-networkwatcher",
+  "module_type": "service",
+  "azure_service": "Networkwatcher",
+  "module_name": "Network watcher module",
+  "latest_tag": "0.3.0",
+  "available_tags": [
+    "0.3.0",
+    "0.2.2",
+    "0.2.1",
+    "0.2.0",
+    "0.1.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-networkwatcher.git//?ref=0.3.0",
+  "terraform_requirements": {
+    "azurerm": ">= 3.51",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Network Security Group id",
+    "Storage Account id",
+    "Log Analytics Workspace id"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_network_watcher.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_network_watcher_flow_log.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "networkwatcher",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-networkwatcher.git//?ref=0.3.0",
+      "version": "0.3.0",
+      "available_versions": [
+        "0.3.0",
+        "0.2.2",
+        "0.2.1",
+        "0.2.0",
+        "0.1.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "flow_log_name",
+      "location",
+      "network_security_group_id",
+      "org_id",
+      "resource_group_name",
+      "storage_account_id",
+      "traffic_analytics"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "flow_log_name": {
+        "type": "string",
+        "description": "(Required) The name of the Network Watcher Flow Log. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "flow_logs_enabled": {
+        "type": "bool",
+        "description": "(Optional) Should Network Flow Logging resource be deployed or skip as per input.",
+        "required": false,
+        "default": "true"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "network_security_group_id": {
+        "type": "string",
+        "description": "(Required) The ID of the Network Security Group for which to enable flow logs for. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "retention_in_days": {
+        "type": "number",
+        "description": "(Optional) The number of days to retain flow log records.",
+        "required": false,
+        "default": "365"
+      },
+      "storage_account_id": {
+        "type": "string",
+        "description": "(Required) The ID of the Storage Account where flow logs are stored.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "traffic_analytics": {
+        "type": "object({ workspace_id = string workspace_resource_id = string })",
+        "description": "\"(Required) Object for containing traffic analytics parameter\" object({ workspace_id = \"(Required) The resource GUID of the attached workspace.\" workspace_resource_id = \"(Required) The resource ID of the attached workspace.\" })",
+        "required": true
+      }
+    }
+  },
+  "outputs": {
+    "flow_log_name": {
+      "description": "The Name of the created network watcher flow log"
+    },
+    "id": {
+      "description": "The ID of the created network watcher"
+    },
+    "name": {
+      "description": "The Name of the created network watcher"
+    },
+    "resource": {
+      "description": "The Network Watcher resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Networkwatcher' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Network Security Group id",
+      "Storage Account id",
+      "Log Analytics Workspace id"
+    ]
+  }
+}

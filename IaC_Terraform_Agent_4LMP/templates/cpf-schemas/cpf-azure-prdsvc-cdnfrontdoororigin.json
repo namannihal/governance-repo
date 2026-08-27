@@ -1,0 +1,158 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Front Door Origin module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-cdnfrontdoororigin'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-cdnfrontdoororigin",
+  "module_type": "service",
+  "azure_service": "Cdnfrontdoororigin",
+  "module_name": "Front Door Origin module",
+  "latest_tag": "1.0.1",
+  "available_tags": [
+    "1.0.1",
+    "1.0.0",
+    "0.3.7",
+    "0.3.6",
+    "0.3.5"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cdnfrontdoororigin.git//?ref=1.0.1",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_cdn_frontdoor_origin.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "cdnfrontdoororigin",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cdnfrontdoororigin.git//?ref=1.0.1",
+      "version": "1.0.1",
+      "available_versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.3.7",
+        "0.3.6",
+        "0.3.5"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "cdn_frontdoor_origin_group_id",
+      "environment",
+      "host_name",
+      "location",
+      "org_id"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "cdn_frontdoor_origin_group_id": {
+        "type": "string",
+        "description": "(Required) The ID of the Front Door Origin Group within which this Front Door Origin should exist. Changing this forces a new Front Door Origin to be created.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "enabled": {
+        "type": "bool",
+        "description": "(Optional) Should the origin be enabled? Possible values are true or false. Defaults to true.",
+        "required": false,
+        "default": "true"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "host_name": {
+        "type": "string",
+        "description": "(Required) The IPv4 address, IPv6 address or Domain name of the Origin.",
+        "required": true
+      },
+      "http_port": {
+        "type": "number",
+        "description": "(Optional) The value of the HTTP port. Must be between 1 and 65535. Defaults to 80.",
+        "required": false,
+        "default": "80"
+      },
+      "https_port": {
+        "type": "number",
+        "description": "(Optional) The value of the HTTPS port. Must be between 1 and 65535. Defaults to 443.",
+        "required": false,
+        "default": "443"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "origin_host_header": {
+        "type": "string",
+        "description": "(Optional) The host header value (an IPv4 address, IPv6 address or Domain name) which is sent to the origin with each request. If unspecified the hostname from the request will be used.",
+        "required": false,
+        "default": "null"
+      },
+      "priority": {
+        "type": "number",
+        "description": "(Optional) Priority of origin in given origin group for load balancing. Higher priorities will not be used for load balancing if any lower priority origin is healthy. Must be between 1 and 5 (inclusive). Defaults to 1.",
+        "required": false,
+        "default": "1"
+      },
+      "private_link": {
+        "type": "object({ request_message = optional(string, \"Access request for CDN FrontDoor Private Link Origin\") target_type = optional(string) location = string private_link_target_id = string })",
+        "description": "object({ request_message = \"(Optional) Specifies the request message that will be submitted to the private_link_target_id when requesting the private link endpoint connection. Values must be between 1 and 140 characters in length. Defaults to Access request for CDN FrontDoor Private Link Origin.\" target_type = \"(Optional) Specifies the type of target for this Private Link Endpoint. Possible values are blob, blob_secondary, web and sites.\" location = \"(Required) Specifies the location where the Private Link resource should exist. Changing this forces a new resource to be created.\" private_link_target_id = \"(Required) The ID of the Azure Resource to connect to via the Private Link.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "weight": {
+        "type": "number",
+        "description": "(Optional) The weight of the origin in a given origin group for load balancing. Must be between 1 and 1000. Defaults to 500.",
+        "required": false,
+        "default": "500"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The ID of the created CDN frontdoor Origin."
+    },
+    "name": {
+      "description": "The Name of the created CDN frontdoor Origin."
+    },
+    "resource": {
+      "description": "The Cdn Frontdoor Origin resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Cdnfrontdoororigin' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

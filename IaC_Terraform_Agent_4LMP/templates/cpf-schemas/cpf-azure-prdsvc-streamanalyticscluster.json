@@ -1,0 +1,151 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Stream Analytics Cluster module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-streamanalyticscluster'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-streamanalyticscluster",
+  "module_type": "service",
+  "azure_service": "Streamanalyticscluster",
+  "module_name": "Stream Analytics Cluster module",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.4.3",
+    "0.4.2"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-streamanalyticscluster.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Eventhub Namespace",
+    "Storage Account",
+    "Key Vault and associated Private Endpoint"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_stream_analytics_cluster.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_stream_analytics_managed_private_endpoint.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "streamanalyticscluster",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-streamanalyticscluster.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.4.3",
+        "0.4.2"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name",
+      "streaming_capacity"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "managed_private_endpoint": {
+        "type": "map(object({ private_endpoint_name = string target_resource_id = string subresource_name = string }))",
+        "description": "(Optional) manage private endpoint configuration object({ private_endpoint_name = \"(Required) The name which should be used for this Stream Analytics Managed Private Endpoint. Changing this forces a new resource to be created.\" target_resource_id = \"(Required) The ID of the Private Link Enabled Remote Resource which this Stream Analytics Private endpoint should be connected to. Changing this forces a new resource to be created.\" subresource_name = \"(Required) Specifies the sub resource name which the Stream Analytics Private Endpoint is able to connect to. Changing this forces a new resource to be created.\" })",
+        "required": false,
+        "default": "{}"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "streaming_capacity": {
+        "type": "number",
+        "description": "(Required) The number of streaming units supported by the Cluster. Accepted values are multiples of 36 in the range of 36 to 216",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The resource ID of the stream analytics service."
+    },
+    "managed_private_endpoint_id": {
+      "description": "The Stream Analytics Managed Private Endpoint resource ID."
+    },
+    "managed_private_endpoint_name": {
+      "description": "The Stream Analytics Managed Private Endpoint resource name."
+    },
+    "managed_private_endpoint_resource": {
+      "description": "The Stream Analytics Managed Private Endpoint resource."
+    },
+    "name": {
+      "description": "The name of the stream analytics cluster."
+    },
+    "resource": {
+      "description": "The stream analytics resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Streamanalyticscluster' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Eventhub Namespace",
+      "Storage Account",
+      "Key Vault and associated Private Endpoint"
+    ]
+  }
+}

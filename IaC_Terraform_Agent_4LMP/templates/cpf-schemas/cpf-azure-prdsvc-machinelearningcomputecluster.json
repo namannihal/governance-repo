@@ -1,0 +1,233 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Machine Learning Compute Cluster module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-machinelearningcomputecluster'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-machinelearningcomputecluster",
+  "module_type": "service",
+  "azure_service": "Machinelearningcomputecluster",
+  "module_name": "Machine Learning Compute Cluster module",
+  "latest_tag": "2.0.3",
+  "available_tags": [
+    "2.0.3",
+    "2.0.2",
+    "2.0.1",
+    "2.0.0",
+    "1.0.1"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-machinelearningcomputecluster.git//?ref=2.0.3",
+  "terraform_requirements": {
+    "azapi": ">= 1.9",
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "resource_group",
+    "virtual_network",
+    "user_assign_identity",
+    "key_vault",
+    "storage_account",
+    "app_insight",
+    "container_registry",
+    "private_endpoint_key_vault",
+    "private_endpoint_storage_account_file_share",
+    "private_endpoint_container_registry",
+    "private_endpoint_machine_learning_workspace",
+    "subnet",
+    "network_security_group",
+    "time_sleep",
+    "route table",
+    "Log analytics workspace",
+    "App Insight configuration",
+    "Machine learing workspace"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_machine_learning_compute_cluster.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "machinelearningcomputecluster",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-machinelearningcomputecluster.git//?ref=2.0.3",
+      "version": "2.0.3",
+      "available_versions": [
+        "2.0.3",
+        "2.0.2",
+        "2.0.1",
+        "2.0.0",
+        "1.0.1"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "machine_learning_workspace_id",
+      "max_node_count",
+      "min_node_count",
+      "org_id",
+      "scale_down_nodes_after_idle_duration",
+      "vm_priority",
+      "vm_size"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s).",
+        "required": false,
+        "default": "null"
+      },
+      "description_compute_instance": {
+        "type": "string",
+        "description": "(Optional) The description of the Machine Learning Compute Instance.",
+        "required": false,
+        "default": "\"\""
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "identity_ids": {
+        "type": "list(string)",
+        "description": "(Optional) The list of identity ids",
+        "required": false,
+        "default": "null"
+      },
+      "identity_type": {
+        "type": "string",
+        "description": "(Optional) The type of the identity",
+        "required": false,
+        "default": "\"SystemAssigned\""
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type.",
+        "required": false,
+        "default": "null"
+      },
+      "local_auth_enabled": {
+        "type": "bool",
+        "description": "(Optional) Should local authentication be enabled? Defaults to false.",
+        "required": false,
+        "default": "false"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "machine_learning_workspace_id": {
+        "type": "string",
+        "description": "(Required) The id of the machine learning workspace",
+        "required": true
+      },
+      "max_node_count": {
+        "type": "number",
+        "description": "(Required) Maximum node count. Changing this forces a new Machine Learning Compute Cluster to be created.",
+        "required": true
+      },
+      "min_node_count": {
+        "type": "number",
+        "description": "(Required) Minimal node count. Changing this forces a new Machine Learning Compute Cluster to be created.",
+        "required": true
+      },
+      "node_public_ip_enabled": {
+        "type": "bool",
+        "description": "(Optional) Should nodes have public IP addresses enabled? Defaults to false.",
+        "required": false,
+        "default": "false"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "scale_down_nodes_after_idle_duration": {
+        "type": "string",
+        "description": "(Required) Node Idle Time Before Scale Down: defines the time until the compute is shutdown when it has gone into Idle state. Is defined according to W3C XML schema standard for duration.",
+        "required": true
+      },
+      "ssh": {
+        "type": "object({ admin_username = string admin_password = string key_value = string })",
+        "description": "(Optional) An ssh block as defined below. object({ admin_username = (Required) Name of the administrator user account which can be used to SSH to nodes. Changing this forces a new Machine Learning Compute Cluster to be created. admin_password = (Optional) Password of the administrator user account. Changing this forces a new Machine Learning Compute Cluster to be created. key_value = (Optional) SSH public key of the administrator user account. Changing this forces a new Machine Learning Compute Cluster to be created. })",
+        "required": false,
+        "default": "null"
+      },
+      "ssh_public_access_enabled": {
+        "type": "bool",
+        "description": "(Optional) Should SSH public access be enabled? Defaults to false.",
+        "required": false,
+        "default": "false"
+      },
+      "subnet_resource_id": {
+        "type": "string",
+        "description": "(Optional) Virtual network subnet resource ID the compute nodes belong to.",
+        "required": false,
+        "default": "\"\""
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "vm_priority": {
+        "type": "string",
+        "description": "(Required) The priority of the VM. Changing this forces a new Machine Learning Compute Cluster to be created. Accepted values are Dedicated and LowPriority.",
+        "required": true
+      },
+      "vm_size": {
+        "type": "string",
+        "description": "(Required) The Virtual Machine Size.",
+        "required": true
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The Resource ID of the Machine Learning Compute Cluster."
+    },
+    "name": {
+      "description": "The Name of the Machine Learning Compute Cluster."
+    },
+    "resource": {
+      "description": "The Machine Learning Compute Cluster resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Machinelearningcomputecluster' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "resource_group",
+      "virtual_network",
+      "user_assign_identity",
+      "key_vault",
+      "storage_account",
+      "app_insight",
+      "container_registry",
+      "private_endpoint_key_vault",
+      "private_endpoint_storage_account_file_share",
+      "private_endpoint_container_registry",
+      "private_endpoint_machine_learning_workspace",
+      "subnet",
+      "network_security_group",
+      "time_sleep",
+      "route table",
+      "Log analytics workspace",
+      "App Insight configuration",
+      "Machine learing workspace"
+    ]
+  }
+}

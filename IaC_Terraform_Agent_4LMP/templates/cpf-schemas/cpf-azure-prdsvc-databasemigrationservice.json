@@ -1,0 +1,154 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Database Migration Service Module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-databasemigrationservice'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-databasemigrationservice",
+  "module_type": "service",
+  "azure_service": "Databasemigrationservice",
+  "module_name": "Azure Database Migration Service Module",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.1.2",
+    "0.1.1"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-databasemigrationservice.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "route = {\n    \"routekey1\" = {\n      name                   = \"route1\"\n      address_prefix         = \"0.0.0.0/0\"\n      next_hop_type          = \"VirtualAppliance\"\n      next_hop_in_ip_address = \"Firewall Private IP\"\n    }\n    \"routekey2\" = {\n      name                   = \"route2\"\n      address_prefix         = \"10.0.0.0/8\"\n      next_hop_type          = \"VirtualAppliance\"\n      next_hop_in_ip_address = \"Firewall Private IP\"\n    }\n    \"routekey3\" = {\n      name                   = \"route3\"\n      address_prefix         = \"172.16.0.0/12\"\n      next_hop_type          = \"VirtualAppliance\"\n      next_hop_in_ip_address = \"Firewall Private IP\"\n    }\n  }",
+    "- **Network Security Group(NSG)** define below three outbound rules before starting the database migration service deployment",
+    "security_rules = {\n    \"AllowAzureMonitorOutbound\" = {\n      name                                       = \"AllowAzureMonitorOutbound\"\n      description                                = \"Allow Azure Monitor for DMS\"\n      priority                                   = 300\n      direction                                  = \"Outbound\"\n      access                                     = \"Allow\"\n      protocol                                   = \"Tcp\"\n      source_port_range                          = \"*\"\n      destination_port_ranges                    = [\"443\"]\n      source_address_prefix                      = \"*\"\n      destination_address_prefix                 = \"AzureMonitor\"\n      source_application_security_group_ids      = []\n      destination_application_security_group_ids = []\n    }\n    \"AllowServiceBusOutbound\" = {\n      name                                       = \"AllowServiceBusOutbound\"\n      description                                = \"Allow Service Bus for DMS\"\n      priority                                   = 200\n      direction                                  = \"Outbound\"\n      access                                     = \"Allow\"\n      protocol                                   = \"Tcp\"\n      source_port_range                          = \"*\"\n      destination_port_ranges                    = [\"443\"]\n      source_address_prefix                      = \"*\"\n      destination_address_prefix                 = \"ServiceBus\"\n      source_application_security_group_ids      = []\n      destination_application_security_group_ids = []\n    }\n    \"AllowStorageOutbound\" = {\n      name                                       = \"AllowStorageOutbound\"\n      description                                = \"Allow Storage for DMS\"\n      priority                                   = 100\n      direction                                  = \"Outbound\"\n      access                                     = \"Allow\"\n      protocol                                   = \"Tcp\"\n      source_port_range                          = \"*\"\n      destination_port_ranges                    = [\"443\"]\n      source_address_prefix                      = \"*\"\n      destination_address_prefix                 = \"Storage\"\n      source_application_security_group_ids      = []\n      destination_application_security_group_ids = []\n    }\n   }",
+    "- Add the below service endpoints to the **Subnet** module to avoid DMS deployment connectivity issues",
+    "Microsoft.Sql\n     Microsoft.Storage\n     Microsoft.EventHub\n     Microsoft.ServiceBus"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_database_migration_project.projects",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_database_migration_service.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_resource_group.this",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "databasemigrationservice",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-databasemigrationservice.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.1.2",
+        "0.1.1"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "projects",
+      "resource_group_name",
+      "sku_name",
+      "subnet_id"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "projects": {
+        "type": "map(object({ name = string source_platform = string target_platform = string }))",
+        "description": "A map of projects with their respective configurations",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "sku_name": {
+        "type": "string",
+        "description": "(Required) The SKU of the DMS instance.",
+        "required": true
+      },
+      "subnet_id": {
+        "type": "string",
+        "description": "(Required) The ID of the subnet.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The Resource ID of the Data Migration Service"
+    },
+    "name": {
+      "description": "The Name of the database migration service."
+    },
+    "resource": {
+      "description": "The Data Migration Service resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Databasemigrationservice' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "route = {\n    \"routekey1\" = {\n      name                   = \"route1\"\n      address_prefix         = \"0.0.0.0/0\"\n      next_hop_type          = \"VirtualAppliance\"\n      next_hop_in_ip_address = \"Firewall Private IP\"\n    }\n    \"routekey2\" = {\n      name                   = \"route2\"\n      address_prefix         = \"10.0.0.0/8\"\n      next_hop_type          = \"VirtualAppliance\"\n      next_hop_in_ip_address = \"Firewall Private IP\"\n    }\n    \"routekey3\" = {\n      name                   = \"route3\"\n      address_prefix         = \"172.16.0.0/12\"\n      next_hop_type          = \"VirtualAppliance\"\n      next_hop_in_ip_address = \"Firewall Private IP\"\n    }\n  }",
+      "- **Network Security Group(NSG)** define below three outbound rules before starting the database migration service deployment",
+      "security_rules = {\n    \"AllowAzureMonitorOutbound\" = {\n      name                                       = \"AllowAzureMonitorOutbound\"\n      description                                = \"Allow Azure Monitor for DMS\"\n      priority                                   = 300\n      direction                                  = \"Outbound\"\n      access                                     = \"Allow\"\n      protocol                                   = \"Tcp\"\n      source_port_range                          = \"*\"\n      destination_port_ranges                    = [\"443\"]\n      source_address_prefix                      = \"*\"\n      destination_address_prefix                 = \"AzureMonitor\"\n      source_application_security_group_ids      = []\n      destination_application_security_group_ids = []\n    }\n    \"AllowServiceBusOutbound\" = {\n      name                                       = \"AllowServiceBusOutbound\"\n      description                                = \"Allow Service Bus for DMS\"\n      priority                                   = 200\n      direction                                  = \"Outbound\"\n      access                                     = \"Allow\"\n      protocol                                   = \"Tcp\"\n      source_port_range                          = \"*\"\n      destination_port_ranges                    = [\"443\"]\n      source_address_prefix                      = \"*\"\n      destination_address_prefix                 = \"ServiceBus\"\n      source_application_security_group_ids      = []\n      destination_application_security_group_ids = []\n    }\n    \"AllowStorageOutbound\" = {\n      name                                       = \"AllowStorageOutbound\"\n      description                                = \"Allow Storage for DMS\"\n      priority                                   = 100\n      direction                                  = \"Outbound\"\n      access                                     = \"Allow\"\n      protocol                                   = \"Tcp\"\n      source_port_range                          = \"*\"\n      destination_port_ranges                    = [\"443\"]\n      source_address_prefix                      = \"*\"\n      destination_address_prefix                 = \"Storage\"\n      source_application_security_group_ids      = []\n      destination_application_security_group_ids = []\n    }\n   }",
+      "- Add the below service endpoints to the **Subnet** module to avoid DMS deployment connectivity issues",
+      "Microsoft.Sql\n     Microsoft.Storage\n     Microsoft.EventHub\n     Microsoft.ServiceBus"
+    ]
+  }
+}

@@ -1,0 +1,235 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Service Bus Service Pattern",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvcpat-servicebus'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvcpat-servicebus",
+  "module_type": "service-pattern",
+  "azure_service": "Servicebus",
+  "module_name": "Azure Service Bus Service Pattern",
+  "latest_tag": "",
+  "available_tags": [],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-servicebus.git//",
+  "terraform_requirements": {
+    "azurerm": ">= 4.33",
+    "time": "~>0.11.1",
+    "terraform": ">= 1.5.0",
+    "azuread": "~> 2.47.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_servicebus_namespace_disaster_recovery_config.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_keyvault_pe",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_servicebusnamespace_pe",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_servicebusnamespace_pe_secondary",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "servicebus",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-servicebus.git//",
+      "version": "latest",
+      "available_versions": []
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "customer_managed_key",
+      "disaster_recovery_config",
+      "environment",
+      "key_vault_config",
+      "location",
+      "org_id",
+      "resource_group_name",
+      "shared_nrtbl_vnet_id"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "authorization_rules": {
+        "type": "map(object({ listen = optional(bool) send = optional(bool) manage = optional(bool) }))",
+        "description": "(Optional) A map of servicebus_namespace_authorization_rule object as defined below. This creates a `azurerm_servicebus_namespace_authorization_rule` for each item in the map: Key = \"(Required) Specifies the name of the Service Bus Namespace Authorization Rule. Should be unique for each namespace.\" Value = object({ listen = \"(Optional) Grants listen access to this this Authorization Rule. Defaults to `false`.\" send = \"(Optional) Grants send access to this this Authorization Rule. Defaults to `false`.\" manage = \"(Optional) Grants manage access to this this Authorization Rule. When this property is `true` - both `listen` and `send` must be too. Defaults to `false`.\" })",
+        "required": false,
+        "default": "{}"
+      },
+      "capacity": {
+        "type": "number",
+        "description": "(Optional) Specifies the capacity. When sku is `Premium`, capacity can be `1`, `2`, `4`, `8` or `16`.",
+        "required": false,
+        "default": "1"
+      },
+      "cmk_rotation_policy": {
+        "type": "object({ notify_before_expiry = string time_before_expiry = string time_after_creation = optional(string, null) expire_after = string })",
+        "description": "(Optional) A rotation policy block as defined below object({ notify_before_expiry = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" time_before_expiry = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" time_after_creation = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" expire_after = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" })",
+        "required": false,
+        "default": "{ \"expire_after\": \"P365D\", \"notify_before_expiry\": \"P358D\", \"time_after_creation\": null, \"time_before_expiry\": \"P7D\" }"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "customer_managed_key": {
+        "type": "object({ infrastructure_encryption_enabled = optional(bool, null) expiration_date = string })",
+        "description": "(Required) An customer_managed_key block as defined below object({ infrastructure_encryption_enabled = \"(Optional) Used to specify whether enable Infrastructure Encryption (Double Encryption). Changing this forces a new resource to be created.\" expiration_date = \"(Required) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').\" })",
+        "required": true
+      },
+      "disaster_recovery_config": {
+        "type": "object({ name = string secondary_region = string alias_authorization_rule_id = optional(string) customer_managed_key = object({ infrastructure_encryption_enabled = optional(bool, null) }) })",
+        "description": "(Optional) A disaster recovery configuration block as defined below. These value are required only when you need to create a secondary Service Bus Namespace for the Disaster Recovery. object({ name = \"(Required) Specifies the name of the Disaster Recovery Config. This is the alias DNS name that will be created. Changing this forces a new resource to be created.\" secondary_region = \"(Required) The name of the Azure region where the secondary service bus namespace will be created. Please choose among the regional pairs only. alias_authorization_rule_id = \"(Optional) The Shared access policies used to access the connection string for the alias.\" customer_managed_key = object({ infrastructure_encryption_enabled = \"(Optional) Used to specify whether enable Infrastructure Encryption (Double Encryption). Changing this forces a new resource to be created.\" }) })",
+        "required": true
+      },
+      "enable_systemassigned_identity": {
+        "type": "bool",
+        "description": "(Optional) Whether to enable SystemAssigned Identity, by default pattern deploys UserAssigned Identity.",
+        "required": false,
+        "default": "true"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "firewall_private_ip_address": {
+        "type": "string",
+        "description": "(Optional). Azure firewall private Ip Address. Used when creating routes to firewall during route table creation.",
+        "required": false,
+        "default": "null"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "key_vault_config": {
+        "type": "object({ context = optional(string, null) instance = optional(string, null) deploy_kv_and_pe = optional(bool, true) key_vault_id = optional(string, null) enabled_for_deployment = optional(bool, false) enabled_for_disk_encryption = optional(bool, true) enabled_for_template_deployment = optional(bool, false) soft_delete_retention_days = optional(number, 30) sku_name = optional(string, \"premium\") kv_admin_role_app_spn_object_id = optional(string, null) public_network_access_enabled = optional(bool, false) network_acls = optional(object({ bypass = optional(string, \"None\") default_action = optional(string, \"Deny\") ip_rules = optional(list(string), []) virtual_network_subnet_ids = optional(list(string), []) }), {}) private_endpoint = optional(object({ is_manual_connection = optional(bool, false) static_ip_required = optional(bool, false) private_connection_resource_alias = optional(string, null) ip_configuration = optional(map(object({ private_ip_address = string subresource_name = optional(string, \"sites\") member_name = optional(string, \"sites\") })), {}) }), { is_manual_connection = false static_ip_required = false private_connection_resource_alias = null } ) })",
+        "description": "Object with configuration for the Keyvault. As defined below text context = context to be used for KeyVaults being deployed resources. instance = instance to be used for KeyVaults being deployed resources. deploy_kv_and_pe = (Optional). Boolean to deploy KeyVault and Private Endpoint for KeyVault. Default is true. key_vault_id = (Optional). KeyVault ID to be used for Private Endpoint for KeyVault. Required if deploy_kv_and_pe is false. enabled_for_deployment = (Optional). Boolean to enable KeyVault for deployment. Default is false. enabled_for_disk_encryption = (Optional). Boolean to enable KeyVault for disk encryption. Default is true. enabled_for_template_deployment = (Optional). Boolean to enable KeyVault for template deployment. Default is false. soft_delete_retention_days = (Optional) The number of days that items should be retained for once soft-deleted. sku_name = (Optional). Sku name for KeyVault. Default is premium. public_network_access_enabled = (Optional). Boolean to enable public network access for the Key Vault. Default is false. network_acls = (Optional). Object with network ACLs for KeyVault. As defined below { bypass = (Optional). Specifies whether traffic is bypassed for Azure services. Default is None. Possible values are None, AzureServices, Logging, Metrics, or AzureServices,Logging,Metrics. default_action = (Optional). Specifies the default action of allow or deny when no other rules match. Default is Deny. Possible values are Allow and Deny. ip_rules = (Optional). List of IP addresses or CIDR ranges to whitelist. Only IPV4 addresses are allowed. This list must not include IP address ranges within Azure services. This list can include IP addresses ranges from on-premises ranges. virtual_network_subnet_ids = (Optional). List of virtual network subnet ids to whitelist. This list must not include IP address ranges within Azure services. } private_endpoint = (Optional). Object with private endpoint configuration for KeyVault. As defined below { is_manual_connection = (Optional). Boolean to indicate if the connection is manual. Default is false. static_ip_required = (Optional). Boolean to indicate if static IP is required. Default is false. private_connection_resource_alias = (Optional). Resource alias of the private connection. Required if is_manual_connection is true. ip_configuration = (Optional). Object with IP configuration for KeyVault. As defined below { private_ip_address = (Required). Private IP address of the IP configuration. subresource_name = (Optional). Subresource name of the IP configuration. Default is vault. member_name = (Optional). Member name of the IP configuration. Default is default. } }",
+        "required": true
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "network_config": {
+        "type": "object({ context = optional(string, null) instance = optional(string, null) private_endpoint = optional(object({ is_manual_connection = optional(bool, false) static_ip_required = optional(bool, false) private_connection_resource_alias = optional(string, null) request_message = optional(string, null) ip_configuration = optional(map(object({ private_ip_address = string subresource_name = optional(string, \"namespace\") member_name = optional(string, \"namespace\") })), {}) }), { is_manual_connection = false static_ip_required = false private_connection_resource_alias = null request_message = null } ) dr_private_endpoint = optional(object({ is_manual_connection = optional(bool, false) static_ip_required = optional(bool, false) private_connection_resource_alias = optional(string, null) request_message = optional(string, null) ip_configuration = optional(map(object({ private_ip_address = string subresource_name = optional(string, \"namespace\") member_name = optional(string, \"namespace\") })), {}) }), { is_manual_connection = false static_ip_required = false private_connection_resource_alias = null request_message = null } ) })",
+        "description": "(Required) Network configuration for the Pattern to be deployed. Object Defined below terraform network_config = { context = context to be used for all networking resources. instance = instance tpo be used for all networking resources. private_endpoint = (Optional). Object with private endpoint configuration for KeyVault. As defined below { is_manual_connection = (Optional). Boolean to indicate if the connection is manual. Default is false. static_ip_required = (Optional). Boolean to indicate if static IP is required. Default is false. private_connection_resource_alias = (Optional). Resource alias of the private connection. Required if is_manual_connection is true. request_message = (Optional) A message passed to the owner of the remote resource when the private endpoint attempts to establish the connection to the remote resource. The provider allows a maximum request message length of `140` characters, however the request message maximum length is dependent on the service the private endpoint is connected to. Only valid if `is_manual_connection` is set to true. ip_configuration = (Optional). Object with IP configuration for KeyVault. As defined below { private_ip_address = (Required). Private IP address of the IP configuration. subresource_name = (Optional). Subresource name of the IP configuration. Default is vault. member_name = (Optional). Member name of the IP configuration. Default is default. } } dr_private_endpoint = (Optional). Object with private endpoint configuration for KeyVault. As defined below { is_manual_connection = (Optional). Boolean to indicate if the connection is manual. Default is false. static_ip_required = (Optional). Boolean to indicate if static IP is required. Default is false. private_connection_resource_alias = (Optional). Resource alias of the private connection. Required if is_manual_connection is true. request_message = (Optional) A message passed to the owner of the remote resource when the private endpoint attempts to establish the connection to the remote resource. The provider allows a maximum request message length of `140` characters, however the request message maximum length is dependent on the service the private endpoint is connected to. Only valid if `is_manual_connection` is set to true. ip_configuration = (Optional). Object with IP configuration for KeyVault. As defined below { private_ip_address = (Required). Private IP address of the IP configuration. subresource_name = (Optional). Subresource name of the IP configuration. Default is vault. member_name = (Optional). Member name of the IP configuration. Default is default. } } }",
+        "required": false,
+        "default": "null"
+      },
+      "network_rule_set": {
+        "type": "object({ default_action = optional(string, \"Deny\") trusted_services_allowed = optional(bool) ip_rules = optional(set(string)) network_rules = optional(list(object({ subnet_id = string ignore_missing_vnet_service_endpoint = optional(bool, false) })), null) })",
+        "description": "(Optional) This creates a `azurerm_servicebus_namespace_network_rule_set`: object({ default_action = \"(Optional) Specifies the default action for the Network Rule Set. Possible values are `Allow` and `Deny`. Defaults to `Deny`.\" trusted_services_allowed = \"(Optional) Are Azure Services that are known and trusted for this resource type are allowed to bypass firewall configuration?\" ip_rules = \"(Optional) Set of one or more IP Addresses, or CIDR Blocks which should be able to access the ServiceBus Namespace.\" network_rules = list(object({ subnet_id = \"(Required) The Subnet ID which should be able to access this ServiceBus Namespace.\" ignore_missing_vnet_service_endpoint = \"(Optional) Should the ServiceBus Namespace Network Rule Set ignore missing Virtual Network Service Endpoint option in the Subnet? Defaults to `false`.\" })) })",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "premium_messaging_partitions": {
+        "type": "number",
+        "description": "(Optional) Specifies the number messaging partitions. Default value is 1. Possible values include 1, 2, and 4.",
+        "required": false,
+        "default": "1"
+      },
+      "privateendpoint_subnet_id": {
+        "type": "string",
+        "description": "(Required.) The resource id of the subnet to deploy private endpoints into.",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required). The name of the Application Resource Group. This Resource group usually contains the Application resources(app infra resources).",
+        "required": true
+      },
+      "secondary_region_enabled": {
+        "type": "bool",
+        "description": "(Optional) Secondary region is required or not required",
+        "required": false,
+        "default": "false"
+      },
+      "secondary_region_privateendpoint_subnet_id": {
+        "type": "string",
+        "description": "(Required.) The resource id of the subnet to deploy secondary private endpoints into.",
+        "required": false,
+        "default": "null"
+      },
+      "servicebusqueues": {
+        "type": "map(object({ context = optional(string, null) instance = optional(string, null) name = optional(string, null) lock_duration = optional(string, \"PT1M\") max_message_size_in_kilobytes = optional(number, null) max_size_in_megabytes = optional(number, 1024) default_message_ttl = optional(string, null) duplicate_detection_history_time_window = optional(string, \"PT10M\") max_delivery_count = optional(number, 10) status = optional(string, \"Active\") enable_batch_operations = optional(bool, false) auto_delete_on_idle = optional(string, null) forward_dead_lettered_messages_to = optional(string, null) enable_partitioning = optional(bool, false) forward_to = optional(string, null) authorization_rules = optional(map(object({ listen = optional(bool) send = optional(bool) manage = optional(bool) })), {}) }))",
+        "description": "Defaults to `{}`. A map of queues to create. The name of the queue must be unique among topics and queues within the namespace. - `context` - (Optional) - Defaults to `null`. Context to be used for all service bus queues resources. - `instance` - (Optional) - Defaults to `null`. Instance tpo be used for all service bus queues resources. - `name` - (Optional) - Defaults to `null`. Specifies the name of the ServiceBus Queue resource. Changing this forces a new resource to be created. If it is null it will use the map key as the name. - `lock_duration` - (Optional) - Its minimum and default value is `PT1M` (1 minute). Maximum value is `PT5M` (5 minutes). The ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. - `max_message_size_in_kilobytes` - (Optional) - Always set to `256` for Standard and Basic by Azure. It's mininum and also defaults is `1024` with maximum value of `102400` for Premium. Integer value which controls the maximum size of a message allowed on the queue. - `max_size_in_megabytes` - (Optional) - Defaults to `1024`. Possible values are `1024`, `2048`, `3072`, `4096`, `5120`, `10240`, `20480`, `40960` and `81920`. Integer value which controls the size of memory allocated for the queue. - `requires_duplicate_detection` - (Optional) - Always set to `false` for Basic by Azure. It Defaults to `false` for the rest of skus. Boolean flag which controls whether the Queue requires duplicate detection. Changing this forces a new resource to be created. - `requires_session` - (Optional) - Always set to `false` for Basic by Azure. It Defaults to `false` for the rest of skus. Boolean flag which controls whether the Queue requires sessions. This will allow ordered handling of unbounded sequences of related messages. With sessions enabled a queue can guarantee first-in-first-out delivery of messages. Changing this forces a new resource to be created. - `default_message_ttl` - (Optional) - Defaults to `null`. Mininum value of `PT5S` (5 seconds) and maximum of `P10675198D` (10675198 days). Set `null` for never. The ISO 8601 timespan duration of the TTL of messages sent to this queue. This is the default value used when TTL is not set on message itself. - `dead_lettering_on_message_expiration` - (Optional) - Defaults to `false`. Boolean flag which controls whether the Queue has dead letter support when a message expires. - `duplicate_detection_history_time_window` - (Optional) - Defaults to `PT10M` (10 minutes). Minimun of `PT20S` (seconds) and Maximun of `P7D` (7 days). The ISO 8601 timespan duration during which duplicates can be detected. - `max_delivery_count` - (Optional) - Defaults to `10`. Minimum of `1` and Maximun of `2147483647`. Integer value which controls when a message is automatically dead lettered. - `status` - (Optional) - Defaults to `Active`. The status of the Queue. Possible values are Active, Creating, Deleting, Disabled, ReceiveDisabled, Renaming, SendDisabled, Unknown. - `enable_batched_operations` - (Optional) - Defaults to `true`. Boolean flag which controls whether server-side batched operations are enabled. - `auto_delete_on_idle` - (Optional) - Always set to `null` when Basic. It Defaults to `null` for the rest of skus. Minimum of `PT5M` (5 minutes) and maximum of `P10675198D` (10675198 days). Set `null` for never. The ISO 8601 timespan duration of the idle interval after which the Topic is automatically deleted. - `enable_partitioning` - (Optional) - Defaults to `false` for Basic and Standard. For Premium if premium_messaging_partitions is greater than `1` it will always be set to true if not it will be set to `false`. Boolean flag which controls whether to enable the queue to be partitioned across multiple message brokers. Changing this forces a new resource to be created. - `forward_to` - (Optional) - The name of a Queue or Topic to automatically forward messages to. - `enable_express` - (Optional) - Always set to `false` for Premium and Basic by Azure. Defaults to `false` for Standard. Boolean flag which controls whether Express Entities are enabled. An express queue holds a message in memory temporarily before writing it to persistent storage. It requires requires_duplicate_detection to be set to `false` - `forward_to` - (Optional) - Always set to `false` for Basic by Azure. It Defaults to `null` for the rest of skus. The name of a Queue or Topic to automatically forward messages to. It cannot be enabled if requires_session is enabled. - `forward_dead_lettered_messages_to` - (Optional) - Defaults to `null`. The name of a Queue or Topic to automatically forward dead lettered messages to - `enable_partitioning` - (Optional) - Boolean flag which controls whether to enable the queue to be partitioned across multiple message brokers. Changing this forces a new resource to be created. Defaults to `false` for Basic and Standard. - `authorization_rules` - (Optional) - Defaults to `{}`. - `name` - (Optional) - Defaults to `null`. Specifies the name of the Authorization Rule. Changing this forces a new resource to be created. If it is null it will use the map key as the name. - `send` - (Optional) - Always set to `true` when manage is `true` if not it will default to `false`. Does this Authorization Rule have Listen permissions to the ServiceBus Queue? - `listen` - (Optional) - Always set to `true` when manage is `true` if not it will default to `false`. Does this Authorization Rule have Send permissions to the ServiceBus Queue? - `manage` - (Optional) - Defaults to `false`. Does this Authorization Rule have Manage permissions to the ServiceBus Queue? Example Inputs: hcl queues = { testQueue = { auto_delete_on_idle = \"P7D\" dead_lettering_on_message_expiration = true default_message_ttl = \"PT5M\" duplicate_detection_history_time_window = \"PT5M\" enable_batched_operations = true enable_express = true enable_partitioning = true lock_duration = \"PT5M\" requires_duplicate_detection = true requires_session = false max_delivery_count = 10 max_message_size_in_kilobytes = 1024 max_size_in_megabytes = 1024 status = \"Active\" forward_to = \"forwardQueue\" forward_dead_lettered_messages_to = \"forwardQueue\" role_assignments = { \"key\" = { skip_service_principal_aad_check = false role_definition_id_or_name = \"Contributor\" description = \"This is a test role assignment\" principal_id = \"eb5260bd-41f3-4019-9e03-606a617aec13\" } } authorization_rules = { testRule = { send = true listen = true manage = true } } } }",
+        "required": false,
+        "default": "{}"
+      },
+      "servicebustopics": {
+        "type": "map(object({ context = optional(string, null) instance = optional(string, null) name = optional(string, null) status = optional(string, \"Active\") auto_delete_on_idle = optional(string, null) default_message_ttl = optional(string, null) duplicate_detection_history_time_window = optional(string, \"PT10M\") batched_operations_enabled = optional(bool, false) max_message_size_in_kilobytes = optional(number, null) max_size_in_megabytes = optional(number, 1024) support_ordering = optional(bool, false) partitioning_enabled = optional(bool, false) requires_duplicate_detection = optional(bool, true) authorization_rules = optional(map(object({ send = optional(bool, false) listen = optional(bool, false) manage = optional(bool, false) })), {}) subscriptions = optional(map(object({ context = optional(string, null) instance = optional(string, null) forward_to = optional(string, null) name = optional(string, null) max_delivery_count = optional(number, 10) auto_delete_on_idle = optional(string, null) default_message_ttl = optional(string, null) lock_duration = optional(string, \"PT1M\") dead_lettering_on_filter_evaluation_error = optional(bool, true) batched_operations_enabled = optional(bool, true) requires_session = optional(bool, false) forward_dead_lettered_messages_to = optional(string, null) status = optional(string, \"Active\") client_scoped_subscription_enabled = optional(bool, false) dead_lettering_on_message_expiration = optional(bool, true) client_scoped_subscription = optional(object({ client_id = optional(string, null) is_client_scoped_subscription_shareable = optional(bool, true) is_client_scoped_subscription_durable = optional(bool) })) subscription_rules = optional(map(object({ filter_type = string sql_filter = optional(string) action = optional(string) correlation_filter = optional(object({ content_type = optional(string) correlation_id = optional(string) label = optional(string) message_id = optional(string) reply_to = optional(string) reply_to_session_id = optional(string) session_id = optional(string) to = optional(string) properties = optional(map(string)) })) })), {}) })), null) }))",
+        "description": "Defaults to `{}`. Ignored for Basic. A map of topics to create. The name of the topic must be unique among topics and queues within the namespace. - `context` - (Optional) - Defaults to `null`. Context to be used for all service bus topic resources. - `instance` - (Optional) - Defaults to `null`. Instance tpo be used for all service bus topic resources. - `name` - (Optional) - Defaults to `null`. Specifies the name of the ServiceBus Topic resource. Changing this forces a new resource to be created. If it is null it will use the map key as the name. - `status` - (Optional) - Defaults to `Active`. The status of the Topic. Possible values are Active, Creating, Deleting, Disabled, ReceiveDisabled, Renaming, SendDisabled, Unknown. - `auto_delete_on_idle` - (Optional) - Defaults to `null`. Minimum of `PT5M` (5 minutes) and maximum of `P10675198D` (10675198 days). Set `null` for never. The ISO 8601 timespan duration of the idle interval after which the Topic is automatically deleted. - `default_message_ttl` - (Optional) - Defaults to `null`. Minimum value of `PT5S` (5 seconds) and maximum of `P10675198D` (10675198 days). Set `null` for never. The ISO 8601 timespan duration of the TTL of messages sent to this topic. This is the default value used when TTL is not set on message itself. - `duplicate_detection_history_time_window` - (Optional) - Defaults to `PT10M` (10 minutes). Minimum of `PT20S` (seconds) and Maximum of `P7D` (7 days). The ISO 8601 timespan duration during which duplicates can be detected. - `batched_operations_enabled` - (Optional) - Defaults to `true`. Boolean flag which controls whether server-side batched operations are enabled. - `max_message_size_in_kilobytes` - (Optional) - Always set to `256` for Standard by Azure. It's minimum and also defaults is `1024` with maximum value of `102400` for Premium. Integer value which controls the maximum size of a message allowed on the Topic. - `max_size_in_megabytes` - (Optional) - Defaults to `1024`. Possible values are `1024`, `2048`, `3072`, `4096`, `5120`, `10240`, `20480`, `40960` and `81920`. Integer value which controls the size of memory allocated for the Topic. - `support_ordering` - (Optional) - Defaults to `false`. Boolean flag which controls whether the Topic supports ordering. - `enable_partitioning` - (Optional) - (Optional) Boolean flag which controls whether to enable the topic to be partitioned across multiple message brokers. Changing this forces a new resource to be created. - `authorization_rules` - (Optional) - Defaults to `{}`. - `send` - (Optional) - Always set to `true` when manage is `true` if not it will default to `false`. Does this Authorization Rule have Listen permissions to the ServiceBus Topic? - `listen` - (Optional) - Always set to `true` when manage is `true` if not it will default to `false`. Does this Authorization Rule have Send permissions to the ServiceBus Topic? - `manage` - (Optional) - Defaults to `false`. Does this Authorization Rule have Manage permissions to the ServiceBus Topic? - `subscriptions` - (Optional) - Defaults to `{}`. - `context` - (Optional) - Defaults to `null`. Context to be used for all service bus subscriptions resources. - `instance` - (Optional) - Defaults to `null`. Instance tpo be used for all service bus subscriptions resources. - `name` - (Optional) - Defaults to `null`. Specifies the name of the ServiceBus Subscription resource. Changing this forces a new resource to be created. If it is null it will use the map key as the name. - `max_delivery_count` - (Optional) - Defaults to `10`. Minimum of `1` and Maximun of `2147483647`. Integer value which controls when a message is automatically dead lettered. - `auto_delete_on_idle` - (Optional) - Defaults to `null`. Minimum of `PT5M` (5 minutes) and maximum of `P10675198D` (10675198 days). Set `null` for never. The ISO 8601 timespan duration of the idle interval after which the Topic is automatically deleted. - `default_message_ttl` - (Optional) - Defaults to `null`. Mininum value of `PT5S` (5 seconds) and maximum of `P10675198D` (10675198 days). Set `null` for never. The ISO 8601 timespan duration of the TTL of messages sent to this queue. This is the default value used when TTL is not set on message itself. - `lock_duration` - (Optional) - Its minimum and default value is `PT1M` (1 minute). Maximum value is `PT5M` (5 minutes). The ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. - `dead_lettering_on_filter_evaluation_error` - (Optional) - Defaults to `true`. Boolean flag which controls whether the Subscription has dead letter support on filter evaluation exceptions - `enable_batched_operations` - (Optional) - Defaults to `true`. Boolean flag which controls whether the Subscription supports batched operations. - `requires_session` - (Optional) - Defaults to `false`. Boolean flag which controls whether this Subscription supports the concept of a session. Changing this forces a new resource to be created. - `forward_dead_lettered_messages_to` - (Optional) - Defaults to `null`. The name of a Queue or Topic to automatically forward dead lettered messages to - `status` - (Optional) - Defaults to `Active`. The status of the Subscription. Possible values are Active, ReceiveDisabled, Disabled. - `client_scoped_subscription_enabled` - (Optional) - Whether the subscription is scoped to a `client id`. Defaults to `false`. - `client_scoped_subscription` - (Optional) - Defaults to `null`. A `client_scoped_subscription` block as defined below. Used only for `Premium` SKU: - `client_id` - (Optional) - Defaults to `null`. Specifies the Client ID of the application that created the client-scoped subscription. Changing this forces a new resource to be created. - `is_client_scoped_subscription_shareable` - (Optional) - Defaults to `true`. Whether the client scoped subscription is shareable. Defaults to `true` Changing this forces a new resource to be created - `is_client_scoped_subscription_durable` - (Optional) - Defaults to `null`. Whether the client scoped subscription is durable. This property can only be controlled from the application side. - `subscription_rules` - (Optional) A map of servicebus_topic_authorization_rule object as defined below. This creates a `azurerm_servicebus_topic_authorization_rule` for each item in the map: Key = \"(Required) Specifies the name of the ServiceBus Subscription Rule. Changing this forces a new resource to be created.\" Value = object({ filter_type = \"(Required) Type of filter to be applied to a BrokeredMessage. Possible values are `SqlFilter` and `CorrelationFilter`.\" sql_filter = \"(Optional) Represents a filter written in SQL language-based syntax that to be evaluated against a BrokeredMessage. Required when filter_type is set to SqlFilter.\" action = \"(Optional) Represents set of actions written in SQL language-based syntax that is performed against a BrokeredMessage.\" correlation_filter = \"(Optional) A correlation_filter block as documented below to be evaluated against a BrokeredMessage. Required when filter_type is set to `CorrelationFilter`. Object({ content_type = \"(Optional) Content type of the message.\" correlation_id = \"(Optional) Identifier of the correlation.\" label = \"(Optional) Application specific label.\" message_id = \"(Optional) Identifier of the message.\" reply_to = \"(Optional) Address of the queue to reply to.\" reply_to_session_id = \"(Optional) Session identifier to reply to.\" session_id = \"(Optional) Session identifier.\" to = \"(Optional) Address to send to.\" properties = \"(Optional) A list of user defined properties to be included in the filter. Specified as a map of name/value pairs.\" }) }) Example Inputs: hcl topics = { testTopic = { auto_delete_on_idle = \"P7D\" default_message_ttl = \"PT5M\" duplicate_detection_history_time_window = \"PT5M\" batched_operations_enabled = true enable_express = false enable_partitioning = true requires_duplicate_detection = true max_message_size_in_kilobytes = 1024 max_size_in_megabytes = 1024 status = \"Active\" support_ordering = true subscriptions = { testSubscription = { dead_lettering_on_filter_evaluation_error = true dead_lettering_on_message_expiration = true default_message_ttl = \"PT5M\" enable_batched_operations = true lock_duration = \"PT1M\" max_delivery_count = 100 status = \"Active\" auto_delete_on_idle = \"P7D\" requires_session = false forward_dead_lettered_messages_to = \"forwardTopic\" forward_to = \"forwardTopic\" } } role_assignments = { \"key\" = { skip_service_principal_aad_check = false role_definition_id_or_name = \"Contributor\" description = \"This is a test role assignment\" principal_id = \"eb5260bd-41f3-4019-9e03-606a617aec13\" } } authorization_rules = { testRule = { send = true listen = true manage = true } } } }",
+        "required": false,
+        "default": "{}"
+      },
+      "shared_nrtbl_vnet_id": {
+        "type": "string",
+        "description": "(Required). The ARM Resource Id of the Non-Route-able Virtual Network in shared Resource group.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "keyvault": {
+      "description": "The keyvault module outputs."
+    },
+    "privateendpoint_akv": {
+      "description": "The privateendpoint_akv module outputs."
+    },
+    "privateendpoint_servicebusnamespace": {
+      "description": "The privateendpoint_servicebusnamespace module output."
+    },
+    "servicebusnamespace": {
+      "description": "The servicebus module output."
+    },
+    "servicebusqueue": {
+      "description": "The servicebusqueue module output is a MAP."
+    },
+    "servicebussubscription": {
+      "description": "The servicebussubscription module output is a MAP."
+    },
+    "servicebustopic": {
+      "description": "The servicebustopic module output is a MAP."
+    },
+    "userassignedidentity_servicebus": {
+      "description": "The userassignedidentity_servicebus module outputs."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Servicebus' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a service pattern module. It bundles multiple related services/configurations.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

@@ -1,0 +1,396 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Automation Account module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-automationaccount'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-automationaccount",
+  "module_type": "service",
+  "azure_service": "Automationaccount",
+  "module_name": "Automation Account module",
+  "latest_tag": "1.3.1",
+  "available_tags": [
+    "1.3.1",
+    "1.3.0",
+    "1.2.1",
+    "1.2.0",
+    "1.1.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-automationaccount.git//?ref=1.3.1",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "User Assigned Identity"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_automation_account.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_automation_credential.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_automation_hybrid_runbook_worker.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_automation_hybrid_runbook_worker_group.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_automation_job_schedule.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_automation_module.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_automation_runbook.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_automation_schedule.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_automation_variable_bool.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_automation_variable_datetime.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_automation_variable_int.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_automation_variable_object.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_automation_variable_string.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_automation_webhook.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "automationaccount",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-automationaccount.git//?ref=1.3.1",
+      "version": "1.3.1",
+      "available_versions": [
+        "1.3.1",
+        "1.3.0",
+        "1.2.1",
+        "1.2.0",
+        "1.1.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name",
+      "sku_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "bool_var": {
+        "type": "map(object({ name = string description = optional(string, null) value = optional(bool, null) }))",
+        "description": "(Optional) bool_var variable comprises of below objects: name = \"(Required) The name of the Automation Variable. Changing this forces a new resource to be created.\" description = \"(Optional) The description of the Automation Variable.\" value = \"(Optional) The value of the Automation Variable as a boolean.\"",
+        "required": false,
+        "default": "null"
+      },
+      "bool_var_iterator": {
+        "type": "set(string)",
+        "description": "(Optional) Set of keys from bool_var to iterate over. Required when bool_var contains sensitive values.",
+        "required": false,
+        "default": "[]"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "credential_var": {
+        "type": "map(object({ name = string username = string password = string description = optional(string, null) }))",
+        "description": "(Optional) credential_var supports below values: name = \"(Required) Specifies the name of the Credential. Changing this forces a new resource to be created.\" username = \"(Required) The username associated with this Automation Credential.\" password = \"(Required) The password associated with this Automation Credential.\" description = \"(Optional) The description associated with this Automation Credential.\"",
+        "required": false,
+        "default": "null"
+      },
+      "credential_var_iterator": {
+        "type": "set(string)",
+        "description": "(Optional) Set of keys from credential_var to iterate over. Required when credential_var contains sensitive values.",
+        "required": false,
+        "default": "[]"
+      },
+      "datetime_var": {
+        "type": "map(object({ name = string description = optional(string, null) value = optional(string, null) }))",
+        "description": "(Optional) datetime_var variable comprises of below objects: name = \"(Required) The name of the Automation Variable. Changing this forces a new resource to be created.\" description = \"(Optional) The description of the Automation Variable.\" value = \"(Optional) The value of the Automation Variable in the `RFC3339 Section 5.6 Internet Date/Time Format`.\"",
+        "required": false,
+        "default": "null"
+      },
+      "encryption": {
+        "type": "object({ key_vault_key_id = string user_assigned_identity_id = optional(string, null) })",
+        "description": "(Optional) Encryption variable consists of below components: key_vault_key_id = \"(Required) The ID of the Key Vault Key which should be used to Encrypt the data in this Automation Account.\" user_assigned_identity_id = \"(Optional) The User Assigned Managed Identity ID to be used for accessing the Customer Managed Key for encryption.\"",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "hybrid_runbook_worker_group_var": {
+        "type": "map(object({ name = string credential_name = optional(string) }))",
+        "description": "(Optional) hybrid_runbook_worker_group_var supports below values: name = \"(Required) The name which should be used for this Automation Account Runbook Worker Group. Changing this forces a new resource to be created.\" credential_name = \"(Optional) The name of resource type azurerm_automation_credential to use for hybrid worker.\"",
+        "required": false,
+        "default": "null"
+      },
+      "hybrid_runbook_worker_var": {
+        "type": "map(object({ worker_group_name = string worker_id = string vm_resource_id = string }))",
+        "description": "(Optional) hybrid_runbook_worker_var supports below values: worker_group_name = \"(Required) The name of the HybridWorker Group. Changing this forces a new Automation to be created.\" worker_id = \"(Required) Specify the ID of this HybridWorker in UUID notation. Changing this forces a new Automation to be created.\" vm_resource_id = \"(Required) The ID of the virtual machine used for this HybridWorker. Changing this forces a new Automation to be created.\"",
+        "required": false,
+        "default": "null"
+      },
+      "hybrid_runbook_worker_var_iterator": {
+        "type": "set(string)",
+        "description": "(Optional) Set of keys from hybrid_runbook_worker_var to iterate over. Required when hybrid_runbook_worker_var contains sensitive values.",
+        "required": false,
+        "default": "[]"
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = optional(list(string)) })",
+        "description": "(Optional) An identity block as defined below object({ type = \"(Required) Specifies the type of Managed Service Identity that should be configured on this Linux Virtual Machine. Possible values are `SystemAssigned`, `UserAssigned`, `SystemAssigned, UserAssigned` (to enable both).\" identity_ids = \"(Optional) Specifies a list of User Assigned Managed Identity IDs to be assigned to this Linux Virtual Machine. This is required when `type` is set to `UserAssigned` or `SystemAssigned, UserAssigned`.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "int_var": {
+        "type": "map(object({ name = string description = optional(string, null) value = optional(number, null) }))",
+        "description": "(Optional) int_var variable comprises of below objects: name = \"(Required) The name of the Automation Variable. Changing this forces a new resource to be created.\" description = \"(Optional) The description of the Automation Variable.\" value = \"(Optional) The value of the Automation Variable as a integer.\"",
+        "required": false,
+        "default": "null"
+      },
+      "int_var_iterator": {
+        "type": "set(string)",
+        "description": "(Optional) Set of keys from int_var to iterate over. Required when int_var contains sensitive values.",
+        "required": false,
+        "default": "[]"
+      },
+      "job_schedule_var": {
+        "type": "map(object({ schedule_name = string runbook_name = string parameters = optional(map(string), {}) run_on = optional(string, null) }))",
+        "description": "(Optional) job_schedule_var variable comprises of below objects: schedule_name = \"(Required) The name of the Schedule. Changing this forces a new resource to be created.\" runbook_name = \"(Required) The name of a Runbook to link to a Schedule. It needs to be in the same Automation Account as the Schedule and Job Schedule. Changing this forces a new resource to be created.\" parameters = \"(Optional) A map of key/value pairs corresponding to the arguments that can be passed to the Runbook. Changing this forces a new resource to be created.\" run_on = \"(Optional) Name of a Hybrid Worker Group the Runbook will be executed on. Changing this forces a new resource to be created.\"",
+        "required": false,
+        "default": "{}"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "module_var": {
+        "type": "map(object({ name = string module_link = object({ uri = string hash = optional(object({ algorithm = string value = string }), null) }) }))",
+        "description": "(Optional) module_var variable comprises of below objects: name = \"(Required) Specifies the name of the Module. Changing this forces a new resource to be created.\" module_link = \"(Required) A module_link block as defined below.\" uri = \"(Required) The URI of the module content (zip or nupkg).\" hash = \"(Optional) A hash block as defined below.\" algorithm = \"(Required) Specifies the algorithm used for the hash content.\" value = \"(Required) The hash value of the content.\"",
+        "required": false,
+        "default": "{}"
+      },
+      "object_var": {
+        "type": "map(object({ name = string description = optional(string, null) value = optional(string, null) }))",
+        "description": "(Optional) object_var variable comprises of below objects: name = \"(Required) The name of the Automation Variable. Changing this forces a new resource to be created.\" description = \"(Optional) The description of the Automation Variable.\" value = \"(Optional) The value of the Automation Variable as a jsonencode().\"",
+        "required": false,
+        "default": "null"
+      },
+      "object_var_iterator": {
+        "type": "set(string)",
+        "description": "(Optional) Set of keys from object_var to iterate over. Required when object_var contains sensitive values.",
+        "required": false,
+        "default": "[]"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "runbook_var": {
+        "type": "map(object({ name = string runbook_type = string log_progress = string log_verbose = string publish_content_link = optional(object({ uri = string version = optional(string, null) hash = optional(object({ algorithm = string value = string }), null) }), null) description = optional(string, null) content = optional(string, null) log_activity_trace_level = optional(number) draft = optional(object({ edit_mode_enabled = optional(bool, false) content_link = optional(object({ uri = string version = optional(string, null) hash = optional(object({ algorithm = string value = string }), null) }), null) output_types = optional(string, null) parameters = optional(list(object({ key = string type = string mandatory = optional(bool, false) position = optional(string, null) default_value = optional(string, null) })), null) }), null) }))",
+        "description": "(Optional) runbook variable comprises of below arguments: name = \"(Required) Specifies the name of the Runbook. Changing this forces a new resource to be created.\" runbook_type = \"(Required) The type of the runbook - can be either Graph, GraphPowerShell, GraphPowerShellWorkflow, PowerShellWorkflow, PowerShell, PowerShell72, Python3, Python2 or Script.\" log_progress = \"(Required) Progress log option.\" log_verbose = \"(Required) Verbose log option.\" publish_content_link = \"(Optional) One publish_content_link block as defined below. The Azure API requires a publish_content_link to be supplied even when specifying your own content.\" uri = \"(Required) The URI of the runbook content.\" version = \"(Optional) Specifies the version of the content.\" hash = \"(Optional) A hash block as defined below.\" algorithm = \"(Required) Specifies the hash algorithm used to hash the content.\" value = \"(Required) Specifies the expected hash value of the content.\" description = \"(Optional) A description for this credential.\" content = \"(Optional) The desired content of the runbook. The Azure API requires a publish_content_link to be supplied even when specifying your own content.\" tags = \"(Optional) A mapping of tags to assign to the resource.\" log_activity_trace_level = \"(Optional) Specifies the activity-level tracing options of the runbook, available only for Graphical runbooks. Possible values are 0 for None, 9 for Basic, and 15 for Detailed. Must turn on Verbose logging in order to see the tracing.\" draft = \"(Optional) A draft block as defined below.\" edit_mode_enabled = \"(Optional) Whether the draft in edit mode.\" content_link = \"(Optional) A publish_content_link block as defined above.\" uri = \"(Required) The URI of the runbook content.\" version = \"(Optional) Specifies the version of the content.\" hash = \"(Optional) A hash block as defined below.\" algorithm = \"(Required) Specifies the hash algorithm used to hash the content.\" value = \"(Required) Specifies the expected hash value of the content.\" output_types = \"(Optional) Specifies the output types of the runbook.\" parameters = \"(Optional) A list of parameters block as defined below.\" key = \"(Required) The name of the parameter.\" type = \"(Required) Specifies the type of this parameter.\" mandatory = \"(Optional) Whether this parameter is mandatory.\" position = \"(Optional) Specifies the position of the parameter.\" default_value = \"(Optional) Specifies the default value of the parameter.\"",
+        "required": false,
+        "default": "null"
+      },
+      "schedule_var": {
+        "type": "map(object({ name = string frequency = string interval = number start_time = string time_zone = string expiry_time = string description = string week_days = optional(list(string), null) month_days = optional(list(number), null) monthly_occurrence = optional(object({ occurrence = number day = string }), null) }))",
+        "description": "(Optional) schedule_var variable comprises of below objects: name = \"(Required) Specifies the name of the Schedule. Changing this forces a new resource to be created.\" frequency = \"(Required) The frequency of the schedule. - can be either OneTime, Day, Hour, Week, or Month.\" interval = \"(Optional) The number of frequencys between runs. Only valid when frequency is Day, Hour, Week, or Month and defaults to 1.\" start_time = \"(Optional) Start time of the schedule. Must be at least five minutes in the future. Defaults to seven minutes in the future from the time the resource is created.\" time_zone = \"(Optional) The timezone of the start time. Defaults to Etc/UTC.\" expiry_time = \"(Optional) The end time of the schedule.\" description = \"(Optional) A description for this Schedule.\" week_days = \"(Optional) List of days of the week that the job should execute on. Only valid when frequency is Week. Possible values are Monday, Tuesday, Wednesday, Thursday, Friday, Saturday and Sunday.\" month_days = \"(Optional) List of days of the month that the job should execute on. Must be between 1 and 31. -1 for last day of the month. Only valid when frequency is Month.\" monthly_occurrence = \"(Optional) One monthly_occurrence blocks as defined below to specifies occurrences of days within a month. Only valid when frequency is Month.\" occurrence = \"(Required) Occurrence of the week within the month. Must be between 1 and 5. -1 for last week within the month.\" day = \"(Required) Day of the occurrence. Must be one of Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday.\"",
+        "required": false,
+        "default": "{}"
+      },
+      "sku_name": {
+        "type": "string",
+        "description": "(Required) The SKU of the account. Possible values are Basic and Free.",
+        "required": true
+      },
+      "string_var": {
+        "type": "map(object({ name = string description = optional(string, null) value = optional(string, null) }))",
+        "description": "(Optional) string_var variable comprises of below objects: name = \"(Required) The name of the Automation Variable. Changing this forces a new resource to be created.\" description = \"(Optional) The description of the Automation Variable.\" value = \"(Optional) The value of the Automation Variable as a string.\"",
+        "required": false,
+        "default": "null"
+      },
+      "string_var_iterator": {
+        "type": "set(string)",
+        "description": "(Optional) Set of keys from string_var to iterate over. Required when string_var contains sensitive values.",
+        "required": false,
+        "default": "[]"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "webhook_var": {
+        "type": "map(object({ name = string expiry_time = string enabled = optional(bool, true) runbook_name = string run_on_worker_group = optional(string, null) parameters = optional(map(any), {}) uri = optional(string, null) }))",
+        "description": "(Optional) webhook variable comprises of below arguments: name = \"(Required) Specifies the name of the Webhook. Changing this forces a new resource to be created.\" expiry_time = \"(Required) Timestamp when the webhook expires. Changing this forces a new resource to be created.\" enabled = \"(Optional) Controls if Webhook is enabled. Defaults to true.\" runbook_name = \"(Required) Name of the Automation Runbook to execute by Webhook.\" run_on_worker_group = \"(Optional) Name of the hybrid worker group the Webhook job will run on.\" parameters = \"(Optional) Map of input parameters passed to runbook.\" uri = \"(Optional) URI to initiate the webhook. Can be generated using Generate URI API. By default, new URI is generated on each new resource creation. Changing this forces a new resource to be created.\"",
+        "required": false,
+        "default": "null"
+      }
+    }
+  },
+  "outputs": {
+    "bool_var_id": {
+      "description": "The ID of the created Automation Account boolean variables."
+    },
+    "bool_var_name": {
+      "description": "The name of the created Automation Account boolean variables."
+    },
+    "bool_var_resource": {
+      "description": "The Automation Account boolean variables resource."
+    },
+    "credential_id": {
+      "description": "The ID of the Automation Credential."
+    },
+    "credential_name": {
+      "description": "The name of the Automation Credential."
+    },
+    "credential_resource": {
+      "description": "The Automation Credential resource."
+    },
+    "datetime_var_id": {
+      "description": "The ID of the created Automation Account datetime variables."
+    },
+    "datetime_var_name": {
+      "description": "The name of the created Automation Account datetime variables."
+    },
+    "datetime_var_resource": {
+      "description": "The Automation Account datetime variables resource."
+    },
+    "hybrid_runbook_worker_group_id": {
+      "description": "The ID of the Automation Hybrid Runbook Worker Group."
+    },
+    "hybrid_runbook_worker_group_name": {
+      "description": "The name of the Automation Hybrid Runbook Worker Group."
+    },
+    "hybrid_runbook_worker_group_resource": {
+      "description": "The Automation Hybrid Runbook Worker Group resource."
+    },
+    "hybrid_runbook_worker_id": {
+      "description": "The ID of the Automation Hybrid Runbook Worker."
+    },
+    "hybrid_runbook_worker_resource": {
+      "description": "The Automation Hybrid Runbook Worker resource."
+    },
+    "id": {
+      "description": "The ID of the created Automation Account."
+    },
+    "int_var_id": {
+      "description": "The ID of the created Automation Account integer variables."
+    },
+    "int_var_name": {
+      "description": "The name of the created Automation Account integer variables."
+    },
+    "int_var_resource": {
+      "description": "The Automation Account integer variables resource."
+    },
+    "name": {
+      "description": "The name of the created Automation Account."
+    },
+    "object_var_id": {
+      "description": "The ID of the created Automation Account object variables."
+    },
+    "object_var_name": {
+      "description": "The name of the created Automation Account object variables."
+    },
+    "object_var_resource": {
+      "description": "The Automation Account object variables resource."
+    },
+    "resource": {
+      "description": "The Automation Account resource."
+    },
+    "runbook_id": {
+      "description": "The ID of the created runbook variables."
+    },
+    "runbook_name": {
+      "description": "The name of the created runbook variables."
+    },
+    "runbook_resource": {
+      "description": "The runbook variables resource."
+    },
+    "string_var_id": {
+      "description": "The ID of the created Automation Account string variables."
+    },
+    "string_var_name": {
+      "description": "The name of the created Automation Account string variables."
+    },
+    "string_var_resource": {
+      "description": "The Automation Account string variables resource."
+    },
+    "webhook_id": {
+      "description": "The ID of the created webhook variables."
+    },
+    "webhook_name": {
+      "description": "The name of the created webhook variables."
+    },
+    "webhook_resource": {
+      "description": "The webhook variables resource."
+    },
+    "webhook_uri": {
+      "description": "(Sensitive) Generated URI for this Webhook."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Automationaccount' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "User Assigned Identity"
+    ]
+  }
+}

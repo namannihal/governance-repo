@@ -1,0 +1,337 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Databricks Workspace module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-databricksworkspace'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-databricksworkspace",
+  "module_type": "service",
+  "azure_service": "Databricksworkspace",
+  "module_name": "Azure Databricks Workspace module",
+  "latest_tag": "1.1.3",
+  "available_tags": [
+    "1.1.3",
+    "1.1.2",
+    "1.1.1",
+    "1.1.0",
+    "1.0.1"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-databricksworkspace.git//?ref=1.1.3",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "key vault",
+    "user managed identity"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_databricks_workspace.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_databricks_workspace_root_dbfs_customer_managed_key.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.dbfs",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.disk",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.services",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.current",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.databricks",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.dbfs_disk",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.dbfs_storage",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.dbfs",
+      "type": "data source"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.disk",
+      "type": "data source"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.services",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "databricksworkspace",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-databricksworkspace.git//?ref=1.1.3",
+      "version": "1.1.3",
+      "available_versions": [
+        "1.1.3",
+        "1.1.2",
+        "1.1.1",
+        "1.1.0",
+        "1.0.1"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "customer_managed_key",
+      "environment",
+      "instance_cmk_dbfs",
+      "instance_cmk_services",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "access_connector_id": {
+        "type": "string",
+        "description": "(Optional) Access Connector ID to use when default storage account firewall is enabled.",
+        "required": false,
+        "default": "null"
+      },
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "cmk_key_name_dbfs": {
+        "type": "string",
+        "description": "(optional) Key name to be used (max 127 chars)",
+        "required": false,
+        "default": "null"
+      },
+      "cmk_key_name_disk": {
+        "type": "string",
+        "description": "(optional) Key name to be used (max 127 chars)",
+        "required": false,
+        "default": "null"
+      },
+      "cmk_key_name_services": {
+        "type": "string",
+        "description": "(optional) Key name to be used (max 127 chars)",
+        "required": false,
+        "default": "null"
+      },
+      "cmk_rotation_policy": {
+        "type": "object({ notify_before_expiry = string time_before_expiry = string time_after_creation = optional(string, null) expire_after = string })",
+        "description": "(Optional) A rotation policy block as defined below object({ notify_before_expiry = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" time_before_expiry = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" time_after_creation = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" expire_after = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" })",
+        "required": false,
+        "default": "{ \"expire_after\": \"P365D\", \"notify_before_expiry\": \"P358D\", \"time_after_creation\": null, \"time_before_expiry\": \"P7D\" }"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "create_role_assignment": {
+        "type": "bool",
+        "description": "Whether to create the Key Vault Crypto Service Encryption User role assignment. Set to false if the role assignment already exists.",
+        "required": false,
+        "default": "true"
+      },
+      "customer_managed_key": {
+        "type": "object({ key_vault_id = string expiration_date = string uai_principal_id = string })",
+        "description": "(Required) An customer_managed_key block as defined below object({ key_vault_id = \"(Required) ID of the existing Key vault to store the Customer Managed Key for Transparent Data Encryption.\" expiration_date = \"(Required) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').\" uai_principal_id = \"(Required) Principal id of the User Assigned Identity which should be used to access the CMK encryption key in the Key Vault. This identity will be granted `Key Vault Crypto Service Encryption User` role on the Key vault.\" })",
+        "required": true
+      },
+      "databricks_object_id": {
+        "type": "string",
+        "description": "(Optional) Object ID fetched from Enterprise application in Entra ID for Azure Databricks",
+        "required": false,
+        "default": "\"ab10c45c-ad76-4156-ae7d-7388b922220e\""
+      },
+      "default_storage_firewall_enabled": {
+        "type": "bool",
+        "description": "(Optional) Disallow public access to default storage account.",
+        "required": false,
+        "default": "false"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "infrastructure_encryption_enabled": {
+        "type": "bool",
+        "description": "(Optional) Is the Databricks File System root file system enabled with a secondary layer of encryption with platform managed keys? This field is only valid if the Databricks Workspace sku is set to premium. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "false"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "instance_cmk_dbfs": {
+        "type": "string",
+        "description": "(Required) Instance number for CMK in DBFS Root (max 3 int).",
+        "required": true
+      },
+      "instance_cmk_services": {
+        "type": "string",
+        "description": "(Required) Instance number for CMK in managed services (max 3 int).",
+        "required": true
+      },
+      "key_vault_tags": {
+        "type": "map(any)",
+        "description": "(Optional) Key Vault related tags to be set on key vault child resources.",
+        "required": false,
+        "default": "{}"
+      },
+      "load_balancer_backend_address_pool_id": {
+        "type": "string",
+        "description": "(Optional) Resource ID of the Outbound Load balancer Backend Address Pool for Secure Cluster Connectivity (No Public IP) workspace. Changing this forces a new resource to be created. This property is currently disabled and has no effect.",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "machine_learning_workspace_id": {
+        "type": "string",
+        "description": "(Optional) The ID of a Azure Machine Learning workspace to link with Databricks workspace. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "managed_disk_cmk_rotation_to_latest_version_enabled": {
+        "type": "bool",
+        "description": "(Optional) Whether customer managed keys for disk encryption will automatically be rotated to the latest version.",
+        "required": false,
+        "default": "false"
+      },
+      "managed_resource_group_name": {
+        "type": "string",
+        "description": "(Optional) The name of the resource group where Azure should place the managed Databricks resources. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "nat_gateway_name": {
+        "type": "string",
+        "description": "(Optional) Name of the NAT gateway for Secure Cluster Connectivity (No Public IP) workspace subnets. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "\"nat-gateway\""
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "private_subnet_name": {
+        "type": "string",
+        "description": "(Optional) The name of the Private (Container) Subnet within the Virtual Network.",
+        "required": false,
+        "default": "null"
+      },
+      "private_subnet_network_security_group_association_id": {
+        "type": "string",
+        "description": "(Optional) The resource ID of the azurerm_subnet_network_security_group_association resource which is referred to by the private_subnet_name field.",
+        "required": false,
+        "default": "null"
+      },
+      "public_ip_name": {
+        "type": "string",
+        "description": "(Optional) Name of the Public IP for No Public IP workspace with managed vNet. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "\"nat-gw-public-ip\""
+      },
+      "public_subnet_name": {
+        "type": "string",
+        "description": "(Optional) The name of the Public (Host) Subnet within the Virtual Network. But this is actually private in our case, the name is just public due to Azure standards and the possibility of having a public subnet.",
+        "required": false,
+        "default": "null"
+      },
+      "public_subnet_network_security_group_association_id": {
+        "type": "string",
+        "description": "The resource ID of the azurerm_subnet_network_security_group_association resource which is referred to by the public_subnet_name field.",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "sku": {
+        "type": "string",
+        "description": "(Optional) The sku to use for the Databricks Workspace.",
+        "required": false,
+        "default": "\"premium\""
+      },
+      "storage_account_name": {
+        "type": "string",
+        "description": "(Optional) Default Databricks File Storage account name. Defaults to a randomized name(e.g. dbstoragel6mfeghoe5kxu). Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "storage_account_sku_name": {
+        "type": "string",
+        "description": "(Optional) Storage account SKU name. Possible values include Standard_LRS, Standard_GRS, Standard_RAGRS, Standard_GZRS, Standard_RAGZRS, Standard_ZRS, Premium_LRS or Premium_ZRS. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "\"Standard_GRS\""
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "virtual_network_id": {
+        "type": "string",
+        "description": "(Optional) The ID of a Virtual Network where this Databricks Cluster should be created.",
+        "required": false,
+        "default": "null"
+      },
+      "vnet_address_prefix": {
+        "type": "string",
+        "description": "(Optional) Address prefix for Managed virtual network. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "\"10.139\""
+      }
+    }
+  },
+  "outputs": {
+    "dbfs_cmk_keyvaultkey_id": {
+      "description": "The Resource ID of the key vault key ID used."
+    },
+    "id": {
+      "description": "The Resource ID of the Azure Databricks Workspace."
+    },
+    "name": {
+      "description": "The Name of the Azure Databricks Workspace."
+    },
+    "resource": {
+      "description": "The Azure Databricks Workspace resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Databricksworkspace' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "key vault",
+      "user managed identity"
+    ]
+  }
+}

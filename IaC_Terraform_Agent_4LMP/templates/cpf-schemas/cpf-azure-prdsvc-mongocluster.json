@@ -1,0 +1,245 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Mongo vCore Cluster",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-mongocluster'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-mongocluster",
+  "module_type": "service",
+  "azure_service": "Mongocluster",
+  "module_name": "Mongo vCore Cluster",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.3.2",
+    "0.3.1"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-mongocluster.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Key Vault",
+    "Key Vault Secret"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_key_vault_secret.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_resource_group_template_deployment.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "mongocluster",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-mongocluster.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.3.2",
+        "0.3.1"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "arm_template_name",
+      "cluster_name",
+      "environment",
+      "instance",
+      "key_vault_id",
+      "location",
+      "node_disk_size",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "admin_login": {
+        "type": "string",
+        "description": "(Optional) The administrator's login for the mongo cluster.",
+        "required": false,
+        "default": "\"null\""
+      },
+      "admin_password": {
+        "type": "string",
+        "description": "(Optional) The password of the administrator login.",
+        "required": false,
+        "default": "\"null\""
+      },
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "arm_template_name": {
+        "type": "string",
+        "description": "(Required) The ARM Template name.",
+        "required": true
+      },
+      "cluster_name": {
+        "type": "string",
+        "description": "(Required) The cluster name of the mongo database.",
+        "required": true
+      },
+      "content_type": {
+        "type": "string",
+        "description": "(Optional) Specifies the content type of the Key Vault Secret.",
+        "required": false,
+        "default": "null"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "create_mode": {
+        "type": "string",
+        "description": "(Required) The mode to create a mongo cluster. The acccepted values are Default, PointInTimeRestore, Restore.",
+        "required": false,
+        "default": "\"Default\""
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "expiration_date": {
+        "type": "string",
+        "description": "(Optional) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').",
+        "required": false,
+        "default": "null"
+      },
+      "high_availability": {
+        "type": "bool",
+        "description": "(Optional) Whether high availability is enabled on the node group.",
+        "required": false,
+        "default": "false"
+      },
+      "high_availability_mode": {
+        "type": "string",
+        "description": "The target high availability mode requested for the cluster.",
+        "required": false,
+        "default": "\"Disabled\""
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": true
+      },
+      "key_vault_id": {
+        "type": "string",
+        "description": "(Required) The ID of the Key Vault where the Secret should be created. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "key_vault_tags": {
+        "type": "map(any)",
+        "description": "(Optional) Key Vault related tags to be set on key vault child resources.",
+        "required": false,
+        "default": "{}"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "node_disk_size": {
+        "type": "number",
+        "description": "(Required) The disk storage size for the node group in GB. Example values: 128, 256, 512, 1024.",
+        "required": true
+      },
+      "node_sku": {
+        "type": "string",
+        "description": "(Required) The resource sku for the node group. This defines the size of CPU and memory that is provisioned for each node. Example values: 'M30', 'M40'.",
+        "required": false,
+        "default": "\"null\""
+      },
+      "not_before_date": {
+        "type": "string",
+        "description": "(Optional) Key not usable before the provided UTC datetime (Y-m-d'T'H:M:S'Z').",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "public_access": {
+        "type": "string",
+        "description": "(Optional) Whether public access is enabled on the mongo cluster.",
+        "required": false,
+        "default": "\"Disabled\""
+      },
+      "resource_group_id": {
+        "type": "string",
+        "description": "The ID of the resource group where the Mongo cluster will be created.",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "server_version": {
+        "type": "string",
+        "description": "(Optional) The Mongo DB server version.",
+        "required": false,
+        "default": "\"null\""
+      },
+      "shard_count": {
+        "type": "number",
+        "description": "The number of shards for the MongoDB cluster",
+        "required": false,
+        "default": "1"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "connection_string": {
+      "description": "The Connection String of the mongo vCore cluster."
+    },
+    "id": {
+      "description": "The ID of the mongo vCore cluster."
+    },
+    "keyvault_secret_name": {
+      "description": "The Name of the key vault secret."
+    },
+    "keyvault_secret_resource": {
+      "description": "The Resource of the key vault secret."
+    },
+    "name": {
+      "description": "The Name of the mongo vCore cluster."
+    },
+    "resource": {
+      "description": "The Resource of the mongo vCore cluster."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Mongocluster' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Key Vault",
+      "Key Vault Secret"
+    ]
+  }
+}

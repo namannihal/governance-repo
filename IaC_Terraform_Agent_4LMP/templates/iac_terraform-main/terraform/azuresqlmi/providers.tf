@@ -1,0 +1,54 @@
+#
+# Copyright 2025 LSEG & Microsoft. All rights reserved.
+#
+terraform {
+  required_version = ">= 1.5.0"
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~>4.33.0"
+    }
+    azuread = {
+      source  = "hashicorp/azuread"
+      version = "~> 2.47.0"
+    }
+    time = {
+      source  = "hashicorp/time"
+      version = "0.11.1"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = "3.6.0"
+    }
+    tls = {
+      source  = "hashicorp/tls"
+      version = "~> 3.0"
+    }
+    azapi = {
+      source  = "azure/azapi"
+      version = "= 2.5.0"
+    }
+  }
+  backend "azurerm" {
+    use_azuread_auth = true
+  }
+}
+
+provider "azurerm" {
+  # skip_provider_registration = true
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = false
+    }
+    key_vault {
+      purge_soft_delete_on_destroy          = true
+      purge_soft_deleted_keys_on_destroy    = true
+      purge_soft_deleted_secrets_on_destroy = true
+      recover_soft_deleted_key_vaults       = true
+      recover_soft_deleted_keys             = true
+      recover_soft_deleted_secrets          = true
+    }
+  }
+  skip_provider_registration = true
+  storage_use_azuread        = true
+}

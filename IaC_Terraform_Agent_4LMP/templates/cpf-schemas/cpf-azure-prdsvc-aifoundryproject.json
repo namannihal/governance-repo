@@ -1,0 +1,247 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: AI Foundry Project module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-aifoundryproject'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-aifoundryproject",
+  "module_type": "service",
+  "azure_service": "Aifoundryproject",
+  "module_name": "AI Foundry Project module",
+  "latest_tag": "1.3.0",
+  "available_tags": [
+    "1.3.0",
+    "1.2.3",
+    "1.2.2",
+    "1.2.1",
+    "1.2.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-aifoundryproject.git//?ref=1.3.0",
+  "terraform_requirements": {
+    "azapi": ">= 2.0",
+    "azurerm": ">= 4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azapi_resource.ai_foundry_project",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azapi_resource.capability_host",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azapi_resource.connection",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.cosmosdb_operator",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.search_index_data_contributor",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.search_service_contributor",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.storage_blob_data_contributor",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_project_provisioning",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_rbac_propagation_60s",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_client_config.current",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "aifoundryproject",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-aifoundryproject.git//?ref=1.3.0",
+      "version": "1.3.0",
+      "available_versions": [
+        "1.3.0",
+        "1.2.3",
+        "1.2.2",
+        "1.2.1",
+        "1.2.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "connection_principal_id",
+      "description",
+      "displayname",
+      "environment",
+      "location",
+      "org_id",
+      "parent_id",
+      "sku"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "capability_host": {
+        "type": "object({ capability_host_kind = string vector_store_connections = list(string) storage_connections = list(string) thread_storage_connections = list(string) })",
+        "description": "(Optional) Capability host configuration for AI Foundry project. object({ capability_host_kind = \"(Required) The kind of capability host.\" vector_store_connections = \"(Required) List of vector store connection names. Must not be empty if provided.\" storage_connections = \"(Required) List of storage connection names. Must not be empty if provided.\" thread_storage_connections = \"(Required) List of thread storage connection names. Must not be empty if provided.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "capability_host_name": {
+        "type": "string",
+        "description": "(Optional) The name of the capability host resource.",
+        "required": false,
+        "default": "\"caphostproject\""
+      },
+      "connection_principal_id": {
+        "type": "string",
+        "description": "(Optional) UAMI object ID used for project connection RBAC role assignments.",
+        "required": true
+      },
+      "connections": {
+        "type": "map(object({ category = string target = string authtype = any resource_id = string is_shared_to_all = optional(bool, true) api_key = optional(string) credentials = optional(map(string)) }))",
+        "description": "(Optional) Connections configurations for AI Foundry project. map(object({ category = \"(Required) The category of the connection.\" target = \"(Required) The target endpoint of the connection.\" authtype = \"(Required) The authentication type for the connection.\" resource_id = \"(Required) The resource ID of the Azure resource to connect to.\" is_shared_to_all = \"(Optional) Whether a specific project connection can be accessed across all projects. Defaults to true\" api_key = \"(Optional) API key for ApiKey authType. When provided, module sends credentials.key.\" credentials = \"(Optional) Credentials object for the selected authType, as key/value pairs.\" }))",
+        "required": false,
+        "default": "{}"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "create_role_assignment_blob_data_contributor": {
+        "type": "bool",
+        "description": "(Optional) Whether to create a role assignment to the UAMI on storage account for connections",
+        "required": false,
+        "default": "true"
+      },
+      "create_role_assignment_cosmosdb_operator": {
+        "type": "bool",
+        "description": "(Optional) Whether to create a role assignment to the UAMI on cosmos db for connections",
+        "required": false,
+        "default": "true"
+      },
+      "create_role_assignment_search_index_data_contributor": {
+        "type": "bool",
+        "description": "(Optional) Whether to create a role assignment to the UAMI on search service for connections",
+        "required": false,
+        "default": "true"
+      },
+      "create_role_assignment_search_service_contributor": {
+        "type": "bool",
+        "description": "(Optional) Whether to create a role assignment to the UAMI on search service for connections",
+        "required": false,
+        "default": "true"
+      },
+      "description": {
+        "type": "string",
+        "description": "(Required) Description for the AI Foundry project.",
+        "required": true
+      },
+      "displayname": {
+        "type": "string",
+        "description": "(Required) Display name for the AI Foundry project.",
+        "required": true
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = optional(list(string)) })",
+        "description": "(Required) An identity block supports the following: object({ type = \"(Required) Specifies the type of Managed Service Identity that should be configured on this resource. Possible values are SystemAssigned, UserAssigned, SystemAssigned, UserAssigned.\" identity_ids = \"(Optional) Specifies a list of User Assigned Managed Identity IDs to be assigned to this resource.\" })",
+        "required": false,
+        "default": "{ \"identity_ids\": null, \"type\": \"SystemAssigned\" }"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "key_vault_tags": {
+        "type": "map(any)",
+        "description": "(Optional) Key Vault related tags to be set on key vault child resources.",
+        "required": false,
+        "default": "{}"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "parent_id": {
+        "type": "string",
+        "description": "(Required) The resource ID of the AI Foundry account in which to create the project. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "principal_ids": {
+        "type": "set(string)",
+        "description": "(Optional) Set of principal IDs (user, group, or service principal) to assign the Azure AI User role.",
+        "required": false,
+        "default": "[]"
+      },
+      "sku": {
+        "type": "string",
+        "description": "(Required) Specifies the SKU Name for this AI Services Account. Possible values are F0, F1, S0, S, S1, S2, S3, S4, S5, S6, P0, P1, P2, E0 and DC0.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The ID of the created Azure AI Foundry Project resource."
+    },
+    "internal_id": {
+      "description": "The internal ID (GUID) of the Azure AI Foundry project used for resource namespacing."
+    },
+    "name": {
+      "description": "The name of the created Azure AI Foundry Project resource."
+    },
+    "resource": {
+      "description": "The Azure AI Foundry Project resource object."
+    },
+    "user_assigned_identities": {
+      "description": "The user-assigned managed identities with their principal IDs and client IDs."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Aifoundryproject' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

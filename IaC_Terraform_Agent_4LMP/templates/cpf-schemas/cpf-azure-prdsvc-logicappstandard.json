@@ -1,0 +1,207 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Logic App Standard module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-logicappstandard'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-logicappstandard",
+  "module_type": "service",
+  "azure_service": "Logicappstandard",
+  "module_name": "Azure Logic App Standard module",
+  "latest_tag": "1.0.3",
+  "available_tags": [
+    "1.0.3",
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.2.1"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-logicappstandard.git//?ref=1.0.3",
+  "terraform_requirements": {
+    "azapi": ">=1.9",
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Virtual Network",
+    "Subnets",
+    "Network Security Group",
+    "Route Table",
+    "User Assigned Identity",
+    "storage_account",
+    "key_vault"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_logic_app_standard.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "logicappstandard",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-logicappstandard.git//?ref=1.0.3",
+      "version": "1.0.3",
+      "available_versions": [
+        "1.0.3",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.2.1"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_service_plan_id",
+      "location",
+      "logic_app_name",
+      "resource_group_name",
+      "storage_account_access_key",
+      "storage_account_name"
+    ],
+    "properties": {
+      "app_service_plan_id": {
+        "type": "string",
+        "description": "(Required) The ID of the App Service Plan within which to create this Logic App.",
+        "required": true
+      },
+      "app_settings": {
+        "type": "map(any)",
+        "description": "(Optional) A map of key-value pairs for App Settings and custom values.",
+        "required": false,
+        "default": "{}"
+      },
+      "bundle_version": {
+        "type": "string",
+        "description": "(Optional) If use_extension_bundle then controls the allowed range for bundle versions. Defaults to [1.*, 2.0.0).",
+        "required": false,
+        "default": "\"2.0.0\""
+      },
+      "client_affinity_enabled": {
+        "type": "bool",
+        "description": "(Optional) Should the Logic App send session affinity cookies, which route client requests in the same session to the same instance?",
+        "required": false,
+        "default": "null"
+      },
+      "client_certificate_mode": {
+        "type": "string",
+        "description": "(Optional) The mode of the Logic App's client certificates requirement for incoming requests. Possible values are Required and Optional.",
+        "required": false,
+        "default": "null"
+      },
+      "connection_strings": {
+        "type": "list( object({ name = string type = string value = string }) )",
+        "description": "(Optional) A list of `connection_strings` objects for the Logic App with following arguments: name = \"(Required) The name of the connection string.\" type = \"(Required) The type of the Connection String. Possible values are APIHub, Custom, DocDb, EventHub, MySQL, NotificationHub, PostgreSQL, RedisCache, ServiceBus, SQLAzure and SQLServer.\" value = \"(Required) The value of the connection string.\"",
+        "required": false,
+        "default": "[]"
+      },
+      "enabled": {
+        "type": "bool",
+        "description": "(Optional) Is the Logic App enabled? Defaults to true.",
+        "required": false,
+        "default": "true"
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = optional(set(string)) })",
+        "description": "(Optional) An identity block as defined below object({ type = \"(Required) Specifies the type of Managed Service Identity that should be configured on thisLogic App. Possible values are `SystemAssigned`, `UserAssigned`, `SystemAssigned, UserAssigned` (to enable both).\" identity_ids = \"(Optional) A list of User Assigned Managed Identity IDs to be assigned to this Logic App. This is required when `type` is set to `UserAssigned` or `SystemAssigned, UserAssigned`.\" })",
+        "required": false,
+        "default": "{ \"identity_ids\": null, \"type\": \"SystemAssigned\" }"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "logic_app_name": {
+        "type": "string",
+        "description": "(Required) Specifies the name of the Logic App Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "public_network_access": {
+        "type": "string",
+        "description": "(Optional) Specifies whether public network access is allowed for this Logic App. Possible values are 'Enabled' and 'Disabled'. Defaults to 'Enabled'.",
+        "required": false,
+        "default": "\"Disabled\""
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "run_time_version": {
+        "type": "string",
+        "description": "(Optional) The runtime version associated with the Logic App. Defaults to ~4.",
+        "required": false,
+        "default": "\"~4\""
+      },
+      "site_config": {
+        "type": "(golang:latest). Setting this value will also set the kind of application deployed to functionapp,linux,container,workflowapp.\" pre_warmed_instance_count = \"(Optional) The number of pre-warmed instances for this Logic App Only affects apps on the Premium plan.\" runtime_scale_monitoring_enabled = \"(Optional) Should Runtime Scale Monitoring be enabled?. Only applicable to apps on the Premium plan. Defaults to false.\" use_32_bit_worker_process = \"(Optional) Should the Logic App run in 32 bit mode, rather than 64 bit mode? Defaults to true.\" websockets_enabled = \"(Optional) Should WebSockets be enabled?\" ip_restrictions = \"(Optional) A list of `ip_restriction` objects for the Logic App. ip_restriction = \"object({ headers = \"(Optional) object({ x_azure_fdid = \"(Optional) A list of allowed Azure FrontDoor IDs in UUID notation with a maximum of 8.\" x_fd_health_probe = \"(Optional) A list to allow the Azure FrontDoor health probe header. Only allowed value is \"1\".\" x_forwarded_for = \"(Optional) A list of allowed 'X-Forwarded-For' IPs in CIDR notation with a maximum of 8.\" x_forwarded_host = \"(Optional) A list of allowed 'X-Forwarded-Host' domains with a maximum of 8.\" }))\" ip_address = \"(Optional) The IP Address used for this IP Restriction in CIDR notation.\" action = \"(Optional) Does this restriction Allow or Deny access for this IP range. Defaults to Allow.\" name = \"(Optional) The name for this IP Restriction.\" priority = \"(Optional) The priority for this IP Restriction. Restrictions are enforced in priority order. By default, the priority is set to 65000 if not specified.\" service_tag = \"(Optional) The Service Tag used for this IP Restriction.\" virtual_network_subnet_id = \"(Optional) The Virtual Network Subnet ID used for this IP Restriction.\" }))\" scm_ip_restrictions = \"(Optional) A list of `scm_ip_restriction` objects for the Logic App. scm_ip_restriction = \"object({ headers = \"(Optional) object({ x_azure_fdid = \"(Optional) A list of allowed Azure FrontDoor IDs in UUID notation with a maximum of 8.\" x_fd_health_probe = \"(Optional) A list to allow the Azure FrontDoor health probe header. Only allowed value is \"1\".\" x_forwarded_for = \"(Optional) A list of allowed 'X-Forwarded-For' IPs in CIDR notation with a maximum of 8.\" x_forwarded_host = \"(Optional) A list of allowed 'X-Forwarded-Host' domains with a maximum of 8.\" }))\" ip_address = \"(Optional) The IP Address used for this IP Restriction in CIDR notation.\" action = \"(Optional) Does this restriction Allow or Deny access for this IP range. Defaults to Allow.\" name = \"(Optional) The name for this IP Restriction.\" priority = \"(Optional) The priority for this IP Restriction. Restrictions are enforced in priority order. By default, the priority is set to 65000 if not specified.\" service_tag = \"(Optional) The Service Tag used for this IP Restriction.\" virtual_network_subnet_id = \"(Optional) The Virtual Network Subnet ID used for this IP Restriction.\" }))\"",
+        "description": "(Required) The `site_config` block supports the following: always_on = \"(Optional) Should the Logic App be loaded at all times? Defaults to false.\" app_scale_limit = \"(Optional) The number of workers this Logic App can scale out to. Only applicable to apps on the Consumption and Premium plan.\" cors = \"(Optional) A cors as defined below. cors = \"(object({ allowed_origins = \"(Required) A list of origins which should be able to make cross-origin calls. * can be used to allow all calls.\" support_credentials = \"(Optional) Are credentials supported\" }))\" dotnet_framework_version = \"(Optional) The version of the .NET framework's CLR used in this Logic App Possible values are v4.0 (including .NET Core 2.1 and 3.1), v5.0, v6.0 and v8.0. For more information on which .NET Framework version to use based on the runtime version you're targeting - please see this table. Defaults to v4.0.\" elastic_instance_minimum = \"(Optional) The number of minimum instances for this Logic App Only affects apps on the Premium plan.\" ftps_state = \"(Optional) State of FTP / FTPS service for this Logic App Possible values include: AllAllowed, FtpsOnly and Disabled. Defaults to AllAllowed.\" health_check_path = \"(Optional) Path which will be checked for this Logic App health.\" http2_enabled = \"(Optional) Specifies whether or not the HTTP2 protocol should be enabled. Defaults to false.\" scm_use_main_ip_restriction = \"(Optional) Should the Logic App ip_restriction configuration be used for the SCM too. Defaults to false.\" scm_type = \"(Optional) The type of Source Control used by the Logic App in use by the Windows Function App. Defaults to None. Possible values are: BitbucketGit, BitbucketHg, CodePlexGit, CodePlexHg, Dropbox, ExternalGit, ExternalHg, GitHub, LocalGit, None, OneDrive, Tfs, VSO, and VSTSRM.\" linux_fx_version = \"(Optional) Linux App Framework and version for the AppService, e.g. DOCKER\\",
+        "required": false,
+        "default": "object({ always_on = optional(bool, false) app_scale_limit = optional(number) dotnet_framework_version = optional(string) elastic_instance_minimum = optional(number) ftps_state = optional(string, \"Disabled\") health_check_path = optional(string) http2_enabled = optional(bool, false) scm_use_main_ip_restriction = optional(bool, false) scm_type = optional(string) linux_fx_version = optional(string) pre_warmed_instance_count = optional(number) runtime_scale_monitoring_enabled = optional(bool, false) use_32_bit_worker_process = optional(bool) websockets_enabled = optional(bool) cors = optional(object({ allowed_origins = optional(set(string)) support_credentials = optional(bool) })) ip_restrictions = optional(list( object({ headers = optional(object({ x_azure_fdid = optional(list(string)) x_fd_health_probe = optional(number) x_forwarded_for = optional(list(string)) x_forwarded_host = optional(list(string)) })) ip_address = optional(list(string)) action = optional(string) name = optional(string) priority = optional(number, 65000) service_tag = optional(string) virtual_network_subnet_id = optional(string) }) ), []) scm_ip_restrictions = optional(list( object({ headers = optional(object({ x_azure_fdid = optional(list(string)) x_fd_health_probe = optional(number) x_forwarded_for = optional(list(string)) x_forwarded_host = optional(list(string)) })) ip_address = optional(list(string)) action = optional(string) name = optional(string) priority = optional(number, 65000) service_tag = optional(string) virtual_network_subnet_id = optional(string) }) ), []) })"
+      },
+      "storage_account_access_key": {
+        "type": "string",
+        "description": "(Required) The access key which will be used to access the backend storage account for the Logic App",
+        "required": true
+      },
+      "storage_account_name": {
+        "type": "string",
+        "description": "(Required) The backend storage account name which will be used by this Logic App (e.g. for Stateful workflows data). Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "storage_account_share_name": {
+        "type": "string",
+        "description": "(Optional) The name of the share used by the logic app, if you want to use a custom name. This corresponds to the WEBSITE_CONTENTSHARE appsetting, which this resource will create for you. If you don't specify a name, then this resource will generate a dynamic name. This setting is useful if you want to provision a storage account and create a share using azurerm_storage_share.",
+        "required": false,
+        "default": "null"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "use_extension_bundle": {
+        "type": "bool",
+        "description": "(Optional) Should the logic app use the bundled extension package? If true, then application settings for AzureFunctionsJobHost__extensionBundle__id and AzureFunctionsJobHost__extensionBundle__version will be created. Defaults to true.",
+        "required": false,
+        "default": "true"
+      },
+      "virtual_network_subnet_id": {
+        "type": "string",
+        "description": "(Optional) The subnet id which will be used by this resource for regional virtual network integration.",
+        "required": false,
+        "default": "null"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The ID of the created Logic App Standard."
+    },
+    "name": {
+      "description": "The Name of the created Logic App Standard."
+    },
+    "resource": {
+      "description": "The Logic App resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Logicappstandard' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Virtual Network",
+      "Subnets",
+      "Network Security Group",
+      "Route Table",
+      "User Assigned Identity",
+      "storage_account",
+      "key_vault"
+    ]
+  }
+}

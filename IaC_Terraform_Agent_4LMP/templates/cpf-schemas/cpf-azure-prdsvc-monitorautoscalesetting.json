@@ -1,0 +1,146 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Monitor AutoScale Setting Module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-monitorautoscalesetting'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-monitorautoscalesetting",
+  "module_type": "service",
+  "azure_service": "Monitorautoscalesetting",
+  "module_name": "Monitor AutoScale Setting Module",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.3.3",
+    "0.3.2"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-monitorautoscalesetting.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_monitor_autoscale_setting.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "monitorautoscalesetting",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-monitorautoscalesetting.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.3.3",
+        "0.3.2"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "profile",
+      "resource_group_name",
+      "target_resource_id"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "enabled": {
+        "type": "bool",
+        "description": "(Optional) Specifies whether automatic scaling is enabled for the target resource. Defaults to true",
+        "required": false,
+        "default": "true"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "notification": {
+        "type": "object({ webhook = optional(object({ service_uri = string properties = optional(map(any)) }), null) })",
+        "description": "(Optional) A notification block supports the following: webhook = (Optional) object({ service_uri = \"(Required) The HTTPS URI which should receive scale notifications.\" properties = \"(Optional) A map of settings.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "predictive": {
+        "type": "object({ scale_mode = string look_ahead_time = optional(string) })",
+        "description": "(Optional) A predictive block supports the following: scale_mode = \"(Required) Specifies the predictive scale mode. Possible values are Enabled or ForecastOnly\" look_ahead_time = \"(Optional) Specifies the amount of time by which instances are launched in advance. It must be between PT1M and PT1H in ISO 8601 format.\"",
+        "required": false,
+        "default": "{ \"look_ahead_time\": \"PT5M\", \"scale_mode\": \"Enabled\" }"
+      },
+      "profile": {
+        "type": "list(object({ name = string capacity = object({ default = number maximum = number minimum = number }) rule = optional(list(object({ metric_trigger = object({ metric_name = string metric_resource_id = string operator = string statistic = string time_aggregation = string time_grain = string time_window = string threshold = number metric_namespace = optional(string) dimensions = optional(list(object({ name = string operator = string values = list(string) })), []) divide_by_instance_count = optional(bool) }) scale_action = object({ cooldown = string direction = string type = string value = string }) }))) fixed_date = optional(object({ end = string start = string timezone = optional(string) }), null) recurrence = optional(object({ timezone = optional(string) days = list(string) hours = list(number) minutes = list(number) }), null) }))",
+        "description": "(Required) A profile block supports the following: name = \"(Required) Specifies the name of the profile.\" capacity = (Required) object({ default = \"(Required) The number of instances that are available for scaling if metrics are not available for evaluation. The default is only used if the current instance count is lower than the default. Valid values are between 0 and 1000.\" maximum = \"(Required) The maximum number of instances for this resource. Valid values are between 0 and 1000.\" minimum = \"(Required) The minimum number of instances for this resource. Valid values are between 0 and 1000.\" }) rule = (Optional) list(object({ metric_trigger = (Required) object({ metric_name = \"(Required) The name of the metric that defines what the rule monitors, such as Percentage CPU for Virtual Machine Scale Sets and CpuPercentage for App Service Plan.\" metric_resource_id = \"(Required) The ID of the Resource which the Rule monitors.\" operator = \"(Required) Specifies the operator used to compare the metric data and threshold. Possible values are: Equals, NotEquals, GreaterThan, GreaterThanOrEqual, LessThan, LessThanOrEqual.\" statistic = \"(Required) Specifies how the metrics from multiple instances are combined. Possible values are Average, Max, Min and Sum.\" time_aggregation = \"(Required) Specifies how the data that's collected should be combined over time. Possible values include Average, Count, Maximum, Minimum, Last and Total.\" time_grain = \"(Required) Specifies the granularity of metrics that the rule monitors, which must be one of the pre-defined values returned from the metric definitions for the metric. This value must be between 1 minute and 12 hours an be formatted as an ISO 8601 string.\" time_window = \"(Required) Specifies the time range for which data is collected, which must be greater than the delay in metric collection (which varies from resource to resource). This value must be between 5 minutes and 12 hours and be formatted as an ISO 8601 string.\" threshold = \"(Required) Specifies the threshold of the metric that triggers the scale action.\" metric_namespace = \"(Optional) The namespace of the metric that defines what the rule monitors, such as microsoft.compute/virtualmachinescalesets for Virtual Machine Scale Sets.\" dimensions = (Optional) list(object({ name = \"(Required) The name of the dimension.\" operator = \"(Required) The dimension operator. Possible values are Equals and NotEquals. Equals means being equal to any of the values. NotEquals means being not equal to any of the values.\" values = \"(Required) A list of dimension values.\" })) divide_by_instance_count = \"(Optional) Whether to enable metric divide by instance count.\" }) scale_action = (Required) object({ cooldown = \"(Required) The amount of time to wait since the last scaling action before this action occurs. Must be between 1 minute and 1 week and formatted as a ISO 8601 string.\" direction = \"(Required) The scale direction. Possible values are Increase and Decrease.\" type = \"(Required) The type of action that should occur. Possible values are ChangeCount, ExactCount, PercentChangeCount and ServiceAllowedNextValue.\" value = \"(Required) The number of instances involved in the scaling action.\" }) })) fixed_date = (Optional) object({ end = \"(Required) Specifies the end date for the profile, formatted as an RFC3339 date string.\" start = \"(Required) Specifies the start date for the profile, formatted as an RFC3339 date string.\" timezone = \"(Optional) The Time Zone of the start and end times. A list of possible values can be found here. Defaults to UTC.\" }) recurrence = (Optional) object({ timezone = \"(Optional) The Time Zone used for the hours field. A list of possible values can be found here. Defaults to UTC.\" days = \"(Required) A list of days that this profile takes effect on. Possible values include Monday, Tuesday, Wednesday, Thursday, Friday, Saturday and Sunday.\" hours = \"(Required) A list containing a single item, which specifies the Hour interval at which this recurrence should be triggered (in 24-hour time). Possible values are from 0 to 23.\" minutes = \"(Required) A list containing a single item which specifies the Minute interval at which this recurrence should be triggered.\" }))",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "target_resource_id": {
+        "type": "string",
+        "description": "(Required) Specifies the resource ID of the resource that the autoscale setting should be added to. Changing this forces a new resource to be created.",
+        "required": true
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The Resource ID of the AutoScale Setting."
+    },
+    "name": {
+      "description": "The Name of the AutoScale Setting."
+    },
+    "resource": {
+      "description": "The AutoScale Setting resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Monitorautoscalesetting' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

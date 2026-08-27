@@ -1,0 +1,153 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Monitor Data Collection Endpoint (DCE) ReadME",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-monitordatacollectionendpoint'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-monitordatacollectionendpoint",
+  "module_type": "service",
+  "azure_service": "Monitordatacollectionendpoint",
+  "module_name": "Monitor Data Collection Endpoint (DCE) ReadME",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.2.0",
+    "0.1.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-monitordatacollectionendpoint.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_monitor_data_collection_endpoint.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_monitor_data_collection_rule_association.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "monitordatacollectionendpoint",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-monitordatacollectionendpoint.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.2.0",
+        "0.1.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "association_targets": {
+        "type": "list(object({ target_resource_id = string description = optional(string) }))",
+        "description": "(Optional) List of target resources for Data Collection Endpoint associations. target_resource_id = \"(Required) Resource ID of the target to associate with the DCE.\" description = \"(Optional) Description for the association target.\"",
+        "required": false,
+        "default": "[]"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "description": {
+        "type": "string",
+        "description": "(Optional) Specifies a description for the Data Collection Endpoint.",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "kind": {
+        "type": "string",
+        "description": "(Optional) The kind of the Data Collection Endpoint. Possible values are 'Linux' and 'Windows'.",
+        "required": false,
+        "default": "\"Windows\""
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "public_network_access_enabled": {
+        "type": "bool",
+        "description": "(Optional) Whether network access from public internet to the Data Collection Endpoint is allowed. Defaults to true.",
+        "required": false,
+        "default": "true"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "configuration_access_endpoint": {
+      "description": "The endpoint used by Azure Monitor Agent to retrieve Data Collection Rule configurations, e.g., https:// . .control.monitor.azure.com."
+    },
+    "id": {
+      "description": "The Resource ID of the Monitor Data Collection Endpoint."
+    },
+    "immutable_id": {
+      "description": "The immutable ID of the Monitor Data Collection Endpoint."
+    },
+    "logs_ingestion_endpoint": {
+      "description": "The endpoint used for ingesting logs via the Logs Ingestion API, e.g., https:// . .ingest.monitor.azure.com."
+    },
+    "name": {
+      "description": "The Name of the Monitor Data Collection Endpoint."
+    },
+    "resource": {
+      "description": "The Monitor Data Collection Endpoint resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Monitordatacollectionendpoint' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

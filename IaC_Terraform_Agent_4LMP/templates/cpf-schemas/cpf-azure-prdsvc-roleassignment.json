@@ -1,0 +1,150 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Role Assignment Module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-roleassignment'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-roleassignment",
+  "module_type": "service",
+  "azure_service": "Roleassignment",
+  "module_name": "Role Assignment Module",
+  "latest_tag": "1.0.1",
+  "available_tags": [
+    "1.0.1",
+    "1.0.0",
+    "0.2.5",
+    "0.2.4",
+    "0.2.3"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-roleassignment.git//?ref=1.0.1",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Management Group",
+    "Subscription",
+    "Resource Group",
+    "Resource",
+    "object_id",
+    "Service Principal/User/Group",
+    "User Access Administrator"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_role_assignment.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "roleassignment",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-roleassignment.git//?ref=1.0.1",
+      "version": "1.0.1",
+      "available_versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.2.5",
+        "0.2.4",
+        "0.2.3"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "principal_id",
+      "scope"
+    ],
+    "properties": {
+      "condition": {
+        "type": "string",
+        "description": "(Optional) Provide the condition that limits the resources that the role can be assigned to.",
+        "required": false,
+        "default": "null"
+      },
+      "condition_version": {
+        "type": "string",
+        "description": "(Optional) The version of the condition. Possible values are `1.0` or `2.0`.",
+        "required": false,
+        "default": "null"
+      },
+      "delegated_managed_identity_resource_id": {
+        "type": "string",
+        "description": "(Optional) Provide the delegated `Azure Resource Id` which contains a `Managed Identity`. This field is used in cross tenant scenario. The `principal_id` in this scenario must be the `object_id` of the `Managed Identity`",
+        "required": false,
+        "default": "null"
+      },
+      "description": {
+        "type": "string",
+        "description": "(Optional) A description for this Role Assignment.",
+        "required": false,
+        "default": "null"
+      },
+      "name": {
+        "type": "string",
+        "description": "(Optional) A unique UUID/GUID for this Role Assignment - one will be generated if not specified.",
+        "required": false,
+        "default": "null"
+      },
+      "principal_id": {
+        "type": "string",
+        "description": "(Required) Provide the `Object ID` of the `Principal(User, Group or Service Principal)` to assign the Role to. The Principal ID is also known as the `Object ID` (for `App registrations`, it is the **`Object ID` of the underlying Managed/Enterprise Application**).",
+        "required": true
+      },
+      "role_definition_id": {
+        "type": "string",
+        "description": "(Required*) Provide the \"ID\" of a built-in Role. See [list of built-in Roles](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles). Only one of `role_definition_name` or `role_definition_id` is required: if both are provided, it will return an error (valid input is: Id XOR Name).",
+        "required": false,
+        "default": "null"
+      },
+      "role_definition_name": {
+        "type": "string",
+        "description": "(Required*) Provide the \"Name\" of a built-in Role. See [list of built-in Roles](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles). Only one of `role_definition_name` or `role_definition_id` is required: if both are provided, it will return an error (valid input is: Id XOR Name).",
+        "required": false,
+        "default": "null"
+      },
+      "scope": {
+        "type": "string",
+        "description": "(Required) Provide the `Resource ID` of the `Resource` in which built-in Role needs to be assigned.",
+        "required": true
+      },
+      "skip_service_principal_aad_check": {
+        "type": "bool",
+        "description": "(Optional) If the `principal_id` is a newly provisioned `Service Principal` set this value to `true` to skip the `Azure Active Directory` check: it may fail due to replication lag. This argument is only valid if the `principal_id` is of type `Service Principal`.",
+        "required": false,
+        "default": "false"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The Role Assignment ID."
+    },
+    "principal_id": {
+      "description": "The object ID of the role assigned"
+    },
+    "principal_type": {
+      "description": "The `principal_id`'s type: e.g. `User`, `Group`, `Service Principal`, `Application`, `etc`."
+    },
+    "resource": {
+      "description": "The Role Assignment resource."
+    },
+    "scope": {
+      "description": "List the scope on which rbac is applied"
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Roleassignment' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Management Group",
+      "Subscription",
+      "Resource Group",
+      "Resource",
+      "object_id",
+      "Service Principal/User/Group",
+      "User Access Administrator"
+    ]
+  }
+}

@@ -1,0 +1,219 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Arc Hybrid Compute Machines module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-arcmachine'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-arcmachine",
+  "module_type": "service",
+  "azure_service": "Arcmachine",
+  "module_name": "Azure Arc Hybrid Compute Machines module",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.2.2",
+    "0.2.1"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-arcmachine.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azapi": ">= 1.9",
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "operating system"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azapi_resource.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_arc_machine_extension.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_arc_private_link_scope.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "arcmachine",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-arcmachine.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.2.2",
+        "0.2.1"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "location",
+      "name",
+      "parent_id",
+      "resource_group_name",
+      "vmId"
+    ],
+    "properties": {
+      "agentUpgrade": {
+        "type": "object({ correlationId = optional(string, null) desiredVersion = optional(string, null) enableAutomaticUpgrade = optional(bool, false) })",
+        "description": "(Optional) The info of the machine w.r.t Agent Upgrade: object({ correlationId = \"(Optional) The correlation ID passed in from RSM per upgrade.\" desiredVersion = \"(Optional) Specifies the version info w.r.t AgentUpgrade for the machine.\" enableAutomaticUpgrade = \"(Optional) Specifies if RSM should try to upgrade this machine.\" })",
+        "required": false,
+        "default": "{}"
+      },
+      "arc_machine_extensions": {
+        "type": "map(object({ name = string publisher = string type = string automatic_upgrade_enabled = optional(bool, false) force_update_tag = optional(string, null) protected_settings = optional(string, null) settings = optional(string, null) type_handler_version = optional(string) }))",
+        "description": "(Optional) A Hybrid Compute Machine Extension block as defined below map(object({ name = \"(Required) The name which should be used for this Hybrid Compute Machine Extension. Changing this forces a new Hybrid Compute Machine Extension to be created.\" publisher = \"(Required) The name of the extension handler publisher, such as `Microsoft.Azure.Monitor`. Changing this forces a new Hybrid Compute Machine Extension to be created.\" type = \"(Required) Specifies the type of the extension. For example CustomScriptExtension or AzureMonitorLinuxAgent. Changing this forces a new Hybrid Compute Machine Extension to be created.\" automatic_upgrade_enabled = \"(Optional) Indicates whether the extension should be automatically upgraded by the platform if there is a newer version available. Supported values are true and false. Defaults to true.\" force_update_tag = \"(Optional) How the extension handler should be forced to update even if the extension configuration has not changed.\" protected_settings = \"(Optional) The protected_settings passed to the extension, like settings, these are specified as a JSON object in a string.\" settings = \"(Optional) The settings passed to the extension, these are specified as a JSON object in a string.\" type_handler_version = \"(Optional) Specifies the version of the extension to use, available versions can be found using the Azure CLI.\" }))",
+        "required": false,
+        "default": "null"
+      },
+      "arc_private_link_scope": {
+        "type": "object({ arc_private_link_scope_name = string public_network_access_enabled = optional(bool, false) })",
+        "description": "(Optional) Azure Arc Private Link Scope configuration: object({ arc_private_link_scope_name = \"(Required) The name which should be used for the Azure Arc Private Link Scope. Changing this forces a new Azure Arc Private Link Scope to be created.\" public_network_access_enabled = \"(Optional) Indicates whether machines associated with the private link scope can also use public Azure Arc service endpoints. Possible values are `true` and `false`. Defaults to `false`.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "clientPublicKey": {
+        "type": "string",
+        "description": "(Optional) Public Key that the client provides to be used during initial resource onboarding.",
+        "required": false,
+        "default": "null"
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = list(string) })",
+        "description": "(Optional) An identity block as defined below object({ type = \"(Required) Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).\" identity_ids = \"(Optional) The set of user assigned identities associated with the resource.\" })",
+        "required": false,
+        "default": "{ \"identity_ids\": null, \"type\": \"SystemAssigned\" }"
+      },
+      "kind": {
+        "type": "string",
+        "description": "(Optional) Indicates which kind of Arc machine placement on-premises, values accepted `AVS`, `AWS`, `EPS`, `GCP`, `HCI`, `SCVMM`, `VMware`.",
+        "required": false,
+        "default": "null"
+      },
+      "licenseProfile": {
+        "type": "object({ esuProfile = optional(object({ licenseAssignmentState = optional(string, \"NotAssigned\") assignedLicense = optional(object({ geo-location = string properties = object({ licenseDetails = optional(object({ edition = optional(string, \"Standard\") processors = optional(number) state = optional(string, \"Deactivated\") target = optional(string, \"Windows Server 2012\") type = optional(string, \"vCore\") })) tenantId = optional(string, null) }) })) })) })",
+        "description": "(Optional) Specifies the License related properties for a machine: object({ esuProfile = (Optional) Properties for the Machine ESU profile: object({ licenseAssignmentState = \"(Optional) Describes the license assignment state. Possible values are `Assigned` or `NotAssigned`.\" assignedLicense = The assigned license resource: object({ geo-location = \"(Required) The geo-location where the resource lives.\" properties = (Required) Hybrid Compute License properties: object({ licenseDetails = Describes the properties of a License: object({ edition = \"(Optional) Describes the edition of the license. The values are either `Standard` or `Datacenter`.\" processors = \"(Optional) Describes the number of processors.\" state = \"(Optional) Describes the state of the license. The values are either `Activated` or `Deactivated`.\" target = \"(Optional) Describes the license target server. The values are either `Windows Server 2012 R2` or `Windows Server 2012`.\" type = \"(Optional) Describes the license core type. The values are either `pCore` or `vCore`.\" }) licenseType = \"(Optional) The type of the license resource. Accepts `ESU`.\" tenantId = \"(Optional) Describes the tenant id.\" }) }) }) })",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "locationData": {
+        "type": "object({ city = optional(string) countryOrRegion = optional(string) district = optional(string) can_name = string })",
+        "description": "(Optional) Metadata pertaining to the geographic location of the resource: object({ city = \"(Optional) The city or locality where the resource is located.\" countryOrRegion = \"(Optional) The country or region where the resource is located.\" district = \"(Optional) The district, state, or province where the resource is located.\" can_name = \"(Required) A canonical name for the geographic or physical location. `Max length = 256`.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "mssqlDiscovered": {
+        "type": "string",
+        "description": "(Optional) Specifies whether any MS SQL instance is discovered on the machine.",
+        "required": false,
+        "default": "null"
+      },
+      "name": {
+        "type": "string",
+        "description": "(Required) The Name of the Azure Arc Hybrid Compute machines.",
+        "required": true
+      },
+      "osType": {
+        "type": "string",
+        "description": "(Optional) The type of Operating System (windows/linux).",
+        "required": false,
+        "default": "null"
+      },
+      "parentClusterResourceId": {
+        "type": "string",
+        "description": "(Optional) The resource id of the parent cluster (Azure HCI) this machine is assigned to, if any.",
+        "required": false,
+        "default": "null"
+      },
+      "parent_id": {
+        "type": "string",
+        "description": "(Required) To deploy to a resource group, use the ID of that resource group.",
+        "required": true
+      },
+      "patchSettings_linux": {
+        "type": "object({ assessmentMode_linux = optional(string, \"AutomaticByPlatform\") patchMode_linux = optional(string, \"AutomaticByOS\") })",
+        "description": "(Optional) Specifies the linux configuration patch settings for update management.: object({ assessmentMode_linux = \"(Optional) Specifies the assessment mode. The values can be `AutomaticByPlatform` or `ImageDefault`.\" patchMode_linux = \"(Optional) Specifies the patch mode. The values can be among `AutomaticByOS`, `AutomaticByPlatform`, `ImageDefault`, and `Manual`.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "patchSettings_windows": {
+        "type": "object({ assessmentMode_windows = optional(string, \"AutomaticByPlatform\") patchMode_windows = optional(string, \"AutomaticByOS\") })",
+        "description": "(Optional) Specifies the linux configuration patch settings for update management.: object({ assessmentMode_windows = \"(Optional) Specifies the assessment mode. The values can be `AutomaticByPlatform` or `ImageDefault`.\" patchMode_windows = \"(Optional) Specifies the patch mode. The values can be among `AutomaticByOS`, `AutomaticByPlatform`, `ImageDefault`, and `Manual`.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "privateLinkScopeResourceId": {
+        "type": "string",
+        "description": "(Optional) The resource id of the private link scope this machine is assigned to, if any.",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "serviceStatus_extension": {
+        "type": "object({ startupType_ext = optional(string) status_ext = optional(string) })",
+        "description": "(Optional) The state of the extension service on the Arc-enabled machine: object({ startupType_ext = \"(Optional) The behavior of the service when the Arc-enabled machine starts up.\" status_ext = \"(Optional) The current status of the service.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "serviceStatus_guest": {
+        "type": "object({ startupType_guest = optional(string) status_guest = optional(string) })",
+        "description": "(Optional) The state of the guest configuration service on the Arc-enabled machine: object({ startupType_guest = \"(Optional) The behavior of the service when the Arc-enabled machine starts up.\" status_guest = \"(Optional) The current status of the service.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "vmId": {
+        "type": "string",
+        "description": "(Required) Specifies the hybrid machine unique ID.",
+        "required": true
+      }
+    }
+  },
+  "outputs": {
+    "arc_machine_extension_resources": {
+      "description": "The Extensions added for the arc machine."
+    },
+    "arc_private_link_scope_resources": {
+      "description": "The Private link scope for the Arc Machine."
+    },
+    "id": {
+      "description": "The ID of the created arc machine."
+    },
+    "name": {
+      "description": "The Name of the created arc machine."
+    },
+    "resource": {
+      "description": "The Azure Arc Hybrid Compute Machine resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Arcmachine' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "operating system"
+    ]
+  }
+}

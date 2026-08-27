@@ -1,0 +1,72 @@
+1-deploy-dev-eus2:
+  stage: deploy
+  variables:
+    ENV: dev
+    REGION: "eus2"
+  trigger:
+    include: 
+      - local: 'pipelines/iac/${ENV}-${REGION}-iac-deployment-child.yaml'
+    forward:
+      pipeline_variables: true
+      yaml_variables: true
+
+1-deploy-qa-eus2:
+  stage: deploy
+  variables:
+    ENV: qa
+    REGION: "eus2"
+  trigger:
+    include: 
+      - local: 'pipelines/iac/${ENV}-${REGION}-iac-deployment-child.yaml'
+    #strategy: depend
+    forward:
+      pipeline_variables: true
+      yaml_variables: true
+
+1-deploy-ppr-eus2:
+  stage: deploy
+  variables:
+    ENV: ppr
+    REGION: "eus2"
+  trigger:
+    include: 
+      - local: 'pipelines/iac/${ENV}-${REGION}-iac-deployment-child.yaml'
+    forward:
+      pipeline_variables: true
+      yaml_variables: true
+
+1-deploy-ppr-cus:
+  stage: deploy
+  variables:
+    ENV: ppr
+    REGION: "cus"
+  trigger:
+    include: 
+      - local: 'pipelines/iac/${ENV}-${REGION}-iac-deployment-child.yaml'
+    forward:
+      pipeline_variables: true
+      yaml_variables: true
+
+1-deploy-prd-eus2:
+  stage: deploy
+  variables:
+    ENV: prd
+    REGION: "eus2"
+  trigger:
+    include: 
+      - local: 'pipelines/iac/${ENV}-${REGION}-iac-deployment-child.yaml'
+    forward:
+      pipeline_variables: true
+      yaml_variables: true
+
+1-deploy-prd-cus:
+  stage: deploy
+  variables:
+    ENV: prd
+    REGION: "cus"
+  trigger:
+    include: 
+      - local: 'pipelines/iac/${ENV}-${REGION}-iac-deployment-child.yaml'
+    forward:
+      pipeline_variables: true
+      yaml_variables: true

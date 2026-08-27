@@ -1,0 +1,239 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Traffic Manager module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-trafficmanager'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-trafficmanager",
+  "module_type": "service",
+  "azure_service": "Trafficmanager",
+  "module_name": "Traffic Manager module",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.5.0",
+    "0.4.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-trafficmanager.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Public IP"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_traffic_manager_azure_endpoint.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_traffic_manager_external_endpoint.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_traffic_manager_nested_endpoint.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_traffic_manager_profile.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "trafficmanager",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-trafficmanager.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.5.0",
+        "0.4.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "port",
+      "relative_name",
+      "resource_group_name",
+      "traffic_routing_method",
+      "ttl"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "azure_endpoint": {
+        "type": "map(object({ endpoint_name = string profile_id = string weight = optional(number) target_resource_id = string endpoint_enabled = optional(bool) geo_mappings = optional(list(string)) priority = optional(number) custom_header_for_endpoint = optional(map(object({ name = optional(string) value = optional(string) })), {}) endpoint_subnet = optional(object({ first = optional(string) last = optional(string) scope = optional(string) }), null) }))",
+        "description": "(Optional) Azure Endpoint Attribute. object({ endpoint_name = (Rquired) The name of the endpoint. profile_id = (Rquired) The name of the Profile id. weight = (Optional) The weight of the endpoint. target_resource_id = (Rquired) The Target resource id. endpoint_enabled = (Optional) To enable endpoint. geo_mappings = (Optional) The Geo mapping setting. priority = (Optional) The Priority of the endpoint. custom_header_for_endpoint = (Optional) Map of opject attribute of custom header. name = optional(string) Name of the custom header. value = optional(string) Value of the custom header. endpoint_subnet = (Optional) Map of object for subnet setting. first = optional(string) first ip address of your subnet last = optional(string) last ip address of your subnet scope = optional(string) cidr range of your subnet.",
+        "required": false,
+        "default": "{}"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "custom_header": {
+        "type": "map(object({ name = string value = string }))",
+        "description": "(Optional) Custom Header for Endpoints object({ name = (Required) Name of the custom header. value = (Required) Value of the custom header",
+        "required": false,
+        "default": "{}"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "expected_status_code_ranges": {
+        "type": "list(string)",
+        "description": "(Optional) A list of status code ranges in the format of 100-101.",
+        "required": false,
+        "default": "\"200-399\", \"400-550\""
+      },
+      "external_endpoint": {
+        "type": "map(object({ endpoint_name = string profile_id = string weight = optional(number) target = string endpoint_location = string endpoint_enabled = optional(bool) geo_mappings = optional(list(string)) priority = optional(number) custom_header_for_extrenal_endpoint = optional(map(object({ name = optional(string) value = optional(string) })), {}) external_endpoint_subnet = optional(object({ first = optional(string) last = optional(string) scope = optional(string) }), null) }))",
+        "description": "(Optional) Azure External Endpoint attribute. object({ endpoint_name = (Rquired) The name of the endpoint. profile_id = (Rquired) The name of the Profile id. weight = (Optional) The weight of the endpoint. target = (Rquired) The Target resource id. endpoint_location = (Rquired) Location of the endpoint. endpoint_enabled = (Optional) To enable point. geo_mappings = (Optional) The Geo mapping setting. priority = (Optional) The Priority of the endpoint. custom_header_for_extrenal_endpoint = (Optional) Map of opject attribute of custom header. name = optional(string) Name of the custom header. value = optional(string) Value of the custom header. external_endpoint_subnet = (Optional) External endpoint subnet attribute first = optional(string) first ip address of your subnet last = optional(string) last ip address of your subnet scope = optional(string) cidr range of your subnet.",
+        "required": false,
+        "default": "{}"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "interval_in_seconds": {
+        "type": "number",
+        "description": "(Optional) The interval used to check the endpoint health from a Traffic Manager probing agent. You can specify two values here: 30 (normal probing) and 10 (fast probing). The default value is 30",
+        "required": false,
+        "default": "30"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "max_return": {
+        "type": "number",
+        "description": "(Optional) The amount of endpoints to return for DNS queries to this Profile. Possible values range from 1 to 8.",
+        "required": false,
+        "default": "null"
+      },
+      "nested_endpoint": {
+        "type": "map(object({ endpoint_name = string profile_id = string weight = optional(number) minimum_child_endpoints = number minimum_required_child_endpoints_ipv4 = optional(number) minimum_required_child_endpoints_ipv6 = optional(number) target_resource_id = string endpoint_location = optional(string) enabled = optional(bool) geo_mappings = optional(list(string)) priority = optional(number) custom_header_for_nested_endpoint = optional(map(object({ name = optional(string) value = optional(string) })), {}) nested_endpoint_subnet = optional(object({ first = optional(string) last = optional(string) scope = optional(string) }), null) }))",
+        "description": "(Optional) Azure External Endpoint attribute. object({ endpoint_name = (Rquired) The name of the endpoint. profile_id = (Rquired) The name of the Profile id. weight = (Optional) The weight of the endpoint. minimum_child_endpoints = (Rquired) Min Child Endpoint. minimum_required_child_endpoints_ipv4 = (Rquired) This argument specifies the minimum number of IPv4 (DNS record type A) endpoints that must be ‘online’ in the child profile in order for the parent profile to direct traffic to any of the endpoints in that child profile. minimum_required_child_endpoints_ipv6 = (Optional) This argument specifies the minimum number of IPv6 (DNS record type AAAA) endpoints that must be ‘online’ in the child profile in order for the parent profile to direct traffic to any of the endpoints in that child profile. target_resource_id = (Rquired) The resource id of an Azure resource to target. endpoint_location = (Optional) Endpoint location. enabled = (Optional) Enabled Endpoint. geo_mappings = (Optional) Geo mapping. priority = (Optional) Priority of the endpoint. custom_header_for_nested_endpoint = (Optional) Custom header for nested endpoint. name = (Optional) name of the custom header value = (Optional) value of the custom header. nested_endpoint_subnet = (Optional) nested endpoint subnet attribute. first = optional(string) first ip address of your subnet last = optional(string) last ip address of your subnet scope = optional(string) cidr range of your subnet.",
+        "required": false,
+        "default": "{}"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "path": {
+        "type": "string",
+        "description": "(Optional) The path used by the monitoring checks. Required when protocol is set to HTTP or HTTPS - cannot be set when protocol is set to TCP.",
+        "required": false,
+        "default": "\"/\""
+      },
+      "port": {
+        "type": "number",
+        "description": "(Required) The port number used by the monitoring checks.",
+        "required": true
+      },
+      "profile_status": {
+        "type": "string",
+        "description": "(Optional) The status of the profile, can be set to either Enabled or Disabled",
+        "required": false,
+        "default": "\"Enabled\""
+      },
+      "relative_name": {
+        "type": "string",
+        "description": "(Required) The relative domain name, this is combined with the domain name used by Traffic Manager to form the FQDN.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "timeout_in_seconds": {
+        "type": "number",
+        "description": "(Optional) The amount of time the Traffic Manager probing agent should wait before considering that check a failure when a health check probe is sent to the endpoint",
+        "required": false,
+        "default": "10"
+      },
+      "tolerated_number_of_failures": {
+        "type": "number",
+        "description": "(Optional) The number of failures a Traffic Manager probing agent tolerates before marking that endpoint as unhealthy. Valid values are between 0 and 9. The default value is 3",
+        "required": false,
+        "default": "3"
+      },
+      "traffic_routing_method": {
+        "type": "string",
+        "description": "(Required) Specifies the algorithm used to route traffic. Possible values are Geographic, Weighted, Performance, Priority, Subnet and MultiValue.",
+        "required": true
+      },
+      "traffic_view_enabled": {
+        "type": "bool",
+        "description": "(Optional) Indicates whether Traffic View is enabled for the Traffic Manager profile.",
+        "required": false,
+        "default": "true"
+      },
+      "ttl": {
+        "type": "number",
+        "description": "(Required) The TTL value of the Profile used by Local DNS resolvers and clients.",
+        "required": true
+      }
+    }
+  },
+  "outputs": {
+    "endpoint_name": {
+      "description": "The Name of the Traffic Manager endpoint."
+    },
+    "external_endpoint_name": {
+      "description": "The Name of the Traffic Manager external endpoint."
+    },
+    "id": {
+      "description": "The ID of the Traffic Manager Profile."
+    },
+    "name": {
+      "description": "The Name of the Traffic Manager Profile."
+    },
+    "nested_endpoint_name": {
+      "description": "The Name of the Traffic Manager nested endpoint."
+    },
+    "resource": {
+      "description": "The Traffic Manager Profile resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Trafficmanager' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Public IP"
+    ]
+  }
+}

@@ -1,0 +1,271 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Data Explorer Kusto Cluster",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-kustocluster'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-kustocluster",
+  "module_type": "service",
+  "azure_service": "Kustocluster",
+  "module_name": "Azure Data Explorer Kusto Cluster",
+  "latest_tag": "2.0.2",
+  "available_tags": [
+    "2.0.2",
+    "2.0.1",
+    "2.0.0",
+    "1.1.1",
+    "1.1.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-kustocluster.git//?ref=2.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "time": ">= 0.10",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_key_vault_key.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_kusto_cluster.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_kusto_cluster_customer_managed_key.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_kusto_cluster_managed_private_endpoint.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_kusto_cluster_principal_assignment.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.cmk",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.Kusto_cluster_sec",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.this",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "kustocluster",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-kustocluster.git//?ref=2.0.2",
+      "version": "2.0.2",
+      "available_versions": [
+        "2.0.2",
+        "2.0.1",
+        "2.0.0",
+        "1.1.1",
+        "1.1.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "customer_managed_key",
+      "environment",
+      "location",
+      "name",
+      "org_id",
+      "resource_group_name",
+      "sku"
+    ],
+    "properties": {
+      "allowed_fqdns": {
+        "type": "set(string)",
+        "description": "(Optional) List of allowed FQDNs(Fully Qualified Domain Name) for egress from Cluster.",
+        "required": false,
+        "default": "null"
+      },
+      "allowed_ip_ranges": {
+        "type": "set(string)",
+        "description": "(Optional) The list of ips in the format of CIDR allowed to connect to the cluster.",
+        "required": false,
+        "default": "null"
+      },
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "auto_stop_enabled": {
+        "type": "bool",
+        "description": "(Optional) Specifies if the cluster could be automatically stopped (due to lack of data or no activity for many days).",
+        "required": false,
+        "default": "true"
+      },
+      "cmk_rotation_policy": {
+        "type": "object({ notify_before_expiry = string time_before_expiry = string time_after_creation = optional(string, null) expire_after = string })",
+        "description": "(Optional) A rotation policy block as defined below object({ notify_before_expiry = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" time_before_expiry = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" time_after_creation = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" expire_after = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" })",
+        "required": false,
+        "default": "{ \"expire_after\": \"P365D\", \"notify_before_expiry\": \"P358D\", \"time_after_creation\": null, \"time_before_expiry\": \"P7D\" }"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "create_role_assignment": {
+        "type": "bool",
+        "description": "(Optional) Whether to create a role assignment to the service identity to allow access to the key vault keys.",
+        "required": false,
+        "default": "true"
+      },
+      "customer_managed_key": {
+        "type": "object({ key_vault_id = string expiration_date = string identity_id = optional(string) identity_principal_id = optional(string) })",
+        "description": "(Required) An customer_managed_key block as defined below object({ key_vault_id = \"(Required) The resource ID of the Key Vault where the Key Vault Key resides.\" expiration_date = \"(Required) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').\" identity_id = \"(Optional) The resource ID of the User Assigned Identity that has access to the key. To be used if `use_system_assigned_identity` is set to `false`\" identity_principal_id = \"(Optional) The principal ID of the User Assigned Identity that has access to the key.\" })",
+        "required": true
+      },
+      "double_encryption_enabled": {
+        "type": "bool",
+        "description": "(Optional) Is the cluster's double encryption enabled? Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "true"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = list(string) })",
+        "description": "(Optional) An identity block as defined below object({ type = \"(Required) Specifies the type of Managed Service Identity that should be configured on this Data Explorer Kusto cluster. Possible values are `SystemAssigned`, `UserAssigned`, `SystemAssigned, UserAssigned` (to enable both).\" identity_ids = \"(Optional) Specifies a list of User Assigned Managed Identity IDs to be assigned to this Data Explorer Kusto cluster. This is required when `type` is set to `UserAssigned` or `SystemAssigned, UserAssigned`.\" })",
+        "required": false,
+        "default": "{ \"identity_ids\": [], \"type\": \"SystemAssigned\" }"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "key_vault_tags": {
+        "type": "map(any)",
+        "description": "(Optional) Key Vault related tags to be set on key vault child resources.",
+        "required": false,
+        "default": "{}"
+      },
+      "language_extensions": {
+        "type": "list(object({ name = string image = string }))",
+        "description": "(Optional) A list of language extension blocks to enable on the Kusto cluster. Each block supports the following: name = \"(Required) The name of the language extension. Possible values are PYTHON and R.\" image = \"(Required) The language extension image. Possible values are Python3_11_7, Python3_11_7_DL, Python3_10_8, Python3_10_8_DL, Python3_6_5, PythonCustomImage, and R.\"",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "managed_private_endpoint": {
+        "type": "object({ name = string private_link_resource_id = string group_id = string private_link_resource_region = optional(string, null) request_message = optional(string, null) })",
+        "description": "(Optional) Configuration for Managed Privatendpoint is below. name = \"(Required) The name of the Managed Private Endpoints to create. Changing this forces a new resource to be created.\" cluster_name = \"(Required) The name of the Kusto Cluster. Changing this forces a new resource to be created.\" resource_group_name = \"(Required) Specifies the Resource Group where the Kusto Cluster should exist. Changing this forces a new resource to be created.\" private_link_resource_id = \"(Required) The ARM resource ID of the resource for which the managed private endpoint is created. Changing this forces a new resource to be created.\" group_id = \"(Required) The group id in which the managed private endpoint is created. Changing this forces a new resource to be created.\" private_link_resource_region = \"(Optional) The region of the resource to which the managed private endpoint is created. Changing this forces a new resource to be created.\" request_message = \"(Optional) The user request message.\"",
+        "required": false,
+        "default": "null"
+      },
+      "name": {
+        "type": "string",
+        "description": "(Required) The name of the Kusto Cluster to create. Only lowercase Alphanumeric characters allowed, starting with a letter. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "optimized_auto_scale": {
+        "type": "object({ maximum_instances = number minimum_instances = number })",
+        "description": "(Optional) A optimized_auto_scale block supports the following: minimum_instances - \"(Required) The minimum number of allowed instances. Must between 0 and 1000.\" maximum_instances - \"(Required) The maximum number of allowed instances. Must between 0 and 1000.\"",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "principal_assignments": {
+        "type": "map(object({ name = string principal_id = string principal_type = string role = string tenant_id = string }))",
+        "description": "(Optional) Configuration for Kusto Cluster Principal assignments is below. name = \"(Required) The name of the Kusto cluster principal assignment. Changing this forces a new resource to be created.\" principal_id = \"(Required) The name of the Kusto Cluster. Changing this forces a new resource to be created.\" principal_type = \"(Required) The type of the principal. Valid values include App, Group, User. Changing this forces a new resource to be created.\" role = \"(Required) The cluster role assigned to the principal. Valid values include AllDatabasesAdmin and AllDatabasesViewer. Changing this forces a new resource to be created.\" tenant_id = \"(Required) The tenant id in which the principal resides. Changing this forces a new resource to be created.\"",
+        "required": false,
+        "default": "{}"
+      },
+      "public_ip_type": {
+        "type": "string",
+        "description": "(Optional) Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4 and IPv6).",
+        "required": false,
+        "default": "\"IPv4\""
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "sku": {
+        "type": "object({ name = string capacity = number })",
+        "description": "A sku block supports the following: name - \"(Required) The name of the SKU. Possible values are Dev(No SLA)_Standard_D11_v2, Dev(No SLA)_Standard_E2a_v4, Standard_D14_v2, Standard_D11_v2, Standard_D16d_v5, Standard_D13_v2, Standard_D12_v2, Standard_DS14_v2+4TB_PS, Standard_DS14_v2+3TB_PS, Standard_DS13_v2+1TB_PS, Standard_DS13_v2+2TB_PS, Standard_D32d_v5, Standard_D32d_v4, Standard_EC8ads_v5, Standard_EC8as_v5+1TB_PS, Standard_EC8as_v5+2TB_PS, Standard_EC16ads_v5, Standard_EC16as_v5+4TB_PS, Standard_EC16as_v5+3TB_PS, Standard_E80ids_v4, Standard_E8a_v4, Standard_E8ads_v5, Standard_E8as_v5+1TB_PS, Standard_E8as_v5+2TB_PS, Standard_E8as_v4+1TB_PS, Standard_E8as_v4+2TB_PS, Standard_E8d_v5, Standard_E8d_v4, Standard_E8s_v5+1TB_PS, Standard_E8s_v5+2TB_PS, Standard_E8s_v4+1TB_PS, Standard_E8s_v4+2TB_PS, Standard_E4a_v4, Standard_E4ads_v5, Standard_E4d_v5, Standard_E4d_v4, Standard_E16a_v4, Standard_E16ads_v5, Standard_E16as_v5+4TB_PS, Standard_E16as_v5+3TB_PS, Standard_E16as_v4+4TB_PS, Standard_E16as_v4+3TB_PS, Standard_E16d_v5, Standard_E16d_v4, Standard_E16s_v5+4TB_PS, Standard_E16s_v5+3TB_PS, Standard_E16s_v4+4TB_PS, Standard_E16s_v4+3TB_PS, Standard_E64i_v3, Standard_E2a_v4, Standard_E2ads_v5, Standard_E2d_v5, Standard_E2d_v4, Standard_L8as_v3, Standard_L8s, Standard_L8s_v3, Standard_L8s_v2, Standard_L4s, Standard_L16as_v3, Standard_L16s, Standard_L16s_v3, Standard_L16s_v2, Standard_L32as_v3 and Standard_L32s_v3.\" capacity - \"(Optional) Specifies the node count for the cluster. Boundaries depend on the SKU name.\" NOTE: If no optimized_auto_scale block is defined, then the capacity is required. ~> NOTE: If an optimized_auto_scale block is defined and no capacity is set, then the capacity is initially set to the value of minimum_instances.",
+        "required": true
+      },
+      "streaming_ingestion_enabled": {
+        "type": "bool",
+        "description": "(Optional) Specifies if the streaming ingest is enabled.",
+        "required": false,
+        "default": "null"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "user_identity": {
+        "type": "string",
+        "description": "(Optional) The user assigned identity that has access to the Key Vault Key. If not specified, system assigned identity will be used.",
+        "required": false,
+        "default": "null"
+      },
+      "virtual_network_configuration": {
+        "type": "object({ data_management_public_ip_id = string engine_public_ip_id = string subnet_id = string })",
+        "description": "(Optional) A virtual_network_configuration block as defined below.Changing this forces a new resource to be created. subnet_id = \"(Required) The subnet resource id.\" engine_public_ip_id = \"(Required) Engine service's public IP address resource id.\" data_management_public_ip_id = \"(Required) Data management's service public IP address resource id.\"",
+        "required": false,
+        "default": "null"
+      },
+      "zones": {
+        "type": "set(string)",
+        "description": "(Optional) Specifies a list of Availability Zones in which this Kusto Cluster should be located. Changing this forces a new Kusto Cluster to be created.",
+        "required": false,
+        "default": "null"
+      }
+    }
+  },
+  "outputs": {
+    "data_ingestion_uri": {
+      "description": "The Kusto Cluster URI to be used for data ingestion."
+    },
+    "id": {
+      "description": "The Resource ID of the Azure Kusto Cluster."
+    },
+    "name": {
+      "description": "The Name of the Azure Kusto Cluster."
+    },
+    "resource": {
+      "description": "The Azure Kusto Cluster resource."
+    },
+    "uri": {
+      "description": "The FQDN of the Azure Kusto Cluster."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Kustocluster' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

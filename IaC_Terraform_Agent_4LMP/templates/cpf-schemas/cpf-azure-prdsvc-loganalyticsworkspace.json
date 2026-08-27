@@ -1,0 +1,227 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Log Analytics Workspace module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-loganalyticsworkspace'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-loganalyticsworkspace",
+  "module_type": "service",
+  "azure_service": "Loganalyticsworkspace",
+  "module_name": "Log Analytics Workspace module",
+  "latest_tag": "2.1.0",
+  "available_tags": [
+    "2.1.0",
+    "2.0.2",
+    "2.0.1",
+    "2.0.0",
+    "1.2.2"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-loganalyticsworkspace.git//?ref=2.1.0",
+  "terraform_requirements": {
+    "azapi": ">=1.9",
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azapi_resource.custom_table",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_log_analytics_data_export_rule.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_log_analytics_workspace.log_analytics",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "loganalyticsworkspace",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-loganalyticsworkspace.git//?ref=2.1.0",
+      "version": "2.1.0",
+      "available_versions": [
+        "2.1.0",
+        "2.0.2",
+        "2.0.1",
+        "2.0.0",
+        "1.2.2"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "allow_resource_only_permissions": {
+        "type": "bool",
+        "description": "(Optional) The resource permissions log for the Log Analytics workspace.",
+        "required": false,
+        "default": "true"
+      },
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "cmk_for_query_forced": {
+        "type": "bool",
+        "description": "(Optional) The cmk_for_query_forced for the Log Analytics workspace.",
+        "required": false,
+        "default": "false"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "daily_quota_gb": {
+        "type": "number",
+        "description": "(Optional) The daily quota in GB for the Log Analytics workspace.",
+        "required": false,
+        "default": "-1"
+      },
+      "data_classification_tag_value": {
+        "type": "string",
+        "description": "(Optional) The value of the data classification tag required by policy.",
+        "required": false,
+        "default": "\"\""
+      },
+      "data_collection_rule_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the Data Collection Rule to use for this workspace.",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = optional(set(string)) })",
+        "description": "(Optional) An identity block as defined below object({ type = \"(Required) Specifies the identity type of the Log Analytics Workspace. Possible values are SystemAssigned (where Azure will generate a Service Principal for you) and UserAssigned where you can specify the Service Principal IDs in the identity_ids field\" identity_ids = \" (Optional) Specifies a list of user managed identity ids to be assigned. Required if type is UserAssigned\" })",
+        "required": false,
+        "default": "{ \"identity_ids\": null, \"type\": \"SystemAssigned\" }"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "internet_ingestion_enabled": {
+        "type": "bool",
+        "description": "(Optional) The internet ingestion enabled for the Log Analytics workspace.",
+        "required": false,
+        "default": "false"
+      },
+      "internet_query_enabled": {
+        "type": "bool",
+        "description": "(Optional) The internet query enabled for the Log Analytics workspace.",
+        "required": false,
+        "default": "false"
+      },
+      "local_authentication_disabled": {
+        "type": "bool",
+        "description": "(Optional) Specifies whether to disable local authentication for the Log Analytics workspace. When set to true, enforces Azure AD (Entra ID) authentication only.",
+        "required": false,
+        "default": "true"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "log_analytics_custom_tables": {
+        "type": "map(object({ description = optional(string, null) restoredLogs = optional(object({ endRestoreTime = string sourceTable = string startRestoreTime = string }), null) columns = list(object({ name = string displayName = string type = string description = optional(string, null) dataTypeHint = optional(string, null) })) searchResults = optional(object({ description = string endSearchTime = string limit = number query = string startSearchTime = string }), null) retention_in_days = optional(number, 365) total_retention_days = optional(number, 365) plan = string }))",
+        "description": "(Optional) A map of custom tables to create in the Log Analytics workspace. map(object({ description = \"(Optional) Description of the custom table's purpose and usage.\" restoredLogs = Optional(object({ endRestoreTime = \"(Required) The timestamp to end the restore by (UTC).\" sourceTable = \"(Required) The table to restore data from.\" startRestoreTime = \"(Required) The timestamp to start the restore from (UTC).\" })) columns = (Required)list(object({ name = \"(Required) The name of the column.\" displayName = \"(Required) The display name of the column.\" type = \"(Required) The data type of the column (e.g., 'string', 'datetime', 'int', 'real', 'boolean', 'guid', 'dynamic').\" description = \"(Optional) Description of the column's purpose.\" dataTypeHint = \"(Optional) Column data type logical hint. Valid values: 'armPath', 'guid', 'ip', 'uri'.\" })) searchResults = Optional(object({ description = \"(Required) Description of the search results configuration.\" endSearchTime = \"(Required) The end time for search results in ISO 8601 format.\" limit = \"(Required) The maximum number of search results to return.\" query = \"(Required) The KQL query to execute for search results.\" startSearchTime = \"(Required) The start time for search results in ISO 8601 format.\" })) })) retention_in_days = \"(Optional) The table retention period in days (4-4383, or -1 for default).\" total_retention_days = \"(Optional) The total retention period in days (4-4383, or -1 for default).\" plan = \"(Required) The table plan type. Valid values: 'Analytics', 'Basic'.\" }))",
+        "required": false,
+        "default": "{}"
+      },
+      "log_analytics_data_export": {
+        "type": "object({ name = string table_names = list(string) destination_resource_id = string enabled = optional(bool) })",
+        "description": "(Optional) object({ name = (Required) The name of the Log Analytics Data Export Rule. Changing this forces a new Log Analytics Data Export Rule to be created. table_names = (Required) A list of table names to export to the destination resource, for example: [\"Heartbeat\", \"SecurityEvent\"]. destination_resource_id = (Required) The destination resource ID. It should be a storage account, an event hub namespace or an event hub. If the destination is an event hub namespace, an event hub would be created for each table automatically. enabled = (Optional) Is this Log Analytics Data Export Rule enabled? Possible values include true or false. Defaults to false. })",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "reservation_capacity_in_gb_per_day": {
+        "type": "number",
+        "description": "(Optional) The reservation capacity in GB per day for the Log Analytics workspace.",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "retention_in_days": {
+        "type": "number",
+        "description": "(Optional) The retention in days for the Log Analytics workspace.",
+        "required": false,
+        "default": "365"
+      },
+      "sku": {
+        "type": "string",
+        "description": "(Optional) The SKU for the Log Analytics workspace.",
+        "required": false,
+        "default": "\"PerGB2018\""
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "custom_log_tables": {
+      "description": "n/a"
+    },
+    "export_rule_id": {
+      "description": "The resource ID of the created Data Export Rule."
+    },
+    "export_rule_name": {
+      "description": "The name of the created Data Export Rule."
+    },
+    "id": {
+      "description": "The resource ID of the Log Analytics Workspace. If a new Log Analytics Workspace is created, fetch its data id, if one is created, fetch the remote one instead."
+    },
+    "log_analytics_data_id": {
+      "description": "The resource ID of the Log Analytics Data Export Rule."
+    },
+    "log_analytics_data_resource": {
+      "description": "The Log Analytics Data Export Rule resource."
+    },
+    "name": {
+      "description": "The name of the Log Analytics Workspace."
+    },
+    "resource": {
+      "description": "The Log Analytics Workspace resource."
+    },
+    "workspace_id": {
+      "description": "The Workspace (or Customer) ID for the Log Analytics Workspace."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Loganalyticsworkspace' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

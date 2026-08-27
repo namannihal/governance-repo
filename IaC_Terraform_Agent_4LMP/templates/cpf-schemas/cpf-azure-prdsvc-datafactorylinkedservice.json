@@ -1,0 +1,330 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Datafactory Linked Service module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-datafactorylinkedservice'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-datafactorylinkedservice",
+  "module_type": "service",
+  "azure_service": "Datafactorylinkedservice",
+  "module_name": "Azure Datafactory Linked Service module",
+  "latest_tag": "1.0.1",
+  "available_tags": [
+    "1.0.1",
+    "1.0.0",
+    "0.4.0",
+    "0.3.1",
+    "0.3.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-datafactorylinkedservice.git//?ref=1.0.1",
+  "terraform_requirements": {
+    "azapi": ">=1.9",
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azapi_resource.blob_storage_linked_service",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azapi_resource.datafactory_credential",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azapi_resource.file_storage_linked_service",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azapi_resource.postgresql_linked_service",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azapi_resource.sftp_linked_service",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azapi_resource.sqlmi_linked_service",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_data_factory_dataset_azure_sql_table.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_data_factory_linked_custom_service.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_data_factory_linked_service_azure_function.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_data_factory_linked_service_azure_sql_database.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_data_factory_linked_service_key_vault.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_data_factory_linked_service_sql_server.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_data_factory_managed_private_endpoint.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "datafactorylinkedservice",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-datafactorylinkedservice.git//?ref=1.0.1",
+      "version": "1.0.1",
+      "available_versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.4.0",
+        "0.3.1",
+        "0.3.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "azure_blob_storage_linked_service_config": {
+        "type": "map(object({ name = string data_factory_id = string description = optional(string, null) integration_runtime_name = optional(string, null) annotations = optional(list(string), []) parameters = optional(map(any), {}) # AzureBlobStorageLinkedServiceTypeProperties service_endpoint = optional(string, null) connection_string = optional(string, null) connection_string_secure = optional(string, null) sas_uri = optional(string, null) sas_uri_secure = optional(string, null) container_uri = optional(string, null) account_kind = optional(string, null) authentication_type = optional(string, null) azure_cloud_type = optional(string, null) service_principal_id = optional(string, null) tenant = optional(string, null) encrypted_credential = optional(string, null) # Key Vault integration for connection string connection_string_key_vault = optional(object({ linked_service_name = string secret_name = string secret_version = optional(string) }), null) # Key Vault integration for account key key_vault_account_key = optional(object({ linked_service_name = string secret_name = string secret_version = optional(string) }), null) # Key Vault integration for SAS URI sas_uri_key_vault = optional(object({ linked_service_name = string secret_name = string secret_version = optional(string) }), null) # Key Vault integration for SAS token key_vault_sas_token = optional(object({ linked_service_name = string secret_name = string secret_version = optional(string) }), null) # Key Vault integration for service principal key key_vault_service_principal_key = optional(object({ linked_service_name = string secret_name = string secret_version = optional(string) }), null) # User-assigned managed identity credential reference credential_reference_name = optional(string, null) }))",
+        "description": "(Optional) Configuration for Azure Blob Storage Linked Service using AzAPI. Connection Configuration: - For system managed identity: Specify service_endpoint (e.g., \"https:// .blob.core.windows.net/\") - For user-assigned managed identity: Specify service_endpoint and credential_reference_name - For account key with Key Vault: Use connection_string (base without key) + key_vault_account_key - For account key inline: Use connection_string_secure (full connection string) - For SAS token with Key Vault: Use sas_uri (base without token) + key_vault_sas_token - For SAS inline: Use sas_uri_secure or sas_uri_key_vault (full SAS URI) - For anonymous access: Use container_uri Fields: name = \"(Required) Specifies the name of the Data Factory Linked Service. Must be unique within a data factory.\" data_factory_id = \"(Required) The Data Factory ID in which to associate the Linked Service.\" description = \"(Optional) Description for the Linked Service.\" integration_runtime_name = \"(Optional) Integration runtime reference name.\" annotations = \"(Optional) List of tags for describing the Linked Service.\" parameters = \"(Optional) Map of parameters to associate with the Linked Service.\" AzureBlobStorageLinkedServiceTypeProperties: service_endpoint = \"(Optional) Blob service endpoint (e.g., https:// .blob.core.windows.net/). Required for managed identity auth. Mutually exclusive with connectionString and sasUri.\" connection_string = \"(Optional) Plain connection string without account key. Use with key_vault_account_key.\" connection_string_secure = \"(Optional) Connection string as SecureString (inline). Mutually exclusive with connection_string_key_vault.\" sas_uri = \"(Optional) Plain SAS URI without token. Use with key_vault_sas_token.\" sas_uri_secure = \"(Optional) SAS URI as SecureString (inline).\" container_uri = \"(Optional) Container uri of the Azure Blob Storage resource only support for anonymous access. Type: string (or Expression with resultType string).\" account_kind = \"(Optional) Specify the kind of your storage account. Allowed values are: Storage (general purpose v1), StorageV2 (general purpose v2), BlobStorage, or BlockBlobStorage. Type: string (or Expression with resultType string).\" authentication_type = \"(Optional) The type used for authentication. Type: string. Allowed values: 'AccountKey', 'Anonymous', 'Msi', 'SasUri', 'ServicePrincipal'.\" azure_cloud_type = \"(Optional) Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions' cloud type. Type: string (or Expression with resultType string).\" service_principal_id = \"(Optional) The ID of the service principal used to authenticate against Azure Blob Storage. Type: string (or Expression with resultType string).\" tenant = \"(Optional) The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).\" encrypted_credential = \"(Optional) The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.\" connection_string_key_vault = \"(Optional) Key Vault reference for the entire connection string (including account key) stored as a single secret. Use this when you want to store the complete connection string in Key Vault. Object with: linked_service_name, secret_name, secret_version.\" key_vault_account_key = \"(Optional) Key Vault reference for account key only. Use with connection_string (base without key) to store only the account key in Key Vault. Object with: linked_service_name, secret_name, secret_version.\" sas_uri_key_vault = \"(Optional) Key Vault reference for the entire SAS URI (including token) stored as a single secret. Use this when you want to store the complete SAS URI in Key Vault. Object with: linked_service_name, secret_name, secret_version.\" key_vault_sas_token = \"(Optional) Key Vault reference for SAS token only. Use with sas_uri (base without token) to store only the SAS token in Key Vault. Object with: linked_service_name, secret_name, secret_version.\" key_vault_service_principal_key = \"(Optional) Key Vault reference for service principal key. The key of the service principal used to authenticate against Azure Blob Storage. Object with: linked_service_name, secret_name, secret_version.\" credential_reference_name = \"(Optional) User-assigned managed identity credential reference name.\" Note: This linked service uses the AzAPI provider for comprehensive authentication support including managed identities.",
+        "required": false,
+        "default": "null"
+      },
+      "azure_custom_linked_service_config": {
+        "type": "map(object({ name = string data_factory_id = string type = string type_properties_json = string additional_properties = optional(map(string), {}) annotations = optional(list(string), []) description = optional(string, null) parameters = optional(map(string), {}) integration_runtime = optional(object({ name = string parameters = optional(map(string), {}) }), null) }))",
+        "description": "(Optional) Configuration for Custom Data Factory Linked Service (Generic). name = \"(Required) Specifies the name of the Data Factory Linked Service. Changing this forces a new resource to be created. Must be unique within a data factory. See the Microsoft documentation for all restrictions.\" data_factory_id = \"(Required) The Data Factory ID in which to associate the Linked Service with. Changing this forces a new resource.\" type = \"(Required) The type of data stores that will be connected to Data Factory. For full list of supported data stores, please refer to Azure Data Factory connector. Changing this forces a new resource to be created.\" type_properties_json = \"(Required) A JSON object that contains the properties of the Data Factory Linked Service.\" additional_properties = \"(Optional) A map of additional properties to associate with the Data Factory Linked Service.\" annotations = \"(Optional) List of tags that can be used for describing the Data Factory Linked Service.\" description = \"(Optional) The description for the Data Factory Linked Service.\" parameters = \"(Optional) A map of parameters to associate with the Data Factory Linked Service.\" integration_runtime = \"(Optional) An integration_runtime block as defined below.\" name = \"(Required) The integration runtime reference to associate with the Data Factory Linked Service.\" parameters = \"(Optional) A map of parameters to associate with the integration runtime.\" Note: - This is a generic custom linked service that allows you to define any linked service type using JSON. - Use this when the specific linked service type is not available as a dedicated resource. - The type_properties_json should be a properly formatted JSON string containing the linked service type properties.",
+        "required": false,
+        "default": "null"
+      },
+      "azure_file_storage_linked_service_config": {
+        "type": "map(object({ name = string data_factory_id = string service_endpoint = optional(string, null) connection_string = optional(string, null) connection_string_secure = optional(string, null) file_share = optional(string, null) snapshot = optional(string, null) host = optional(string, null) user_id = optional(string, null) password_secure = optional(string, null) sas_uri = optional(string, null) sas_uri_secure = optional(string, null) encrypted_credential = optional(string, null) description = optional(string, null) integration_runtime_name = optional(string, null) annotations = optional(list(string), []) parameters = optional(map(any), {}) # Key Vault integration for connection string connection_string_key_vault = optional(object({ linked_service_name = string secret_name = string secret_version = optional(string) }), null) # Key Vault integration for account key key_vault_account_key = optional(object({ linked_service_name = string secret_name = string secret_version = optional(string) }), null) # Key Vault integration for SAS URI sas_uri_key_vault = optional(object({ linked_service_name = string secret_name = string secret_version = optional(string) }), null) # Key Vault integration for SAS token key_vault_sas_token = optional(object({ linked_service_name = string secret_name = string secret_version = optional(string) }), null) # Key Vault integration for password (legacy authentication) key_vault_password = optional(object({ linked_service_name = string secret_name = string secret_version = optional(string) }), null) # User-assigned managed identity credential reference credential_reference_name = optional(string, null) }))",
+        "description": "(Optional) Configuration for Azure File Storage Linked Services using AzAPI. Connection Configuration: - For system managed identity: Specify service_endpoint (e.g., \"https:// .file.core.windows.net/\") - For user-assigned managed identity: Specify service_endpoint and credential_reference_name - For account key with Key Vault: Use connection_string (base without key) + key_vault_account_key - For account key inline: Use connection_string_secure (full connection string) - For SAS token with Key Vault: Use sas_uri (base without token) + key_vault_sas_token - For SAS inline: Use sas_uri_secure or sas_uri_key_vault (full SAS URI) - For legacy: Use host + user_id + password Required Permissions: - System-Assigned MI as source: Storage File Data Privileged Reader role - System-Assigned MI as sink: Storage File Data Privileged Contributor role - User-Assigned MI as source: Storage File Data Privileged Reader role - User-Assigned MI as sink: Storage File Data Privileged Contributor role Fields: name = \"(Required) Specifies the name of the Data Factory Linked Service. Must be unique within a data factory.\" data_factory_id = \"(Required) The Data Factory ID in which to associate the Linked Service.\" service_endpoint = \"(Optional) File service endpoint (e.g., https:// .file.core.windows.net/). Required for managed identity auth.\" connection_string = \"(Optional) Plain connection string without account key. Use with key_vault_account_key.\" connection_string_secure = \"(Optional) Connection string as SecureString (inline). Mutually exclusive with connection_string_key_vault.\" file_share = \"(Optional) The azure file share name.\" snapshot = \"(Optional) The date of the file share snapshot (for snapshot reads).\" host = \"(Optional) Host name of the server (legacy auth, e.g., \\\\\\\\ .file.core.windows.net\\\\ ).\" user_id = \"(Optional) User ID to log in (legacy auth, e.g., AZURE\\\\ ).\" password_secure = \"(Optional) Password as SecureString (legacy auth, inline).\" sas_uri = \"(Optional) Plain SAS URI without token. Use with key_vault_sas_token.\" sas_uri_secure = \"(Optional) SAS URI as SecureString (inline).\" encrypted_credential = \"(Optional) Encrypted credential for authentication.\" description = \"(Optional) Description for the Linked Service.\" integration_runtime_name = \"(Optional) Integration runtime reference name.\" annotations = \"(Optional) List of tags for describing the Linked Service.\" parameters = \"(Optional) Map of parameters to associate with the Linked Service.\" connection_string_key_vault = \"(Optional) Key Vault reference for the entire connection string (including account key) stored as a single secret. Use this when you want to store the complete connection string in Key Vault. Object with: linked_service_name, secret_name, secret_version.\" key_vault_account_key = \"(Optional) Key Vault reference for account key only. Use with connection_string (base without key) to store only the account key in Key Vault. Object with: linked_service_name, secret_name, secret_version.\" sas_uri_key_vault = \"(Optional) Key Vault reference for the entire SAS URI (including token) stored as a single secret. Use this when you want to store the complete SAS URI in Key Vault. Object with: linked_service_name, secret_name, secret_version.\" key_vault_sas_token = \"(Optional) Key Vault reference for SAS token only. Use with sas_uri (base without token) to store only the SAS token in Key Vault. Object with: linked_service_name, secret_name, secret_version.\" key_vault_password = \"(Optional) Key Vault reference for password (legacy auth). Object with: linked_service_name, secret_name, secret_version.\" credential_reference_name = \"(Optional) User-assigned managed identity credential reference name.\" Note: This linked service uses the AzAPI provider as the azurerm provider doesn't support managed identity authentication for Azure File Storage natively.",
+        "required": false,
+        "default": "null"
+      },
+      "azure_function_config": {
+        "type": "map(object({ name = string data_factory_id = string url = string key = optional(string, null) description = optional(string, null) integration_runtime_name = optional(string, null) annotations = optional(list(string), []) parameters = optional(map(string), {}) additional_properties = optional(map(string), {}) key_vault_key = optional(map(object({ linked_service_name = string secret_name = string })), null) }))",
+        "description": "(Optional) Configuration for Azure Function Linked Service is below. name = \"(Required) Specifies the name of the Data Factory Linked Service. Changing this forces a new resource to be created\" data_factory_id = \"(Required) The Data Factory ID in which to associate the Linked Service with. \" description = \"(Optional) The description for the Data Factory Linked Service.\" integration_runtime_name = \"(Optional) The integration runtime reference to associate with the Data Factory Linked Service.\" url = \"(Required) The url of the Azure Function.\" key = \"(Optional) The system key of the Azure Function.\" annotations = \"(Optional) List of tags that can be used for describing the Data Factory Linked Service.\" parameters = \"(Optional) A map of parameters to associate with the Data Factory Linked Service.\"\" additional_properties = \"(Optional) A map of additional properties to associate with the Data Factory Linked Service.\" key_vault_key = \"(Optional) A key_vault_key block as defined below.\" linked_service_name = \"(Required) Specifies the name of an existing Key Vault Data Factory Linked Service.\" secret_name = \"(Required) Specifies the secret name in Azure Key Vault that stores the system key of the Azure Function.\"",
+        "required": false,
+        "default": "null"
+      },
+      "azure_kv_linked_service_config": {
+        "type": "map(object({ name = string data_factory_id = string key_vault_id = string description = optional(string, null) integration_runtime_name = optional(string, null) annotations = optional(list(string), []) parameters = optional(map(string), {}) additional_properties = optional(map(string), {}) }))",
+        "description": "(Optional) Configuration for Azure Keyvault Linked Services is below. name = \"(Required)The Name of the Azure Key Vault Linked Service.\" data_factory_id = \"(Required) The Data Factory ID in which to associate the Linked Service with\" key_vault_id = \"(Required)The ID the Azure Key Vault resource.\" description = \"(Optional)The description for the Data Factory Linked Service Key Vault.\" integration_runtime_name = \"(Optional) The integration runtime reference to associate with the Data Factory Linked Service Key Vault.\" annotations = \"(Optional) List of tags that can be used for describing the Data Factory Linked Service Key Vault\" parameters = \"(Optional) A map of parameters to associate with the Data Factory Linked Service Key Vault\" additional_properties = \"(Optional) A map of additional properties to associate with the Data Factory Linked Service Key Vault.\"",
+        "required": false,
+        "default": "null"
+      },
+      "azure_postgresql_linked_service_config": {
+        "type": "map(object({ # Required fields name = string data_factory_id = string # Connection properties - either connection string OR individual properties connection_string = optional(string) connection_string_key_vault = optional(object({ linked_service_name = string secret_name = string secret_version = optional(string) })) connection_string_secure = optional(string) # Individual connection properties (alternative to connection string) server = optional(any) port = optional(any) database = optional(any) username = optional(any) # Authentication type authentication_type = optional(any) # Password authentication key_vault_password = optional(object({ linked_service_name = string secret_name = string secret_version = optional(string) })) password_secure = optional(string) # Service Principal authentication azure_cloud_type = optional(any) service_principal_id = optional(any) tenant = optional(any) service_principal_credential_type = optional(any) # \"ServicePrincipalKey\" or \"ServicePrincipalCert\" # Service Principal Key key_vault_service_principal_key = optional(object({ linked_service_name = string secret_name = string secret_version = optional(string) })) service_principal_key_secure = optional(string) # Service Principal Embedded Certificate key_vault_service_principal_embedded_cert = optional(object({ linked_service_name = string secret_name = string secret_version = optional(string) })) service_principal_embedded_cert_secure = optional(string) # Service Principal Embedded Certificate Password key_vault_service_principal_embedded_cert_password = optional(object({ linked_service_name = string secret_name = string secret_version = optional(string) })) service_principal_embedded_cert_password_secure = optional(string) # Credential reference (for managed identity) credential_reference_name = optional(string) # Connection tuning properties command_timeout = optional(any) connection_timeout = optional(any) encoding = optional(any) log_parameters = optional(any) pooling = optional(any) read_buffer_size = optional(any) schema = optional(any) ssl_mode = optional(any) timeout = optional(any) timezone = optional(any) trust_server_certificate = optional(any) encrypted_credential = optional(string) # SSL Certificate properties ssl_certificate = optional(any) ssl_key = optional(any) ssl_password = optional(any) # Integration Runtime and metadata integration_runtime_name = optional(string) description = optional(string) annotations = optional(list(string)) parameters = optional(map(any)) }))",
+        "description": "(Optional) Configuration for Azure PostgreSQL Linked Services using AzAPI. name = \"(Required) Specifies the name of the Data Factory Linked Service. Changing this forces a new resource to be created.\" data_factory_id = \"(Required) The Data Factory ID in which to associate the Linked Service with.\" # Connection Properties - specify either connection string OR individual properties connection_string = \"(Optional) Plain connection string.\" connection_string_key_vault = \"(Optional) A connection_string_key_vault block for Key Vault reference to connection string.\" linked_service_name = \"(Required) Specifies the name of an existing Key Vault Data Factory Linked Service.\" secret_name = \"(Required) Specifies the secret name in Azure Key Vault that stores PostgreSQL connection string.\" secret_version = \"(Optional) Specifies the secret version in Azure Key Vault.\" connection_string_secure = \"(Optional) Secure connection string (SecureString type).\" # Individual connection properties (alternative to connection string) server = \"(Optional) PostgreSQL server hostname or IP address.\" port = \"(Optional) PostgreSQL server port (default 5432).\" database = \"(Optional) PostgreSQL database name.\" username = \"(Optional) Username for authentication.\" authentication_type = \"(Optional) The authentication type to use (e.g., 'Basic', 'Windows').\" # Password authentication key_vault_password = \"(Optional) A key_vault_password block for Key Vault reference to password.\" linked_service_name = \"(Required) Specifies the name of an existing Key Vault Data Factory Linked Service.\" secret_name = \"(Required) Specifies the secret name in Azure Key Vault that stores the password.\" secret_version = \"(Optional) Specifies the secret version in Azure Key Vault.\" password_secure = \"(Optional) Secure password (SecureString type).\" # Service Principal authentication azure_cloud_type = \"(Optional) Azure cloud type. Valid values: 'AzurePublic', 'AzureChina', 'AzureUsGovernment', 'AzureGermany'.\" service_principal_id = \"(Optional) The service principal id/application id for authentication.\" tenant = \"(Optional) The tenant id or name for service principal authentication.\" service_principal_credential_type = \"(Optional) The credential type for service principal. Valid values: 'ServicePrincipalKey', 'ServicePrincipalCert'.\" # Service Principal Key key_vault_service_principal_key = \"(Optional) A key_vault_service_principal_key block for Key Vault reference.\" linked_service_name = \"(Required) Specifies the name of an existing Key Vault Data Factory Linked Service.\" secret_name = \"(Required) Specifies the secret name in Azure Key Vault.\" secret_version = \"(Optional) Specifies the secret version in Azure Key Vault.\" service_principal_key_secure = \"(Optional) Secure service principal key (SecureString type).\" # Service Principal Embedded Certificate key_vault_service_principal_embedded_cert = \"(Optional) Key Vault reference for embedded certificate.\" service_principal_embedded_cert_secure = \"(Optional) Secure embedded certificate (SecureString type).\" # Service Principal Embedded Certificate Password key_vault_service_principal_embedded_cert_password = \"(Optional) Key Vault reference for certificate password.\" service_principal_embedded_cert_password_secure = \"(Optional) Secure certificate password (SecureString type).\" # Credential reference (for managed identity) credential_reference_name = \"(Optional) The credential reference name for user-assigned managed identity.\" # Connection tuning properties command_timeout = \"(Optional) Command timeout in seconds.\" connection_timeout = \"(Optional) Connection timeout in seconds while establishing connection.\" encoding = \"(Optional) Character encoding for the connection.\" log_parameters = \"(Optional) Whether to log parameter values when commands are executed.\" pooling = \"(Optional) Whether connection pooling should be used.\" read_buffer_size = \"(Optional) Read buffer size in bytes.\" schema = \"(Optional) Sets the schema search path.\" ssl_mode = \"(Optional) SSL mode. Valid values: 'disable', 'allow', 'prefer', 'require', 'verify-ca', 'verify-full'.\" timeout = \"(Optional) Connection timeout in seconds.\" timezone = \"(Optional) Timezone for the connection.\" trust_server_certificate = \"(Optional) Whether to trust the server certificate.\" encrypted_credential = \"(Optional) Encrypted credential for secure connection.\" # SSL Certificate properties ssl_certificate = \"(Optional) Location of a client certificate to be sent to the server.\" ssl_key = \"(Optional) Location of a client key for a client certificate.\" ssl_password = \"(Optional) Password for a key for a client certificate.\" # Integration Runtime and metadata integration_runtime_name = \"(Optional) The integration runtime reference to associate with the Data Factory Linked Service.\" description = \"(Optional) The description for the Data Factory Linked Service PostgreSQL.\" annotations = \"(Optional) List of tags that can be used for describing the Data Factory Linked Service PostgreSQL.\" parameters = \"(Optional) A map of parameters to associate with the Data Factory Linked Service PostgreSQL.\"",
+        "required": false,
+        "default": "null"
+      },
+      "azure_sftp_linked_service_config": {
+        "type": "map(object({ name = string data_factory_id = string host = string port = optional(number, 22) authentication_type = optional(string, \"Basic\") username = string password = optional(object({ type = string // 'AzureKeyVaultSecret' secretName = optional(string) secretVersion = optional(string) store = optional(object({ referenceName = string // Key Vault Linked Service name type = string // 'LinkedServiceReference' })) }), null) private_key_content = optional(object({ type = string // 'AzureKeyVaultSecret' secretName = optional(string) secretVersion = optional(string) store = optional(object({ referenceName = string // Key Vault Linked Service name type = string // 'LinkedServiceReference' })) }), null) private_key_passphrase = optional(object({ type = string // 'AzureKeyVaultSecret' secretName = optional(string) secretVersion = optional(string) store = optional(object({ referenceName = string // Key Vault Linked Service name type = string // 'LinkedServiceReference' })) }), null) host_key_fingerprint = optional(string) skip_host_key_validation = optional(bool, false) description = optional(string) integration_runtime_name = optional(string) annotations = optional(list(string), []) parameters = optional(map(any), {}) encrypted_credential = optional(string) tags = optional(map(string), {}) }))",
+        "description": "Configuration for Azure Data Factory SFTP Linked Service. Fields: name = (Required) Name of the Data Factory Linked Service. data_factory_id = (Required) The Data Factory resource ID. host = (Required) SFTP server hostname. port = (Optional) SFTP server port. Default: 22. authentication_type = (Optional) Authentication type. Valid: 'Basic', 'MultiFactor', 'SshPublicKey'. Default: 'Basic'. username = (Required) Username for SFTP login. password = (Optional) SecretBase object for password. Use SecureString or AzureKeyVaultSecret. private_key_content = (Optional) SecretBase object for SSH private key (Base64, OpenSSH format). private_key_passphrase = (Optional) SecretBase object for passphrase to decrypt the SSH private key. host_key_fingerprint = (Optional) Host key fingerprint for SFTP server. skip_host_key_validation = (Optional) Whether to skip host key validation. Default: false. description = (Optional) Description for the linked service. integration_runtime_name = (Optional) Integration runtime reference. annotations = (Optional) List of tags for the linked service. parameters = (Optional) Map of parameters for the linked service. encrypted_credential = (Optional) Encrypted credential string. tags = (Optional) Map of tags for the resource. For Key Vault integration, set type = 'AzureKeyVaultSecret', provide secretName, and set store.referenceName to the Key Vault linked service name.",
+        "required": false,
+        "default": "null"
+      },
+      "azure_sql_linked_service_config": {
+        "type": "map(object({ name = string data_factory_id = string connection_string = optional(string, null) service_principal_id = optional(string, null) service_principal_key = optional(string, null) tenant_id = optional(string, null) description = optional(string, null) integration_runtime_name = optional(string, null) annotations = optional(list(string), []) parameters = optional(map(string), {}) additional_properties = optional(map(string), {}) key_vault_connection_string = optional(map(object({ linked_service_name = string secret_name = string })), null) key_vault_password = optional(map(object({ linked_service_name = string secret_name = string })), null) }))",
+        "description": "(Optional) Configuration for Azure SQL Linked Services is below. name = \"(Required) Specifies the name of the Data Factory Linked Service Azure SQL Database.\" data_factory_id = \"(Required) The Data Factory ID in which to associate the Linked Service with\" connection_string = \"(Optional) The connection string in which to authenticate with Azure SQL Database.\" service_principal_id = \"(Optional) The service principal id in which to authenticate against the Azure SQL Database.\" service_principal_key = \"(Optional) The service principal key in which to authenticate against the Azure SQL Database.\" tenant_id = \"(Optional) The tenant id or name in which to authenticate against the Azure SQL Database.\" description = \"(Optional) The description for the Data Factory Linked Service Azure SQL Database.\" integration_runtime_name = \"(Optional) The integration runtime reference to associate with the Data Factory Linked Service sql database\" annotations = \"(Optional) List of tags that can be used for describing the Data Factory Linked Service Azure SQL Database.\" parameters = \"(Optional) A map of parameters to associate with the Data Factory Linked Service Azure SQL Database.\" additional_properties = \"(Optional) A map of additional properties to associate with the Data Factory Linked Service Azure SQL Database.\" key_vault_connection_string = \"(Optional) A key_vault_connection_string block as defined below.\" linked_service_name = \"(Required) Specifies the name of an existing Key Vault Data Factory Linked Service.\" secret_name = \"(Required) Specifies the secret name in Azure Key Vault that stores SQL Server connection string.\" key_vault_password = \"(Optional) A key_vault_connection_string block as defined below.\" linked_service_name = \"(Required) Specifies the name of an existing Key Vault Data Factory Linked Service.\" secret_name = \"(Required) Specifies the secret name in Azure Key Vault that stores SQL Server connection string.\"",
+        "required": false,
+        "default": "null"
+      },
+      "azure_sqlmi_linked_service_config": {
+        "type": "map(object({ # Required fields name = string data_factory_id = string authentication_type = string # \"SQL\", \"ServicePrincipal\", \"SystemAssignedManagedIdentity\", \"UserAssignedManagedIdentity\" # Connection properties - either connection string OR server+database connection_string_key_vault = optional(object({ linked_service_name = string secret_name = string secret_version = optional(string) })) connection_string_secure = optional(string) server = optional(any) database = optional(any) # SQL Authentication username = optional(any) key_vault_password = optional(object({ linked_service_name = string secret_name = string secret_version = optional(string) })) password_secure = optional(string) # Service Principal Authentication service_principal_id = optional(any) tenant_id = optional(any) service_principal_credential_type = optional(any) # \"ServicePrincipalKey\" or \"ServicePrincipalCert\" # New credential field (preferred over legacy key field) key_vault_service_principal_credential = optional(object({ linked_service_name = string secret_name = string secret_version = optional(string) })) service_principal_credential_secure = optional(string) # Legacy service principal key field (for backward compatibility) key_vault_service_principal_key = optional(object({ linked_service_name = string secret_name = string secret_version = optional(string) })) service_principal_key_secure = optional(string) # User Assigned Managed Identity credential_reference_name = optional(string) # Connection tuning properties encrypt = optional(any) trust_server_certificate = optional(any) host_name_in_certificate = optional(any) application_intent = optional(any) connect_timeout = optional(any) connect_retry_count = optional(any) connect_retry_interval = optional(any) command_timeout = optional(any) load_balance_timeout = optional(any) failover_partner = optional(any) max_pool_size = optional(any) min_pool_size = optional(any) multiple_active_result_sets = optional(any) multi_subnet_failover = optional(any) packet_size = optional(any) pooling = optional(any) integrated_security = optional(any) azure_cloud_type = optional(any) # Integration Runtime and metadata integration_runtime_name = optional(string) encrypted_credential = optional(string) description = optional(string) annotations = optional(list(string)) parameters = optional(map(any)) # Always Encrypted settings always_encrypted_settings = optional(object({ akv_auth_type = string # \"ServicePrincipal\", \"ManagedIdentity\", \"UserAssignedManagedIdentity\" credential_reference_name = optional(string) service_principal_id = optional(string) service_principal_key = optional(string) })) }))",
+        "description": "(Optional) Configuration for Azure SQL Managed Instance Linked Services using AzAPI. name = \"(Required) Specifies the name of the Data Factory Linked Service. Changing this forces a new resource to be created.\" data_factory_id = \"(Required) The Data Factory ID in which to associate the Linked Service with.\" authentication_type = \"(Required) The type used for authentication. Valid values: 'SQL', 'ServicePrincipal', 'SystemAssignedManagedIdentity', 'UserAssignedManagedIdentity'.\" # Connection Properties - specify either connection string OR server+database connection_string_key_vault = \"(Optional) A connection_string_key_vault block for Key Vault reference to connection string.\" linked_service_name = \"(Required) Specifies the name of an existing Key Vault Data Factory Linked Service.\" secret_name = \"(Required) Specifies the secret name in Azure Key Vault that stores the SQL Managed Instance connection string.\" secret_version = \"(Optional) Specifies the version of the secret in Azure Key Vault. The default value is the latest version.\" connection_string_secure = \"(Optional) The connection string as SecureString. Type: SecureString.\" server = \"(Optional) The name or network address of the SQL Managed Instance server. Type: string (or Expression with resultType string).\" database = \"(Optional) The name of the database. Type: string (or Expression with resultType string).\" # SQL Authentication Properties username = \"(Optional) The user name to be used when connecting to server. Type: string (or Expression with resultType string).\" key_vault_password = \"(Optional) A key_vault_password block for Key Vault reference to password.\" linked_service_name = \"(Required) Specifies the name of an existing Key Vault Data Factory Linked Service.\" secret_name = \"(Required) Specifies the secret name in Azure Key Vault that stores the password.\" secret_version = \"(Optional) Specifies the version of the secret in Azure Key Vault.\" password_secure = \"(Optional) Password as SecureString for SQL authentication.\" # Service Principal Authentication Properties service_principal_id = \"(Optional) The ID of the service principal used to authenticate against Azure SQL Managed Instance. Type: string (or Expression with resultType string).\" tenant_id = \"(Optional) The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).\" service_principal_credential_type = \"(Optional) The service principal credential type. Valid values: 'ServicePrincipalKey', 'ServicePrincipalCert'.\" # Service Principal Credential (Preferred) key_vault_service_principal_credential = \"(Optional) A key_vault_service_principal_credential block for Key Vault reference to service principal credential.\" linked_service_name = \"(Required) Specifies the name of an existing Key Vault Data Factory Linked Service.\" secret_name = \"(Required) Specifies the secret name in Azure Key Vault that stores the service principal credential.\" secret_version = \"(Optional) Specifies the version of the secret in Azure Key Vault.\" service_principal_credential_secure = \"(Optional) Service principal credential as SecureString.\" # Legacy Service Principal Key (for backward compatibility) key_vault_service_principal_key = \"(Optional) A key_vault_service_principal_key block for Key Vault reference to service principal key.\" linked_service_name = \"(Required) Specifies the name of an existing Key Vault Data Factory Linked Service.\" secret_name = \"(Required) Specifies the secret name in Azure Key Vault that stores the service principal key.\" secret_version = \"(Optional) Specifies the version of the secret in Azure Key Vault.\" service_principal_key_secure = \"(Optional) Service principal key as SecureString.\" # User Assigned Managed Identity Authentication credential_reference_name = \"(Optional) The credential reference name for User Assigned Managed Identity authentication.\" # Connection Tuning Properties encrypt = \"(Optional) Indicate whether TLS encryption is required for all data sent between the client and server. Valid values: 'true/yes/mandatory', 'false/no/optional', 'strict'.\" trust_server_certificate = \"(Optional) Indicate whether the channel will be encrypted while bypassing walking the certificate chain to validate trust. Type: Boolean (or Expression with resultType boolean).\" host_name_in_certificate = \"(Optional) The host name to use when validating the server certificate for the connection. Type: string (or Expression with resultType string).\" application_intent = \"(Optional) The application workload type when connecting to a server. Valid values: 'ReadOnly', 'ReadWrite'. Type: string (or Expression with resultType string).\" connect_timeout = \"(Optional) The length of time (in seconds) to wait for a connection to the server before terminating the attempt and generating an error. Type: integer (or Expression with resultType integer).\" connect_retry_count = \"(Optional) The number of re-connections attempted after identifying that there was an idle connection failure. Must be an integer between 0 and 255. Type: integer (or Expression with resultType integer).\" connect_retry_interval = \"(Optional) The amount of time (in seconds) between each re-connection attempt after identifying that there was an idle connection failure. Must be an integer between 1 and 60. Type: integer (or Expression with resultType integer).\" command_timeout = \"(Optional) The default wait time (in seconds) before terminating the attempt to execute a command and generating an error. Type: integer (or Expression with resultType integer).\" load_balance_timeout = \"(Optional) The minimum time, in seconds, for the connection to live in the connection pool before being destroyed. Type: integer (or Expression with resultType integer).\" failover_partner = \"(Optional) The name or address of the partner server to connect to if the primary server is down. Type: string (or Expression with resultType string).\" max_pool_size = \"(Optional) The maximum number of connections allowed in the connection pool for this specific connection string. Type: integer (or Expression with resultType integer).\" min_pool_size = \"(Optional) The minimum number of connections allowed in the connection pool for this specific connection string. Type: integer (or Expression with resultType integer).\" multiple_active_result_sets = \"(Optional) When true, an application can maintain multiple active result sets (MARS). Type: Boolean (or Expression with resultType boolean).\" multi_subnet_failover = \"(Optional) If your application is connecting to an AlwaysOn availability group (AG) on different subnets, provides faster detection of and connection to the (currently) active server. Type: Boolean (or Expression with resultType boolean).\" packet_size = \"(Optional) The size in bytes of the network packets used to communicate with an instance of server. Type: integer (or Expression with resultType integer).\" pooling = \"(Optional) Indicate whether the connection will be pooled or explicitly opened every time that the connection is requested. Type: Boolean (or Expression with resultType boolean).\" integrated_security = \"(Optional) Indicate whether User ID and Password are specified in the connection (when false) or whether the current Windows account credentials are used for authentication (when true). Type: Boolean (or Expression with resultType boolean).\" azure_cloud_type = \"(Optional) Indicates the azure cloud type of the service principle auth. Valid values: 'AzurePublic', 'AzureChina', 'AzureUsGovernment', 'AzureGermany'. Default value is the data factory regions' cloud type. Type: string (or Expression with resultType string).\" # Integration Runtime and Metadata integration_runtime_name = \"(Optional) The integration runtime reference to associate with the Data Factory Linked Service.\" encrypted_credential = \"(Optional) The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.\" description = \"(Optional) The description for the Data Factory Linked Service.\" annotations = \"(Optional) List of tags that can be used for describing the Data Factory Linked Service.\" parameters = \"(Optional) A map of parameters to associate with the Data Factory Linked Service.\" # Always Encrypted Settings always_encrypted_settings = \"(Optional) An always_encrypted_settings block for SQL Always Encrypted properties.\" akv_auth_type = \"(Required) Always Encrypted Azure Key Vault authentication type. Valid values: 'ServicePrincipal', 'ManagedIdentity', 'UserAssignedManagedIdentity'.\" credential_reference_name = \"(Optional) The credential reference name for User Assigned Managed Identity.\" service_principal_id = \"(Optional) The client ID of the application in Azure Active Directory used for Azure Key Vault authentication.\" service_principal_key = \"(Optional) The key of the service principal used to authenticate against Azure Key Vault.\" Authentication Types Supported: - SQL Authentication: Requires username + password (Key Vault reference or SecureString) - Service Principal: Requires service_principal_id + tenant_id + credential/key (Key Vault reference or SecureString) - System Assigned Managed Identity: No additional authentication properties required - User Assigned Managed Identity: Requires credential_reference_name Connection Configuration: - Specify either full connection string (connection_string_key_vault or connection_string_secure) OR server + database properties - Cannot use both connection string and server+database properties simultaneously Important Constraints: - If service_principal_credential_type is \"ServicePrincipalCert\", then servicePrincipalCredential can only be AzureKeyVaultSecretReference - If service_principal_credential_type is \"ServicePrincipalKey\", then servicePrincipalCredential can be either SecureString or AzureKeyVaultSecretReference - All optional connection tuning properties default to null and are only included when explicitly set Note: This linked service uses the AzAPI provider as the azurerm provider doesn't support Azure SQL Managed Instance linked services natively.",
+        "required": false,
+        "default": "null"
+      },
+      "azure_sqlserver_linked_service_config": {
+        "type": "map(object({ name = string data_factory_id = string connection_string = optional(string, null) user_name = optional(string, null) description = optional(string, null) integration_runtime_name = optional(string, null) annotations = optional(list(string), []) parameters = optional(map(string), {}) additional_properties = optional(map(string), {}) key_vault_connection_string = optional(map(object({ linked_service_name = string secret_name = string })), null) key_vault_password = optional(map(object({ linked_service_name = string secret_name = string })), null) }))",
+        "description": "(Optional) Configuration for SQL Server Linked Service is below. name = \"(Required) Specifies the name of the Data Factory Linked Service SQL Server. Changing this forces a new resource to be created. Must be unique within a data factory.\" data_factory_id = \"(Required) The Data Factory ID in which to associate the Linked Service with. Changing this forces a new resource.\" connection_string = \"(Optional) The connection string in which to authenticate with the SQL Server. Exactly one of either connection_string or key_vault_connection_string is required.\" user_name = \"(Optional) The on-premises Windows authentication user name.\" description = \"(Optional) The description for the Data Factory Linked Service SQL Server.\" integration_runtime_name = \"(Optional) The integration runtime reference to associate with the Data Factory Linked Service SQL Server.\" annotations = \"(Optional) List of tags that can be used for describing the Data Factory Linked Service SQL Server.\" parameters = \"(Optional) A map of parameters to associate with the Data Factory Linked Service SQL Server.\" additional_properties = \"(Optional) A map of additional properties to associate with the Data Factory Linked Service SQL Server.\" key_vault_connection_string = \"(Optional) A key_vault_connection_string block as defined below. Use this argument to store SQL Server connection string in an existing Key Vault. Exactly one of either connection_string or key_vault_connection_string is required.\" linked_service_name = \"(Required) Specifies the name of an existing Key Vault Data Factory Linked Service.\" secret_name = \"(Required) Specifies the secret name in Azure Key Vault that stores SQL Server connection string.\" key_vault_password = \"(Optional) A key_vault_password block as defined below. Use this argument to store SQL Server password in an existing Key Vault.\" linked_service_name = \"(Required) Specifies the name of an existing Key Vault Data Factory Linked Service.\" secret_name = \"(Required) Specifies the secret name in Azure Key Vault that stores SQL Server password.\"",
+        "required": false,
+        "default": "null"
+      },
+      "azure_sqltable_dataset_service_config": {
+        "type": "map(object({ name = string data_factory_id = string schema = optional(string, null) table = optional(string, null) folder = optional(string, null) description = optional(string, null) linked_service_id = string annotations = optional(list(string), []) parameters = optional(map(string), {}) additional_properties = optional(map(string), {}) schema_column = optional(map(object({ name = string type = optional(string, null) description = optional(string, null) })), null) }))",
+        "description": "(Optional) Configuration for Azure SQL Table Dataset Services is below. name = \"(Required) Specifies the name of the Data Factory Dataset Azure SQL Table.\" data_factory_id = \"(Required) The Data Factory ID in which to associate the Linked Service with.\" schema = \"(Optional) The schema name of the table in the Azure SQL Database.\" table = \"(Optional) The table name of the table in the Azure SQL Database.\" folder = \"(Optional) The folder that this Dataset is in. If not specified, the Dataset will appear at the root level.\" description = \"(Optional) The description for the Data Factory Dataset Azure SQL Table.\" linked_service_id = \"(Required) The Data Factory Linked Service ID in which to associate the Dataset with\" annotations = \"(Optional) List of tags that can be used for describing the Data Factory Dataset Azure SQL Table.\" parameters = \"(Optional) A map of parameters to associate with the Data Factory Dataset Azure SQL Table.\" additional_properties = \"(Optional) A map of additional properties to associate with the Data Factory Dataset Azure SQL Table.\" schema_column = \"(Optional) A schema_column block as defined below.\" name = \"(Required) The name of the column.\" type = \"(Optional) Type of the column. Valid values are Byte, Byte[], Boolean, Date, DateTime,DateTimeOffset, Decimal, Double, Guid, Int16, Int32, Int64, Single, String, TimeSpan . Please note these values are case sensitive.\" description = \"(Optional) The description of the column.\"",
+        "required": false,
+        "default": "null"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "datafactory_credential_config": {
+        "type": "map(object({ name = string data_factory_id = string user_assigned_identity_id = string }))",
+        "description": "(Optional) Configuration for Data Factory Credentials (User-Assigned Managed Identity). name = \"(Required) The name of the credential resource in Data Factory.\" data_factory_id = \"(Required) The ID of the Data Factory in which to create the credential.\" user_assigned_identity_id = \"(Required) The resource ID of the User-Assigned Managed Identity.\"",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "private_endpoint_config": {
+        "type": "map(object({ name = string data_factory_id = string target_resource_id = string subresource_name = optional(string, null) fqdns = optional(list(string), null) }))",
+        "description": "(Optional) Configuration for Managed Privatendpoint is below. name = \"(Required) Specifies the name which should be used for this Managed Private Endpoint.\" data_factory_id = \"(Required) The ID of the Data Factory on which to create the Managed Private Endpoint\" target_resource_id = \"(Required) The ID of the Private Link Enabled Remote Resource which this Data Factory Private Endpoint should be connected to.\" subresource_name = \"(Optional) Specifies the sub resource name which the Data Factory Private Endpoint is able to connect to.\" fqdns = \"(Optional) Fully qualified domain names.\"",
+        "required": false,
+        "default": "null"
+      }
+    }
+  },
+  "outputs": {
+    "azure_file_storage_linked_service_ids": {
+      "description": "The IDs of the Azure File Storage linked services."
+    },
+    "azure_file_storage_linked_service_names": {
+      "description": "The names of the Azure File Storage linked services."
+    },
+    "azure_file_storage_linked_service_resources": {
+      "description": "The Azure File Storage linked service resources."
+    },
+    "azure_function_linked_service_ids": {
+      "description": "The IDs of the Azure Function linked services."
+    },
+    "azure_function_linked_service_names": {
+      "description": "The names of the Azure Function linked services."
+    },
+    "azure_function_linked_service_resources": {
+      "description": "The Azure Function linked service resources."
+    },
+    "blob_storage_linked_service_ids": {
+      "description": "The IDs of the Azure Blob Storage linked services."
+    },
+    "blob_storage_linked_service_names": {
+      "description": "The names of the Azure Blob Storage linked services."
+    },
+    "blob_storage_linked_service_resources": {
+      "description": "The Azure Blob Storage linked service resources."
+    },
+    "custom_linked_service_ids": {
+      "description": "The IDs of the Data Factory Custom linked services."
+    },
+    "custom_linked_service_names": {
+      "description": "The names of the Data Factory Custom linked services."
+    },
+    "custom_linked_service_resources": {
+      "description": "The Data Factory Custom linked service resources."
+    },
+    "datafactory_credential_ids": {
+      "description": "The IDs of the Data Factory credentials."
+    },
+    "datafactory_credential_names": {
+      "description": "The names of the Data Factory credentials."
+    },
+    "datafactory_credential_resources": {
+      "description": "The Data Factory credential resources."
+    },
+    "key_vault_linked_service_ids": {
+      "description": "The IDs of the Azure Key Vault linked services."
+    },
+    "key_vault_linked_service_names": {
+      "description": "The names of the Azure Key Vault linked services."
+    },
+    "key_vault_linked_service_resources": {
+      "description": "The Azure Key Vault linked service resources."
+    },
+    "managed_private_endpoint_ids": {
+      "description": "The IDs of the Data Factory Managed Private Endpoints."
+    },
+    "managed_private_endpoint_names": {
+      "description": "The names of the Data Factory Managed Private Endpoints."
+    },
+    "managed_private_endpoint_resources": {
+      "description": "The Data Factory Managed Private Endpoint resources."
+    },
+    "postgresql_linked_service_ids": {
+      "description": "The IDs of the Azure PostgreSQL linked services."
+    },
+    "postgresql_linked_service_names": {
+      "description": "The names of the Azure PostgreSQL linked services."
+    },
+    "postgresql_linked_service_resources": {
+      "description": "The Azure PostgreSQL linked service resources."
+    },
+    "sftp_linked_service_ids": {
+      "description": "The IDs of the SFTP linked services."
+    },
+    "sftp_linked_service_names": {
+      "description": "The names of the SFTP linked services."
+    },
+    "sftp_linked_service_resources": {
+      "description": "The SFTP linked service resources."
+    },
+    "sql_linked_service_ids": {
+      "description": "The IDs of the Azure SQL Database linked services."
+    },
+    "sql_linked_service_names": {
+      "description": "The names of the Azure SQL Database linked services."
+    },
+    "sql_linked_service_resources": {
+      "description": "The Azure SQL Database linked service resources."
+    },
+    "sqlmi_linked_service_ids": {
+      "description": "The IDs of the Azure SQL Managed Instance linked services."
+    },
+    "sqlmi_linked_service_names": {
+      "description": "The names of the Azure SQL Managed Instance linked services."
+    },
+    "sqlmi_linked_service_resources": {
+      "description": "The Azure SQL Managed Instance linked service resources."
+    },
+    "sqlserver_linked_service_ids": {
+      "description": "The IDs of the Azure SQL Server linked services."
+    },
+    "sqlserver_linked_service_names": {
+      "description": "The names of the Azure SQL Server linked services."
+    },
+    "sqlserver_linked_service_resource": {
+      "description": "The Azure SQL Server linked service resources."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Datafactorylinkedservice' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

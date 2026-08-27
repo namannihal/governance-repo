@@ -1,0 +1,287 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Stream Analytics Service Pattern",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvcpat-streamanalytics'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvcpat-streamanalytics",
+  "module_type": "service-pattern",
+  "azure_service": "Streamanalytics",
+  "module_name": "Stream Analytics Service Pattern",
+  "latest_tag": "",
+  "available_tags": [],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-streamanalytics.git//",
+  "terraform_requirements": {
+    "azapi": ">= 1.10.0",
+    "azurerm": ">= 3.51",
+    "time": ">= 0.10.0",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Eventhub Namespace",
+    "Storage Account",
+    "Key Vault and associated Private Endpoint"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "time_sleep.wait_seconds_job",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "streamanalytics",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-streamanalytics.git//",
+      "version": "latest",
+      "available_versions": []
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name",
+      "start_mode",
+      "streaming_capacity",
+      "transformation_query",
+      "type"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "compatibility_level": {
+        "type": "string",
+        "description": "(Optional) Specifies the compatibility level for this job - which controls certain runtime behaviours of the streaming job. Possible values are 1.0, 1.1 and 1.2",
+        "required": false,
+        "default": "\"1.2\""
+      },
+      "consumer_group": {
+        "type": "object({ name = string eventhub_namespace_name = string eventhub_name = string resource_group_name = string user_metadata = optional(string, null) })",
+        "description": "(Optional) The Consumer group consists of below variables: name = \"(Required) The name of the Stream Input EventHub. Changing this forces a new resource to be created.\" eventhub_namespace_name = \"(Required) Specifies the name of the grandparent EventHub Namespace. Changing this forces a new resource to be created.\" eventhub_name = \"(Required) Specifies the name of the EventHub. Changing this forces a new resource to be created.\" resource_group_name = \"(Required) The name of the resource group in which the EventHub Consumer Group's grandparent Namespace exists. Changing this forces a new resource to be created.\" user_metadata = \"(Optional) Specifies the user metadata.\"",
+        "required": false,
+        "default": "null"
+      },
+      "content_storage_policy": {
+        "type": "string",
+        "description": "(Optional) The policy for storing Stream Analytics content. Possible values are JobStorageAccount, SystemAccount",
+        "required": false,
+        "default": "\"SystemAccount\""
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "data_locale": {
+        "type": "string",
+        "description": "(Optional) Specifies the Data Locale of the Job, which should be a supported .NET Culture.",
+        "required": false,
+        "default": "null"
+      },
+      "encoding": {
+        "type": "string",
+        "description": "(Optional) The encoding of the incoming data in the case of input and the encoding of outgoing data in the case of output. It currently can only be set to UTF8.",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "events_late_arrival_max_delay_in_seconds": {
+        "type": "number",
+        "description": "(Optional) Specifies the maximum tolerable delay in seconds where events arriving late could be included. Supported range is -1 (indefinite) to 1814399 (20d 23h 59m 59s).",
+        "required": false,
+        "default": "0"
+      },
+      "events_out_of_order_max_delay_in_seconds": {
+        "type": "number",
+        "description": "(Optional) Specifies the maximum tolerable delay in seconds where out-of-order events can be adjusted to be back in order. Supported range is 0 to 599 (9m 59s).",
+        "required": false,
+        "default": "5"
+      },
+      "events_out_of_order_policy": {
+        "type": "string",
+        "description": "(Optional) Specifies the policy which should be applied to events which arrive out of order in the input event stream. Possible values are Adjust and Drop",
+        "required": false,
+        "default": "\"Adjust\""
+      },
+      "field_delimiter": {
+        "type": "(pipe) and ;",
+        "description": "(Optional) The delimiter that will be used to separate comma-separated value (CSV) records. Possible values are (space), , (comma), (tab), \\",
+        "required": false,
+        "default": "string"
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = optional(list(string), null) })",
+        "description": "(Optional) An identity block supports the following: object({ type = \"(Required) Specifies the type of Managed Service Identity that should be configured on this Stream Analytics Job. Possible values are SystemAssigned and UserAssigned.\" identity_ids = \"(Optional) Specifies a list of User Assigned Managed Identity IDs to be assigned to this Cognitive Account.\" })",
+        "required": false,
+        "default": "{ \"identity_ids\": null, \"type\": \"SystemAssigned\" }"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "job_storage_account_azapi": {
+        "type": "object({ enable_job_storage_account = optional(bool, true) authentication_mode = optional(string, \"Msi\") account_name = optional(string) account_key = optional(string) account_id = optional(string) container_id = optional(string) })",
+        "description": "(Optional) Object containing variable job_storage_account of Stream Analytics job object({ enable_job_storage_account = \"(Optional) Select whether to create Job Storage Account or not.\" authentication_mode = \"(Optional) The authentication mode of the storage account. The supported values are `ConnectionString`, `Msi`.\" account_name = \"(Optional) The name of the Azure storage account.\" account_key = \"(Optional) The account key for the Azure storage account.\" account_id = \"(Optional) The storage account ID to be attached to Stream Analytics Job.\" container_id = \"(Optional) The ID the container inside storage account.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "job_type": {
+        "type": "string",
+        "description": "(Optional) The type of the Stream Analytics Job. Possible values are Cloud and Edge",
+        "required": false,
+        "default": "\"Cloud\""
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "managed_private_endpoint": {
+        "type": "map(object({ private_endpoint_name = string target_resource_id = string subresource_name = string }))",
+        "description": "(Optional) manage private endpoint configuration object({ private_endpoint_name = \"(Required) The name which should be used for this Stream Analytics Managed Private Endpoint. Changing this forces a new resource to be created.\" target_resource_id = \"(Required) The ID of the Private Link Enabled Remote Resource which this Stream Analytics Private endpoint should be connected to. Changing this forces a new resource to be created.\" subresource_name = \"(Required) Specifies the sub resource name which the Stream Analytics Private Endpoint is able to connect to. Changing this forces a new resource to be created.\" })",
+        "required": false,
+        "default": "{}"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "output_error_policy": {
+        "type": "string",
+        "description": "(Optional) Specifies the policy which should be applied to events which arrive at the output and cannot be written to the external storage due to being malformed (such as missing column values, column values of wrong type or size). Possible values are Drop and Stop",
+        "required": false,
+        "default": "\"Drop\""
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "sku_name": {
+        "type": "string",
+        "description": "(Optional) The Sku_name to use for stream_analytics_job. Possible values are `Standard` and `StandardV2`",
+        "required": false,
+        "default": "\"Standard\""
+      },
+      "start_mode": {
+        "type": "string",
+        "description": "(Required) The starting mode of the Stream Analytics Job. Possible values are JobStartTime, CustomTime and LastOutputEventTime. Setting start_mode to LastOutputEventTime is only possible if the job had been previously started and produced output.",
+        "required": true
+      },
+      "start_time": {
+        "type": "string",
+        "description": "(Optional) The time in ISO8601 format at which the Stream Analytics Job should be started e.g. 2022-04-01T00:00:00Z. This property can only be specified if start_mode is set to CustomTime.",
+        "required": false,
+        "default": "null"
+      },
+      "stream_function_javascript_udf": {
+        "type": "map(object({ input = object({ type = string configuration_parameter = optional(string) }) output = object({ type = string }) script = string }))",
+        "description": "(Optional) The Stream function Javascript Udf consists of below variables: input = object({ type = \"(Required) The Data Type for the Input Argument of this JavaScript Function. Possible values include array, any, bigint, datetime, float, nvarchar(max) and record.\" configuration_parameter = \"(Optional) Is this input parameter a configuration parameter? Defaults to false.\" }) output = object({ type = \"(Required) The Data Type output from this JavaScript Function. Possible values include array, any, bigint, datetime, float, nvarchar(max) and record.\" }) script = \"(Required) The JavaScript of this UDF Function.\" })",
+        "required": false,
+        "default": "{}"
+      },
+      "stream_input_eventhub": {
+        "type": "map(object({ eventhub_name = string eventhub_resource_group_name = string servicebus_namespace = string shared_access_policy_key = optional(string) shared_access_policy_name = optional(string) partition_key = optional(string) authentication_mode = optional(string) input_eventhub_id = string }))",
+        "description": "(Optional) object({ eventhub_name = \"(Required) The name of the Event Hub.\" eventhub_resource_group_name = \"(Required) The name of the Event Hub Resource Group.\" servicebus_namespace = \"(Required) The namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc.\" shared_access_policy_key = \"(Optional) The shared access policy key for the specified shared access policy.\" shared_access_policy_name = \"(Optional) The shared access policy name for the Event Hub, Service Bus Queue, Service Bus Topic, etc.\" partition_key = \"(Optional) The property the input Event Hub has been partitioned by.\" authentication_mode = \"(Optional) The authentication mode for the Stream Output.\" input_eventhub_id = \"(Required) The ID of the Eventhub under Eventhubnamespace.\" })",
+        "required": false,
+        "default": "{}"
+      },
+      "stream_output_eventhub": {
+        "type": "(pipe) and ;.\" output_format = \"(Optional) Specifies the format of the JSON the output will be written in. Possible values are Array and LineSeparated.\" })",
+        "description": "(Optional) object({ output_eventhub_name = \"(Required) The name of the Event Hub.\" output_eventhub_resource_group_name = \"(Required) The name of the Event Hub Resource Group.\" output_servicebus_namespace = \"(Required) The namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc.\" output_shared_access_policy_key = \"(Optional) The shared access policy key for the specified shared access policy.\" output_shared_access_policy_name = \"(Optional) The shared access policy name for the Event Hub, Service Bus Queue, Service Bus Topic, etc.\" output_partition_key = \"(Optional) The property the input Event Hub has been partitioned by.\" output_authentication_mode = \"(Optional) The authentication mode for the Stream Output. Possible values are Msi and ConnectionString. Defaults to ConnectionString. output_property_columns = \"(Optional) A list of property columns to add to the Event Hub output.\" output_eventhub_id = \"(Required) The ID of the Eventhub under Eventhubnamespace.\" serialization = object({ output_type = \"(Required) The serialization format used for outgoing data streams. Possible values are Avro, Csv, Json and Parquet.\" output_encoding = \"(Optional) The encoding of the incoming data in the case of input and the encoding of outgoing data in the case of output. It currently can only be set to UTF8.\" output_field_delimiter = \"(Optional) The delimiter that will be used to separate comma-separated value (CSV) records. Possible values are (space), , (comma), (tab), \\",
+        "required": false,
+        "default": "map(object({ output_eventhub_name = string output_eventhub_resource_group_name = string output_servicebus_namespace = string output_shared_access_policy_key = optional(string) output_shared_access_policy_name = optional(string) output_partition_key = optional(string) output_authentication_mode = optional(string, \"ConnectionString\") output_property_columns = optional(list(string)) output_eventhub_id = string output_serialization = object({ output_type = string output_encoding = optional(string, \"UTF8\") output_field_delimiter = optional(string) output_format = optional(string) }) }))"
+      },
+      "stream_output_mssql": {
+        "type": "map(object({ output_server = string output_user = optional(string) output_database = string output_password = optional(string) output_table = string output_max_batch_count = optional(number, 10000) output_max_writer_count = optional(number, 1) output_authentication_mode = optional(string, \"ConnectionString\") }))",
+        "description": "(Optional) object({ output_server = \"(Required) The SQL server url (fully_qualified_domain_name). Changing this forces a new resource to be created.\" output_user = \"(Optional) Username used to login to the Microsoft SQL Server. Changing this forces a new resource to be created. Required if authentication_mode is ConnectionString.\" output_database = \"(Required) The MS SQL database name where the reference table exists. Changing this forces a new resource to be created.\" output_password = \"(Optional) Password used together with username, to login to the Microsoft SQL Server. Required if authentication_mode is ConnectionString.\" output_table = \"(Required) Table (name) in the database that the output points to. Changing this forces a new resource to be created.\" output_max_batch_count = \"(Optional) The max batch count to write to the SQL Database. Defaults to 10000. Possible values are between 1 and 1073741824.\" output_max_writer_count = \"(Optional) The max writer count for the SQL Database. Defaults to 1. Possible values are 0 which bases the writer count on the query partition and 1 which corresponds to a single writer.\" output_authentication_mode = \"(Optional) The authentication mode for the Stream Output. Possible values are Msi and ConnectionString. Defaults to ConnectionString.\" })",
+        "required": false,
+        "default": "{}"
+      },
+      "streaming_capacity": {
+        "type": "number",
+        "description": "(Required) The number of streaming units supported by the Cluster. Accepted values are multiples of 36 in the range of 36 to 216",
+        "required": true
+      },
+      "streaming_units": {
+        "type": "number",
+        "description": "(Optional) Specifies the number of streaming units that the streaming job uses. Supported values are 1, 3, 6 and multiples of 6 up to 120",
+        "required": false,
+        "default": "3"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "transformation_query": {
+        "type": "string",
+        "description": "(Required) Specifies the query that will be run in the streaming job, written in Stream Analytics Query Language (SAQL).",
+        "required": true
+      },
+      "type": {
+        "type": "string",
+        "description": "(Required) The serialization format used for incoming data streams. Possible values are Avro, CSV and Json.",
+        "required": true
+      },
+      "uai_principal_id": {
+        "type": "string",
+        "description": "(Optional) Principal id of the User Assigned Identity.",
+        "required": false,
+        "default": "null"
+      }
+    }
+  },
+  "outputs": {
+    "streamanalytics_cluster_id": {
+      "description": "The resource ID of the stream analytics cluster."
+    },
+    "streamanalytics_cluster_name": {
+      "description": "The name of the stream analytics cluster."
+    },
+    "streamanalytics_cluster_resource": {
+      "description": "The stream analytics cluster resource."
+    },
+    "streamanalytics_job_id": {
+      "description": "The resource ID of the stream analytics job."
+    },
+    "streamanalytics_job_name": {
+      "description": "The name of the stream analytics job."
+    },
+    "streamanalytics_job_resource": {
+      "description": "The stream analytics job resource."
+    },
+    "streamanalytics_jobschedule_id": {
+      "description": "The resource ID of the stream analytics job."
+    },
+    "streamanalytics_jobschedule_resource": {
+      "description": "The stream analytics job resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Streamanalytics' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a service pattern module. It bundles multiple related services/configurations.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Eventhub Namespace",
+      "Storage Account",
+      "Key Vault and associated Private Endpoint"
+    ]
+  }
+}

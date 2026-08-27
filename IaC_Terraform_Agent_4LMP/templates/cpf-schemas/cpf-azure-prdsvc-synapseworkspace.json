@@ -1,0 +1,272 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Synapse Workspace Module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-synapseworkspace'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-synapseworkspace",
+  "module_type": "service",
+  "azure_service": "Synapseworkspace",
+  "module_name": "Azure Synapse Workspace Module",
+  "latest_tag": "1.1.2",
+  "available_tags": [
+    "1.1.2",
+    "1.1.1",
+    "1.1.0",
+    "1.0.1",
+    "1.0.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-synapseworkspace.git//?ref=1.1.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "key vault",
+    "managed identity",
+    "Network security Group",
+    "Subnet",
+    "Route table",
+    "keyVault",
+    "data lake storage",
+    "Blob storage",
+    "storage data lake gen 2 file system",
+    "Time sleep"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_key_vault_key.cmk1",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.system",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_synapse_spark_pool.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_synapse_workspace.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_synapse_workspace_aad_admin.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_synapse_workspace_key.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_synapse_workspace_sql_aad_admin.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "synapseworkspace",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-synapseworkspace.git//?ref=1.1.2",
+      "version": "1.1.2",
+      "available_versions": [
+        "1.1.2",
+        "1.1.1",
+        "1.1.0",
+        "1.0.1",
+        "1.0.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "customer_managed_key",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name",
+      "storage_data_lake_gen2_filesystem_id"
+    ],
+    "properties": {
+      "aad_admin": {
+        "type": "map(object({ login = string object_id = string tenant_id = string }))",
+        "description": "(Optional) A aad_admin block as defined below. object({ login = \"(Required) The login name of the Azure AD Administrator of this Synapse Workspace.\" object_id = \"(Required) The object id of the Azure AD Administrator of this Synapse Workspace.\" tenant_id = (Required) The tenant id of the Azure AD Administrator of this Synapse Workspace. })",
+        "required": false,
+        "default": "null"
+      },
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "azure_devops_repo": {
+        "type": "object({ account_name = string branch_name = string last_commit_id = string project_name = string repository_name = string root_folder = string tenant_id = string })",
+        "description": "(Optional) A azure_devops_repo block as defined below. object({ account_name = \"(Required) Specifies the Azure DevOps account name.\" branch_name = \"(Required) Specifies the collaboration branch of the repository to get code from.\" last_commit_id = \"(Optional) The last commit ID.\" project_name = \"(Required) Specifies the name of the Azure DevOps project.\" repository_name = \"(Required) Specifies the name of the git repository.\" root_folder = \"(Required) Specifies the root folder within the repository. Set to / for the top level.\" tenant_id = \"(Optional) the ID of the tenant for the Azure DevOps account.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "cmk_key_name": {
+        "type": "string",
+        "description": "(optional) Key name to be used (max 127 chars)",
+        "required": false,
+        "default": "null"
+      },
+      "cmk_rotation_policy": {
+        "type": "object({ notify_before_expiry = string time_before_expiry = string time_after_creation = optional(string, null) expire_after = string })",
+        "description": "(Optional) A rotation policy block as defined below object({ notify_before_expiry = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" time_before_expiry = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" time_after_creation = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" expire_after = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" })",
+        "required": false,
+        "default": "{ \"expire_after\": \"P365D\", \"notify_before_expiry\": \"P358D\", \"time_after_creation\": null, \"time_before_expiry\": \"P7D\" }"
+      },
+      "compute_subnet_id": {
+        "type": "string",
+        "description": "(Optional) Subnet ID used for computes in workspace Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "customer_managed_key": {
+        "type": "object({ key_vault_id = string expiration_date = string })",
+        "description": "(Required) An customer_managed_key block as defined below object({ key_vault_id = \"(Required) The resource ID of the Key Vault where the Key Vault Key resides.\" expiration_date = \"(Required) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').\" })",
+        "required": true
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "github_repo": {
+        "type": "object({ account_name = string branch_name = string last_commit_id = string repository_name = string root_folder = string git_url = string })",
+        "description": "(Optional) A azure_devops_repo block as defined below. object({ account_name = \"(Required) Specifies the GitHub account name.\" branch_name = \"(Required) Specifies the collaboration branch of the repository to get code from.\" last_commit_id = \"(Optional) The last commit ID.\" repository_name = \"(Required) Specifies the name of the git repository.\" root_folder = \"(Required) Specifies the root folder within the repository. Set to / for the top level.\" git_url = \"(Optional) Specifies the GitHub Enterprise host name.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = optional(list(string)) })",
+        "description": "(Optional) A Identity block as defined below. object({ type = \"(Required) Specifies the type of Managed Service Identity that should be associated with this Synapse Workspace.Possible values are SystemAssigned, UserAssigned and SystemAssigned, UserAssigned (to enable both).\" identity_ids = \"(Optional) Specifies a list of User Assigned Managed Identity IDs to be assigned to this Synapse Workspace.\" })",
+        "required": false,
+        "default": "{ \"identity_ids\": null, \"type\": \"SystemAssigned\" }"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "key_vault_tags": {
+        "type": "map(any)",
+        "description": "(Optional) Key Vault related tags to be set on key vault child resources.",
+        "required": false,
+        "default": "{}"
+      },
+      "linking_allowed_for_aad_tenant_ids": {
+        "type": "list(string)",
+        "description": "(Optional) Allowed AAD Tenant Ids For Linking.",
+        "required": false,
+        "default": "[]"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "managed_resource_group_name": {
+        "type": "string",
+        "description": "(Optional) Workspace managed resource group. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "purview_id": {
+        "type": "string",
+        "description": "(Optional) The ID of purview account.",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "spark_pools": {
+        "type": "map(object({ node_size_family = string node_size = string node_count = optional(number, null) #\"Cannot set both node_count and autoscale_max/min_node_count.\" cache_size = optional(number, null) compute_isolation_enabled = optional(bool, false) dynamic_executor_allocation_enabled = optional(bool, false) min_executors = optional(number, null) max_executors = optional(number, null) session_level_packages_enabled = optional(bool, false) spark_log_folder = optional(string, \"/logs\") spark_events_folder = optional(string, \"/events\") spark_version = optional(string, \"3.4\") autoscale_max_node_count = optional(number, 5) #\"Cannot set both node_count and autoscale_max/min_node_count.\" autoscale_min_node_count = optional(number, 3) #\"Cannot set both node_count and autoscale_max/min_node_count.\" autopause_delay_in_minutes = optional(number, null) requirements_content = optional(string, null) requirements_filename = optional(string, null) spark_config_content = optional(string, null) spark_config_filename = optional(string, null) }))",
+        "description": "\"(Optional) Map containing Spark Pool Objects.\" map(object({ node_size_family = (Required) The kind of nodes that the Spark Pool provides. Possible values are HardwareAcceleratedFPGA, HardwareAcceleratedGPU, MemoryOptimized, and None. node_size = (Required) The level of node in the Spark Pool. Possible values are Small, Medium, Large, None, XLarge, XXLarge and XXXLarge. node_count = (Optional) The number of nodes in the Spark Pool. Exactly one of node_count or auto_scale must be specified. cache_size = (Optional) The cache size in the Spark Pool. compute_isolation_enabled = (Optional) Indicates whether compute isolation is enabled or not. Defaults to false. dynamic_executor_allocation_enabled = (Optional) Indicates whether Dynamic Executor Allocation is enabled or not. Defaults to false. min_executors = (Optional) The minimum number of executors allocated only when dynamic_executor_allocation_enabled set to true. max_executors = (Optional) The maximum number of executors allocated only when dynamic_executor_allocation_enabled set to true. session_level_packages_enabled = (Optional) Indicates whether session level packages are enabled or not. Defaults to false. spark_log_folder = (Optional) The default folder where Spark logs will be written. Defaults to /logs. spark_events_folder = (Optional) The Spark events folder. Defaults to /events. spark_version = (Optional) The Apache Spark version. Possible values are 2.4 , 3.1 , 3.2, 3.3, and 3.4. Defaults to 2.4. autoscale_max_node_count = (Optional) The maximum number of nodes the Spark Pool can support. Must be between 3 and 200. autoscale_min_node_count = (Optional) The minimum number of nodes the Spark Pool can support. Must be between 3 and 200. autopause_delay_in_minutes = (Optional) Number of minutes of idle time before the Spark Pool is automatically paused. Must be between 5 and 10080. requirements_content = (Optional) The content of library requirements. requirements_filename = (Optional) The name of the library requirements file. spark_config_content = (Optional) The contents of a spark configuration. spark_config_filename = (Optional) The name of the file where the spark configuration content will be stored. }))",
+        "required": false,
+        "default": "{}"
+      },
+      "sql_aad_admin": {
+        "type": "map(object({ login = string object_id = string tenant_id = string }))",
+        "description": "(Optional) A sql_aad_admin block as defined below. object({ login = \"(Required) The login name of the Azure AD Administrator of this Synapse Workspace SQL.\" object_id = \"(Required) The object id of the Azure AD Administrator of this Synapse Workspace SQL.\" tenant_id = \"(Required) The tenant id of the Azure AD Administrator of this Synapse Workspace SQL.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "sql_administrator_login": {
+        "type": "string",
+        "description": "(Optional) Specifies The login name of the SQL administrator.If this is not provided aad_admin or customer_managed_key must be provided.",
+        "required": false,
+        "default": "null"
+      },
+      "sql_administrator_login_password": {
+        "type": "string",
+        "description": "(Optional) The Password associated with the sql_administrator_login for the SQL administrator.If this is not provided aad_admin or customer_managed_key must be provided.",
+        "required": false,
+        "default": "null"
+      },
+      "sql_identity_control_enabled": {
+        "type": "bool",
+        "description": "(Optional) Are pipelines (running as workspace's system assigned identity) allowed to access SQL pools",
+        "required": false,
+        "default": "true"
+      },
+      "storage_data_lake_gen2_filesystem_id": {
+        "type": "string",
+        "description": "(Required) Specifies the ID of storage data lake gen2 filesystem resource.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The Resource ID of the Azure Synapse Workspace."
+    },
+    "name": {
+      "description": "The Name of the Azure Synapse Workspace."
+    },
+    "resource": {
+      "description": "The Resource of the Azure Logic App Workflow"
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Synapseworkspace' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "key vault",
+      "managed identity",
+      "Network security Group",
+      "Subnet",
+      "Route table",
+      "keyVault",
+      "data lake storage",
+      "Blob storage",
+      "storage data lake gen 2 file system",
+      "Time sleep"
+    ]
+  }
+}

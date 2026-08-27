@@ -1,0 +1,298 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Cognitive Account module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-cognitiveaccount'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-cognitiveaccount",
+  "module_type": "service",
+  "azure_service": "Cognitiveaccount",
+  "module_name": "Cognitive Account module",
+  "latest_tag": "1.0.6",
+  "available_tags": [
+    "1.0.6",
+    "1.0.5",
+    "1.0.4",
+    "1.0.3",
+    "1.0.2"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cognitiveaccount.git//?ref=1.0.6",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Subnet",
+    "virtual network",
+    "Key Vault",
+    "SPN",
+    "Purging",
+    "Microsoft.CognitiveServices/locations/resourceGroups/deletedAccounts/delete",
+    "Custom-subscription-Resource-Constrained-Contributor-1.0.0",
+    "SRE ticket"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_cognitive_account.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_cognitive_deployment.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.cmk",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.spn_contributor",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.spn_quota",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_for_role_propagation",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_client_config.current",
+      "type": "data source"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.this",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "cognitiveaccount",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cognitiveaccount.git//?ref=1.0.6",
+      "version": "1.0.6",
+      "available_versions": [
+        "1.0.6",
+        "1.0.5",
+        "1.0.4",
+        "1.0.3",
+        "1.0.2"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "customer_managed_key",
+      "environment",
+      "kind",
+      "location",
+      "org_id",
+      "resource_group_name",
+      "sku_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "cmk_name": {
+        "type": "string",
+        "description": "(optional) Customer managed key name to be used (max 127 chars)",
+        "required": false,
+        "default": "null"
+      },
+      "cmk_rotation_policy": {
+        "type": "object({ notify_before_expiry = string time_before_expiry = string time_after_creation = optional(string, null) expire_after = string })",
+        "description": "(Optional) A rotation policy block as defined below object({ notify_before_expiry = \"(Required) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" time_before_expiry = \"(Required) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" time_after_creation = \"(Optional) Rotate automatically at a duration after create as an ISO 8601 duration.\" expire_after = \"(Required) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" })",
+        "required": false,
+        "default": "{ \"expire_after\": \"P365D\", \"notify_before_expiry\": \"P351D\", \"time_after_creation\": \"P358D\", \"time_before_expiry\": null }"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "create_deployment": {
+        "type": "bool",
+        "description": "(Optional) Whether or not to create deployment",
+        "required": false,
+        "default": "true"
+      },
+      "custom_question_answering_search_service_id": {
+        "type": "string",
+        "description": "(Optional) If kind is TextAnalytics this specifies the ID of the Search service.",
+        "required": false,
+        "default": "null"
+      },
+      "custom_question_answering_search_service_key": {
+        "type": "string",
+        "description": "(Optional) If kind is TextAnalytics this specifies the key of the Search service.",
+        "required": false,
+        "default": "null"
+      },
+      "custom_subdomain_name": {
+        "type": "string",
+        "description": "(Optional) The subdomain name used for token-based authentication. This property is required when network_acls is specified. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "customer_managed_key": {
+        "type": "object({ key_vault_id = string expiration_date = string identity_id = string identity_principal_id = string })",
+        "description": "(Required) A customer_managed_key block as defined below. CMK is only applied for services that support it (OpenAI, CustomVision.Prediction, CustomVision.Training, ContentSafety, Face, FormRecognizer, TextTranslation, TextAnalytics, LUIS, LUIS.Authoring, Speech, SpeechServices, ContentModerator, Personalizer). For other services the CMK configuration will be ignored. object({ key_vault_id = \"(Required) The resource ID of the Key Vault where the Key Vault Key resides.\" expiration_date = \"(Required) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').\" identity_id = \"(Required) The resource ID of the User Assigned Identity that has access to the key. To be used if `use_system_assigned_identity` is set to `false`\" identity_principal_id = \"(Required) The principal ID of the User Assigned Identity that has access to the key.\" })",
+        "required": true
+      },
+      "deployment_model": {
+        "type": "object({ format = optional(string, \"OpenAI\") name = string version = optional(string) })",
+        "description": "(Optional) Deployment Model block supports below values: format = \"(Optional) The format of the Cognitive Services Account Deployment model. Changing this forces a new resource to be created. Possible values of format can be found by running the command az cognitiveservices account list-models. The available values may vary by region or due to quota limitations. These could include models from AI21 Labs, Black Forest Labs, Cohere, Core42, DeepSeek, Meta, Microsoft, Mistral AI, OpenAI, and xAI. Defaults to OpenAI.\" name = \"(Required) The name of the Cognitive Services Account Deployment model. Changing this forces a new resource to be created. Example: gpt-35-turbo, gpt-35-turbo-instruct, gpt-4, gpt-4-32k, text-embedding-3-small, text-embedding-3-large, text-embedding-ada-002, gpt-35-turbo-16k, gpt-4o, gpt-4o-mini, gpt-4.1.\" version = \"(Optional) The version of Cognitive Services Account Deployment model. If version is not specified, the default version of the model at the time will be assigned.\"",
+        "required": false,
+        "default": "null"
+      },
+      "deployment_name": {
+        "type": "string",
+        "description": "(Optional) The name of the Cognitive Services Account Deployment. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "deployment_sku": {
+        "type": "object({ name = string tier = optional(string) size = optional(string) family = optional(string) capacity = optional(number, 1) })",
+        "description": "(Optional) SKU block supports below values: name = \"(Required) The name of the SKU. Possible values include Standard, DataZoneBatch, DataZoneStandard, DataZoneProvisionedManaged, GlobalBatch, GlobalProvisionedManaged, GlobalStandard, and ProvisionedManaged.\" tier = \"(Optional) Possible values are Free, Basic, Standard, Premium, Enterprise. This property is required only when multiple tiers are available with the SKU name. Changing this forces a new resource to be created.\" size = \"(Optional) The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code. Changing this forces a new resource to be created.\" family = \"(Optional) If the service has different generations of hardware, for the same SKU, then that can be captured here. Changing this forces a new resource to be created.\" capacity = \"(Optional) Tokens-per-Minute (TPM). The unit of measure for this field is in the thousands of Tokens-per-Minute. Defaults to 1 which means that the limitation is 1000 tokens per minute. If the resources SKU supports scale in/out then the capacity field should be included in the resources' configuration. If the scale in/out is not supported by the resources SKU then this field can be safely omitted.\"",
+        "required": false,
+        "default": "null"
+      },
+      "dynamic_throttling_enabled": {
+        "type": "bool",
+        "description": "(Optional) Whether to enable the dynamic throttling for this Cognitive Service Account.",
+        "required": false,
+        "default": "false"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "fqdns": {
+        "type": "list(string)",
+        "description": "(Optional) List of FQDNs allowed for the Cognitive Account.",
+        "required": false,
+        "default": "null"
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = optional(list(string), null) })",
+        "description": "(Optional) An identity block supports the following: object({ type = \"(Required) Specifies the type of Managed Service Identity that should be configured on this Cognitive Account. Possible values are SystemAssigned, UserAssigned, SystemAssigned, UserAssigned (to enable both).\" identity_ids = \"(Optional) Specifies a list of User Assigned Managed Identity IDs to be assigned to this Cognitive Account.\" })",
+        "required": false,
+        "default": "{ \"identity_ids\": null, \"type\": \"SystemAssigned\" }"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "key_vault_tags": {
+        "type": "map(any)",
+        "description": "(Optional) Key Vault related tags to be set on key vault child resources.",
+        "required": false,
+        "default": "{}"
+      },
+      "kind": {
+        "type": "string",
+        "description": "(Required) Specifies the type of Cognitive Service Account that should be created. Possible values are Academic, AnomalyDetector, Bing.Autosuggest, Bing.Autosuggest.v7, Bing.CustomSearch, Bing.Search, Bing.Search.v7, Bing.Speech, Bing.SpellCheck, Bing.SpellCheck.v7, CognitiveServices, ComputerVision, ContentModerator, ContentSafety, CustomSpeech, CustomVision.Prediction, CustomVision.Training, Emotion, Face, FormRecognizer, ImmersiveReader, LUIS, LUIS.Authoring, MetricsAdvisor, OpenAI, Personalizer, QnAMaker, Recommendations, SpeakerRecognition, Speech, SpeechServices, SpeechTranslation, TextAnalytics, TextTranslation and WebLM",
+        "required": true
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "network_acls": {
+        "type": "object({ default_action = string ip_rules = optional(list(string), null) virtual_network_rules = optional(object({ subnet_id = string ignore_missing_vnet_service_endpoint = optional(bool, false) }), null) })",
+        "description": "(Optional) describe your variable",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "rai_policy_name": {
+        "type": "string",
+        "description": "(Optional) The name of RAI policy.",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "sku_name": {
+        "type": "string",
+        "description": "(Required) Specifies the SKU Name for this Cognitive Service Account. Possible values are F0, F1, S0, S, S1, S2, S3, S4, S5, S6, P0, P1, P2, E0 and DC0.",
+        "required": true
+      },
+      "spn_object_id": {
+        "type": "string",
+        "description": "(Optional) The object ID of the service principal.",
+        "required": false,
+        "default": "null"
+      },
+      "storage": {
+        "type": "object({ storage_account_id = string identity_client_id = optional(string) })",
+        "description": "(Optional) Storage block supports below values: storage_account_id = \"(Required) Full resource id of a Microsoft.Storage resource.\" identity_client_id = \"(Optional) The client ID of the managed identity associated with the storage resource.\"",
+        "required": false,
+        "default": "null"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "version_upgrade_option": {
+        "type": "string",
+        "description": "(Optional) Deployment model version upgrade option. Possible values are OnceNewDefaultVersionAvailable, OnceCurrentVersionExpired, and NoAutoUpgrade. Defaults to OnceNewDefaultVersionAvailable.",
+        "required": false,
+        "default": "\"OnceNewDefaultVersionAvailable\""
+      }
+    }
+  },
+  "outputs": {
+    "deployment_id": {
+      "description": "The ID of the Deployment for Azure Cognitive Services Account."
+    },
+    "deployment_resource": {
+      "description": "The cognitive deployment resource."
+    },
+    "id": {
+      "description": "The ID of the created azurerm_cognitive_account."
+    },
+    "name": {
+      "description": "The name of the created azurerm_cognitive_account."
+    },
+    "resource": {
+      "description": "The cognitive account resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Cognitiveaccount' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Subnet",
+      "virtual network",
+      "Key Vault",
+      "SPN",
+      "Purging",
+      "Microsoft.CognitiveServices/locations/resourceGroups/deletedAccounts/delete",
+      "Custom-subscription-Resource-Constrained-Contributor-1.0.0",
+      "SRE ticket"
+    ]
+  }
+}

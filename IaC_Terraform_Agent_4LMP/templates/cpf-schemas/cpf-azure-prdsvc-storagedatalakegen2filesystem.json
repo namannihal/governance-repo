@@ -1,0 +1,139 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Storage Data Lake Gen2 File System module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-storagedatalakegen2filesystem'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-storagedatalakegen2filesystem",
+  "module_type": "service",
+  "azure_service": "Storagedatalakegen2filesystem",
+  "module_name": "Azure Storage Data Lake Gen2 File System module",
+  "latest_tag": "1.0.1",
+  "available_tags": [
+    "1.0.1",
+    "1.0.0",
+    "0.1.5",
+    "0.1.4",
+    "0.1.3"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-storagedatalakegen2filesystem.git//?ref=1.0.1",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Storage Account"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_storage_data_lake_gen2_filesystem.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_storage_data_lake_gen2_path.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "storagedatalakegen2filesystem",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-storagedatalakegen2filesystem.git//?ref=1.0.1",
+      "version": "1.0.1",
+      "available_versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.1.5",
+        "0.1.4",
+        "0.1.3"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "storage_account_id"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "file_System": {
+        "type": "object({ ace = optional(map(object({ scope = optional(string, null) type = string id = optional(string, null) permissions = string })), {}) owner = optional(string, null) group = optional(string, null) properties = optional(map(any), {}) })",
+        "description": "(Optional) A filesystem variable which contains the following attributes: (Optional) A mapping of Access Control Entries which should be assigned to this Data Lake Gen2 File System. ace = \"(Optional) A mapping of Access Control Entries which should be assigned to this Data Lake Gen2 File System.\" scope = \"(Optional) Specifies whether the ACE represents an access entry or a default entry. Default value is access.\" type = \"(Required) Specifies the type of entry. Can be user, group, mask or other.\" id = \"(Optional) Specifies the Object ID of the Azure Active Directory User or Group that the entry relates to. Only valid for user or group entries.\" permissions = \"(Required) Specifies the permissions for the entry in rwx form. For example, rwx gives full permissions but r-- only gives read permissions.\" owner = \"(Optional) Specifies the Object ID of the Azure Active Directory User to make the owning user of the root path (i.e. /). Possible values also include $superuser.\" group = \"(Optional) Specifies the Object ID of the Azure Active Directory Group to make the owning group of the root path (i.e. /). Possible values also include $superuser.\" properties = \"(Optional) A mapping of Key to Base64-Encoded Values which should be assigned to this Data Lake Gen2 File System.\"",
+        "required": false,
+        "default": "{}"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "path_variable": {
+        "type": "map(object({ ace = optional(map(object({ scope = optional(string) type = string id = optional(string) permissions = string })), null) owner = optional(string, null) group = optional(string, null) path = string resource = string }))",
+        "description": "(Optional) One ore more path variables contain the following attributes: (Optional) A mapping of Access Control Entries which should be assigned to this Data Lake Gen2 File System. ace = \"(Optional) A mapping of Access Control Entries which should be assigned to this Data Lake Gen2 File System.\" scope = \"(Optional) Specifies whether the ACE represents an access entry or a default entry. Default value is access.\" type = \"(Required) Specifies the type of entry. Can be user, group, mask or other.\" id = \"(Optional) Specifies the Object ID of the Azure Active Directory User or Group that the entry relates to. Only valid for user or group entries.\" permissions = \"(Required) Specifies the permissions for the entry in rwx form. For example, rwx gives full permissions but r-- only gives read permissions.\" owner = \"(Optional) Specifies the Object ID of the Azure Active Directory User to make the owning user of the root path (i.e. /). Possible values also include $superuser.\" group = \"(Optional) Specifies the Object ID of the Azure Active Directory Group to make the owning group of the root path (i.e. /). Possible values also include $superuser.\" path = \"(Required) The path which should be created within the Data Lake Gen2 File System in the Storage Account. Changing this forces a new resource to be created.\" resource = \"(Required) Specifies the type for path to create. Currently only directory is supported. Changing this forces a new resource to be created.\"",
+        "required": false,
+        "default": "{}"
+      },
+      "storage_account_id": {
+        "type": "string",
+        "description": "(Required) Specifies the ID of the Storage Account in which the Data Lake Gen2 File System should exist. Changing this forces a new resource to be created.",
+        "required": true
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The ID of the Data lake gen2 filesystem."
+    },
+    "name": {
+      "description": "The name of the Data lake gen2 filesystem."
+    },
+    "path_id": {
+      "description": "The ID of the Data lake gen2 path."
+    },
+    "path_name": {
+      "description": "The name of the Data lake gen2 path."
+    },
+    "path_resource": {
+      "description": "The Data lake gen2 path resource."
+    },
+    "resource": {
+      "description": "The Data lake gen2 filesystem resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Storagedatalakegen2filesystem' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Storage Account"
+    ]
+  }
+}

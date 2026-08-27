@@ -1,0 +1,194 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Subnet Module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-subnet'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-subnet",
+  "module_type": "service",
+  "azure_service": "Subnet",
+  "module_name": "Subnet Module",
+  "latest_tag": "0.8.5",
+  "available_tags": [
+    "0.8.5",
+    "0.8.4",
+    "0.8.3",
+    "0.8.2",
+    "0.8.1"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-subnet.git//?ref=0.8.5",
+  "terraform_requirements": {
+    "azapi": ">=1.9",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "virtual network",
+    "Resource Group",
+    "Network Security Group",
+    "Route Table",
+    "Service Principal (SPN)",
+    "Network Contributor"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azapi_resource.snet",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azapi_update_resource.vnet",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "subnet",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-subnet.git//?ref=0.8.5",
+      "version": "0.8.5",
+      "available_versions": [
+        "0.8.5",
+        "0.8.4",
+        "0.8.3",
+        "0.8.2",
+        "0.8.1"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "virtual_network_id"
+    ],
+    "properties": {
+      "address_prefix": {
+        "type": "string",
+        "description": "(Optional) The address prefix to use for the subnet.",
+        "required": false,
+        "default": "null"
+      },
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "default_outbound_access": {
+        "type": "bool",
+        "description": "(Optional) Specifies the default outbound access setting for the subnet.",
+        "required": false,
+        "default": "false"
+      },
+      "delegation": {
+        "type": "list(object({ delegation_name = string service_delegation_name = string }))",
+        "description": "(Optional) The Delegation to add to the Subnet.",
+        "required": false,
+        "default": "[]"
+      },
+      "enforce_private_link_endpoint_network_policies": {
+        "type": "string",
+        "description": "(Optional) Enable or disable network policies for the Private Endpoint on the subnet.",
+        "required": false,
+        "default": "\"Disabled\""
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "network_security_group_id": {
+        "type": "string",
+        "description": "(Optional) The ID of Network Security Group (NSG) to be associated with the subnet. For security reasons, a NSG should always be associated with a subnet, unless it is not supported.",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "private_link_service_network_policies_enabled": {
+        "type": "bool",
+        "description": "(Optional) Enable or disable network policies for the Private Link Service on the subnet.",
+        "required": false,
+        "default": "false"
+      },
+      "route_table_id": {
+        "type": "string",
+        "description": "(Optional) The ID of Route Table (UDR) to be associated with the subnet. For security reasons, a Route table should always be associated with a subnet, unless it is not supported.",
+        "required": false,
+        "default": "null"
+      },
+      "service_endpoints": {
+        "type": "list(string)",
+        "description": "(Optional) The list of Service endpoints to associate with the subnet. Possible values include: Microsoft.AzureActiveDirectory, Microsoft.AzureCosmosDB, Microsoft.ContainerRegistry, Microsoft.EventHub, Microsoft.KeyVault, Microsoft.ServiceBus, Microsoft.Sql, Microsoft.Storage and Microsoft.Web.",
+        "required": false,
+        "default": "[]"
+      },
+      "special_subnet_name": {
+        "type": "string",
+        "description": "(Optional) Used for Azure reserved subnet names.",
+        "required": false,
+        "default": "null"
+      },
+      "subnets": {
+        "type": "map(object({ instance = string address_prefix = string special_subnet_name = optional(string, null) service_endpoints = optional(list(string), []) cidr_newbits = optional(number, 0) cidr_netnum = optional(number, 0) routable_cidr = optional(string, null) network_security_group_id = optional(string, null) route_table_id = optional(string, null) enforce_private_link_endpoint_network_policies = optional(bool, false) private_link_service_network_policies_enabled = optional(bool, false) delegation = optional(list(object({ delegation_name = string service_delegation_name = string service_delegation_action = list(string) })), []) }))",
+        "description": "(Optional) Pass subnets in bulk as an alternative to passing subnets individually (must use one mechanism or other).",
+        "required": false,
+        "default": "null"
+      },
+      "virtual_network_id": {
+        "type": "string",
+        "description": "(Required) The Resource Id of the virtual network to which to attach the subnet.",
+        "required": true
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "Id of the created subnet."
+    },
+    "multiple_subnets_resource": {
+      "description": "The Multiple Subnets resource."
+    },
+    "name": {
+      "description": "Name of the created subnet."
+    },
+    "resource": {
+      "description": "The Subnet resource."
+    },
+    "subnet_ip": {
+      "description": "The address prefix IP within this subnet"
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Subnet' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "virtual network",
+      "Resource Group",
+      "Network Security Group",
+      "Route Table",
+      "Service Principal (SPN)",
+      "Network Contributor"
+    ]
+  }
+}

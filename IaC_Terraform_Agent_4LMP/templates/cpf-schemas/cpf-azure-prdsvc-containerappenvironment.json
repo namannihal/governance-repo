@@ -1,0 +1,241 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Container App Environment module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-containerappenvironment'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-containerappenvironment",
+  "module_type": "service",
+  "azure_service": "Containerappenvironment",
+  "module_name": "Container App Environment module",
+  "latest_tag": "1.2.1",
+  "available_tags": [
+    "1.2.1",
+    "1.2.0",
+    "1.1.0",
+    "1.0.4",
+    "1.0.3"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-containerappenvironment.git//?ref=1.2.1",
+  "terraform_requirements": {
+    "azapi": ">=1.9",
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Network Security Group",
+    "Subnet",
+    "Key Vault",
+    "Private Endpoint",
+    "Key Vault Secret",
+    "User Assigned Identity",
+    "Storage Account",
+    "Storage Share"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azapi_update_resource.premium_ingress",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_container_app_environment.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_container_app_environment_certificate.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_container_app_environment_dapr_component.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_container_app_environment_storage.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_for_cae",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "containerappenvironment",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-containerappenvironment.git//?ref=1.2.1",
+      "version": "1.2.1",
+      "available_versions": [
+        "1.2.1",
+        "1.2.0",
+        "1.1.0",
+        "1.0.4",
+        "1.0.3"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "infrastructure_subnet_id",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "dapr_component": {
+        "type": "map(object({ name = string type = string version = string ignore_errors = optional(bool, false) init_timeout = optional(string) scopes = optional(list(string)) metadata = optional(map(object({ name = string secret_name = optional(string) value = optional(string) }))) secret = optional(map(object({ name = string value = string }))) }))",
+        "description": "(Optional) map(object({ name = (Required) The name for this Dapr component. Changing this forces a new resource to be created. type = (Required) The Dapr Component Type. For example state.azure.blobstorage. Changing this forces a new resource to be created. version = (Required) The version of the component. ignore_errors = (Optional) Should the Dapr sidecar to continue initialisation if the component fails to load. Defaults to false init_timeout = (Optional) The timeout for component initialisation as a ISO8601 formatted string. e.g. 5s, 2h, 1m. Defaults to 5s scopes = (Optional) A list of scopes to which this component applies metadata = (Optional) One or more metadata blocks as detailed below. map(object({ name = (Required) The name of the Metadata configuration item. secret_name = (Optional) The name of a secret specified in the secrets block that contains the value for this metadata configuration item. value = (Optional) The value for this metadata configuration item. })) secret = (Optional) A secret block as detailed below. map(object({ name = (Required) The Secret name. value = (Required) The value for this secret. })) }))",
+        "required": false,
+        "default": "null"
+      },
+      "dapr_connectionstring": {
+        "type": "string",
+        "description": "(Optional) Application Insights connection string used by Dapr to export Service to Service communication telemetry.",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "environment_certificate": {
+        "type": "map(object({ name = string certificate_blob_base64 = optional(string) certificate_password = optional(string) certificate_key_vault = optional(object({ identity = optional(string, \"System\") key_vault_secret_id = string })) tags = optional(map(string)) }))",
+        "description": "(Optional) map(object({ name = \"(Required) The name of the Container Apps Environment Certificate. Changing this forces a new resource to be created.\" certificate_blob_base64 = \"(Optional) The Certificate Private Key as a base64 encoded PFX or PEM. Changing this forces a new resource to be created. One of certificate_blob_base64 and certificate_key_vault must be set.\" certificate_password = \"(Optional) The password for the Certificate. Changing this forces a new resource to be created. Required if certificate_blob_base64 is specified.\" certificate_key_vault = \"(Optional) A certificate_key_vault block. One of certificate_blob_base64 and certificate_key_vault must be set.\" object({ identity = \"(Optional) The managed identity to authenticate with Azure Key Vault. Possible values are the resource ID of user-assigned identity, and System for system-assigned identity. Defaults to System.\" key_vault_secret_id = \"(Required) The ID of the Key Vault Secret containing the certificate.\" }) tags = \"(Optional) A mapping of tags to assign to the resource.\" }))",
+        "required": false,
+        "default": "null"
+      },
+      "environment_storage": {
+        "type": "map(object({ name = string account_name = string access_key = string share_name = string access_mode = string }))",
+        "description": "(Optional) map(object({ name = (Required) The name for this Container App Environment Storage. Changing this forces a new resource to be created. account_name = (Required) The Azure Storage Account in which the Share to be used is located. Changing this forces a new resource to be created. access_key = (Required) The Storage Account Access Key. share_name = (Required) The name of the Azure Storage Share to use. Changing this forces a new resource to be created. access_mode = (Required) The access mode to connect this storage to the Container App. Possible values include ReadOnly and ReadWrite. Changing this forces a new resource to be created. }))",
+        "required": false,
+        "default": "null"
+      },
+      "infrastructure_resource_group_name": {
+        "type": "string",
+        "description": "(Optional) Name of the platform-managed resource group created for the Managed Environment to host infrastructure resources. Changing this forces a new resource to be created. Only valid if a workload_profile is specified. If infrastructure_subnet_id is specified, this resource group will be created in the same subscription as infrastructure_subnet_id",
+        "required": false,
+        "default": "null"
+      },
+      "infrastructure_subnet_id": {
+        "type": "string",
+        "description": "(Required) The existing Subnet to use for the Container Apps Control Plane. Changing this forces a new resource to be created. The Subnet must have a /21 or larger address space.",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "log_analytics_workspace_id": {
+        "type": "string",
+        "description": "(Optional) The ID for the Log Analytics Workspace to link this Container Apps Managed Environment to. Required if logs_destination is set to log-analytics. Cannot be set if logs_destination is set to azure-monitor.",
+        "required": false,
+        "default": "null"
+      },
+      "logs_destination": {
+        "type": "string",
+        "description": "(Optional) Where the application logs will be saved for this Container Apps Managed Environment. Possible values include log-analytics and azure-monitor. Omitting this value will result in logs being streamed only.",
+        "required": false,
+        "default": "\"azure-monitor\""
+      },
+      "mutual_tls_enabled": {
+        "type": "bool",
+        "description": "(Optional) Should mutual transport layer security (mTLS) be enabled. Enabling mTLS for your applications may increase response latency and reduce maximum throughput in high-load scenarios.",
+        "required": false,
+        "default": "true"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "premium_ingress_configuration": {
+        "type": "object({ workload_profile = object({ name = string workload_profile_type = string maximum_count = number minimum_count = number }) request_idle_timeout = optional(number, 4) header_count_limit = optional(number, 100) termination_grace_period_seconds = optional(number, 480) })",
+        "description": "(Optional) Premium Ingress configuration for the Managed Environment. Enables dedicated workload profile support for the ingress component and allows increasing the idle timeout. NOTE: - The workload profile for Premium Ingress is defined within this variable and is automatically registered on the environment. Users do NOT need to add it separately to the 'workload_profile' variable. - The ingress workload profile must NOT be shared with container apps or jobs. It is exclusively used by the ingress proxy. - The workload profile must have a minimum_count of at least 2. Azure will reject the configuration otherwise. - D4-D32 workload profile types are recommended. Each ingress proxy instance is allocated 1 vCPU core. object({ workload_profile = (Required) The dedicated workload profile configuration for the ingress component. Must not be shared with container apps or jobs. object({ name = (Required) Name of the workload profile used by the ingress component. Must be unique and not overlap with app workload profiles. workload_profile_type = (Required) Workload profile type. Recommended values: D4, D8, D16, D32. Possible values also include E4, E8, E16 and E32. maximum_count = (Required) The maximum number of instances. minimum_count = (Required) The minimum number of instances. Must be at least 2. }) request_idle_timeout = (Optional) Duration (in minutes) before idle requests are timed out. Must be between 4 and 30 inclusive. Defaults to 4 minutes. header_count_limit = (Optional) Maximum number of headers per request allowed by the ingress. Must be at least 1. Defaults to 100. termination_grace_period_seconds = (Optional) Time (in seconds) to allow active connections to complete on termination. Must be between 0 and 3600. Defaults to 480 seconds. })",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "workload_profile": {
+        "type": "map(object({ name = string workload_profile_type = string maximum_count = number minimum_count = number }))",
+        "description": "(Optional) map(object({ name = (Required) The name of the workload profile. workload_profile_type = (Required) Workload profile type for the workloads to run on. Possible values include Consumption, D4, D8, D16, D32, E4, E8, E16 and E32. A Consumption type must have a name of Consumption and an environment may only have one Consumption Workload Profile. maximum_count = (Required) The maximum number of instances of workload profile that can be deployed in the Container App Environment. minimum_count = (Required) The minimum number of instances of workload profile that can be deployed in the Container App Environment. }))",
+        "required": false,
+        "default": "null"
+      },
+      "zone_redundancy_enabled": {
+        "type": "bool",
+        "description": "(Optional) Should the Container App Environment be created with Zone Redundancy enabled? Defaults to false. Changing this forces a new resource to be created. Can only be set to true if infrastructure_subnet_id is specified.",
+        "required": false,
+        "default": "false"
+      }
+    }
+  },
+  "outputs": {
+    "env_certificate_resource": {
+      "description": "The Container App Environment Certificate resource."
+    },
+    "env_daprcomponent_resource": {
+      "description": "The Container App Environment Dapr Component resource."
+    },
+    "env_storage_resource": {
+      "description": "The Container App Environment Storage resource."
+    },
+    "id": {
+      "description": "The ID of the Container App Environment."
+    },
+    "name": {
+      "description": "The name of the Container App Environment."
+    },
+    "resource": {
+      "description": "The Container App Environment resource."
+    },
+    "workload_profile": {
+      "description": "The name of the Workload Profile."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Containerappenvironment' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Network Security Group",
+      "Subnet",
+      "Key Vault",
+      "Private Endpoint",
+      "Key Vault Secret",
+      "User Assigned Identity",
+      "Storage Account",
+      "Storage Share"
+    ]
+  }
+}

@@ -1,0 +1,212 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Key Vault Certificate module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-keyvaultcertificate'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-keyvaultcertificate",
+  "module_type": "service",
+  "azure_service": "Keyvaultcertificate",
+  "module_name": "Key Vault Certificate module",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.4.3",
+    "0.4.2"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-keyvaultcertificate.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Key Vault",
+    "Key Vault Certificate"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_key_vault_certificate.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "keyvaultcertificate",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-keyvaultcertificate.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.4.3",
+        "0.4.2"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "import_certificate",
+      "key_vault_id",
+      "location",
+      "org_id"
+    ],
+    "properties": {
+      "action_type": {
+        "type": "string",
+        "description": "(Optional) The Type of action to be performed when the lifetime trigger is triggered. Required when import_certificate is false. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "certificate_contents": {
+        "type": "string",
+        "description": "(Optional) The base64 encoded contents of the certificate to be imported. (Required) in case of import_certificate as True. PEM certificates are already base64-encoded, so don't need to be encoded again",
+        "required": false,
+        "default": "\"\""
+      },
+      "content_type": {
+        "type": "string",
+        "description": "(Optional) The Content-Type of the Certificate, such as application/x-pkcs12 for a PFX or application/x-pem-file for a PEM. Required when import_certificate is false. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "curve": {
+        "type": "string",
+        "description": "(Optional) Specifies the curve to use when creating an EC key. Possible values are P-256, P-256K, P-384, and P-521.This field will be required in a future release if key_type is EC or EC-HSM. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "\"P-256\""
+      },
+      "ec_key_required": {
+        "type": "bool",
+        "description": "(Optional) Do you want to create an `EC` key? Required when import_certificate is false.",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "import_certificate": {
+        "type": "bool",
+        "description": "(Required) Choose to import certificate or to generate one.",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "issuer_parameters_name": {
+        "type": "string",
+        "description": "(Optional) The name of the Certificate Issuer. Required when import_certificate is false. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "key_size": {
+        "type": "number",
+        "description": "(Optional) The size of the key used in the certificate. This property is required when using RSA keys and import_certificate is false. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "key_type": {
+        "type": "string",
+        "description": "(Optional) Specifies the type of key. Required when import_certificate is false. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "key_usage": {
+        "type": "list(string)",
+        "description": "(Optional) A list of uses associated with this Key. Required when import_certificate is false. Possible values are cRLSign, dataEncipherment, decipherOnly, digitalSignature, encipherOnly, keyAgreement, keyCertSign, keyEncipherment and nonRepudiation. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "key_vault_id": {
+        "type": "string",
+        "description": "(Required) The ID of the Key Vault where the Certificate should be created. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "password": {
+        "type": "string",
+        "description": "(Optional) The password associated with the certificate.",
+        "required": false,
+        "default": "null"
+      },
+      "path_of_certificate": {
+        "type": "string",
+        "description": "(Optional) Provide the path of the existing certificate. (Required) in case of import_certificate as True.",
+        "required": false,
+        "default": "null"
+      },
+      "reuse_key": {
+        "type": "bool",
+        "description": "(Optional) Is the key reusable? Required when import_certificate is false. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "trigger": {
+        "type": "object({ days_before_expiry = number lifetime_percentage = string })",
+        "description": "object({ days_before_expiry = \"(Optional) The number of days before the Certificate expires that the action associated with this Trigger should run. Changing this forces a new resource to be created. Conflicts with lifetime_percentage.\" lifetime_percentage = \"(Optional) The percentage at which during the Certificates Lifetime the action associated with this Trigger should run. Changing this forces a new resource to be created. Conflicts with days_before_expiry.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "x509_certificate_properties": {
+        "type": "object({ extended_key_usage = optional(list(string)) subject = string subject_alternative_names = object({ dns_names = optional(list(string)) emails = optional(list(string)) upns = optional(list(string)) }) validity_in_months = string })",
+        "description": "(Optional) Object Containing Variables for x509 certificate properties object({ extended_key_usage = \"(Optional) A list of Extended/Enhanced Key Usages. Changing this forces a new resource to be created.\" subject = \"(Required) The Certificate's Subject. Changing this forces a new resource to be created.\" subject_alternative_names = object({ dns_names = \"(Optional) A list of alternative DNS names (FQDNs) identified by the Certificate. Changing this forces a new resource to be created.\" emails = \"(Optional) A list of email addresses identified by this Certificate. Changing this forces a new resource to be created.\" upns = \"(Optional) A list of User Principal Names identified by the Certificate. Changing this forces a new resource to be created.\" }) validity_in_months = \"(Required) The Certificates Validity Period in Months. Changing this forces a new resource to be created.\" })",
+        "required": false,
+        "default": "null"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The Key Vault Certificate ID."
+    },
+    "name": {
+      "description": "The Key Vault Certificate Name."
+    },
+    "resource": {
+      "description": "The Key Vault Certificate resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Keyvaultcertificate' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Key Vault",
+      "Key Vault Certificate"
+    ]
+  }
+}

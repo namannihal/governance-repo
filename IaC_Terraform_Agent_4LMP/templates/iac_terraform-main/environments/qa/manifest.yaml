@@ -1,0 +1,6 @@
+manifest:
+  # globals (defaults)
+  use_packages: false
+  use_tags: true
+  code_tag: code-0.0.1
+  values_tag: qa-0.0.1

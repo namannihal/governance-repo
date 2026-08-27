@@ -1,0 +1,536 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure SQL Managed Instance module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-mssqlmanagedinstance'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-mssqlmanagedinstance",
+  "module_type": "service",
+  "azure_service": "Mssqlmanagedinstance",
+  "module_name": "Azure SQL Managed Instance module",
+  "latest_tag": "1.5.0",
+  "available_tags": [
+    "1.5.0",
+    "1.4.0",
+    "1.3.0",
+    "1.2.3",
+    "1.2.2"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-mssqlmanagedinstance.git//?ref=1.5.0",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "key vault",
+    "Subnet",
+    "virtual network",
+    "storage_endpoint",
+    "storage_account_access_key",
+    "null",
+    "azurerm_mssql_managed_instance_security_alert_policy",
+    "storageAccountAccessKey",
+    "storageContainerSasKey",
+    "azurerm_mssql_managed_instance_vulnerability_assessment"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_key_vault_key.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_mssql_managed_instance.failover",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_mssql_managed_instance.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_mssql_managed_instance_active_directory_administrator.failover",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_mssql_managed_instance_active_directory_administrator.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_mssql_managed_instance_failover_group.failover",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_mssql_managed_instance_security_alert_policy.failover",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_mssql_managed_instance_security_alert_policy.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_mssql_managed_instance_start_stop_schedule.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_mssql_managed_instance_transparent_data_encryption.failover",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_mssql_managed_instance_transparent_data_encryption.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_mssql_managed_instance_vulnerability_assessment.failover",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_mssql_managed_instance_vulnerability_assessment.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.cmk",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.cmk_failover",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.sqlmi_storage_va",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.sqlmi_storage_va_failover",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_rbac_propagation",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_rbac_propagation_failover",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_client_config.current",
+      "type": "data source"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.this",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "mssqlmanagedinstance",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-mssqlmanagedinstance.git//?ref=1.5.0",
+      "version": "1.5.0",
+      "available_versions": [
+        "1.5.0",
+        "1.4.0",
+        "1.3.0",
+        "1.2.3",
+        "1.2.2"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "administrator_login",
+      "administrator_login_password",
+      "app_id",
+      "customer_managed_key",
+      "environment",
+      "license_type",
+      "location",
+      "org_id",
+      "resource_group_name",
+      "sku_name",
+      "storage_size_in_gb",
+      "subnet_id",
+      "vcores"
+    ],
+    "properties": {
+      "admin_email": {
+        "type": "string",
+        "description": "(Optional) The email of the Azure AD User or Group to be added as administrator of this PostgreSQL Server.",
+        "required": false,
+        "default": "null"
+      },
+      "admin_object_id": {
+        "type": "string",
+        "description": "(Optional) The object ID of the Azure AD User or Group to be added as administrator of this PostgreSQL Server.",
+        "required": false,
+        "default": "null"
+      },
+      "administrator_login": {
+        "type": "string",
+        "description": "(Required) The administrator login name for the new server. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "administrator_login_password": {
+        "type": "string",
+        "description": "(Required) The password associated with the administrator_login user. Needs to comply with Azure's Password Policy",
+        "required": true
+      },
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "auto_rotation_enabled": {
+        "type": "bool",
+        "description": "(Optional) When enabled, the SQL Managed Instance will continuously check the key vault for any new versions of the key being used as the TDE protector. If a new version of the key is detected, the TDE protector on the SQL Managed Instance will be automatically rotated to the latest key version within 60 minutes.",
+        "required": false,
+        "default": "true"
+      },
+      "azuread_authentication_only": {
+        "type": "bool",
+        "description": "(Optional) Specify if you want to enable only Entra ID authentication.",
+        "required": false,
+        "default": "true"
+      },
+      "cmk_key_name": {
+        "type": "string",
+        "description": "(optional) Key name to be used (max 127 chars)",
+        "required": false,
+        "default": "null"
+      },
+      "collation": {
+        "type": "string",
+        "description": "(Optional) Specifies how the SQL Managed Instance will be collated. Changing this forces a new resource to be created",
+        "required": false,
+        "default": "\"SQL_Latin1_General_CP1_CI_AS\""
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "create_role_assignment": {
+        "type": "bool",
+        "description": "(Optional) Whether to create a role assignment to the primary service identity to allow access to the key vault keys.",
+        "required": false,
+        "default": "true"
+      },
+      "create_role_assignment_failover": {
+        "type": "bool",
+        "description": "(Optional) Whether to create a role assignment to the failover service identity to allow access to the key vault keys.",
+        "required": false,
+        "default": "true"
+      },
+      "customer_managed_key": {
+        "type": "object({ key_vault_id = string expiration_date = string identity_id = optional(string) identity_principal_id = optional(string) })",
+        "description": "(Required) An customer_managed_key block as defined below object({ key_vault_id = \"(Required) The resource ID of the Key Vault where the Key Vault Key resides.\" expiration_date = \"(Required) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').\" identity_id = \"(Optional) The resource ID of the User Assigned Identity that has access to the key. To be used if `use_system_assigned_identity` is set to `false`\" identity_principal_id = \"(Optional) The principal ID of the User Assigned Identity that has access to the key.\" })",
+        "required": true
+      },
+      "database_format": {
+        "type": "string",
+        "description": "(Optional) Specifies the internal format of the SQL Managed Instance databases specific to the SQL engine version. Possible values are `AlwaysUpToDate` and `SQLServer2022`. Defaults to `SQLServer2022`. Note: Changing from `AlwaysUpToDate` to `SQLServer2022` forces a new resource to be created.",
+        "required": false,
+        "default": "\"SQLServer2022\""
+      },
+      "enable_entra_id_authentication": {
+        "type": "bool",
+        "description": "(Optional) Specify if you want to enable Entra ID authentication.",
+        "required": false,
+        "default": "true"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "failover_group": {
+        "type": "object({ failover_enabled = bool location = string readonly_endpoint_failover_policy_enabled = optional(bool, true) secondary_type = optional(string) use_unique_failover_group_name = optional(bool, false) # New backward-compatible flag })",
+        "description": "Note: If the variable is omitted, the default block below would be applied. Not the individual default values for each parameter. failover_enabled = \"(Required) Check if Failover to be enabled\" location = \"(Required) The Azure Region where the Managed Instance Failover Group should exist. Changing this forces a new resource to be created.\" readonly_endpoint_failover_policy_enabled = \"(Optional) Failover policy for the read-only endpoint. Defaults to true.\" secondary_type = \"(Optional) The type of the secondary Managed Instance. Possible values are Geo, Standby. Defaults to Geo.\" use_unique_failover_group_name = \"(Optional) If true, creates a unique naming module for failover group with global scope. If false (default), uses the existing failover instance naming for backward compatibility. Defaults to false.\"",
+        "required": false,
+        "default": "{ \"failover_enabled\": false, \"location\": null, \"readonly_endpoint_failover_policy_enabled\": true, \"secondary_type\": \"Geo\", \"use_unique_failover_group_name\": false }"
+      },
+      "failover_storage_account_type": {
+        "type": "string",
+        "description": "(Optional) Specifies the storage account type in secondary region used to store backups for this database. Changing this forces a new resource to be created. Possible values are GRS, GZRS, LRS and ZRS.",
+        "required": false,
+        "default": "\"GRS\""
+      },
+      "failover_zone_redundant_enabled": {
+        "type": "bool",
+        "description": "(Optional) Specifies whether or not the SQL Managed Instance is zone redundant in secondary region. Defaults to `false`.",
+        "required": false,
+        "default": "false"
+      },
+      "general_purpose_v2_enabled": {
+        "type": "bool",
+        "description": "(Optional) Specifies whether the SQL Managed Instance should use the Next-gen General Purpose service tier. Defaults to false. Can only be set to true when using a General Purpose (GP_*) SKU.",
+        "required": false,
+        "default": "false"
+      },
+      "hybrid_secondary_usage": {
+        "type": "string",
+        "description": "(Optional) Specifies the hybrid secondary usage for disaster recovery of the SQL Managed Instance. Possible values are `Active` and `Passive`. Defaults to `Active`.",
+        "required": false,
+        "default": "\"Active\""
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = optional(list(string)) })",
+        "description": "(Optional) An identity block supports the following: object({ type = \"(Required) Specifies the type of Managed Service Identity that should be configured on this SQL Managed Instance.\" identity_ids = \"(Optional) A list of User Assigned Managed Identity IDs to be assigned to this SQL Managed Instance. Required if used together with customer_managed_key block.\" })",
+        "required": false,
+        "default": "{ \"identity_ids\": null, \"type\": \"SystemAssigned\" }"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "key_size": {
+        "type": "number",
+        "description": "(Optional) Specifies the Size of the RSA key to create in bytes. Allowed values are 1024, 2048, 3072 or 4096.",
+        "required": false,
+        "default": "2048"
+      },
+      "key_type": {
+        "type": "string",
+        "description": "(Optional) Specifies the Key Type to use for the Key Vault Key.",
+        "required": false,
+        "default": "\"RSA-HSM\""
+      },
+      "key_vault_tags": {
+        "type": "map(any)",
+        "description": "(Optional) Key Vault related tags to be set on key vault child resources.",
+        "required": false,
+        "default": "{}"
+      },
+      "license_type": {
+        "type": "string",
+        "description": "(Required) Type of license the Managed Instance will use. Possible values are LicenseIncluded and BasePrice.",
+        "required": true
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "maintenance_configuration_name": {
+        "type": "string",
+        "description": "(Optional) The name of the Public Maintenance Configuration window to apply to the SQL Managed Instance. Valid values include SQL_Default or an Azure Location in the format SQL_{Location}_MI_{Size}(for example SQL_EastUS_MI_1).",
+        "required": false,
+        "default": "\"SQL_Default\""
+      },
+      "maintenance_configuration_name_failover": {
+        "type": "string",
+        "description": "(Optional) The name of the Public Maintenance Configuration window to apply to the failover SQL Managed Instance. Valid values include SQL_Default or an Azure Location in the format SQL_{Location}_MI_{Size}(for example SQL_CentralUS_MI_2). If not specified, defaults to the value of maintenance_configuration_name.",
+        "required": false,
+        "default": "\"SQL_Default\""
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "proxy_override": {
+        "type": "string",
+        "description": "(Optional) Specifies how the SQL Managed Instance will be accessed. Valid values include Proxy, and Redirect.",
+        "required": false,
+        "default": "\"Redirect\""
+      },
+      "read_write_endpoint_failover_policy": {
+        "type": "object({ mode = string grace_minutes = optional(number, null) })",
+        "description": "mode = \"(Required) The failover mode. Possible values are Automatic or Manual.\" grace_minutes = \"(Optional) Applies only if mode is Automatic. The grace period in minutes before failover with data loss is attempted.\"",
+        "required": false,
+        "default": "{ \"grace_minutes\": 60, \"mode\": \"Automatic\" }"
+      },
+      "recurring_scans": {
+        "type": "object({ enabled = optional(bool) email_subscription_admins = optional(bool) emails = optional(list(string)) })",
+        "description": "recurring_scans = \"(Optional) The recurring scans settings. The recurring_scans block supports fields documented below.\" enabled = \"(Optional) Boolean flag which specifies if recurring scans is enabled or disabled. Defaults to false.\" email_subscription_admins = \"(Optional) Boolean flag which specifies if the schedule scan notification will be sent to the subscription administrators. Defaults to true.\" emails = \"(Optional) Specifies an array of e-mail addresses to which the scan notification is sent.\"",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "resource_group_name_failover": {
+        "type": "string",
+        "description": "(Optional) Name of the Resource Group in which to create the resource.",
+        "required": false,
+        "default": "null"
+      },
+      "rotation_policy": {
+        "type": "object({ notify_before_expiry = string time_before_expiry = string time_after_creation = optional(string, null) expire_after = string })",
+        "description": "(Optional) A rotation policy block as defined below object({ notify_before_expiry = \"(Required) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" time_before_expiry = \"(Required) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" time_after_creation = \"(Optional) Rotate automatically at a duration after create as an ISO 8601 duration.\" expire_after = \"(Required) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" })",
+        "required": false,
+        "default": "{ \"expire_after\": \"P365D\", \"notify_before_expiry\": \"P351D\", \"time_after_creation\": \"P358D\", \"time_before_expiry\": null }"
+      },
+      "security_alert": {
+        "type": "object({ disabled_alerts = list(string) enabled = bool email_account_admins_enabled = bool email_addresses = optional(list(string)) retention_days = number storage_endpoint = optional(string) storage_account_access_key = optional(string) })",
+        "description": "(Optional) Managed Instance Security Alert Policy block as defined below object({ disabled_alerts = \"(Optional) Specifies an array of alerts that are disabled. Possible values are Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action and Brute_Force\" enabled = \"(Optional) Specifies the state of the Security Alert Policy, whether it is enabled or disabled. Possible values are true, false.\" email_account_admins_enabled = \"(Optional) Boolean flag which specifies if the alert is sent to the account administrators or not. Defaults to false.\" email_addresses = \"(Optional) Specifies an array of email addresses to which the alert is sent.\" retention_days = \"(Optional) Specifies the number of days to keep in the Threat Detection audit logs. Defaults to 0.\" storage_endpoint = \"(Optional) Specifies the blob storage endpoint (e.g. https://example.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs.\" storage_account_access_key = \"(Optional) Specifies the identifier key of the Threat Detection audit storage account. This is mandatory when you use storage_endpoint to specify a storage account blob endpoint.\" })",
+        "required": false,
+        "default": "{ \"disabled_alerts\": [ \"Sql_Injection\", \"Sql_Injection_Vulnerability\", \"Access_Anomaly\", \"Data_Exfiltration\", \"Unsafe_Action\", \"Brute_Force\" ], \"email_account_admins_enabled\": true, \"email_addresses\": null, \"enabled\": false, \"retention_days\": 7, \"storage_account_access_key\": null, \"storage_endpoint\": null }"
+      },
+      "security_alert_failover": {
+        "type": "object({ storage_endpoint = optional(string) storage_account_access_key = optional(string) })",
+        "description": "(Optional) Managed Instance Security Alert Policy block as defined below object({ storage_endpoint = \"(Optional) Specifies the blob storage endpoint (e.g. https://example.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs.\" storage_account_access_key = \"(Optional) Specifies the identifier key of the Threat Detection audit storage account. This is mandatory when you use storage_endpoint to specify a storage account blob endpoint.\" })",
+        "required": false,
+        "default": "{ \"storage_account_access_key\": null, \"storage_endpoint\": null }"
+      },
+      "sku_name": {
+        "type": "string",
+        "description": "(Required) Specifies the SKU Name for the SQL Managed Instance. Valid values include GP_Gen4, GP_Gen5, GP_Gen8IM, GP_Gen8IH, BC_Gen4, BC_Gen5, BC_Gen8IM or BC_Gen8IH.",
+        "required": true
+      },
+      "sku_name_failover": {
+        "type": "string",
+        "description": "(Optional) Specifies the SKU Name for the failover SQL Managed Instance. If not specified, defaults to the value of sku_name. Valid values include GP_Gen4, GP_Gen5, GP_Gen8IM, GP_Gen8IH, BC_Gen4, BC_Gen5, BC_Gen8IM or BC_Gen8IH.",
+        "required": false,
+        "default": "null"
+      },
+      "start_stop_description": {
+        "type": "string",
+        "description": "(Optional) Specifies the description of the start/stop schedule.",
+        "required": false,
+        "default": "null"
+      },
+      "start_stop_schedule": {
+        "type": "list(object({ start_day = string start_time = string stop_day = string stop_time = string }))",
+        "description": "(Optional) A list of schedule blocks for the SQL Managed Instance start/stop schedule. object({ start_day = \"(Required) Start day of the schedule. Possible values are Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday.\" start_time = \"(Required) Start time of the schedule in 24-hour format (e.g., 08:00).\" stop_day = \"(Required) Stop day of the schedule. Possible values are Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday.\" stop_time = \"(Required) Stop time of the schedule in 24-hour format (e.g., 17:00).\" })",
+        "required": false,
+        "default": "[]"
+      },
+      "start_stop_timezone_id": {
+        "type": "string",
+        "description": "(Optional) Specifies the time zone of the start/stop schedule. Defaults to UTC.",
+        "required": false,
+        "default": "\"UTC\""
+      },
+      "storage_account_id_for_va": {
+        "type": "string",
+        "description": "(Optional) The resource ID of the storage account for vulnerability assessment. Used to create RBAC role assignment before vulnerability assessment creation. If not provided, role assignment will use storage_account_id from vulnerability_assessment variable.",
+        "required": false,
+        "default": "null"
+      },
+      "storage_account_id_for_va_failover": {
+        "type": "string",
+        "description": "(Optional) The resource ID of the storage account for vulnerability assessment in failover region. Used to create RBAC role assignment before vulnerability assessment creation. If not provided, role assignment will use storage_account_id from vulnerability_assessment_failover variable.",
+        "required": false,
+        "default": "null"
+      },
+      "storage_account_type": {
+        "type": "string",
+        "description": "(Optional) Specifies the storage account type used to store backups for this database. Changing this forces a new resource to be created. Possible values are GRS, GZRS, LRS and ZRS.",
+        "required": false,
+        "default": "\"GRS\""
+      },
+      "storage_size_in_gb": {
+        "type": "number",
+        "description": "(Required) Maximum storage space for the SQL Managed instance. This should be a multiple of 32 (GB).",
+        "required": true
+      },
+      "subnet_id": {
+        "type": "string",
+        "description": "(Required) The subnet resource id that the SQL Managed Instance will be associated with. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "subnet_id_failover": {
+        "type": "string",
+        "description": "(Optional) The subnet resource id that the SQL Managed Instance will be associated with. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "timezone_id": {
+        "type": "string",
+        "description": "(Optional) The TimeZone ID that the SQL Managed Instance will be operating in. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "\"UTC\""
+      },
+      "uai_principal_id": {
+        "type": "string",
+        "description": "(Optional) Principal id of the User Assigned Identity which should be used to access the CMK encryption key in the Key Vault. This identity will be granted `Key Vault Crypto Service Encryption User` role on the Key vault. This must be the principal id of one of the `User Assigned Identities` assigned to the storage Account else `System Assigned Managed Identity` to be used.",
+        "required": false,
+        "default": "null"
+      },
+      "vcores": {
+        "type": "number",
+        "description": "(Required) Number of cores that should be assigned to the SQL Managed Instance. Values can be 8, 16, or 24 for Gen4 SKUs, or 4, 8, 16, 24, 32, 40, 64, or 80 for Gen5 SKUs.",
+        "required": true
+      },
+      "vcores_failover": {
+        "type": "number",
+        "description": "(Optional) Number of cores that should be assigned to the failover SQL Managed Instance. If not specified, defaults to the value of vcores. Values can be 8, 16, or 24 for Gen4 SKUs, or 4, 8, 16, 24, 32, 40, 64, or 80 for Gen5 SKUs.",
+        "required": false,
+        "default": "null"
+      },
+      "vulnerability_assessment": {
+        "type": "object({ storage_container_path = string storage_account_access_key = optional(string) storage_container_sas_key = optional(string) enabled = optional(bool) })",
+        "description": "storage_container_path = \"(Required) A blob storage container path to hold the scan results (e.g. https://myStorage.blob.core.windows.net/VaScans/).\" storage_account_access_key = \"(Optional) Specifies the identifier key of the storage account for vulnerability assessment scan results. If storage_container_sas_key isn't specified, storage_account_access_key is required.\" storage_container_sas_key = \"(Optional) A shared access signature (SAS Key) that has write access to the blob container specified in storage_container_path parameter. If storage_account_access_key isn't specified, storage_container_sas_key is required.\" enabled = \"(Optional) Specifies the state of the vulnerability assessment, whether it is enabled or disabled. Possible values are true, false.\"",
+        "required": false,
+        "default": "{ \"enabled\": false, \"storage_account_access_key\": null, \"storage_container_path\": null, \"storage_container_sas_key\": null }"
+      },
+      "vulnerability_assessment_failover": {
+        "type": "object({ storage_container_path = string storage_account_access_key = optional(string) storage_container_sas_key = optional(string) })",
+        "description": "storage_container_path = \"(Required) A blob storage container path to hold the scan results (e.g. https://myStorage.blob.core.windows.net/VaScans/).\" storage_account_access_key = \"(Optional) Specifies the identifier key of the storage account for vulnerability assessment scan results. If storage_container_sas_key isn't specified, storage_account_access_key is required.\" storage_container_sas_key = \"(Optional) A shared access signature (SAS Key) that has write access to the blob container specified in storage_container_path parameter. If storage_account_access_key isn't specified, storage_container_sas_key is required.\"",
+        "required": false,
+        "default": "{ \"storage_account_access_key\": null, \"storage_container_path\": null, \"storage_container_sas_key\": null }"
+      },
+      "zone_redundant_enabled": {
+        "type": "bool",
+        "description": "(Optional) Specifies whether or not the SQL Managed Instance is zone redundant. Defaults to `false`.",
+        "required": false,
+        "default": "false"
+      }
+    }
+  },
+  "outputs": {
+    "active_directory_administrator_id": {
+      "description": "The ID of the SQL Managed Instance active directory administrator"
+    },
+    "fqdn": {
+      "description": "The FQDN of the SQL Managed Instance"
+    },
+    "id": {
+      "description": "The ID of the SQL Managed Instance"
+    },
+    "name": {
+      "description": "The name of the SQL Managed Instance."
+    },
+    "resource": {
+      "description": "The SQL Managed Instance resource."
+    },
+    "resource_failover": {
+      "description": "The SQL Managed Instance resource for failover region."
+    },
+    "security_alert_policy_id": {
+      "description": "The ID of the MS SQL Managed Instance Security Alert Policy"
+    },
+    "transparent_data_encryption_id": {
+      "description": "The ID of the MSSQL Managed Instance encryption protector"
+    },
+    "vulnerability_assessment_id": {
+      "description": "The ID of the MS SQL Managed Instance Vulnerability Assessment."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Mssqlmanagedinstance' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "key vault",
+      "Subnet",
+      "virtual network",
+      "storage_endpoint",
+      "storage_account_access_key",
+      "null",
+      "azurerm_mssql_managed_instance_security_alert_policy",
+      "storageAccountAccessKey",
+      "storageContainerSasKey",
+      "azurerm_mssql_managed_instance_vulnerability_assessment"
+    ]
+  }
+}

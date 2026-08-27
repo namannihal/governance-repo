@@ -1,0 +1,235 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Machine learning workspace module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-machinelearningworkspace'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-machinelearningworkspace",
+  "module_type": "service",
+  "azure_service": "Machinelearningworkspace",
+  "module_name": "Azure Machine learning workspace module",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.5.2",
+    "0.5.1"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-machinelearningworkspace.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azapi": ">= 1.9",
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "resource_group",
+    "virtual_network",
+    "user_assign_identity",
+    "key_vault",
+    "storage_account",
+    "app_insight",
+    "container_registry",
+    "private_endpoint_key_vault",
+    "private_endpoint_storage_account_file_share",
+    "private_endpoint_container_registry",
+    "subnet",
+    "network_security_group",
+    "time_sleep",
+    "route table",
+    "Log analytics workspace",
+    "App Insight configuration"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_machine_learning_workspace.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "machinelearningworkspace",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-machinelearningworkspace.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.5.2",
+        "0.5.1"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "application_insights_id",
+      "environment",
+      "key_vault_id",
+      "location",
+      "org_id",
+      "resource_group_name",
+      "storage_account_id"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "application_insights_id": {
+        "type": "string",
+        "description": "(Required) The ID of the Application Insights associated with this Machine Learning Workspace. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "container_registry_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the container registry associated with this Machine Learning Workspace. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "description": {
+        "type": "string",
+        "description": "(Optional) The description of this Machine Learning Workspace.",
+        "required": false,
+        "default": "\"\""
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "feature_store": {
+        "type": "object({ computer_spark_runtime_version = string offline_connection_name = string online_connection_name = string })",
+        "description": "(Optional) A feature_store block as defined below. object({ computer_spark_runtime_version = (Optional) The version of Spark runtime. offline_connection_name = (Optional) The name of offline store connection (Azure storage data lake gen2 reosurce id). online_connection_name = (Optional) The name of online store connection (Azure redius cache resource id). })",
+        "required": false,
+        "default": "null"
+      },
+      "friendly_name": {
+        "type": "string",
+        "description": "(Optional) Display name for this Machine Learning Workspace.",
+        "required": false,
+        "default": "\"\""
+      },
+      "identity_ids": {
+        "type": "list(string)",
+        "description": "(Optional) Specifies a list of User Assigned Managed Identity IDs to be assigned to this Machine Learning Workspace.",
+        "required": false,
+        "default": "null"
+      },
+      "identity_type": {
+        "type": "string",
+        "description": "(Optional) Specifies the type of Managed Service Identity that should be configured on this Machine Learning Workspace. Possible values are SystemAssigned, UserAssigned, SystemAssigned, UserAssigned",
+        "required": false,
+        "default": "\"SystemAssigned\""
+      },
+      "image_build_compute_name": {
+        "type": "string",
+        "description": "(Optional) The compute name for image build of the Machine Learning Workspace.",
+        "required": false,
+        "default": "null"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "key_vault_id": {
+        "type": "string",
+        "description": "(Required) The ID of key vault associated with this Machine Learning Workspace. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "kind": {
+        "type": "string",
+        "description": "(Optional) The type of the Workspace. Possible values are Default, FeatureStore. Defaults to Default",
+        "required": false,
+        "default": "\"Default\""
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "primary_user_assigned_identity": {
+        "type": "string",
+        "description": "(Optional) The user assigned identity id that represents the workspace identity.",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "sku_name": {
+        "type": "string",
+        "description": "(Optional) SKU/edition of the Machine Learning Workspace, possible values are Basic. Defaults to Basic.",
+        "required": false,
+        "default": "\"Basic\""
+      },
+      "storage_account_id": {
+        "type": "string",
+        "description": "(Required) The ID of the Storage Account associated with this Machine Learning Workspace. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "v1_legacy_mode_enabled": {
+        "type": "bool",
+        "description": "(Optional) Enable V1 API features, enabling v1_legacy_mode may prevent you from using features provided by the v2 API. Defaults to false.",
+        "required": false,
+        "default": "false"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The Resource ID of the Machine Learning Workspace."
+    },
+    "name": {
+      "description": "The Name of the Machine Learning Workspace."
+    },
+    "resource": {
+      "description": "The Machine Learning Workspace resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Machinelearningworkspace' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "resource_group",
+      "virtual_network",
+      "user_assign_identity",
+      "key_vault",
+      "storage_account",
+      "app_insight",
+      "container_registry",
+      "private_endpoint_key_vault",
+      "private_endpoint_storage_account_file_share",
+      "private_endpoint_container_registry",
+      "subnet",
+      "network_security_group",
+      "time_sleep",
+      "route table",
+      "Log analytics workspace",
+      "App Insight configuration"
+    ]
+  }
+}

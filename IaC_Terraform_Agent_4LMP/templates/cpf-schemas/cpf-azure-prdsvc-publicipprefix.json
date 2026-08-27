@@ -1,0 +1,147 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: azu-product-tf-publicipprefix",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-publicipprefix'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-publicipprefix",
+  "module_type": "service",
+  "azure_service": "Publicipprefix",
+  "module_name": "azu-product-tf-publicipprefix",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.3.1",
+    "0.3.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-publicipprefix.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource group"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_public_ip_prefix.pip",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "publicipprefix",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-publicipprefix.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.3.1",
+        "0.3.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "availability_zones": {
+        "type": "list(string)",
+        "description": "(Optional) The Availability Zone in which this Public IP Prefix should be located.",
+        "required": false,
+        "default": "null"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 71 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "ip_version": {
+        "type": "string",
+        "description": "(Optional) The IP Version to use, IPv6 or IPv4.",
+        "required": false,
+        "default": "\"IPv4\""
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "prefix_length": {
+        "type": "number",
+        "description": "(Optional) The number of bits of the prefix. The value can be set between 0 (4,294,967,296 addresses) and 31 (2 addresses).",
+        "required": false,
+        "default": "31"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "sku": {
+        "type": "string",
+        "description": "(Optional) The SKU of the Public IP Prefix. Accepted values are - Standard.",
+        "required": false,
+        "default": "\"Standard\""
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "ID of the public IP prefix."
+    },
+    "name": {
+      "description": "Name of the public IP prefix."
+    },
+    "public_ip_prefix": {
+      "description": "IP address prefix value that was allocated."
+    },
+    "resource": {
+      "description": "The Public Ip Prefix resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Publicipprefix' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource group"
+    ]
+  }
+}

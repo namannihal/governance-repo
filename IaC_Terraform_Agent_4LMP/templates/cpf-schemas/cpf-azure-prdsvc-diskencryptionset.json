@@ -1,0 +1,201 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Disk Encryption Set module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-diskencryptionset'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-diskencryptionset",
+  "module_type": "service",
+  "azure_service": "Diskencryptionset",
+  "module_name": "Disk Encryption Set module",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.6.0",
+    "0.5.3"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-diskencryptionset.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Network Security Group",
+    "Subnet",
+    "Key Vault",
+    "Private Endpoint"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_disk_encryption_set.DES",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.KEK",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.rbac",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.rbac1",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "diskencryptionset",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-diskencryptionset.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.6.0",
+        "0.5.3"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "key_vault_id",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "cmk_key_name": {
+        "type": "string",
+        "description": "(optional) Key name to be used (max 127 chars)",
+        "required": false,
+        "default": "null"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 71 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "create_role_assignments": {
+        "type": "bool",
+        "description": "(Optional) Whether to create role assignments for Key Vault Crypto Service Encryption User. Set to false if the role assignments are managed externally.",
+        "required": false,
+        "default": "true"
+      },
+      "encryption_type": {
+        "type": "string",
+        "description": "(Optional) The type of key used to encrypt the data of the disk. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "\"EncryptionAtRestWithCustomerKey\""
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "expiration_date": {
+        "type": "string",
+        "description": "(Optional) Expiration date of the Key",
+        "required": false,
+        "default": "\"2026-01-01T16:10:00Z\""
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = optional(list(string)) })",
+        "description": "(Optional) An identity block as defined below. Defaults to SystemAssigned managed identity. object({ type = \"(Optional) Specifies the type of Managed Service Identity that should be configured on this Disk Encryption Set. Possible values are `SystemAssigned`, `UserAssigned`, `SystemAssigned, UserAssigned` (to enable both). Defaults to `SystemAssigned`.\" identity_ids = \"(Optional) Specifies a list of User Assigned Managed Identity IDs to be assigned to this Disk Encryption Set. This is required when `type` is set to `UserAssigned` or `SystemAssigned, UserAssigned`.\" })",
+        "required": false,
+        "default": "{ \"identity_ids\": null, \"type\": \"SystemAssigned\" }"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "key_size": {
+        "type": "number",
+        "description": "(Optional) Size of the Key",
+        "required": false,
+        "default": "2048"
+      },
+      "key_type": {
+        "type": "string",
+        "description": "(Optional) Type of the Key",
+        "required": false,
+        "default": "\"RSA-HSM\""
+      },
+      "key_vault_id": {
+        "type": "string",
+        "description": "(Required) ID of the existing Key vault to store the DES Key Vault Key for Encryption.",
+        "required": true
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "rotation_policy": {
+        "type": "object({ notify_before_expiry = string time_before_expiry = string time_after_creation = optional(string, null) expire_after = string })",
+        "description": "(Optional) A rotation policy block as defined below object({ notify_before_expiry = \"(Required) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" time_before_expiry = \"(Required) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" time_after_creation = \"(Optional) Rotate automatically at a duration after create as an ISO 8601 duration.\" expire_after = \"(Required) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" })",
+        "required": false,
+        "default": "{ \"expire_after\": \"P365D\", \"notify_before_expiry\": \"P358D\", \"time_after_creation\": null, \"time_before_expiry\": \"P7D\" }"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "uai_principal_id": {
+        "type": "string",
+        "description": "(Optional) Principal id of the User Assigned Identity which should be used to access the CMK encryption key in the Key Vault. This identity will be granted `Key Vault Crypto Service Encryption User` role on the Key vault. This must be the principal id of one of the `User Assigned Identities` assigned to the storage Account.",
+        "required": false,
+        "default": "null"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The ID of the created Disk Encryption Set."
+    },
+    "key_vault_key_id": {
+      "description": "The Key Vault Key ID associated to the Disk Encryption Set."
+    },
+    "name": {
+      "description": "The Name of the created Disk Encryption Set."
+    },
+    "resource": {
+      "description": "The Disk Encryption Set resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Diskencryptionset' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Network Security Group",
+      "Subnet",
+      "Key Vault",
+      "Private Endpoint"
+    ]
+  }
+}

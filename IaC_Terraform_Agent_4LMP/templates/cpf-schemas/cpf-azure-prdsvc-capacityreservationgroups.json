@@ -1,0 +1,143 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Capacity Reservation Group module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-capacityreservationgroups'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-capacityreservationgroups",
+  "module_type": "service",
+  "azure_service": "Capacityreservationgroups",
+  "module_name": "Capacity Reservation Group module",
+  "latest_tag": "2.0.2",
+  "available_tags": [
+    "2.0.2",
+    "2.0.1",
+    "2.0.0",
+    "1.0.1",
+    "1.0.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-capacityreservationgroups.git//?ref=2.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_capacity_reservation.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_capacity_reservation_group.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_resource_group.this",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "capacityreservationgroups",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-capacityreservationgroups.git//?ref=2.0.2",
+      "version": "2.0.2",
+      "available_versions": [
+        "2.0.2",
+        "2.0.1",
+        "2.0.0",
+        "1.0.1",
+        "1.0.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "reservations": {
+        "type": "map(object({ sku = optional(object({ name = string capacity = string })) zone = optional(string) tags = optional(map(any)) }))",
+        "description": "(Optional) reservations for the reservation group being created. sku = optional(object({ name = (Required) Name of the sku, such as Standard_F2. Changing this forces a new resource to be created. capacity = (Required) Specifies the number of instances to be reserved. It must be greater than or equal to 0 and not exceed the quota in the subscription. })) zone = (Optional) Specifies the Availability Zone for this Capacity Reservation. Changing this forces a new resource to be created. tags = (Optional) A mapping of tags to assign to the the reservation.",
+        "required": false,
+        "default": "{}"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) A mapping of tags to assign to the reservation group.",
+        "required": false,
+        "default": "{}"
+      },
+      "zones": {
+        "type": "list(string)",
+        "description": "(Optional) Specifies a list of Availability Zones for this Capacity Reservation Group. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      }
+    }
+  },
+  "outputs": {
+    "reservation": {
+      "description": "The reservation resource."
+    },
+    "reservation_group": {
+      "description": "The reservation group resource."
+    },
+    "reservation_group_id": {
+      "description": "The ID of the reservation group."
+    },
+    "reservation_id": {
+      "description": "The ID of the reservation."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Capacityreservationgroups' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group"
+    ]
+  }
+}

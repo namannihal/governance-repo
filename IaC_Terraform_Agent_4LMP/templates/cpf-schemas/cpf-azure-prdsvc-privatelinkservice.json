@@ -1,0 +1,168 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Private Link Service module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-privatelinkservice'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-privatelinkservice",
+  "module_type": "service",
+  "azure_service": "Privatelinkservice",
+  "module_name": "Private Link Service module",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.2.2",
+    "0.2.1"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-privatelinkservice.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Virtual Network",
+    "Subnet",
+    "Standard Load Balancer"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_private_link_service.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "privatelinkservice",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-privatelinkservice.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.2.2",
+        "0.2.1"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "load_balancer_frontend_ip_configuration_ids",
+      "location",
+      "nat_ip_configurations",
+      "org_id",
+      "resource_group_name",
+      "subnet_id"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "auto_approval_subscription_ids": {
+        "type": "list(string)",
+        "description": "(Optional) A list of Subscription UUID/GUID's that will be automatically be able to use this Private Link Service.",
+        "required": false,
+        "default": "[]"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "enable_proxy_protocol": {
+        "type": "bool",
+        "description": "(Optional) Should the Private Link Service support the Proxy Protocol?",
+        "required": false,
+        "default": "false"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "fqdns": {
+        "type": "list(string)",
+        "description": "(Optional) List of FQDNs allowed for the Private Link Service.",
+        "required": false,
+        "default": "[]"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "load_balancer_frontend_ip_configuration_ids": {
+        "type": "list(string)",
+        "description": "(Required) A list of Frontend IP Configuration IDs from a Standard Load Balancer, where traffic from the Private Link Service should be routed. You can use Load Balancer Rules to direct this traffic to appropriate backend pools where your applications are running. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "nat_ip_configurations": {
+        "type": "map(object({ name = string primary = bool private_ip_address = optional(string, null) private_ip_address_version = optional(string, \"IPv4\") }))",
+        "description": "(Required) A map of One or more (up to 8) `nat_ip_configuration` block supports the following: name = \"(Required) Specifies the name which should be used for the NAT IP Configuration. Changing this forces a new resource to be created.\" primary = \"(Required) Is this is the Primary IP Configuration? Changing this forces a new resource to be created.\" private_ip_address = \"(Optional) Specifies a Private Static IP Address for this IP Configuration.\" private_ip_address_version = \"(Optional) The version of the IP Protocol which should be used. At this time the only supported value is IPv4. Defaults to IPv4.\"",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "subnet_id": {
+        "type": "string",
+        "description": "(Required) Specifies the ID of the Subnet which should be used for the Private Link Service.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "visibility_subscription_ids": {
+        "type": "list(string)",
+        "description": "(Optional) A list of Subscription UUID/GUID's that will be able to see this Private Link Service.",
+        "required": false,
+        "default": "[]"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The Resource ID of the Private Link Service."
+    },
+    "name": {
+      "description": "The Name of the Private Link Service."
+    },
+    "resource": {
+      "description": "The Private Link Service resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Privatelinkservice' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Virtual Network",
+      "Subnet",
+      "Standard Load Balancer"
+    ]
+  }
+}

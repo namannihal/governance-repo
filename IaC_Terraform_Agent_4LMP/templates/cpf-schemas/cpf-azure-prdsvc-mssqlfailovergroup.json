@@ -1,0 +1,146 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: __MSSQL Failover Group__ module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-mssqlfailovergroup'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-mssqlfailovergroup",
+  "module_type": "service",
+  "azure_service": "Mssqlfailovergroup",
+  "module_name": "__MSSQL Failover Group__ module",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.1.3",
+    "0.1.2"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-mssqlfailovergroup.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "variable \"server_id\"",
+    "variable \"partner_server\""
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_mssql_failover_group.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "mssqlfailovergroup",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-mssqlfailovergroup.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.1.3",
+        "0.1.2"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "databases": {
+        "type": "list(any)",
+        "description": "(Optional) A set of database names to include in the failover group.",
+        "required": false,
+        "default": "[]"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "partner_server": {
+        "type": "string",
+        "description": "(Required) A partner_server block as defined below.",
+        "required": false,
+        "default": "null"
+      },
+      "read_write_endpoint_failover_policy": {
+        "type": "object({ mode = string grace_minutes = string })",
+        "description": "(Required) A read_write_endpoint_failover_policy block as defined below. mode = \"(Required) The failover policy of the read-write endpoint for the failover group. Possible values are Automatic or Manual.\"Automatic\"\" grace_minutes = \"(Optional) The grace period in minutes, before failover with data loss is attempted for the read-write endpoint. Required when mode is Automatic.\"",
+        "required": false,
+        "default": "{ \"grace_minutes\": 80, \"mode\": \"Automatic\" }"
+      },
+      "readonly_endpoint_failover_policy_enabled": {
+        "type": "string",
+        "description": "(Optional) Whether failover is enabled for the readonly endpoint",
+        "required": false,
+        "default": "false"
+      },
+      "server_id": {
+        "type": "string",
+        "description": "(Required) The ID of the primary SQL Server on which to create the failover group. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The Resource ID of the azure mssql failover group"
+    },
+    "name": {
+      "description": "The Name of the azure mssql failover group"
+    },
+    "resource": {
+      "description": "The azure mssql failover group"
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Mssqlfailovergroup' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "variable \"server_id\"",
+      "variable \"partner_server\""
+    ]
+  }
+}

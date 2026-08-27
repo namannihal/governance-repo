@@ -1,0 +1,198 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Public IP Module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-publicip'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-publicip",
+  "module_type": "service",
+  "azure_service": "Publicip",
+  "module_name": "Public IP Module",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.3.3",
+    "0.3.2"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-publicip.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource group"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_public_ip.pipn",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "publicip",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-publicip.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.3.3",
+        "0.3.2"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name",
+      "zones"
+    ],
+    "properties": {
+      "allocation_method": {
+        "type": "string",
+        "description": "(Required) Defines the allocation method for this IP address. Possible values are Static or Dynamic.",
+        "required": false,
+        "default": "\"Static\""
+      },
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "ddos_protection_mode": {
+        "type": "string",
+        "description": "(Optional) The DDoS protection mode of the public IP. Possible values are Disabled, Enabled, and VirtualNetworkInherited. Defaults to VirtualNetworkInherited.",
+        "required": false,
+        "default": "\"VirtualNetworkInherited\""
+      },
+      "ddos_protection_plan_id": {
+        "type": "string",
+        "description": "(Optional) The ID of DDoS protection plan associated with the public IP.",
+        "required": false,
+        "default": "null"
+      },
+      "domain_name_label": {
+        "type": "string",
+        "description": "(Optional) Label for the Domain Name. Will be used to make up the FQDN. If a domain name label is specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system.",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "idle_timeout_in_minutes": {
+        "type": "number",
+        "description": "(Optional) Specifies the timeout for the TCP idle connection. The value can be set between 4 and 30 minutes.",
+        "required": false,
+        "default": "null"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "ip_tags": {
+        "type": "map(any)",
+        "description": "(Optional) A mapping of IP tags to assign to the public IP.",
+        "required": false,
+        "default": "{}"
+      },
+      "ip_version": {
+        "type": "string",
+        "description": "(Optional) The IP Version to use, IPv6 or IPv4.",
+        "required": false,
+        "default": "\"IPv4\""
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "public_ip_prefix_id": {
+        "type": "string",
+        "description": "(Optional) The ID of DDoS protection plan associated with the public IP.",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "reverse_fqdn": {
+        "type": "bool",
+        "description": "(Optional) A fully qualified domain name that resolves to this public IP address. If the reverseFqdn is specified, then a PTR DNS record is created pointing from the IP address in the in-addr.arpa domain to the reverse FQDN.",
+        "required": false,
+        "default": "null"
+      },
+      "sku": {
+        "type": "string",
+        "description": "(Optional) The SKU of the Public IP. Accepted values are Basic and Standard. Defaults to Basic.",
+        "required": false,
+        "default": "\"Standard\""
+      },
+      "sku_tier": {
+        "type": "string",
+        "description": "(Optional) The SKU Tier that should be used for the Public IP. Possible values are Regional and Global. Defaults to Regional.",
+        "required": false,
+        "default": "\"Regional\""
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "zones": {
+        "type": "list(string)",
+        "description": "(Optional) The availability zone to allocate the Public IP in. Possible values are 1, 2, 3. Defaults to null.",
+        "required": true
+      }
+    }
+  },
+  "outputs": {
+    "fqdn": {
+      "description": "Fully qualified domain name of the A DNS record associated with the public IP. domain_name_label must be specified to get the fqdn. This is the concatenation of the domain_name_label and the regionalized DNS zone."
+    },
+    "id": {
+      "description": "The Public IP ID."
+    },
+    "ip_address": {
+      "description": "The IP address value that was allocated."
+    },
+    "name": {
+      "description": "The Public IP name."
+    },
+    "resource": {
+      "description": "The Public IP resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Publicip' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource group"
+    ]
+  }
+}

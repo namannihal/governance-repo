@@ -1,0 +1,172 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Machine Learning Compute Instance module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-machinelearningcomputeinstance'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-machinelearningcomputeinstance",
+  "module_type": "service",
+  "azure_service": "Machinelearningcomputeinstance",
+  "module_name": "Machine Learning Compute Instance module",
+  "latest_tag": "1.0.3",
+  "available_tags": [
+    "1.0.3",
+    "1.0.2",
+    "1.0.1",
+    "1.0.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-machinelearningcomputeinstance.git//?ref=1.0.3",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Machine Learning Workspace"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_machine_learning_compute_instance.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "machinelearningcomputeinstance",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-machinelearningcomputeinstance.git//?ref=1.0.3",
+      "version": "1.0.3",
+      "available_versions": [
+        "1.0.3",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "machine_learning_workspace_id",
+      "org_id",
+      "virtual_machine_size"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "assign_to_user": {
+        "type": "object({ object_id = optional(string) tenant_id = optional(string) })",
+        "description": "(Optional) A user that the compute instance is assigned to. object({ object_id = (Optional) The object ID of the user. tenant_id = (Optional) The tenant ID of the user. })",
+        "required": false,
+        "default": "null"
+      },
+      "authorization_type": {
+        "type": "string",
+        "description": "(Optional) The Compute Instance Authorization type. Possible values include: personal. Changing this forces a new Machine Learning Compute Instance to be created.",
+        "required": false,
+        "default": "\"personal\""
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "description": {
+        "type": "string",
+        "description": "(Optional) The description of the Machine Learning Compute Instance. Changing this forces a new Machine Learning Compute Instance to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = optional(list(string)) })",
+        "description": "(Optional) An identity block as defined below type = \"(Required) The type of managed service identity that must be configured. The possible values are `SystemAssigned`, `UserAssigned` or `SystemAssigned, UserAssigned` (to enable both).\" identity_ids = \"(Optional) A list of user-assigned managed identity IDs to be assigned to this resource. This is required when `type` is set to `UserAssigned` or `SystemAssigned, UserAssigned`.\"",
+        "required": false,
+        "default": "{ \"identity_ids\": [], \"type\": \"SystemAssigned\" }"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "local_auth_enabled": {
+        "type": "bool",
+        "description": "(Optional) Enables local authentication methods for the compute instance. Changing this forces a new Machine Learning Compute Instance to be created.",
+        "required": false,
+        "default": "false"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "machine_learning_workspace_id": {
+        "type": "string",
+        "description": "(Required) The ID of the Machine Learning Workspace. Changing this forces a new Machine Learning Compute Instance to be created.",
+        "required": true
+      },
+      "node_public_ip_enabled": {
+        "type": "bool",
+        "description": "(Optional) Whether the compute instance will have a public ip.",
+        "required": false,
+        "default": "false"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "ssh": {
+        "type": "object({ public_key = string })",
+        "description": "(Optional) SSH configuration for the compute instance. object({ public_key = (Required) SSH public key for the compute instance. })",
+        "required": false,
+        "default": "null"
+      },
+      "subnet_resource_id": {
+        "type": "string",
+        "description": "(Optional) Virtual network subnet resource ID the compute nodes belong to. Changing this forces a new Machine Learning Compute Instance to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "virtual_machine_size": {
+        "type": "string",
+        "description": "(Required) The Virtual Machine Size. Changing this forces a new Machine Learning Compute Instance to be created.",
+        "required": true
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The Resource ID of the Machine Learning Compute Instance."
+    },
+    "name": {
+      "description": "The Name of the Machine Learning Compute Instance."
+    },
+    "resource": {
+      "description": "The Machine Learning Compute Instance resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Machinelearningcomputeinstance' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Machine Learning Workspace"
+    ]
+  }
+}

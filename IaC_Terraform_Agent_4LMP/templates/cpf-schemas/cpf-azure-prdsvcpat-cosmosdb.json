@@ -1,0 +1,307 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: CosmosDB Service Pattern",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvcpat-cosmosdb'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvcpat-cosmosdb",
+  "module_type": "service-pattern",
+  "azure_service": "Cosmosdb",
+  "module_name": "CosmosDB Service Pattern",
+  "latest_tag": "",
+  "available_tags": [],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-cosmosdb.git//",
+  "terraform_requirements": {
+    "azurerm": ">= 4.33",
+    "time": "~> 0.12.0",
+    "random": "3.6.3",
+    "terraform": ">= 1.5.0",
+    "azuread": "~> 3.0.2"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "random_password.password",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_cosmosdbaccount",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_keyvault_pe",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "cosmosdb",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-cosmosdb.git//",
+      "version": "latest",
+      "available_versions": []
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "consistency_policy",
+      "cosmos_api",
+      "cosmos_cassandra",
+      "customer_managed_key",
+      "environment",
+      "geo_location",
+      "key_vault_config",
+      "location",
+      "offer_type",
+      "org_id",
+      "resource_group_name",
+      "schema_type",
+      "total_throughput_limit"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "backup": {
+        "type": "object({ type = string interval_in_minutes = optional(number) retention_in_hours = optional(number) storage_redundancy = optional(string) })",
+        "description": "(Optional) object({ type = (Required) The type of the backup. Possible values are Continuous and Periodic. Migration of Periodic to Continuous is one-way, changing Continuous to Periodic forces a new resource to be created. interval_in_minutes = (Optional) The interval in minutes between two backups. This is configurable only when type is Periodic. Possible values are between 60 and 1440. retention_in_hours = (Optional) The time in hours that each backup is retained. This is configurable only when type is Periodic. Possible values are between 8 and 720. storage_redundancy = (Optional) The storage redundancy is used to indicate the type of backup residency. This is configurable only when type is Periodic. Possible values are Geo, Local and Zone. })",
+        "required": false,
+        "default": "null"
+      },
+      "capabilities": {
+        "type": "map(object({ name = string }))",
+        "description": "(Optional) Configures the capabilities to be enabled for this Cosmos DB account map(object({ name = (Required) The capability to enable - Possible values are AllowSelfServeUpgradeToMongo36, DisableRateLimitingResponses, EnableAggregationPipeline, EnableCassandra, EnableGremlin, EnableMongo, EnableMongo16MBDocumentSupport, EnableMongoRetryableWrites, EnableMongoRoleBasedAccessControl, EnablePartialUniqueIndex, EnableServerless, EnableTable, EnableTtlOnCustomPath, EnableUniqueCompoundNestedDocs, MongoDBv3.4 and mongoEnableDocLevelTTL. }))",
+        "required": false,
+        "default": "null"
+      },
+      "cmk_key_name": {
+        "type": "string",
+        "description": "(optional) Key name to be used (max 127 chars)",
+        "required": false,
+        "default": "null"
+      },
+      "combined_policy": {
+        "type": "object({ free_tier_enabled = bool analytical_storage_enabled = bool automatic_failover_enabled = bool is_virtual_network_filter_enabled = bool multiple_write_locations_enabled = bool access_key_metadata_writes_enabled = bool mongo_server_version = string network_acl_bypass_for_azure_services = bool network_acl_bypass_ids = list(string) })",
+        "description": "(Optional) object({ free_tier_enabled = (Required) Enable the Free Tier pricing option for this Cosmos DB account. Defaults to false. Changing this forces a new resource to be created. analytical_storage_enabled = (Optional) Enable Analytical Storage option for this Cosmos DB account. Defaults to false. Enabling and then disabling analytical storage forces a new resource to be created. automatic_failover_enabled = (Required) Enable automatic failover for this Cosmos DB account. is_virtual_network_filter_enabled = (Optional) Enables virtual network filtering for this Cosmos DB account. multiple_write_locations_enabled = (Required) Enable multiple write locations for this Cosmos DB account. access_key_metadata_writes_enabled = (Optional) Is write operations on metadata resources (databases, containers, throughput) via account keys enabled? Defaults to true. mongo_server_version = (Optional) The Server Version of a MongoDB account. Possible values are 4.2, 4.0, 3.6, and 3.2. network_acl_bypass_for_azure_services = (Optional) If Azure services can bypass ACLs. Defaults to false. network_acl_bypass_ids = (Optional) The list of resource Ids for Network Acl Bypass for this Cosmos DB account. })",
+        "required": false,
+        "default": "{ \"access_key_metadata_writes_enabled\": true, \"analytical_storage_enabled\": false, \"automatic_failover_enabled\": null, \"free_tier_enabled\": false, \"is_virtual_network_filter_enabled\": null, \"mongo_server_version\": null, \"multiple_write_locations_enabled\": null, \"network_acl_bypass_for_azure_services\": false, \"network_acl_bypass_ids\": null }"
+      },
+      "consistency_policy": {
+        "type": "object({ consistency_level = string max_interval_in_seconds = optional(number, 5) max_staleness_prefix = optional(number, 100) })",
+        "description": "(Required) used to define the consistency policy for this CosmosDB account object({ consistency_level = (Required) The Consistency Level to use for this CosmosDB Account - can be either BoundedStaleness, Eventual, Session, Strong or ConsistentPrefix. max_interval_in_seconds = (Optional) When used with the Bounded Staleness consistency level, this value represents the time amount of staleness (in seconds) tolerated. The accepted range for this value is 5 - 86400 (1 day). Defaults to 5. Required when consistency_level is set to BoundedStaleness. max_staleness_prefix = (Optional) When used with the Bounded Staleness consistency level, this value represents the number of stale requests tolerated. The accepted range for this value is 10 – 2147483647. Defaults to 100. Required when consistency_level is set to BoundedStaleness. })",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "cors_rule": {
+        "type": "object({ allowed_headers = list(string) allowed_methods = list(string) allowed_origins = list(string) exposed_headers = list(string) max_age_in_seconds = optional(number) })",
+        "description": "(Optional) object({ allowed_headers = (Required) A list of headers that are allowed to be a part of the cross-origin request. allowed_methods = (Required) A list of HTTP headers that are allowed to be executed by the origin. Valid options are DELETE, GET, HEAD, MERGE, POST, OPTIONS, PUT or PATCH. allowed_origins = (Required) A list of origin domains that will be allowed by CORS. exposed_headers = (Required) A list of response headers that are exposed to CORS clients. max_age_in_seconds = (Optional) The number of seconds the client should cache a preflight response. Possible values are between 1 and 2147483647. })",
+        "required": false,
+        "default": "null"
+      },
+      "cosmos_api": {
+        "type": "string",
+        "description": "(Required). The API type of cosmos_api. Supported APIs include sql, mongo.",
+        "required": true
+      },
+      "cosmos_cassandra": {
+        "type": "object({ cassandra_keyspace = optional(map(object({ context = string instance = string table_throughput = optional(number, 1000) enable_autoscale_settings = optional(bool, false) max_throughput = optional(number, null) cassandra_table = optional(map(object({ context = string instance = string columns = list(object({ name = string, type = string })) partition_keys = list(string) cluster_keys = optional(list(object({ name = string, order_by = optional(string) })), []) enable_table_autoscale_settings = optional(bool, false) throughput = optional(number, null) autoscale_max_throughput = optional(number, null) default_ttl = optional(number, null) analytical_storage_ttl = optional(number, null) })), {}) })), {}) })",
+        "description": "cassandra_keyspace =map(object({ context = (Required)Instance number, if context includes/requires multiple resources of the same type (max 3 int).\" instance = (Required) Instance number, if context includes/requires multiple resources of the same type (max 3 int). cosmos_account_name = (Required) The name of the Cosmos DB Cassandra KeySpace to create the table within. Changing this forces a new resource to be created. table_throughput = (Optional) The throughput of Cassandra KeySpace (RU/s). Must be set in increments of 100. The minimum value is 400. This must be set upon database creation otherwise it cannot be updated without a manual terraform destroy-apply enable_autoscale_settings = Enable Autoscale settings. Allowed values are true and false. Default is false. This must be set upon database creation otherwise it cannot be updated without a manual terraform destroy-apply. max_throughput = (Optional) The maximum throughput of the Cassandra KeySpace (RU/s). Must be between 1,000 and 1,000,000. Must be set in increments of 1,000. Conflicts with throughput. cassandra_table = map(object({ context = (Required)Instance number, if context includes/requires multiple resources of the same type (max 3 int).\" instance = (Required) Instance number, if context includes/requires multiple resources of the same type (max 3 int). columns = (Required) List of columns: { name, type }. partition_keys = (Required) Partition key column names (composite supported). cluster_keys = (Optional) Clustering keys: { name, order_by? } where order_by is Asc/Desc (any case). enable_table_autoscale_settings = optional(bool, false) throughput = optional(number, null) autoscale_max_throughput = optional(number, null) default_ttl = optional(number, null) analytical_storage_ttl = optional(number, null) })) })) })",
+        "required": true
+      },
+      "cosmosdbsqldatabase": {
+        "type": "map(object({ context = string instance = string throughput = optional(number, null) autoscale_settings = optional(object({ max_throughput = optional(number, 1000) }), { max_throughput = 1000 } ) cosmosdbsqlcontainers = optional(map(object({ context = optional(string, null) instance = string name = optional(string, null) partition_key_paths = list(string) combined_attributes = optional(object({ partition_key_version = number throughput = number default_ttl = number analytical_storage_ttl = number }), { partition_key_version = 1 throughput = 400 default_ttl = -1 analytical_storage_ttl = -1 } ) unique_key = optional(map(object({ paths = list(string) })), null) autoscale_settings = optional(map(object({ max_throughput = optional(number, 1000) })), null) indexing_policy = optional(object({ indexing_mode = optional(string, \"consistent\") included_path = optional(map(object({ path = string }))) excluded_path = optional(map(object({ path = string }))) composite_index = optional(map(object({ index = map(object({ path = string order = string })) }))) spatial_index = optional(map(object({ path = string }))) }), null) conflict_resolution_policy = optional(map(object({ mode = string conflict_resolution_path = optional(string) conflict_resolution_procedure = optional(string) })), null) sql_function = optional(map(object({ name = string body = string })), null) sql_trigger = optional(map(object({ name = string body = string operation = string type = string })), null) sql_storedprocedure = optional(map(object({ name = string body = string account_name = string database_name = string })), null) })), {}) }))",
+        "description": "context = (Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int). instance = (Optional) Application context information for the resource(s) (max 10 chars). throughput = (Optional) The throughput of SQL database (RU/s). Must be set in increments of 100. The minimum value is 400. This must be set upon database creation otherwise it cannot be updated without a manual terraform destroy-apply. Do not set when azurerm_cosmosdb_account is configured with EnableServerless capability. autoscale_settings = (Optional) object({ max_throughput = (Optional) The maximum throughput of the SQL database (RU/s). Must be between 1,000 and 1,000,000. Must be set in increments of 1,000. Conflicts with throughput. }) cosmosdbsqlcontainers = optional(map(object({ context = (Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int). instance = (Optional) Application context information for the resource(s) (max 10 chars). name = (Optional) Specifies the name of the Cosmos DB SQL Container resource. If not provided, the resource name is created leveraging LSEG variables as per standard naming convention. Changing this forces a new resource to be created. partition_key_paths = (Required) Define partition key paths. Changing this forces a new resource to be created. combined_attributes = (optional) object({ partition_key_version = (Optional) Define a partition key version. Changing this forces a new resource to be created. Possible values are 1and 2. This should be set to 2 in order to use large partition keys. throughput = (Optional) The throughput of SQL container (RU/s). Must be set in increments of 100. The minimum value is 400. This must be set upon container creation otherwise it cannot be updated without a manual terraform destroy-apply. default_ttl = (Optional) The default time to live of SQL container. If missing, items are not expired automatically. If present and the value is set to -1, it is equal to infinity, and items don’t expire by default. If present and the value is set to some number n – items will expire n seconds after their last modified time. analytical_storage_ttl = (Optional) The default time to live of Analytical Storage for this SQL container. If present and the value is set to -1, it is equal to infinity, and items don’t expire by default. If present and the value is set to some number n – items will expire n seconds after their last modified time. }) unique_key = (Optional) map(object({ paths = (Required) A list of paths to use for this unique key. Changing this forces a new resource to be created. })) autoscale_settings = (Optional) object({ max_throughput = (Optional) The maximum throughput of the SQL container (RU/s). Must be between 1,000 and 1,000,000. Must be set in increments of 1,000. Conflicts with throughput. }) indexing_policy = (Optional) object({ indexing_mode = (Optional) Indicates the indexing mode. Possible values include: consistent and none. Defaults to consistent. included_path = (Optional) One or more included_path blocks as defined below. Either included_path or excluded_path must contain the path /* map(object({ path = (Required) Path for which the indexing behaviour applies to. })) excluded_path = (Optional) One or more excluded_path blocks as defined below. Either included_path or excluded_path must contain the path /* map(object({ path = (Required) Path that is excluded from indexing. })) composite_index = (Optional) One or more composite_index blocks as defined below. map(object({ index = (Required) One or more index blocks as defined below. map(object({ path = (Required) Path for which the indexing behaviour applies to. order = (Required) Order of the index. Possible values are Ascending or Descending. })) })) spatial_index = (Optional) One or more spatial_index blocks as defined below. map(object({ path = (Required) Path for which the indexing behaviour applies to. According to the service design, all spatial types including LineString, MultiPolygon, Point, and Polygon will be applied to the path. })) }) conflict_resolution_policy = (Optional) mode = (Required) Indicates the conflict resolution mode. Possible values include: LastWriterWins, Custom. conflict_resolution_path = (Optional) The conflict resolution path in the case of LastWriterWins mode. conflict_resolution_procedure = (Optional) The procedure to resolve conflicts in the case of Custom mode. sql_function = (Optional) map(object({ name = \"(Required) The name which should be used for this SQL User Defined Function. Changing this forces a new SQL User Defined Function to be created.\" body = \"(Required) Body of the User Defined Function.\" })) sql_trigger = (Optional) map(object({ name = \"(Required) The name which should be used for this SQL Trigger. Changing this forces a new SQL Trigger to be created.\" body = \"(Required) Body of the SQL Trigger.\" operation = \"(Required) The operation the trigger is associated with. Possible values are All, Create, Update, Delete and Replace.\" type = \"(Required) Type of the Trigger. Possible values are Pre and Post.\" })) sql_storedprocedure = (Optional) map(object({ name = \"(Required) Specifies the name of the Cosmos DB SQL Stored Procedure. Changing this forces a new resource to be created.\" body = \"(Required) The body of the stored procedure.\" account_name = \"(Required) The name of the cosmosdb account.\" database_name = \"(Required) The name of the cosmosdb sql database.\" }))",
+        "required": false,
+        "default": "{}"
+      },
+      "create_mode": {
+        "type": "string",
+        "description": "(Optional) The creation mode for the CosmosDB Account. Possible values are Default and Restore. Changing this forces a new resource to be created. Create_mode only works when backup.type is Continuous.",
+        "required": false,
+        "default": "null"
+      },
+      "create_role_assignment": {
+        "type": "bool",
+        "description": "(Optional) Whether to create a role assignment to the service identity to allow access to the key vault keys.",
+        "required": false,
+        "default": "true"
+      },
+      "customer_managed_key": {
+        "type": "object({ expiration_date = string rotation_policy = optional(object({ notify_before_expiry = string time_before_expiry = string time_after_creation = optional(string, null) expire_after = string }), { notify_before_expiry = \"P358D\" time_before_expiry = \"P7D\" time_after_creation = null expire_after = \"P365D\" } ) })",
+        "description": "(Required) An customer_managed_key block as defined below object({ expiration_date = \"(Required) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').\" rotation_policy = (Optional) A rotation policy block as defined below object({ notify_before_expiry = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" time_before_expiry = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" time_after_creation = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" expire_after = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" }) })",
+        "required": true
+      },
+      "enable_systemassigned_identity": {
+        "type": "bool",
+        "description": "(Optional). Whether to deploy the Linux Virtual Machine with SystemAssigned identity. By default this is false and the VM is deployed with userassigned identity only.",
+        "required": false,
+        "default": "false"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "geo_location": {
+        "type": "map(object({ location = string failover_priority = number zone_redundant = optional(bool, false) }))",
+        "description": "(Required) used to define where data should be replicated with the failover_priority map(object({ location = (Required) The name of the Azure region to host replicated data. failover_priority = (Required) The failover priority of the region. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists. Changing this causes the location to be re-provisioned and cannot be changed for the location with failover priority 0. zone_redundant = (Optional) Should zone redundancy be enabled for this region? Defaults to false. }))",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "ip_range_filter": {
+        "type": "set(string)",
+        "description": "(Optional) CosmosDB Firewall Support: This value specifies the set of IP addresses or IP address ranges in CIDR form to be included as the allowed list of client IPs for a given database account. IP addresses/ranges must be comma separated and must not contain any spaces.",
+        "required": false,
+        "default": "null"
+      },
+      "is_parse_kind": {
+        "type": "bool",
+        "description": "(Optional) whether the Kind of CosmosDB to create is Parse.",
+        "required": false,
+        "default": "false"
+      },
+      "key_vault_config": {
+        "type": "object({ context = optional(string, null) instance = optional(string, null) deploy_kv_and_pe = optional(bool, true) key_vault_id = optional(string, null) enabled_for_deployment = optional(bool, false) enabled_for_disk_encryption = optional(bool, true) enabled_for_template_deployment = optional(bool, false) soft_delete_retention_days = optional(number, 30) sku_name = optional(string, \"premium\") network_acls = optional(object({ bypass = optional(string, \"None\") default_action = optional(string, \"Deny\") ip_rules = optional(list(string), []) virtual_network_subnet_ids = optional(list(string), []) }), {}) private_endpoint = optional(object({ is_manual_connection = optional(bool, false) static_ip_required = optional(bool, false) private_connection_resource_alias = optional(string, null) kv_ip_configuration = optional(map(object({ private_ip_address = string subresource_name = optional(string, \"vault\") member_name = optional(string, \"default\") })), {}) }), { is_manual_connection = false static_ip_required = false private_connection_resource_alias = null } ) key_vault_keys = optional(map(object({ key_number = string key_type = optional(string, \"RSA-HSM\") key_size = optional(number, 4096) not_before_date = optional(string, null) expiration_date = string key_opts = list(string) rotation_policy = object({ notify_before_expiry = string time_before_expiry = string time_after_creation = optional(string, null) expire_after = string }) })), {}) key_vault_secrets = optional(object({ secret_number = optional(string, null) value = optional(string, null) content_type = optional(string, null) not_before_date = optional(string, null) expiration_date = optional(string, null) }), null) key_vault_certificates = optional(map(object({ cert_number = string path_of_certificate = optional(string, null) issuer_parameters_name = string ec_key_required = bool curve = optional(string, \"P-256\") key_type = string key_size = optional(number, 2048) reuse_key = bool action_type = string content_type = string key_usage = list(string) trigger = object({ days_before_expiry = optional(number, null) lifetime_percentage = optional(string, null) }) x509_certificate_properties = object({ extended_key_usage = optional(list(string)) subject = string subject_alternative_names = object({ dns_names = optional(list(string)) emails = optional(list(string)) upns = optional(list(string)) }) validity_in_months = string }) })), {}) })",
+        "description": "Object with configuration for the Keyvault. As defined below context = context to be used for KeyVaults being deployed resources. instance = instance to be used for KeyVaults being deployed resources. deploy_kv_and_pe = (Optional). Boolean to deploy KeyVault and Private Endpoint for KeyVault. Default is true. key_vault_id = (Optional). KeyVault ID to be used for Private Endpoint for KeyVault. Required if deploy_kv_and_pe is false. enabled_for_deployment = (Optional). Boolean to enable KeyVault for deployment. Default is false. enabled_for_disk_encryption = (Optional). Boolean to enable KeyVault for disk encryption. Default is true. enabled_for_template_deployment = (Optional). Boolean to enable KeyVault for template deployment. Default is false. soft_delete_retention_days = (Optional) The number of days that items should be retained for once soft-deleted. sku_name = (Optional). Sku name for KeyVault. Default is premium. kv_secret_expiration_in_months = (Required). Number of months for which the secrets in KeyVault should be valid. network_acls = (Optional). Object with network ACLs for KeyVault. As defined below { bypass = (Optional). Specifies whether traffic is bypassed for Azure services. Default is None. Possible values are None, AzureServices, Logging, Metrics, or AzureServices,Logging,Metrics. default_action = (Optional). Specifies the default action of allow or deny when no other rules match. Default is Deny. Possible values are Allow and Deny. ip_rules = (Optional). List of IP addresses or CIDR ranges to whitelist. Only IPV4 addresses are allowed. This list must not include IP address ranges within Azure services. This list can include IP addresses ranges from on-premises ranges. virtual_network_subnet_ids = (Optional). List of virtual network subnet ids to whitelist. This list must not include IP address ranges within Azure services. } private_endpoint = (Optional). Object with private endpoint configuration for KeyVault. As defined below { is_manual_connection = (Optional). Boolean to indicate if the connection is manual. Default is false. static_ip_required = (Optional). Boolean to indicate if static IP is required. Default is false. private_connection_resource_id = (Optional). Resource ID of the private connection. Required if is_manual_connection is true. private_connection_resource_alias = (Optional). Resource alias of the private connection. Required if is_manual_connection is true. kv_ip_configuration = (Optional). Object with IP configuration for KeyVault. As defined below { private_ip_address = (Required). Private IP address of the IP configuration. subresource_name = (Optional). Subresource name of the IP configuration. Default is vault. member_name = (Optional). Member name of the IP configuration. Default is default. } } key_vault_certificates = (Optional) A map of Key vault certificates to be created using following variables: cert_number = \"(Required) Specifies certificate number for multiple certificates to be created.\" import_certificate = \"(Required) Choose to import certificate or to generate one.\" path_of_certificate = \"(Optional) Provide the path of the existing certificate. (Required) in case of import_certificate as True.\" issuer_parameters_name = \"(Required) The name of the Certificate Issuer. Changing this forces a new resource to be created.\" ec_key_required = \"(Required) Do you want to create an `EC` key?\" curve = \"(Optional) Specifies the curve to use when creating an EC key. Possible values are P-256, P-256K, P-384, and P-521.This field will be required in a future release if key_type is EC or EC-HSM. Changing this forces a new resource to be created.\" key_type = \"(Required) Specifies the type of key. Changing this forces a new resource to be created.\" key_size = \"(Optional) The size of the key used in the certificate. This property is required when using RSA keys. Changing this forces a new resource to be created.\" reuse_key = \"(Required) Is the key reusable? Changing this forces a new resource to be created.\" action_type = \"(Required) The Type of action to be performed when the lifetime trigger is triggerec. Changing this forces a new resource to be created.\" content_type = \"(Required) The Content-Type of the Certificate, such as application/x-pkcs12 for a PFX or application/x-pem-file for a PEM. Changing this forces a new resource to be created.\" key_usage = \"(Required) A list of uses associated with this Key. Possible values are cRLSign, dataEncipherment, decipherOnly, digitalSignature, encipherOnly, keyAgreement, keyCertSign, keyEncipherment and nonRepudiation. Changing this forces a new resource to be created.\" trigger = object({ days_before_expiry = optional(number, null) lifetime_percentage = optional(string, null) }) x509_certificate_properties = object({ extended_key_usage = \"(Optional) A list of Extended/Enhanced Key Usages. Changing this forces a new resource to be created.\" subject = \"(Required) The Certificate's Subject. Changing this forces a new resource to be created.\" subject_alternative_names = list(object({ dns_names = \"(Optional) A list of alternative DNS names (FQDNs) identified by the Certificate. Changing this forces a new resource to be created.\" emails = \"(Optional) A list of email addresses identified by this Certificate. Changing this forces a new resource to be created.\" upns = \"(Optional) A list of User Principal Names identified by the Certificate. Changing this forces a new resource to be created.\" })) validity_in_months = \"(Required) The Certificates Validity Period in Months. Changing this forces a new resource to be created.\" }) })) key_vault_keys = (Optional) A map of Key vault key object variables: key_number = \"(Required) Specifies key number for multiple keys to be created.\" key_type = \"(Optional) Specifies the Key Type to use for the Key Vault Key.\" key_size = \"(Optional) Specifies the Size of the RSA key to create in bytes. Allowed values are 1024, 2048, 3072 or 4096.\" not_before_date = \"(Optional) Key not usable before the provided UTC datetime (Y-m-d'T'H:M:S'Z').\" expiration_date = \"(Required) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').\" key_opts = \"(Required) A list of JSON web key operations. Possible values include: decrypt, encrypt, sign, unwrapKey, verify and wrapKey.\" rotation_policy = (Optional) object({ notify_before_expiry = \"(Required) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" time_before_expiry = \"(Required) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" time_after_creation = \"(Optional) Rotate automatically at a duration after create as an ISO 8601 duration.\" expire_after = \"(Required) Expire a Key Vault Key after given duration as an ISO 8601 duration. }) key_vault_secrets = (Optional) A map of key vault secrets to be created with following variables: secret_number = \"(Required) Specifies secret number for multiple secrets to be created.\" value = \"(Required) Specifies the value of the Key Vault Secret. Changing this will create a new version of the Key Vault Secret.\" content_type = \"(Optional) Specifies the content type of the Key Vault Secret.\" not_before_date = \"(Optional) Key not usable before the provided UTC datetime (Y-m-d'T'H:M:S'Z').\" expiration_date = \"(Optional) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').\"",
+        "required": true
+      },
+      "key_vault_tags": {
+        "type": "map(any)",
+        "description": "(Optional) Key Vault related tags to be set on key vault child resources.",
+        "required": false,
+        "default": "{}"
+      },
+      "local_authentication_disabled": {
+        "type": "bool",
+        "description": "Controls whether local authentication is disabled for CosmosDB. Defaults to true except for MongoDB accounts.",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "mongo_cluster": {
+        "type": "object({ context = string instance = string arm_template_name = string cluster_name = string create_mode = string admin_login = string server_version = string node_sku = string node_disk_size = string high_availability = optional(bool, true) shard_count = optional(number, 1) high_availability_mode = optional(string, \"Disabled\") public_access = optional(string, null) source_resource_id = optional(string, null) point_in_time_utc = optional(string, null) content_type = optional(string, null) not_before_date = optional(string, null) expiration_date = optional(string, null) })",
+        "description": "context = (Required)Instance number, if context includes/requires multiple resources of the same type (max 3 int).\" instance = (Required) Instance number, if context includes/requires multiple resources of the same type (max 3 int). arm_template_name = (Required) The ARM Template name. cluster_name = \"(Required) The cluster name of the mongo database.\" create_mode = \"(Required) The cluster name of the mongo database.\" admin_login = \"(Required) The administrator's login for the mongo cluster.\" server_version = \"(Required) The Mongo DB server version.\" node_kind = \"(Optional) The node type deployed in the node group.\" node_sku = (Required) The resource sku for the node group. This defines the size of CPU and memory that is provisioned for each node. Example values: 'M30', 'M40'. node_disk_size = (Required) The disk storage size for the node group in GB. Example values: 128, 256, 512, 1024. high_availability = (Optional) Whether high availability is enabled on the node group. node_count = (Required) The number of nodes in the node group. public_access = \"(Optional) Whether public access is enabled on the mongo cluster. source_resource_id = (Optional) Resource ID to locate the source cluster to restore. point_in_time_utc = (Optional) UTC point in time to restore a mongo cluster. firewall_rules =list(object({ (Optional) startIpaddress = (Required) The start IP address of the mongo cluster firewall rule. Must be IPv4 format. endIpaddress = (Required) The end IP address of the mongo cluster firewall rule. Must be IPv4 format. })) content_type = (Optional) Specifies the content type of the Key Vault Secret. not_before_date = (Optional) Key not usable before the provided UTC datetime (Y-m-d'T'H:M:S'Z'). expiration_date = (Optional) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').",
+        "required": false,
+        "default": "null"
+      },
+      "network_config": {
+        "type": "object({ context = optional(string, null) instance = optional(string, null) request_message = optional(string, null) private_endpoint = optional(object({ is_manual_connection = optional(bool, false) static_ip_required = optional(bool, false) private_connection_resource_id = optional(string, null) private_connection_resource_alias = optional(string, null) private_ip_address = optional(string, null) }), { is_manual_connection = false static_ip_required = false private_connection_resource_alias = null private_ip_address = null } ) })",
+        "description": "(Required) Network configuration for the Pattern to be deployed.",
+        "required": false,
+        "default": "null"
+      },
+      "offer_type": {
+        "type": "string",
+        "description": "(Required) Specifies the Offer Type to use for this CosmosDB Account; currently, this can only be set to Standard.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "privateendpoint_subnet_id": {
+        "type": "string",
+        "description": "(Required.) The resource id of the subnet to deploy private endpoints into.",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required). The name of the Application Resource Group. This Resource group usually contains the Application resources(app infra resources).",
+        "required": true
+      },
+      "restore": {
+        "type": "object({ source_cosmosdb_account_id = string restore_timestamp_in_utc = string database = object({ name = string collection_names = optional(list(string)) }) })",
+        "description": "(Optional) object({ source_cosmosdb_account_id = (Required) The resource ID of the restorable database account from which the restore has to be initiated. Changing this forces a new resource to be created. restore_timestamp_in_utc = (Required) The creation time of the database or the collection (Datetime Format RFC 3339). Changing this forces a new resource to be created. database = (Optional) database block name = (Required) The database name for the restore request. Changing this forces a new resource to be created. collection_names = (Optional) A list of the collection names for the restore request. Changing this forces a new resource to be created. })",
+        "required": false,
+        "default": "null"
+      },
+      "schema_type": {
+        "type": "string",
+        "description": "(Required) The schema type of the Analytical Storage for this Cosmos DB account. Possible values are FullFidelity and WellDefined.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "total_throughput_limit": {
+        "type": "number",
+        "description": "(Required) The total throughput limit imposed on this Cosmos DB account (RU/s). Possible values are at least -1. -1 means no limit.",
+        "required": true
+      },
+      "virtual_network_rule": {
+        "type": "object({ id = string ignore_missing_vnet_service_endpoint = optional(bool, false) })",
+        "description": "(Optional) Configures the virtual network subnets allowed to access this Cosmos DB account object({ id = (Required) The ID of the virtual network subnet. ignore_missing_vnet_service_endpoint = (Optional) If set to true, the specified subnet will be added as a virtual network rule even if its CosmosDB service endpoint is not active. Defaults to false. })",
+        "required": false,
+        "default": "null"
+      }
+    }
+  },
+  "outputs": {
+    "cassandra_keyspace": {
+      "description": "Information of all Cassandra keyspaces"
+    },
+    "cassandra_keyspace_ids": {
+      "description": "IDs of all Cassandra keyspaces created by the keyspace module"
+    },
+    "cassandra_keyspace_names": {
+      "description": "Names of all Cassandra keyspaces"
+    },
+    "cassandra_table": {
+      "description": "Information of all Cassandra keyspaces"
+    },
+    "cassandra_table_ids": {
+      "description": "IDs of all Cassandra tables created by the table module"
+    },
+    "cassandra_table_names": {
+      "description": "Names of all Cassandra keyspaces"
+    },
+    "cosmosdbaccount": {
+      "description": "The cosmosdbaccount module output."
+    },
+    "cosmosdbsqlcontainer": {
+      "description": "The cosmosdbsqlcontainer module output."
+    },
+    "cosmosdbsqldatabase": {
+      "description": "The cosmosdbsqldatabase module output."
+    },
+    "keyvaultprivateendpoint": {
+      "description": "The keyvault service pattern module outputs."
+    },
+    "mongo_cluster": {
+      "description": "The Mongo Cluster outputs."
+    },
+    "privateendpoint-cosmosdbaccount": {
+      "description": "The privateendpoint-cosmosdbaccount module output."
+    },
+    "userassignedidentity": {
+      "description": "The userassignedidentity module outputs."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Cosmosdb' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a service pattern module. It bundles multiple related services/configurations.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

@@ -1,0 +1,250 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: ",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-azureaistudiohub'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-azureaistudiohub",
+  "module_type": "service",
+  "azure_service": "Azureaistudiohub",
+  "module_name": "",
+  "latest_tag": "0.2.3",
+  "available_tags": [
+    "0.2.3",
+    "0.2.2",
+    "0.2.1",
+    "0.2.0",
+    "0.1.1"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-azureaistudiohub.git//?ref=0.2.3",
+  "terraform_requirements": {
+    "azapi": ">=1.9",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "resource_group",
+    "virtual_network",
+    "user_assign_identity",
+    "storage_account",
+    "key_vault",
+    "subnet",
+    "network_security_group",
+    "time_sleep",
+    "route table"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azapi_resource.aihub",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "azureaistudiohub",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-azureaistudiohub.git//?ref=0.2.3",
+      "version": "0.2.3",
+      "available_versions": [
+        "0.2.3",
+        "0.2.2",
+        "0.2.1",
+        "0.2.0",
+        "0.1.1"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "keyVault",
+      "location",
+      "name",
+      "org_id",
+      "parent_id"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "applicationInsights": {
+        "type": "string",
+        "description": "(Optional) ARM id of the application insights associated with this workspace.",
+        "required": false,
+        "default": "null"
+      },
+      "containerRegistry": {
+        "type": "string",
+        "description": "(Optional) ARM id of the container registry associated with this workspace.",
+        "required": false,
+        "default": "null"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "description": {
+        "type": "string",
+        "description": "(Optional) The description of this workspace.",
+        "required": false,
+        "default": "\"AiStudiohub\""
+      },
+      "discoveryUrl": {
+        "type": "string",
+        "description": "(Optional) Url for the discovery service to identify regional endpoints for AI Studio Hub services",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "featureStoreSettings": {
+        "type": "object({ computeRuntime = object({ sparkRuntimeVersion = string }) offlineStoreConnectionName = string onlineStoreConnectionName = string })",
+        "description": "(Optional) Feature store settings for the Azure AI Studio Hub. computeRuntime = { sparkRuntimeVersion = \"(Optional) The version of the Spark runtime to use.\" } offlineStoreConnectionName = \"(Optional) The name of the connection for the offline store.\" onlineStoreConnectionName = \"(Optional) The name of the connection for the online store.\"",
+        "required": false,
+        "default": "null"
+      },
+      "friendlyName": {
+        "type": "string",
+        "description": "(Optional) The friendly name for this workspace. This name in mutable",
+        "required": false,
+        "default": "\"AiStudiohub\""
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = list(string) })",
+        "description": "(Optional) An identity block as defined below object({ type = \"(Required) Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).\" identity_ids = \"(Optional) The set of user assigned identities associated with the resource.\" })",
+        "required": false,
+        "default": "{ \"identity_ids\": null, \"type\": \"SystemAssigned\" }"
+      },
+      "imageBuildCompute": {
+        "type": "string",
+        "description": "(Optional) The compute name for image build.",
+        "required": false,
+        "default": "null"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "keyVault": {
+        "type": "string",
+        "description": "(Required) ARM id of the key vault associated with this workspace. This cannot be changed once the workspace has been created",
+        "required": true
+      },
+      "kind": {
+        "type": "string",
+        "description": "(Optional) Enabling v1_legacy_mode may prevent you from using features provided by the v2 API.",
+        "required": false,
+        "default": "\"Hub\""
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "name": {
+        "type": "string",
+        "description": "(Required) Name of the AI Hub Studio.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "outboundRules": {
+        "type": "map(object({ category = string status = string type = string fqdn_destination = optional(string, null) service_tag_destination = optional(object({ action = string portRanges = string protocol = string serviceTag = string })) private_link_destination = optional(object({ serviceResourceId = string sparkEnabled = bool sparkStatus = string subResourceTarget = string })) }))",
+        "description": "(Optional) An ssh block as defined below. object({ rule_name = \"(Required) the name of the rule\" category = \"(Required) Category of a managed network Outbound Rule of a AI Studio Hub, possible value are Recommended,Required,UserDefined.\" status = \"(Required) Type of a managed network Outbound Rule of a AI Studio Hub , possible value are Active,Inactive\" type = \"(Required) Set the object type, possible values are FQDN, ServiceTag and PrivateEndpoint\" fqdn_destination = \"(Optional) name of the FQDN\" service_tag_destination = (Optional) object({ action = \"(Required) The action enum for networking rule, supported values are Deny and Allow\" portRanges = \"(Required) The port ranges for service tag destination rule.\" protocol = \"(Required) the protocol for service tag destination rule.\" serviceTag = \"(Required) the service tag for service tag destination rule.\" }) private_link_destination = (Optional) object({ serviceResourceId = \"(Required) The service reousrce id for private link destination\" sparkEnabled = \"(Required) Spark for the private link destination\" sparkStatus = \"(Required) Spark status for the private link destination\" subResourceTarget = \"(Required)sub resource for private link destination\" }) })",
+        "required": false,
+        "default": "{}"
+      },
+      "parent_id": {
+        "type": "string",
+        "description": "(Required) The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "primaryUserAssignedIdentity": {
+        "type": "string",
+        "description": "(Optional)The user assigned identity resource id that represents the workspace identity.",
+        "required": false,
+        "default": "null"
+      },
+      "serverlessComputeSettings": {
+        "type": "object({ serverlessComputeCustomSubnet = string serverlessComputeNoPublicIP = bool })",
+        "description": "(Optional) Serverless compute settings for the Azure AI Studio Hub. serverlessComputeCustomSubnet = \"(Optional) The resource ID of an existing virtual network subnet in which serverless compute nodes should be deployed\" serverlessComputeNoPublicIP = \"(Optional) The flag to signal if serverless compute nodes deployed in custom vNet would have no public IP addresses for a workspace with private endpoint\"",
+        "required": false,
+        "default": "null"
+      },
+      "serviceManagedResourcesSettings": {
+        "type": "object({ cosmosDb = object({ collectionsThroughput = number }) })",
+        "description": "(Optional) Settings for service managed resources. The object contains the following properties: cosmosDb = \"(Optional) Cosmos DB settings.\" collectionsThroughput = \"(Required) Throughput for collections in Cosmos DB.\"",
+        "required": false,
+        "default": "null"
+      },
+      "sku": {
+        "type": "object({ capacity = number family = string name = string size = string tier = string })",
+        "description": "(Optional) The SKU settings for the Azure ML workspace. The object contains the following properties: capacity = \"(Optional) The capacity of the SKU.\" family = \"(Optional) The family of the SKU.\" name = \"(Required) The name of the SKU.\" size = \"(Optional) The size of the SKU.\" tier = \"(Required) The tier of the SKU.\"",
+        "required": false,
+        "default": "{ \"capacity\": null, \"family\": null, \"name\": \"Basic\", \"size\": null, \"tier\": \"Basic\" }"
+      },
+      "status": {
+        "type": "object({ sparkReady = bool status = string })",
+        "description": "(Optional) An identity block as defined below object({ sparkReady = \"(Required) Indicates if Spark is ready..\" status = \"(Optional) Status for the managed network of a AI Studio Hub.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "storageAccount": {
+        "type": "string",
+        "description": "(Optional) ARM id of the storage account associated with this workspace. This cannot be changed once the workspace has been created",
+        "required": false,
+        "default": "null"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "v1LegacyMode": {
+        "type": "bool",
+        "description": "(Optional) Enabling v1_legacy_mode may prevent you from using features provided by the v2 API.",
+        "required": false,
+        "default": "true"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The ID of the Azure AI Studio Hub."
+    },
+    "name": {
+      "description": "The Name of the Azure AI Studio Hub."
+    },
+    "resource": {
+      "description": "The Azure AI Studio Hub resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Azureaistudiohub' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "resource_group",
+      "virtual_network",
+      "user_assign_identity",
+      "storage_account",
+      "key_vault",
+      "subnet",
+      "network_security_group",
+      "time_sleep",
+      "route table"
+    ]
+  }
+}

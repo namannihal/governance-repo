@@ -1,0 +1,224 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: AKS Additional Node Pool module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-kubernetesclusternodepool'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-kubernetesclusternodepool",
+  "module_type": "service",
+  "azure_service": "Kubernetesclusternodepool",
+  "module_name": "AKS Additional Node Pool module",
+  "latest_tag": "1.3.0",
+  "available_tags": [
+    "1.3.0",
+    "1.2.1",
+    "1.2.0",
+    "1.1.1",
+    "1.1.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-kubernetesclusternodepool.git//?ref=1.3.0",
+  "terraform_requirements": {
+    "azurerm": ">= 3.51",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_kubernetes_cluster_node_pool.aks",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "kubernetesclusternodepool",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-kubernetesclusternodepool.git//?ref=1.3.0",
+      "version": "1.3.0",
+      "available_versions": [
+        "1.3.0",
+        "1.2.1",
+        "1.2.0",
+        "1.1.1",
+        "1.1.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "kubernetes_cluster_id",
+      "node_pool_name",
+      "node_pool_vm_size",
+      "node_pool_vnet_subnet_id"
+    ],
+    "properties": {
+      "eviction_policy": {
+        "type": "string",
+        "description": "(Optional) The Eviction Policy which should be used for Virtual Machines within the Virtual Machine Scale Set powering this Node Pool. Possible values are Deallocate and Delete. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "\"Delete \""
+      },
+      "kubernetes_cluster_id": {
+        "type": "string",
+        "description": "(Required) The ID of the Kubernetes Cluster where this Node Pool should exist. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "kubernetes_version": {
+        "type": "string",
+        "description": "(Optional) Version of Kubernetes specified when creating the AKS managed cluster.If not specified, the latest recommended version will be used at provisioning time (but won't auto-upgrade).",
+        "required": false,
+        "default": "null"
+      },
+      "node_pool_auto_scaling_enabled": {
+        "type": "bool",
+        "description": "(Optional) Whether to enable auto-scaler.",
+        "required": false,
+        "default": "true"
+      },
+      "node_pool_host_encryption_enabled": {
+        "type": "bool",
+        "description": "(Optional) Should the nodes in this Node Pool have host encryption enabled? Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "false"
+      },
+      "node_pool_node_public_ip_enabled": {
+        "type": "bool",
+        "description": "(Optional) Should each node have a Public IP Address? Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "false"
+      },
+      "node_pool_fips_enabled": {
+        "type": "bool",
+        "description": "(Optional) Should the nodes in this Node Pool have Federal Information Processing Standard enabled? Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "false"
+      },
+      "node_pool_max_count": {
+        "type": "number",
+        "description": "(Optional) The maximum number of nodes which should exist within this Node Pool. Valid values are between 0 and 1000 and must be greater than or equal to min_count",
+        "required": false,
+        "default": "3"
+      },
+      "node_pool_max_pods": {
+        "type": "number",
+        "description": "(Optional) The maximum number of pods that can run on each agent. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "50"
+      },
+      "node_pool_min_count": {
+        "type": "number",
+        "description": "(Optional) The minimum number of nodes which should exist within this Node Pool. Valid values are between 0 and 1000 and must be less than or equal to max_count",
+        "required": false,
+        "default": "1"
+      },
+      "node_pool_mode": {
+        "type": "string",
+        "description": "(Optional) Should this Node Pool be used for System or User resources? Possible values are System and User. Defaults to User.",
+        "required": false,
+        "default": "\"User\""
+      },
+      "node_pool_name": {
+        "type": "string",
+        "description": "(Required) The name of the Node Pool which should be created within the Kubernetes Cluster. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "node_pool_node_count": {
+        "type": "number",
+        "description": "(Optional) The initial number of nodes which should exist within this Node Pool. Valid values are between 0 and 1000 (inclusive) for user pools and between 1 and 1000 (inclusive) for system pools and must be a value in the range min_count - max_count.",
+        "required": false,
+        "default": "1"
+      },
+      "node_pool_node_labels": {
+        "type": "map(string)",
+        "description": "(Optional) A map of Kubernetes labels which should be applied to nodes in this Node Pool.",
+        "required": false,
+        "default": "null"
+      },
+      "node_pool_node_taints": {
+        "type": "list(string)",
+        "description": "(Optional) A list of Kubernetes taints which should be applied to nodes in the agent pool (e.g key=value:NoSchedule). Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "[]"
+      },
+      "node_pool_host_group_id": {
+        "type": "string",
+        "description": "(Optional) Dedicated host group id.",
+        "required": false,
+        "default": "null"
+      },
+      "node_pool_os_disk_size_gb": {
+        "type": "number",
+        "description": "(Optional) The Agent Operating System disk size in GB. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "128"
+      },
+      "node_pool_os_disk_type": {
+        "type": "string",
+        "description": "(Optional) The type of disk which should be used for the Operating System. Possible values are `Ephemeral` and `Managed`. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "\"Managed\""
+      },
+      "node_pool_os_type": {
+        "type": "string",
+        "description": "(Optional) The Operating System which should be used for this Node Pool. Changing this forces a new resource to be created. Possible values are Linux and Windows. Defaults to Linux.",
+        "required": false,
+        "default": "\"Linux\""
+      },
+      "node_pool_priority": {
+        "type": "string",
+        "description": "(Optional) The Priority for Virtual Machines within the Virtual Machine Scale Set that powers this Node Pool. Possible values are Regular and Spot. Defaults to Regular. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "\"Regular\""
+      },
+      "node_pool_spot_max_price": {
+        "type": "string",
+        "description": "(Optional) The maximum price you're willing to pay in USD per Virtual Machine. Valid values are -1 (the current on-demand price for a Virtual Machine) or a positive value with up to five decimal places. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "\"-1\""
+      },
+      "node_pool_vm_size": {
+        "type": "string",
+        "description": "(Required) The SKU which should be used for the Virtual Machines used in this Node Pool. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "node_pool_vnet_subnet_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the Subnet where this Node Pool should exist. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "node_pool_zones": {
+        "type": "list(string)",
+        "description": "(Optional) Specifies a list of Availability Zones in which this Kubernetes Cluster Node Pool should be located. Changing this forces a new Kubernetes Cluster Node Pool to be created.",
+        "required": false,
+        "default": "[]"
+      },
+      "tags": {
+        "type": "map(string)",
+        "description": "(Optional) A mapping of tags to assign to the resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "default_node_pool_linux_os_config": {
+        "type": "object({ swap_file_size_mb = string transparent_huge_page_defrag = string transparent_huge_page_enabled = string sysctl_config = object({ fs_aio_max_nr = number fs_file_max = number fs_inotify_max_user_watches = number fs_nr_open = number kernel_threads_max = number net_core_netdev_max_backlog = number net_core_optmem_max = number net_core_rmem_default = number net_core_rmem_max = number net_core_somaxconn = number net_core_wmem_default = number net_core_wmem_max = number net_ipv4_ip_local_port_range_max = number net_ipv4_ip_local_port_range_min = number net_ipv4_neigh_default_gc_thresh1 = number net_ipv4_neigh_default_gc_thresh2 = number net_ipv4_neigh_default_gc_thresh3 = number net_ipv4_tcp_fin_timeout = number net_ipv4_tcp_keepalive_intvl = number net_ipv4_tcp_keepalive_probes = number net_ipv4_tcp_keepalive_time = number net_ipv4_tcp_max_syn_backlog = number net_ipv4_tcp_max_tw_buckets = number net_ipv4_tcp_tw_reuse = number net_netfilter_nf_conntrack_buckets = number net_netfilter_nf_conntrack_max = number vm_max_map_count = number vm_swappiness = number vm_vfs_cache_pressure = number }) })",
+        "description": "(Optional) { swap_file_size_mb = string - (Optional) Specifies the size of swap file on each node in MB. Changing this forces a new resource to be created. transparent_huge_page_defrag = string - (Optional) specifies the defrag configuration for Transparent Huge Page. Possible values are `always`, `defer`, `defer+madvise`, `madvise` and `never`. Changing this forces a new resource to be created. transparent_huge_page_enabled = string - (Optional) Specifies the Transparent Huge Page enabled configuration. Possible values are `always`, `madvise` and `never`. Changing this forces a new resource to be created. sysctl_config = { // (Optional) A `sysctl_config` block as defined below. Changing this forces a new resource to be created. fs_aio_max_nr = number - (Optional) The sysctl setting fs.aio-max-nr. Must be between `65536` and `6553500`. Changing this forces a new resource to be created. fs_file_max = number - (Optional) The sysctl setting fs.file-max. Must be between `8192` and `12000500`. Changing this forces a new resource to be created. fs_inotify_max_user_watches = number - (Optional) The sysctl setting fs.inotify.max_user_watches. Must be between `781250` and `2097152`. Changing this forces a new resource to be created. fs_nr_open = number - (Optional) The sysctl setting fs.nr_open. Must be between `8192` and `20000500`. Changing this forces a new resource to be created. kernel_threads_max = number - (Optional) The sysctl setting kernel.threads-max. Must be between `20` and `513785`. Changing this forces a new resource to be created. net_core_netdev_max_backlog = number - (Optional) The sysctl setting net.core.netdev_max_backlog. Must be between `1000` and `3240000`. Changing this forces a new resource to be created. net_core_optmem_max = number - (Optional) The sysctl setting net.core.optmem_max. Must be between `20480` and `4194304`. Changing this forces a new resource to be created. net_core_rmem_default = number - (Optional) The sysctl setting net.core.rmem_default. Must be between `212992` and `134217728`. Changing this forces a new resource to be created. net_core_rmem_max = number - (Optional) The sysctl setting net.core.rmem_max. Must be between `212992` and `134217728`. Changing this forces a new resource to be created. net_core_somaxconn = number - (Optional) The sysctl setting net.core.somaxconn. Must be between `4096` and `3240000`. Changing this forces a new resource to be created. net_core_wmem_default = number - (Optional) The sysctl setting net.core.wmem_default. Must be between `212992` and `134217728`. Changing this forces a new resource to be created. net_core_wmem_max = number - (Optional) The sysctl setting net.core.wmem_max. Must be between `212992` and `134217728`. Changing this forces a new resource to be created. net_ipv4_ip_local_port_range_max = number - (Optional) The sysctl setting net.ipv4.ip_local_port_range max value. Must be between `1024` and `60999`. Changing this forces a new resource to be created. net_ipv4_ip_local_port_range_min = number - (Optional) The sysctl setting net.ipv4.ip_local_port_range min value. Must be between `1024` and `60999`. Changing this forces a new resource to be created. net_ipv4_neigh_default_gc_thresh1 = number - (Optional) The sysctl setting net.ipv4.neigh.default.gc_thresh1. Must be between `128` and `80000`. Changing this forces a new resource to be created. net_ipv4_neigh_default_gc_thresh2 = number - (Optional) The sysctl setting net.ipv4.neigh.default.gc_thresh2. Must be between `512` and `90000`. Changing this forces a new resource to be created. net_ipv4_neigh_default_gc_thresh3 = number - (Optional) The sysctl setting net.ipv4.neigh.default.gc_thresh3. Must be between `1024` and `100000`. Changing this forces a new resource to be created. net_ipv4_tcp_fin_timeout = number - (Optional) The sysctl setting net.ipv4.tcp_fin_timeout. Must be between `5` and `120`. Changing this forces a new resource to be created. net_ipv4_tcp_keepalive_intvl = number - (Optional) The sysctl setting net.ipv4.tcp_keepalive_intvl. Must be between `10` and `75`. Changing this forces a new resource to be created. net_ipv4_tcp_keepalive_probes = number - (Optional) The sysctl setting net.ipv4.tcp_keepalive_probes. Must be between `1` and `15`. Changing this forces a new resource to be created. net_ipv4_tcp_keepalive_time = number - (Optional) The sysctl setting net.ipv4.tcp_keepalive_time. Must be between `30` and `432000`. Changing this forces a new resource to be created. net_ipv4_tcp_max_syn_backlog = number - (Optional) The sysctl setting net.ipv4.tcp_max_syn_backlog. Must be between `128` and `3240000`. Changing this forces a new resource to be created. net_ipv4_tcp_max_tw_buckets = number - (Optional) The sysctl setting net.ipv4.tcp_max_tw_buckets. Must be between `8000` and `1440000`. Changing this forces a new resource to be created. net_ipv4_tcp_tw_reuse = number - (Optional) The sysctl setting net.ipv4.tcp_tw_reuse. Changing this forces a new resource to be created. net_netfilter_nf_conntrack_buckets = number - (Optional) The sysctl setting net.netfilter.nf_conntrack_buckets. Must be between `65536` and `147456`. Changing this forces a new resource to be created. net_netfilter_nf_conntrack_max = number - (Optional) The sysctl setting net.netfilter.nf_conntrack_max. Must be between `131072` and `589824`. Changing this forces a new resource to be created. vm_max_map_count = number - (Optional) The sysctl setting vm.max_map_count. Must be between `65530` and `262144`. Changing this forces a new resource to be created. vm_swappiness = number - (Optional) The sysctl setting vm.swappiness. Must be between `0` and `100`. Changing this forces a new resource to be created. vm_vfs_cache_pressure = number - (Optional) The sysctl setting vm.vfs_cache_pressure. Must be between `0` and `100`. Changing this forces a new resource to be created. } } **NOTE**: If a property isn't required then it must be explicitly set as an empty list or `null`.",
+        "required": false,
+        "default": "null"
+      }
+    }
+  },
+  "outputs": {
+    "aks_additional_nodepool_id": {
+      "description": "The ID of the created aks additional nodepool."
+    },
+    "aks_additional_nodepool_name": {
+      "description": "The Name of the created aks additional nodepool."
+    },
+    "resource": {
+      "description": "The aks additional nodepool resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Kubernetesclusternodepool' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

@@ -1,0 +1,129 @@
+include:
+  - project: ci/stable/release-tools/tagger
+    ref: 1.0.3
+    file:
+      - templates/tagger.yml
+
+  - local: ci/variables.yml
+
+.deploy-shared:
+  trigger:
+    include: ci/module.yml
+    strategy: depend
+    forward:
+      pipeline_variables: true
+      yaml_variables: true
+
+stages:
+  - tag
+  - environment
+
+0-create-tag:
+  stage: tag
+  variables:
+    TAGGER_GENERATED_TAG: "${RELEASE_VERSION}.${CI_PIPELINE_IID}"
+  extends: [.git-push-tags]
+  tags: ["LSEG"]
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_NAME == "main"
+      when: on_success
+    - when: never
+
+# DEV
+deploy-dev:
+  stage: environment
+  extends: [.deploy-shared]
+  variables:
+    VS_VAULT_SELECT: "ppe"
+    VS_AZURE_ACCOUNT: "a1a-51847-dev-test-sub-datacloud-01"
+    AZURE_ACCOUNT: "a1a-51847-dev-test-sub-datacloud-01" # required for terraform-core
+    TF_CORE_STATE_BACKEND_AZURE_RESOURCE_GROUP: "a1a-51847-dev-rg-datacloud-eus2-01"
+    TF_CORE_STATE_BACKEND_AZURE_STORAGE_ACCOUNT: "a1a51847devsttfsteus201"
+    TF_CORE_STATE_BACKEND_TF_STATE_FILE_KEY: "infra/${ENV}/octopi/ing-01.tfstate"
+    KEYVAULT_NAME: "a1a51847devkvadceus201"
+    RUNNER_TAG: "lsegcom-dev-eus2-linux-runner"
+    ENV: "dev"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_TAG
+      when: manual
+    - if: $CI_COMMIT_TAG # Prevent pipeline run on tag push (triggered by 0-create-tag job)
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_NAME != "main" # Prevent pipeline run on push into feature branch
+      when: never
+    - when: manual
+
+# PPR
+deploy-ppr-01-eus2:
+  stage: environment
+  extends: [.deploy-shared]
+  variables:
+    VS_VAULT_SELECT: "ppe"
+    VS_AZURE_ACCOUNT: "a1a-51847-ppr-staging-sub-datacloud-01"
+    AZURE_ACCOUNT: "a1a-51847-ppr-staging-sub-datacloud-01" # required for terraform-core
+    TF_CORE_STATE_BACKEND_AZURE_RESOURCE_GROUP: "a1a-51847-ppr-rg-datacloud-eus2-01"
+    TF_CORE_STATE_BACKEND_AZURE_STORAGE_ACCOUNT: "a1a51847pprsttfsteus201"
+    TF_CORE_STATE_BACKEND_TF_STATE_FILE_KEY: "infra/${ENV}/octopi/ing-ppr-eus2-01.tfstate"
+    KEYVAULT_NAME: "a1a51847pprkvadceus201"
+    RUNNER_TAG: "lsegcom-ppr01-eus2-linux-runner"
+    ENV: "ppr-01"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_TAG
+      when: manual
+    - when: never
+
+# deploy-ppr-02-uks:
+#   stage: environment
+#   extends: [.deploy-shared]
+#   variables:
+#     VS_VAULT_SELECT: "ppe"
+#     VS_AZURE_ACCOUNT: "a1a-51847-ppr-staging-sub-datacloud-02"
+#     AZURE_ACCOUNT: "a1a-51847-ppr-staging-sub-datacloud-02" # required for terraform-core
+#     TF_CORE_STATE_BACKEND_AZURE_RESOURCE_GROUP: "a1a-51847-ppr-rg-datacloud-uks-01"
+#     TF_CORE_STATE_BACKEND_AZURE_STORAGE_ACCOUNT: "a1a51847pprsttfstuks01"
+#     TF_CORE_STATE_BACKEND_TF_STATE_FILE_KEY: "infra/${ENV}/octopi/ing-ppr-uks-01.tfstate"
+#     KEYVAULT_NAME: "a1a51847pprkvadcuks01"
+#     RUNNER_TAG: "lsegcom-ppr02-uks-linux-runner"
+#     ENV: "ppr-02"
+#   rules:
+#     - if: $CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_TAG
+#       when: manual
+#     - when: never
+
+# PRD
+deploy-prd-01-eus2:
+  stage: environment
+  extends: [.deploy-shared]
+  variables:
+    VS_VAULT_SELECT: "prod"
+    VS_AZURE_ACCOUNT: "a1a-51847-prd-corporate-sub-datacloud-01"
+    AZURE_ACCOUNT: "a1a-51847-prd-corporate-sub-datacloud-01" # required for terraform-core
+    TF_CORE_STATE_BACKEND_AZURE_RESOURCE_GROUP: "a1a-51847-prd-rg-datacloud-eus2-01"
+    TF_CORE_STATE_BACKEND_AZURE_STORAGE_ACCOUNT: "a1a51847prdsttfsteus201"
+    TF_CORE_STATE_BACKEND_TF_STATE_FILE_KEY: "infra/${ENV}/octopi/ing-prd-eus2-01.tfstate"
+    KEYVAULT_NAME: "a1a51847prdkvadceus201"
+    RUNNER_TAG: "lsegcom-prd01-eus2-linux-runner"
+    ENV: "prd-01"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_TAG
+      when: manual
+    - when: never
+
+deploy-prd-02-gwc:
+  stage: environment
+  extends: [.deploy-shared]
+  variables:
+    VS_VAULT_SELECT: "prod"
+    VS_AZURE_ACCOUNT: "a1a-51847-prd-corporate-sub-datacloud-03"
+    AZURE_ACCOUNT: "a1a-51847-prd-corporate-sub-datacloud-03" # required for terraform-core
+    TF_CORE_STATE_BACKEND_AZURE_RESOURCE_GROUP: "a1a-51847-prd-rg-datacloud-gwc-01"
+    TF_CORE_STATE_BACKEND_AZURE_STORAGE_ACCOUNT: "a1a51847prdsttfstgwc01"
+    TF_CORE_STATE_BACKEND_TF_STATE_FILE_KEY: "infra/${ENV}/octopi/ing-prd-gwc-01.tfstate"
+    KEYVAULT_NAME: "a1a51847prdkvadcgwc01"
+    RUNNER_TAG: "lsegcom-prd02-gwc-linux-runner"
+    ENV: "prd-02"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_TAG
+      when: manual
+    - when: never

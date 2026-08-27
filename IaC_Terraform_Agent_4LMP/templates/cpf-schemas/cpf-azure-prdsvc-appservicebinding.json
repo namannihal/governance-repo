@@ -1,0 +1,223 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Linux Web App Module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-appservicebinding'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-appservicebinding",
+  "module_type": "service",
+  "azure_service": "Appservicebinding",
+  "module_name": "Linux Web App Module",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.1.1",
+    "0.1.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-appservicebinding.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "time": ">=0.12.1",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Virtual Network",
+    "Subnet",
+    "Service Plan",
+    "Key Vault",
+    "App Service Environment",
+    "Certificate",
+    "Hostname"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_app_service_certificate.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_app_service_certificate_binding.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_app_service_custom_hostname_binding.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_for_cert",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_resource_group.this",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "appservicebinding",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-appservicebinding.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.1.1",
+        "0.1.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "app_service_certificate_name",
+      "app_service_name",
+      "environment",
+      "host_names",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "app_service_certificate_name": {
+        "type": "string",
+        "description": "(Required) The name of the App Service Certificate. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "app_service_name": {
+        "type": "string",
+        "description": "(Required) The name of the App Service in which to add the Custom Hostname Binding. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "app_service_plan_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the associated App Service plan. Must be specified when the certificate is used inside an App Service Environment hosted App Service or with Basic and Premium App Service plans. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "certificate_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the certificate to bind to the custom domain. Changing this forces a new App Service Certificate Binding to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "host_names": {
+        "type": "map(object({ hostname = string ssl_state = string thumbprint = optional(string, null) }))",
+        "description": "hostname = (Required) Specifies the Custom Hostname to use for the App Service, example www.example.com. Changing this forces a new resource to be created. ssl_state = (Required) The SSL state of the hostname. Possible values are `Disabled`, `SniEnabled`, and `IpBasedEnabled`. Changing this forces a new resource to be created. thumbprint = (Optional) The thumbprint of the SSL certificate to use for the hostname. If not specified, the thumbprint from the `azurerm_app_service_certificate` resource will",
+        "required": true
+      },
+      "hostname_binding_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the Custom Domain/Hostname Binding. Changing this forces a new App Service Certificate Binding to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "key_vault_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the Key Vault. Must be specified if the Key Vault of key_vault_secret_id is in a different subscription from the App Service Certificate. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "key_vault_secret_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the Key Vault secret. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "pfx_blob": {
+        "type": "string",
+        "description": "(Optional) The base64-encoded contents of the certificate. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "pfx_password": {
+        "type": "string",
+        "description": "(Optional) The password to access the certificate's private key. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "app_certificate_binding_id": {
+      "description": "Map of Resource IDs for each App Certificate Binding."
+    },
+    "app_certificate_binding_resource": {
+      "description": "Map of App Certificate Binding resources."
+    },
+    "app_service_certificate_id": {
+      "description": "The Resource ID of the App Service Certificate."
+    },
+    "app_service_certificate_name": {
+      "description": "The Name of the App Service Certificate."
+    },
+    "app_service_certificate_resource": {
+      "description": "The App Service Certificate resource."
+    },
+    "hostname_binding_id": {
+      "description": "Map of Resource IDs for each App Service Custom Hostname Binding."
+    },
+    "hostname_binding_resource": {
+      "description": "Map of App Service Custom Hostname Binding resources."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Appservicebinding' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Virtual Network",
+      "Subnet",
+      "Service Plan",
+      "Key Vault",
+      "App Service Environment",
+      "Certificate",
+      "Hostname"
+    ]
+  }
+}

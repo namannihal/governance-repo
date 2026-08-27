@@ -1,0 +1,225 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Batch Account module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-batchaccount'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-batchaccount",
+  "module_type": "service",
+  "azure_service": "Batchaccount",
+  "module_name": "Batch Account module",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.9.1",
+    "0.9.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-batchaccount.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "time": "~> 0.12.0",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "key vault"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_batch_account.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_batch_job.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_batch_pool.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.cmk",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_batchpool",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "batchaccount",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-batchaccount.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.9.1",
+        "0.9.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "customer_managed_key",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "batch_jobs": {
+        "type": "map(object({ name = string batch_pool_id = string display_name = optional(string, null) common_environment_properties = optional(map(string), null) task_retry_maximum = optional(number, null) priority = optional(number, 0) }))",
+        "description": "(Optional) Map of Batch Job definitions. Each key is a unique job name, and the value is an object with: name = (Required) The name of the Batch Job. batch_pool_id = (Required) The ID of the Batch Pool. display_name = (Optional) The display name of this Batch Job. common_environment_properties= (Optional) Map of environment variables for the job. task_retry_maximum = (Optional) The number of retries for each Batch Task in this Job. 0 = no retry, -1 = unlimited. priority = (Optional) The priority of this Batch Job, from -1000 to 1000. Defaults to 0.",
+        "required": false,
+        "default": "{}"
+      },
+      "batch_pools": {
+        "type": "map(object({ batch_pool_name = string batch_pool_display_name = optional(string, null) batch_pool_stop_pending_resize_operation = optional(bool, false) batch_pool_vm_size = string batch_pool_node_agent_sku_id = string batch_pool_os_disk_placement = optional(string, null) batch_pool_metadata = optional(map(string), null) batch_pool_license_type = optional(string, null) batch_pool_inter_node_communication = optional(string, \"Enabled\") batch_pool_max_tasks_per_node = optional(number, 1) batch_pool_target_node_communication_mode = optional(string, \"Simplified\") batch_pool_storage_image_reference = object({ publisher = optional(string, null) offer = optional(string, null) sku = optional(string, null) version = optional(string, null) id = optional(string, null) }) batch_pool_identity = optional(object({ type = string identity_ids = optional(list(string), null) }), null) batch_pool_auto_scale = object({ formula = string evaluation_interval = optional(string, \"PT15M\") }) batch_pool_task_scheduling_policy = optional(object({ node_fill_type = optional(string, \"Spread\") }), null) batch_pool_start_task = optional(object({ command_line = string common_environment_properties = optional(map(string), null) wait_for_success = optional(bool, false) task_retry_maximum = optional(number, 0) user_identity = object({ user_name = optional(string, null) auto_user = optional(object({ elevation_level = optional(string, \"NonAdmin\") scope = optional(string, \"Task\") }), null) }) resource_files = optional(list(object({ file_path = optional(string, null) http_url = optional(string, null) auto_storage_container_name = optional(string, null) storage_container_url = optional(string, null) blob_prefix = optional(string, null) file_mode = optional(string, \"0770\") user_assigned_identity_id = optional(string, null) })), null) container = optional(object({ image_name = string run_options = optional(string, null) registry = optional(object({ registry_server = string username = optional(string, null) password = optional(string, null) user_assigned_identity_id = optional(string, null) }), null) working_directory = optional(string, \"TaskWorkingDirectory\") }), null) }), null) batch_pool_container_configuration = optional(object({ type = optional(string, \"DockerCompatible\") container_image_names = optional(list(string), null) container_registries = optional(list(object({ registry_server = string user_name = optional(string, null) password = optional(string, null) user_assigned_identity_id = optional(string, null) })), null) privileged = optional(bool, false) container_run_options = optional(string, null) }), null) batch_pool_network_configuration = object({ subnet_id = string public_ips = optional(list(string), null) dynamic_vnet_assignment_scope = optional(string, \"none\") accelerated_networking_enabled = optional(bool, false) endpoint_configuration = optional(list(object({ name = string backend_port = number protocol = string frontend_port_range = string network_security_group_rules = optional(list(object({ priority = number access = string source_address_prefix = string source_port_ranges = optional(list(string), [\"*\"]) })), null) })), null) }) batch_pool_certificates = optional(list(object({ id = string store_location = string store_name = optional(string, null) visibility = optional(string, null) })), null) batch_pool_node_placement = optional(object({ policy = optional(string, \"Regional\") }), null) batch_pool_user_accounts = optional(list(object({ name = string password = string elevation_level = optional(string, \"NonAdmin\") linux_user_configuration = optional(object({ uid = optional(number, null) gid = optional(number, null) ssh_key = optional(string, null) }), null) windows_user_configuration = optional(object({ login_mode = optional(string, \"Interactive\") }), null) })), null) batch_pool_disk_encryption = optional(object({ disk_encryption_target = string }), null) batch_pool_mounts = optional(list(object({ azure_blob_file_system = optional(object({ account_name = string container_name = string relative_mount_path = string account_key = optional(string, null) sas_key = optional(string, null) identity_id = optional(string, null) blobfuse_options = optional(string, null) }), null) azure_file_share = optional(object({ account_name = string account_key = string azure_file_url = string relative_mount_path = string mount_options = optional(string, null) }), null) cifs_mount = optional(object({ user_name = string password = string source = string relative_mount_path = string mount_options = optional(string, null) }), null) nfs_mount = optional(object({ source = string relative_mount_path = string mount_options = optional(string, null) }), null) })), null) batch_pool_extensions = optional(list(object({ name = string publisher = string type = string type_handler_version = optional(string, null) auto_upgrade_minor_version = optional(bool, false) automatic_upgrade_enabled = optional(bool, false) settings_json = optional(string, null) protected_settings = optional(string, null) provision_after_extensions = optional(list(string), null) })), null) batch_pool_windows = optional(object({ enable_automatic_updates = optional(bool, true) }), null) batch_pool_data_disks = optional(list(object({ lun = number disk_size_gb = number caching = optional(string, \"ReadOnly\") storage_account_type = optional(string, \"Standard_LRS\") })), null) }))",
+        "description": "(Optional) A map of Batch Pool configurations. Each key is a unique pool name and the value is an object with the following attributes: batch_pool_name = (Required) The name of the Batch Pool. batch_pool_display_name = (Optional) The display name for the Batch Pool. Defaults to null. batch_pool_stop_pending_resize_operation = (Optional) Whether to stop pending resize operations. Defaults to false. batch_pool_vm_size = (Required) The size of the VMs in the pool. batch_pool_node_agent_sku_id = (Required) The SKU of the node agent to be used. batch_pool_os_disk_placement = (Optional) The placement of the OS disk. Defaults to null. batch_pool_metadata = (Optional) A map of metadata key-value pairs to associate with the pool. Defaults to null. batch_pool_license_type = (Optional) The license type to be used by the pool. Defaults to null. batch_pool_inter_node_communication = (Optional) The inter-node communication mode. Defaults to null. batch_pool_max_tasks_per_node = (Optional) The maximum number of tasks per node. Defaults to null. batch_pool_target_node_communication_mode = (Optional) The communication mode for the pool nodes. Possible values are `Simplified` or `Classic`. Defaults to `Simplified`. batch_pool_storage_image_reference = (Required) An object describing the image reference for the pool nodes: publisher = (Optional) The publisher of the image. Defaults to null. offer = (Optional) The offer of the image. Defaults to null. sku = (Optional) The SKU of the image. Defaults to null. version = (Optional) The version of the image. Defaults to null. id = (Optional) The resource ID of a custom image (for custom images only). Defaults to null. batch_pool_identity = (Optional) An object describing the identity for the pool: type = (Required) The type of managed identity. Possible values are `SystemAssigned`, `UserAssigned`. identity_ids = (Optional) A list of user-assigned identity IDs. Defaults to null. batch_pool_auto_scale = (Required) An object describing the autoscale configuration: formula = (Required) The autoscale formula. evaluation_interval = (Optional) The time interval for autoscale evaluation. Defaults to null. batch_pool_task_scheduling_policy = (Optional) An object describing the task scheduling policy: node_fill_type = (Required) The node fill type. batch_pool_start_task = (Optional) An object describing the start task for the pool: command_line = (Required) The command line for the start task. common_environment_properties = (Optional) A map of environment variables for the start task. Defaults to null. wait_for_success = (Optional) Whether to wait for the start task to complete successfully. Defaults to null. task_retry_maximum = (Optional) The maximum number of retries for the start task. Defaults to null. user_identity = (Required) An object describing the user identity for the start task: user_name = (Optional) The user name. Defaults to null. auto_user = (Optional) An object describing the auto user: elevation_level = (Optional) The elevation level. Defaults to null. scope = (Optional) The scope. Defaults to null. resource_files = (Optional) A list of resource file objects for the start task: file_path = (Optional) The file path. Defaults to null. http_url = (Optional) The HTTP URL. Defaults to null. auto_storage_container_name = (Optional) The auto storage container name. Defaults to null. storage_container_url = (Optional) The storage container URL. Defaults to null. blob_prefix = (Optional) The blob prefix. Defaults to null. file_mode = (Optional) The file mode. Defaults to null. user_assigned_identity_id = (Optional) The user-assigned identity ID. Defaults to null. container = (Optional) An object describing the container for the start task: image_name = (Required) The container image name. run_options = (Optional) The run options. Defaults to null. registry = (Optional) An object describing the container registry: registry_server = (Required) The registry server. username = (Optional) The username. Defaults to null. password = (Optional) The password. Defaults to null. user_assigned_identity_id = (Optional) The user-assigned identity ID. Defaults to null. working_directory = (Optional) The working directory. Defaults to null. batch_pool_container_configuration = (Optional) An object describing the container configuration for the pool: type = (Required) The type of container configuration. container_image_names = (Optional) A list of container image names. Defaults to null. container_registries = (Optional) A list of container registry objects: registry_server = (Required) The registry server. user_name = (Optional) The username. Defaults to null. password = (Optional) The password. Defaults to null. user_assigned_identity_id = (Required) The user-assigned identity ID. privileged = (Optional) Whether the container is privileged. Defaults to null. container_run_options = (Optional) The run options for the container. Defaults to null. batch_pool_network_configuration = (Required) An object describing the network configuration for the pool: subnet_id = (Required) The subnet ID for the pool nodes. public_ips = (Optional) A list of public IPs to be used. Defaults to null. dynamic_vnet_assignment_scope = (Optional) The dynamic VNet assignment scope. Defaults to null. accelerated_networking_enabled = (Optional) Whether accelerated networking is enabled. Defaults to false. endpoint_configuration = (Optional) A list of endpoint configuration objects: name = (Required) The name of the endpoint. backend_port = (Required) The backend port. protocol = (Required) The protocol. frontend_port_range = (Required) The frontend port range. network_security_group_rules = (Optional) A list of network security group rule objects: priority = (Required) The priority of the rule. access = (Required) The access type. source_address_prefix = (Required) The source address prefix. source_port_ranges = (Optional) A list of source port ranges. Defaults to null. batch_pool_certificates = (Optional) A list of certificate objects for the pool: id = (Required) The certificate ID. store_location = (Required) The store location. store_name = (Optional) The store name. Defaults to null. visibility = (Optional) The visibility. Defaults to null. batch_pool_node_placement = (Optional) An object describing the node placement policy: policy = (Required) The node placement policy. batch_pool_user_accounts = (Optional) A list of user account objects for the pool: name = (Required) The user name. password = (Required) The password. elevation_level = (Required) The elevation level. linux_user_configuration = (Optional) An object for Linux user configuration: uid = (Optional) The UID. Defaults to null. gid = (Optional) The GID. Defaults to null. ssh_key = (Optional) The SSH key. Defaults to null. windows_user_configuration = (Optional) An object for Windows user configuration: login_mode = (Required) The login mode. batch_pool_disk_encryption = (Optional) An object describing the disk encryption configuration: disk_encryption_target = (Required) The disk encryption target. batch_pool_mounts = (Optional) A list of mount configuration objects for the pool: azure_blob_file_system = (Optional) An object for Azure Blob File System mount: account_name = (Required) The storage account name. container_name = (Required) The container name. relative_mount_path = (Required) The relative mount path. account_key = (Optional) The account key. Defaults to null. sas_key = (Optional) The SAS key. Defaults to null. identity_id = (Optional) The identity ID. Defaults to null. blobfuse_options = (Optional) The blobfuse options. Defaults to null. azure_file_share = (Optional) An object for Azure File Share mount: account_name = (Required) The storage account name. account_key = (Required) The account key. azure_file_url = (Required) The Azure file URL. relative_mount_path = (Required) The relative mount path. mount_options = (Optional) The mount options. Defaults to null. cifs_mount = (Optional) An object for CIFS mount: user_name = (Required) The user name. password = (Required) The password. source = (Required) The source. relative_mount_path = (Required) The relative mount path. mount_options = (Optional) The mount options. Defaults to null. nfs_mount = (Optional) An object for NFS mount: source = (Required) The source. relative_mount_path = (Required) The relative mount path. mount_options = (Optional) The mount options. Defaults to null. batch_pool_extensions = (Optional) A list of extension objects for the pool: name = (Required) The extension name. publisher = (Required) The extension publisher. type = (Required) The extension type. type_handler_version = (Optional) The type handler version. Defaults to null. auto_upgrade_minor_version = (Optional) Whether to auto-upgrade minor version. Defaults to null. automatic_upgrade_enabled = (Optional) Whether to enable automatic upgrade. Defaults to null. settings_json = (Optional) The settings as a JSON string. Defaults to null. protected_settings = (Optional) The protected settings. Defaults to null. provision_after_extensions = (Optional) A list of extension names after which this extension should be provisioned. Defaults to null. batch_pool_windows = (Optional) An object for Windows configuration: enable_automatic_updates = (Optional) Whether to enable automatic updates. Defaults to true. batch_pool_data_disks = (Optional) A list of data disk objects for the pool: lun = (Required) The logical unit number. disk_size_gb = (Required) The disk size in GB. caching = (Optional) The caching type. Defaults to null. storage_account_type = (Optional) The storage account type. Defaults to null.",
+        "required": false,
+        "default": "{}"
+      },
+      "cmk_key_name": {
+        "type": "string",
+        "description": "(optional) Key name to be used (max 127 chars)",
+        "required": false,
+        "default": "null"
+      },
+      "cmk_rotation_policy": {
+        "type": "object({ notify_before_expiry = string time_before_expiry = string time_after_creation = optional(string, null) expire_after = string })",
+        "description": "(Optional) A rotation policy block as defined below object({ notify_before_expiry = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration. Defaults to `P358D`\" time_before_expiry = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration. Defaults to `P7D`\" time_after_creation = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" expire_after = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration. Defaults to `P365D`\" })",
+        "required": false,
+        "default": "{ \"expire_after\": \"P365D\", \"notify_before_expiry\": \"P358D\", \"time_after_creation\": null, \"time_before_expiry\": \"P7D\" }"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "create_role_assignment": {
+        "type": "bool",
+        "description": "(Optional) Whether to create a role assignment to the service identity to allow access to the key vault keys.",
+        "required": false,
+        "default": "true"
+      },
+      "customer_managed_key": {
+        "type": "object({ enabled = optional(bool, false) key_vault_id = optional(string) expiration_date = optional(string) identity_principal_id = optional(string) })",
+        "description": "(Optional) The details regarding Customer Managed Key (CMK) as defined below: object({ enabled = \"(Optional) Should a Customer Managed Key be created and used to encrypt the batch account? Defaults to `false`\" key_vault_id = \"(Optional) The Key Vault used to create Customer Managed Key and used it to encrypt the batch account. To be provided if CMK is enabled\" expiration_date = \"(Optional) Expiration UTC datetime (Y-m-d'T'H:M:S'Z'). To be provided if CMK is enabled\" identity_principal_id = \"(Optional) The principal ID of the User Assigned Identity that has access to the key.\" })",
+        "required": true
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = optional(set(string)) })",
+        "description": "(Optional) An identity block as defined below object({ type = \"(Required) Specifies the type of Managed Service Identity that should be configured on this Batch Account. Possible values are `SystemAssigned`, `UserAssigned`.\" identity_ids = \"(Optional) A list of User Assigned Managed Identity IDs to be assigned to this Batch Account. This is required when `type` is set to `UserAssigned`.\" })",
+        "required": false,
+        "default": "{ \"identity_ids\": null, \"type\": \"SystemAssigned\" }"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "key_vault_tags": {
+        "type": "map(any)",
+        "description": "(Optional) Key Vault related tags to be set on key vault child resources.",
+        "required": false,
+        "default": "{}"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "network_profile": {
+        "type": "object({ account_access = optional(object({ default_action = optional(string, \"Deny\") ip_rules = optional(map(object({ ip_range = string action = optional(string, \"Allow\") })), {}) }), null) node_management_access = optional(object({ default_action = optional(string, \"Deny\") ip_rules = optional(map(object({ ip_range = string action = optional(string, \"Allow\") })), {}) }), null) })",
+        "description": "(Optional) A network_profile block as defined below: account_access = (Optional) An account_access block as defined below object({ default_action = \"(Optional) Specifies the default action for the node management access. Possible values are `Allow` and `Deny`. Defaults to `Deny`.\" ip_rules = \"(Optional) A map of ip_rules block as defined below: object({ ip_range = \"(Required) The CIDR block from which requests will match the rule.\" action = \"(Optional) Specifies the action of the ip rule. The only possible value is `Allow`. Defaults to `Allow`.\" }) }) node_management_access = (Optional) An node_management_access block as defined below object({ default_action = \"(Optional) Specifies the default action for the node management access. Possible values are `Allow` and `Deny`. Defaults to `Deny`.\" ip_rules = \"(Optional) A map of ip_rules block as defined below: object({ ip_range = \"(Required) The CIDR block from which requests will match the rule.\" action = \"(Optional) Specifies the action of the ip rule. The only possible value is `Allow`. Defaults to `Allow`.\" }) })",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "pool_allocation_mode": {
+        "type": "string",
+        "description": "(Optional) The allocation mode for the Batch Account. Possible values are 'BatchService' or 'UserSubscription'.",
+        "required": false,
+        "default": "\"BatchService\""
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "storage_account_id": {
+        "type": "string",
+        "description": "(Optional) Specifies the storage account to use for the Batch account. If not specified, Azure Batch will manage the storage.",
+        "required": false,
+        "default": "null"
+      },
+      "storage_account_node_identity": {
+        "type": "string",
+        "description": "(Optional) Specifies the user assigned identity for the storage account.",
+        "required": false,
+        "default": "null"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "batch_job_ids": {
+      "description": "The IDs of the created Azure Batch Jobs."
+    },
+    "batchjob_resource": {
+      "description": "The resource objects of the Batch Jobs."
+    },
+    "batchpool_ids": {
+      "description": "The IDs of the Batch Pool."
+    },
+    "batchpool_resource": {
+      "description": "The resource objects of the Batch Pools."
+    },
+    "id": {
+      "description": "The ID of the created Azure Batch Account."
+    },
+    "name": {
+      "description": "The name of the created Azure Batch Account."
+    },
+    "resource": {
+      "description": "The Batch Account resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Batchaccount' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "key vault"
+    ]
+  }
+}

@@ -1,0 +1,275 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Event Grid Event Subscription module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-eventgrideventsubscription'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-eventgrideventsubscription",
+  "module_type": "service",
+  "azure_service": "Eventgrideventsubscription",
+  "module_name": "Event Grid Event Subscription module",
+  "latest_tag": "2.0.1",
+  "available_tags": [
+    "2.0.1",
+    "2.0.0",
+    "1.1.0",
+    "1.0.1",
+    "1.0.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-eventgrideventsubscription.git//?ref=2.0.1",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "create_system_topic_event_subscription",
+    "True",
+    "create_event_subscription",
+    "azure_function_endpoint",
+    "eventhub_endpoint_id",
+    "hybrid_connection_endpoint",
+    "hybrid_connection_endpoint_id",
+    "service_bus_queue_endpoint_id",
+    "service_bus_topic_endpoint_id",
+    "storage_queue_endpoint",
+    "webhook_endpoint"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_eventgrid_event_subscription.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_eventgrid_system_topic_event_subscription.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "eventgrideventsubscription",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-eventgrideventsubscription.git//?ref=2.0.1",
+      "version": "2.0.1",
+      "available_versions": [
+        "2.0.1",
+        "2.0.0",
+        "1.1.0",
+        "1.0.1",
+        "1.0.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "advanced_filter": {
+        "type": "object({ bool_equals = optional(map(object({ key = string value = bool })), null) number_greater_than = optional(map(object({ key = string value = number })), null) number_greater_than_or_equals = optional(map(object({ key = string value = number })), null) number_less_than = optional(map(object({ key = string value = number })), null) number_less_than_or_equals = optional(map(object({ key = string value = number })), null) number_in = optional(map(object({ key = string values = list(number) })), null) number_not_in = optional(map(object({ key = string values = list(number) })), null) number_in_range = optional(map(object({ key = string values = list(list(number)) })), null) number_not_in_range = optional(map(object({ key = string values = list(list(number)) })), null) string_begins_with = optional(map(object({ key = string values = list(string) })), null) string_not_begins_with = optional(map(object({ key = string values = list(string) })), null) string_ends_with = optional(map(object({ key = string values = list(string) })), null) string_not_ends_with = optional(map(object({ key = string values = list(string) })), null) string_contains = optional(map(object({ key = string values = list(string) })), null) string_not_contains = optional(map(object({ key = string values = list(string) })), null) string_in = optional(map(object({ key = string values = list(string) })), null) string_not_in = optional(map(object({ key = string values = list(string) })), null) is_not_null = optional(map(object({ key = string })), null) is_null_or_undefined = optional(map(object({ key = string })), null) })",
+        "description": "(Optional) Specifies the advanced filter for the event subscription: bool_equals = \"(Optional) Compares a value of an event using a single boolean value.\" number_greater_than = \"(Optional) Compares a value of an event using a single floating point number.\" number_greater_than_or_equals = \"(Optional) Compares a value of an event using a single floating point number.\" number_less_than = \"(Optional) Compares a value of an event using a single floating point number.\" number_less_than_or_equals = \"(Optional) Compares a value of an event using a single floating point number.\" number_in = \"(Optional) Compares a value of an event using multiple floating point numbers.\" number_not_in = \"(Optional) Compares a value of an event using multiple floating point numbers.\" number_in_range = \"(Optional) Compares a value of an event using multiple floating point number ranges.\" number_not_in_range = \"(Optional) Compares a value of an event using multiple floating point number ranges.\" string_begins_with = \"(Optional) Compares a value of an event using multiple string values.\" string_not_begins_with = \"(Optional) Compares a value of an event using multiple string values.\" string_ends_with = \"(Optional) Compares a value of an event using multiple string values.\" string_not_ends_with = \"(Optional) Compares a value of an event using multiple string values.\" string_contains = \"(Optional) Compares a value of an event using multiple string values.\" string_not_contains = \"(Optional) Compares a value of an event using multiple string values.\" string_in = \"(Optional) Compares a value of an event using multiple string values.\" string_not_in = \"(Optional) Compares a value of an event using multiple string values.\" is_not_null = \"(Optional) Evaluates if a value of an event isn't NULL or undefined.\" is_null_or_undefined = \"(Optional) Evaluates if a value of an event is NULL or undefined.\"",
+        "required": false,
+        "default": "null"
+      },
+      "advanced_filtering_on_arrays_enabled": {
+        "type": "bool",
+        "description": "(Optional) Specifies whether advanced filters should be evaluated against an array of values instead of expecting a singular value. Defaults to false.",
+        "required": false,
+        "default": "false"
+      },
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "azure_function_endpoint": {
+        "type": "object({ function_id = string max_events_per_batch = optional(number) preferred_batch_size_in_kilobytes = optional(number) })",
+        "description": "(Optional) Specifies the function endpoint details to which the event subscription should be created. function_id = \"(Required) Specifies the ID of the Function where the Event Subscription will receive events. This must be the functions ID in format {function_app.id}/functions/{name}.\" max_events_per_batch = \"(Optional) Maximum number of events per batch.\" preferred_batch_size_in_kilobytes = \"(Optional) Preferred batch size in Kilobytes.\"",
+        "required": false,
+        "default": "null"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "create_event_subscription": {
+        "type": "bool",
+        "description": "(Optional) Specifies whether to create Event Subscription. Defaults to false.",
+        "required": false,
+        "default": "false"
+      },
+      "create_system_topic_event_subscription": {
+        "type": "bool",
+        "description": "(Optional) Specifies whether to create a System Topic Event Subscription. Defaults to false.",
+        "required": false,
+        "default": "false"
+      },
+      "dead_letter_identity": {
+        "type": "object({ type = string user_assigned_identity = optional(string, null) })",
+        "description": "(Optional) Specifies the identity details for the event subscription: type = \"(Required) Specifies the type of Managed Service Identity that is used for dead lettering. Allowed value is SystemAssigned, UserAssigned.\" user_assigned_identity = \"(Optional) The user identity associated with the resource.\"",
+        "required": false,
+        "default": "null"
+      },
+      "delivery_identity": {
+        "type": "object({ type = string user_assigned_identity = optional(string, null) })",
+        "description": "(Optional) Specifies the identity details for the event subscription: type = \"(Required) Specifies the type of Managed Service Identity that is used for event delivery. Allowed value is SystemAssigned, UserAssigned.\" user_assigned_identity = \"(Optional) The user identity associated with the resource.\"",
+        "required": false,
+        "default": "null"
+      },
+      "delivery_property": {
+        "type": "object({ header_name = string type = string value = optional(string) source_field = optional(string) secret = optional(bool) })",
+        "description": "(Optional) Specifies the delivery property details for the event subscription: header_name = \"(Required) The name of the header to send on to the destination\" type = \"(Required) Either Static or Dynamic\" value = \"(Optional) If the type is Static, then provide the value to use\" source_field = \"(Optional) If the type is Dynamic, then provide the payload field to be used as the value. Valid source fields differ by subscription type.\" secret = \"(Optional) True if the value is a secret and should be protected, otherwise false. If True, then this value won't be returned from Azure API calls\"",
+        "required": false,
+        "default": "{ \"header_name\": \"header\", \"secret\": false, \"source_field\": null, \"type\": \"Static\", \"value\": null }"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "event_delivery_schema": {
+        "type": "string",
+        "description": "(Optional) Specifies the event delivery schema for the event subscription. Possible values include: EventGridSchema, CloudEventSchemaV1_0, CustomInputSchema. Defaults to EventGridSchema. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "\"EventGridSchema\""
+      },
+      "expiration_time_utc": {
+        "type": "string",
+        "description": "(Optional) Specifies the expiration time of the event subscription (Datetime Format RFC 3339).",
+        "required": false,
+        "default": "null"
+      },
+      "included_event_types": {
+        "type": "list(string)",
+        "description": "(Optional) A list of applicable event types that need to be part of the event subscription.",
+        "required": false,
+        "default": "[]"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "labels": {
+        "type": "list(string)",
+        "description": "(Optional) A list of labels to assign to the event subscription.",
+        "required": false,
+        "default": "[]"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "resource_endpoint": {
+        "type": "object({ eventhub_endpoint_id = optional(string) hybrid_connection_endpoint_id = optional(string) service_bus_queue_endpoint_id = optional(string) service_bus_topic_endpoint_id = optional(string) })",
+        "description": "(Optional) Specifies the resource id of the endpoint to which the event subscription should be created. eventhub_endpoint_id = \"(Optional) Specifies the id where the Event Hub is located.\" hybrid_connection_endpoint_id = \"(Optional) Specifies the id where the Hybrid Connection is located.\" service_bus_queue_endpoint_id = \"(Optional) Specifies the id where the Service Bus Queue is located.\" service_bus_topic_endpoint_id = \"(Optional) Specifies the id where the Service Bus Topic is located.\"",
+        "required": false,
+        "default": "{ \"eventhub_endpoint_id\": null, \"hybrid_connection_endpoint_id\": null, \"service_bus_queue_endpoint_id\": null, \"service_bus_topic_endpoint_id\": null }"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "retry_policy": {
+        "type": "object({ max_delivery_attempts = number event_time_to_live = number })",
+        "description": "(Optional) Specifies the retry policy for the event subscription: max_delivery_attempts = \"(Required) Specifies the maximum number of delivery retry attempts for events.\" event_time_to_live = \"(Required) Specifies the time to live (in minutes) for events. Supported range is 1 to 1440.\"",
+        "required": false,
+        "default": "null"
+      },
+      "scope": {
+        "type": "string",
+        "description": "(Optional) Specifies the scope at which the EventGrid Event Subscription should be created. Changing this forces a new resource to be created. Required, if create_event_subscription is set to True",
+        "required": false,
+        "default": "null"
+      },
+      "storage_blob_dead_letter_destination": {
+        "type": "object({ storage_account_id = optional(string, null) storage_blob_container_name = optional(string, null) })",
+        "description": "(Optional) Specifies the storage blob dead letter destination details for the event subscription: storage_account_id = \"(Optional) Specifies the id of the storage account id where the storage blob is located.\" storage_blob_container_name = \"(Optional) Specifies the name of the Storage blob container that is the destination of the deadletter events.\"",
+        "required": false,
+        "default": "null"
+      },
+      "storage_queue_endpoint": {
+        "type": "object({ storage_account_id = string queue_name = string queue_message_time_to_live_in_seconds = optional(number, null) })",
+        "description": "(Optional) Specifies the storage queue endpoint details to which the event subscription should be created. storage_account_id = \"(Required) Specifies the id of the storage account id where the storage queue is located.\" queue_name = \"(Required) Specifies the name of the storage queue where the Event Subscription will receive events.\" queue_message_time_to_live_in_seconds = \"(Optional) Storage queue message time to live in seconds.\"",
+        "required": false,
+        "default": "null"
+      },
+      "subject_filter": {
+        "type": "object({ subject_begins_with = optional(string) subject_ends_with = optional(string) case_sensitive = optional(bool) })",
+        "description": "(Optional) Specifies the subject filter for the event subscription: subject_begins_with = \"(Optional) An optional string to filter events for an event subscription based on a resource path prefix. Wildcard characters are not supported.\" subject_ends_with = \"(Optional) A string to filter events for an event subscription based on a resource path suffix.\" case_sensitive = \"(Optional) Specifies if subject_begins_with and subject_ends_with case sensitive.\"",
+        "required": false,
+        "default": "null"
+      },
+      "system_topic": {
+        "type": "string",
+        "description": "(Optional) The System Topic where the Event Subscription should be created in. Changing this forces a new Event Subscription to be created. Required if create_system_topic_event_subscription is true",
+        "required": false,
+        "default": "null"
+      },
+      "webhook_endpoint": {
+        "type": "object({ url = string base_url = optional(string, null) max_events_per_batch = optional(number, null) preferred_batch_size_in_kilobytes = optional(number, null) active_directory_tenant_id = optional(string, null) active_directory_app_id_or_uri = optional(string, null) })",
+        "description": "(Optional) Specifies the webhook endpoint details to which the event subscription should be created. url = \"(Required) Specifies the url of the webhook where the Event Subscription will receive events.\" base_url = \"(Computed) The base url of the webhook where the Event Subscription will receive events.\" max_events_per_batch = \"(Optional) Maximum number of events per batch.\" preferred_batch_size_in_kilobytes = \"(Optional) Preferred batch size in Kilobytes.\" active_directory_tenant_id = \"(Optional) The Azure Active Directory Tenant ID to get the access token that will be included as the bearer token in delivery requests.\" active_directory_app_id_or_uri = \"(Optional) The Azure Active Directory Application ID or URI to get the access token that will be included as the bearer token in delivery requests.\"",
+        "required": false,
+        "default": "null"
+      }
+    }
+  },
+  "outputs": {
+    "event_subscription_id": {
+      "description": "The ID of the Event Grid Event Subscription."
+    },
+    "event_subscription_name": {
+      "description": "The name of the Event Grid Event Subscription."
+    },
+    "event_subscription_resource": {
+      "description": "The Event Grid Event Subscription resource."
+    },
+    "system_topic_event_subscription_id": {
+      "description": "The ID of the Event Grid System Topic Subscription."
+    },
+    "system_topic_event_subscription_name": {
+      "description": "The name of the Event Grid System Topic Event Subscription."
+    },
+    "system_topic_event_subscription_resource": {
+      "description": "The Event Grid System Topic Event Subscription resource."
+    },
+    "system_topic_name": {
+      "description": "The name of the Event Grid System Topic."
+    },
+    "topic_name": {
+      "description": "The name of the Event Grid Event Subscription."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Eventgrideventsubscription' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "create_system_topic_event_subscription",
+      "True",
+      "create_event_subscription",
+      "azure_function_endpoint",
+      "eventhub_endpoint_id",
+      "hybrid_connection_endpoint",
+      "hybrid_connection_endpoint_id",
+      "service_bus_queue_endpoint_id",
+      "service_bus_topic_endpoint_id",
+      "storage_queue_endpoint",
+      "webhook_endpoint"
+    ]
+  }
+}

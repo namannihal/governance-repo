@@ -1,0 +1,527 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Kubernetes Service(AKS) module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-kubernetescluster'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-kubernetescluster",
+  "module_type": "service",
+  "azure_service": "Kubernetescluster",
+  "module_name": "Azure Kubernetes Service(AKS) module",
+  "latest_tag": "2.1.0",
+  "available_tags": [
+    "2.1.0",
+    "2.0.4",
+    "2.0.3",
+    "2.0.2",
+    "2.0.1"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-kubernetescluster.git//?ref=2.1.0",
+  "terraform_requirements": {
+    "azurerm": "~> 4.69",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_kubernetes_cluster.kube_cluster",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "kubernetescluster",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-kubernetescluster.git//?ref=2.1.0",
+      "version": "2.1.0",
+      "available_versions": [
+        "2.1.0",
+        "2.0.4",
+        "2.0.3",
+        "2.0.2",
+        "2.0.1"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "auto_scaler_profile": {
+        "type": "object({ balance_similar_node_groups = optional(bool) expander = optional(string) max_graceful_termination_sec = optional(number) max_node_provisioning_time = optional(string) max_unready_nodes = optional(number) max_unready_percentage = optional(number) new_pod_scale_up_delay = optional(string) scale_down_delay_after_add = optional(string) scale_down_delay_after_delete = optional(string) scale_down_delay_after_failure = optional(string) scan_interval = optional(string) scale_down_unneeded = optional(string) scale_down_unready = optional(string) scale_down_utilization_threshold = optional(number) empty_bulk_delete_max = optional(number) skip_nodes_with_local_storage = optional(bool) skip_nodes_with_system_pods = optional(bool) })",
+        "description": "(Optional) An auto_scaler_profile block supports the following: { balance_similar_node_groups = bool - (Optional) Detect similar node groups and balance the number of nodes between them. Defaults to `false`. expander = string - (Optional) Expander to use. Possible values are `least-waste`, `priority`, `most-pods` and `random`. Defaults to `random`. max_graceful_termination_sec = number - (Optional) Maximum number of seconds the cluster autoscaler waits for pod termination when trying to scale down a node. Defaults to `600`. max_node_provisioning_time = string - (Optional) Maximum time the autoscaler waits for a node to be provisioned. Defaults to `15m`. max_unready_nodes = number - (Optional) Maximum Number of allowed unready nodes. Defaults to `3`. max_unready_percentage = number - (Optional) Maximum percentage of unready nodes the cluster autoscaler will stop if the percentage is exceeded. Defaults to `45`. new_pod_scale_up_delay = string - (Optional) For scenarios like burst/batch scale where you don't want CA to act before the kubernetes scheduler could schedule all the pods, you can tell CA to ignore unscheduled pods before they're a certain age. Defaults to `10s`. scale_down_delay_after_add = string - (Optional) How long after the scale up of AKS nodes the scale down evaluation resumes. Defaults to `10m`. scale_down_delay_after_delete = string - (Optional) How long after node deletion that scale down evaluation resumes. Defaults to the value used for `scan_interval`. scale_down_delay_after_failure = string - (Optional) How long after scale down failure that scale down evaluation resumes. Defaults to `3m`. scan_interval = string - (Optional) How often the AKS Cluster should be re-evaluated for scale up/down. Defaults to `10s`. scale_down_unneeded = string - (Optional) How long a node should be unneeded before it is eligible for scale down. Defaults to `10m`. scale_down_unready = string - (Optional) How long an unready node should be unneeded before it is eligible for scale down. Defaults to `20m`. scale_down_utilization_threshold = number - (Optional) Node utilization level, defined as sum of requested resources divided by capacity, below which a node can be considered for scale down. Defaults to `0.5`. empty_bulk_delete_max = number - (Optional) Maximum number of empty nodes that can be deleted at the same time. Defaults to `10`. skip_nodes_with_local_storage = bool - (Optional) If `true` cluster autoscaler will never delete nodes with pods with local storage, for example, EmptyDir or HostPath. Defaults to `true`. skip_nodes_with_system_pods = bool - (Optional) If `true` cluster autoscaler will never delete nodes with pods from kube-system (except for DaemonSet or mirror pods). Defaults to `true`. } **NOTE**: If a property isn't required then it must be explicitly set as an empty list or `null`.",
+        "required": false,
+        "default": "null"
+      },
+      "automatic_upgrade_channel": {
+        "type": "string",
+        "description": "(Optional) The upgrade channel for this Kubernetes Cluster. Possible values are `patch`, `rapid`, `node-image` and `stable`. By default automatic-upgrades are turned off. Note that you cannot specify the patch version using `kubernetes_version` or `orchestrator_version` when using the `patch` upgrade channel. See [the documentation](https://learn.microsoft.com/en-us/azure/aks/auto-upgrade-cluster) for more information",
+        "required": false,
+        "default": "null"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "default_node_pool_capacity_reservation_group_id": {
+        "type": "string",
+        "description": "(Optional) Specifies the ID of the Capacity Reservation Group within which this AKS Cluster should be created. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "default_node_pool_custom_ca_trust_enabled": {
+        "type": "bool",
+        "description": "(Optional) Specifies whether to trust a Custom CA.",
+        "required": false,
+        "default": "false"
+      },
+      "default_node_pool_auto_scaling_enabled": {
+        "type": "bool",
+        "description": "(Optional) Should the Kubernetes Auto Scaler be enabled for this Node Pool? **NOTE**: This requires that the `type` is set to `VirtualMachineScaleSets`. Also, If you're using AutoScaling, you may wish to use Terraform's `ignore_changes` functionality to ignore changes to the `node_count` field.",
+        "required": false,
+        "default": "false"
+      },
+      "default_node_pool_host_encryption_enabled": {
+        "type": "bool",
+        "description": "(Optional) Should the nodes in the Default Node Pool have host encryption enabled?",
+        "required": false,
+        "default": "false"
+      },
+      "default_node_pool_node_public_ip_enabled": {
+        "type": "bool",
+        "description": "(Optional) Should nodes in this Node Pool have a Public IP Address? Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "false"
+      },
+      "default_node_pool_fips_enabled": {
+        "type": "bool",
+        "description": "(Optional) Should the nodes in this Node Pool have Federal Information Processing Standard enabled? Changing this forces a new resource to be created. **NOTE**: FIPS support is in Public Preview - more information and details on how to opt into the Preview can be found in [this article](https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview).",
+        "required": false,
+        "default": "null"
+      },
+      "default_node_pool_host_group_id": {
+        "type": "string",
+        "description": "(Optional) Specifies the ID of the Host Group within which this AKS Cluster should be created.",
+        "required": false,
+        "default": "null"
+      },
+      "default_node_pool_kubelet_config": {
+        "type": "object({ allowed_unsafe_sysctls = list(string) container_log_max_line = number container_log_max_size_mb = string cpu_cfs_quota_enabled = bool cpu_cfs_quota_period = string cpu_manager_policy = string image_gc_high_threshold = number image_gc_low_threshold = number pod_max_pid = number topology_manager_policy = string })",
+        "description": "(Optional) A default_node_pool_kubelet_config block supports the following: { allowed_unsafe_sysctls = list(string) - (Optional) Specifies the allow list of unsafe sysctls command or patterns (ending in `*`). Changing this forces a new resource to be created. container_log_max_line = number - (Optional) Specifies the maximum number of container log files that can be present for a container. must be at least 2. Changing this forces a new resource to be created. container_log_max_size_mb = string - (Optional) Specifies the maximum size (e.g. 10MB) of container log file before it is rotated. Changing this forces a new resource to be created. cpu_cfs_quota_enabled = bool - (Optional) Is CPU CFS quota enforcement for containers enabled? Changing this forces a new resource to be created. cpu_cfs_quota_period = string - (Optional) Specifies the CPU CFS quota period value. Changing this forces a new resource to be created. cpu_manager_policy = string - (Optional) Specifies the CPU Manager policy to use. Possible values are `none` and `static`, Changing this forces a new resource to be created. image_gc_high_threshold = number - (Optional) Specifies the percent of disk usage above which image garbage collection is always run. Must be between `0` and `100`. Changing this forces a new resource to be created. image_gc_low_threshold = number - (Optional) Specifies the percent of disk usage lower than which image garbage collection is never run. Must be between `0` and `100`. Changing this forces a new resource to be created. pod_max_pid = number - (Optional) Specifies the maximum number of processes per pod. Changing this forces a new resource to be created. topology_manager_policy = string - (Optional) Specifies the Topology Manager policy to use. Possible values are `none`, `best-effort`, `restricted` or `single-numa-node`. Changing this forces a new resource to be created. } **NOTE**: If a property isn't required then it must be explicitly set as an empty list or `null`.",
+        "required": false,
+        "default": "null"
+      },
+      "default_node_pool_kubelet_disk_type": {
+        "type": "string",
+        "description": "(Optional) The type of disk used by kubelet. At this time the only possible value is OS.",
+        "required": false,
+        "default": "\"OS\""
+      },
+      "default_node_pool_linux_os_config": {
+        "type": "object({ swap_file_size_mb = string transparent_huge_page_defrag = string transparent_huge_page_enabled = string sysctl_config = object({ fs_aio_max_nr = number fs_file_max = number fs_inotify_max_user_watches = number fs_nr_open = number kernel_threads_max = number net_core_netdev_max_backlog = number net_core_optmem_max = number net_core_rmem_default = number net_core_rmem_max = number net_core_somaxconn = number net_core_wmem_default = number net_core_wmem_max = number net_ipv4_ip_local_port_range_max = number net_ipv4_ip_local_port_range_min = number net_ipv4_neigh_default_gc_thresh1 = number net_ipv4_neigh_default_gc_thresh2 = number net_ipv4_neigh_default_gc_thresh3 = number net_ipv4_tcp_fin_timeout = number net_ipv4_tcp_keepalive_intvl = number net_ipv4_tcp_keepalive_probes = number net_ipv4_tcp_keepalive_time = number net_ipv4_tcp_max_syn_backlog = number net_ipv4_tcp_max_tw_buckets = number net_ipv4_tcp_tw_reuse = number net_netfilter_nf_conntrack_buckets = number net_netfilter_nf_conntrack_max = number vm_max_map_count = number vm_swappiness = number vm_vfs_cache_pressure = number }) })",
+        "description": "(Optional) { swap_file_size_mb = string - (Optional) Specifies the size of swap file on each node in MB. Changing this forces a new resource to be created. transparent_huge_page_defrag = string - (Optional) specifies the defrag configuration for Transparent Huge Page. Possible values are `always`, `defer`, `defer+madvise`, `madvise` and `never`. Changing this forces a new resource to be created. transparent_huge_page_enabled = string - (Optional) Specifies the Transparent Huge Page enabled configuration. Possible values are `always`, `madvise` and `never`. Changing this forces a new resource to be created. sysctl_config = { // (Optional) A `sysctl_config` block as defined below. Changing this forces a new resource to be created. fs_aio_max_nr = number - (Optional) The sysctl setting fs.aio-max-nr. Must be between `65536` and `6553500`. Changing this forces a new resource to be created. fs_file_max = number - (Optional) The sysctl setting fs.file-max. Must be between `8192` and `12000500`. Changing this forces a new resource to be created. fs_inotify_max_user_watches = number - (Optional) The sysctl setting fs.inotify.max_user_watches. Must be between `781250` and `2097152`. Changing this forces a new resource to be created. fs_nr_open = number - (Optional) The sysctl setting fs.nr_open. Must be between `8192` and `20000500`. Changing this forces a new resource to be created. kernel_threads_max = number - (Optional) The sysctl setting kernel.threads-max. Must be between `20` and `513785`. Changing this forces a new resource to be created. net_core_netdev_max_backlog = number - (Optional) The sysctl setting net.core.netdev_max_backlog. Must be between `1000` and `3240000`. Changing this forces a new resource to be created. net_core_optmem_max = number - (Optional) The sysctl setting net.core.optmem_max. Must be between `20480` and `4194304`. Changing this forces a new resource to be created. net_core_rmem_default = number - (Optional) The sysctl setting net.core.rmem_default. Must be between `212992` and `134217728`. Changing this forces a new resource to be created. net_core_rmem_max = number - (Optional) The sysctl setting net.core.rmem_max. Must be between `212992` and `134217728`. Changing this forces a new resource to be created. net_core_somaxconn = number - (Optional) The sysctl setting net.core.somaxconn. Must be between `4096` and `3240000`. Changing this forces a new resource to be created. net_core_wmem_default = number - (Optional) The sysctl setting net.core.wmem_default. Must be between `212992` and `134217728`. Changing this forces a new resource to be created. net_core_wmem_max = number - (Optional) The sysctl setting net.core.wmem_max. Must be between `212992` and `134217728`. Changing this forces a new resource to be created. net_ipv4_ip_local_port_range_max = number - (Optional) The sysctl setting net.ipv4.ip_local_port_range max value. Must be between `1024` and `60999`. Changing this forces a new resource to be created. net_ipv4_ip_local_port_range_min = number - (Optional) The sysctl setting net.ipv4.ip_local_port_range min value. Must be between `1024` and `60999`. Changing this forces a new resource to be created. net_ipv4_neigh_default_gc_thresh1 = number - (Optional) The sysctl setting net.ipv4.neigh.default.gc_thresh1. Must be between `128` and `80000`. Changing this forces a new resource to be created. net_ipv4_neigh_default_gc_thresh2 = number - (Optional) The sysctl setting net.ipv4.neigh.default.gc_thresh2. Must be between `512` and `90000`. Changing this forces a new resource to be created. net_ipv4_neigh_default_gc_thresh3 = number - (Optional) The sysctl setting net.ipv4.neigh.default.gc_thresh3. Must be between `1024` and `100000`. Changing this forces a new resource to be created. net_ipv4_tcp_fin_timeout = number - (Optional) The sysctl setting net.ipv4.tcp_fin_timeout. Must be between `5` and `120`. Changing this forces a new resource to be created. net_ipv4_tcp_keepalive_intvl = number - (Optional) The sysctl setting net.ipv4.tcp_keepalive_intvl. Must be between `10` and `75`. Changing this forces a new resource to be created. net_ipv4_tcp_keepalive_probes = number - (Optional) The sysctl setting net.ipv4.tcp_keepalive_probes. Must be between `1` and `15`. Changing this forces a new resource to be created. net_ipv4_tcp_keepalive_time = number - (Optional) The sysctl setting net.ipv4.tcp_keepalive_time. Must be between `30` and `432000`. Changing this forces a new resource to be created. net_ipv4_tcp_max_syn_backlog = number - (Optional) The sysctl setting net.ipv4.tcp_max_syn_backlog. Must be between `128` and `3240000`. Changing this forces a new resource to be created. net_ipv4_tcp_max_tw_buckets = number - (Optional) The sysctl setting net.ipv4.tcp_max_tw_buckets. Must be between `8000` and `1440000`. Changing this forces a new resource to be created. net_ipv4_tcp_tw_reuse = number - (Optional) The sysctl setting net.ipv4.tcp_tw_reuse. Changing this forces a new resource to be created. net_netfilter_nf_conntrack_buckets = number - (Optional) The sysctl setting net.netfilter.nf_conntrack_buckets. Must be between `65536` and `147456`. Changing this forces a new resource to be created. net_netfilter_nf_conntrack_max = number - (Optional) The sysctl setting net.netfilter.nf_conntrack_max. Must be between `131072` and `589824`. Changing this forces a new resource to be created. vm_max_map_count = number - (Optional) The sysctl setting vm.max_map_count. Must be between `65530` and `262144`. Changing this forces a new resource to be created. vm_swappiness = number - (Optional) The sysctl setting vm.swappiness. Must be between `0` and `100`. Changing this forces a new resource to be created. vm_vfs_cache_pressure = number - (Optional) The sysctl setting vm.vfs_cache_pressure. Must be between `0` and `100`. Changing this forces a new resource to be created. } } **NOTE**: If a property isn't required then it must be explicitly set as an empty list or `null`.",
+        "required": false,
+        "default": "null"
+      },
+      "default_node_pool_max_count": {
+        "type": "number",
+        "description": "(Optional) The maximum number of nodes which should exist in this Node Pool. If specified this must be between `1` and `1000`. **NOTE**: This is mandatory if `enable_auto_scaling` is set to `true`.",
+        "required": false,
+        "default": "null"
+      },
+      "default_node_pool_max_pods": {
+        "type": "number",
+        "description": "(Optional) The maximum number of pods that can run on each agent. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "250"
+      },
+      "default_node_pool_message_of_the_day": {
+        "type": "string",
+        "description": "(Deprecated) A base64-encoded string which will be written to /etc/motd after decoding. This allows customization of the message of the day for Linux nodes. It cannot be specified for Windows nodes and must be a static string (i.e. will be printed raw and not executed as a script). Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "250"
+      },
+      "default_node_pool_min_count": {
+        "type": "number",
+        "description": "(Optional) The minimum number of nodes which should exist in this Node Pool. If specified this must be between `1` and `1000`. **NOTE**: This is mandatory if `enable_auto_scaling` is set to `true`.",
+        "required": false,
+        "default": "null"
+      },
+      "default_node_pool_name": {
+        "type": "string",
+        "description": "(Optional) The name which should be used for the default Kubernetes Node Pool. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "\"default\""
+      },
+      "default_node_pool_node_count": {
+        "type": "number",
+        "description": "(Optional) The initial number of nodes which should exist in this Node Pool. If specified this must be between 1 and 1000 and between min_count and max_count **NOTE**: When `enable_auto_scaling` is set to `true` this is optional. However, when `enable_auto_scaling` is set to `false` this is required",
+        "required": false,
+        "default": "null"
+      },
+      "default_node_pool_node_labels": {
+        "type": "map(string)",
+        "description": "(Optional) A map of Kubernetes labels which should be applied to nodes in the Default Node Pool. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "default_node_pool_node_public_ip_prefix_id": {
+        "type": "string",
+        "description": "(Optional) Resource ID for the Public IP Addresses Prefix for the nodes in this Node Pool. enable_node_public_ip should be true. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "default_node_pool_only_critical_addons_enabled": {
+        "type": "bool",
+        "description": "(Optional) Enabling this option will taint default node pool with CriticalAddonsOnly=true:NoSchedule taint. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "default_node_pool_orchestrator_version": {
+        "type": "string",
+        "description": "(Optional) Version of Kubernetes used for the Agents. If not specified, the latest recommended version will be used at provisioning time (but won't auto-upgrade) **NOTE**: This version must be supported by the Kubernetes Cluster - as such the version of Kubernetes used on the Cluster/Control Plane may need to be upgraded first.",
+        "required": false,
+        "default": "null"
+      },
+      "default_node_pool_os_disk_size_gb": {
+        "type": "string",
+        "description": "(Optional) The size of the OS Disk which should be used for each agent in the Node Pool. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "default_node_pool_os_disk_type": {
+        "type": "string",
+        "description": "(Optional) The type of disk which should be used for the Operating System. Possible values are `Ephemeral` and `Managed`. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "\"Managed\""
+      },
+      "default_node_pool_os_sku": {
+        "type": "string",
+        "description": "(Optional) The type of disk which should be used for the Operating System. Possible values are `Ephemeral` and `Managed`. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "\"Ubuntu\""
+      },
+      "default_node_pool_pod_subnet_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the Subnet where the pods in the default Node Pool should exist.",
+        "required": false,
+        "default": "null"
+      },
+      "default_node_pool_proximity_placement_group_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the Proximity Placement Group.",
+        "required": false,
+        "default": "null"
+      },
+      "default_node_pool_scale_down_mode": {
+        "type": "string",
+        "description": "(Optional) Specifies the autoscaling behaviour of the Kubernetes Cluster. Allowed values are Delete and Deallocate",
+        "required": false,
+        "default": "\"Delete\""
+      },
+      "default_node_pool_tags": {
+        "type": "map(string)",
+        "description": "(Optional) A mapping of tags to assign to the Node Pool. **NOTE**: At this time there's a bug in the AKS API where Tags for a Node Pool are not stored in the correct case - you may wish to use Terraform's `ignore_changes` functionality to ignore changes to the casing until this is fixed in the AKS API.",
+        "required": false,
+        "default": "null"
+      },
+      "default_node_pool_temporary_name_for_rotation": {
+        "type": "string",
+        "description": "(Optional) Use this setting when you making updates to the system node pool. String length should be 12 characters consisting of only alpha numeric characters",
+        "required": false,
+        "default": "\"tmpnodepool1\""
+      },
+      "default_node_pool_type": {
+        "type": "string",
+        "description": "(Optional) The type of Node Pool which should be created. Possible values are `AvailabilitySet` and `VirtualMachineScaleSets`.",
+        "required": false,
+        "default": "\"VirtualMachineScaleSets\""
+      },
+      "default_node_pool_ultra_ssd_enabled": {
+        "type": "bool",
+        "description": "(Optional) Used to specify whether the UltraSSD is enabled in the Default Node Pool. See the [documentation](https://docs.microsoft.com/en-us/azure/aks/use-ultra-disks) for more information.",
+        "required": false,
+        "default": "false"
+      },
+      "default_node_pool_upgrade_settings": {
+        "type": "object({ max_surge = string })",
+        "description": "(Optional) A default_node_pool_upgrade_settings block supports the following: { max_surge = string - (Required) The maximum number or percentage of nodes which will be added to the Node Pool size during an upgrade. }",
+        "required": false,
+        "default": "null"
+      },
+      "default_node_pool_vm_size": {
+        "type": "string",
+        "description": "(Optional) The size of the Virtual Machine, such as Standard_DS2_v2.",
+        "required": false,
+        "default": "\"Standard_B2s\""
+      },
+      "default_node_pool_vnet_subnet_id": {
+        "type": "string",
+        "description": "(Optional) The ID of a Subnet where the Kubernetes Node Pool should exist. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "default_node_pool_workload_runtime": {
+        "type": "string",
+        "description": "(Optional) Specifies the workload runtime used by the node pool. **NOTE**: This is mandatory if `enable_auto_scaling` is set to `true`.",
+        "required": false,
+        "default": "\"OCIContainer\""
+      },
+      "default_node_pool_zones": {
+        "type": "list(string)",
+        "description": "(Optional) Specifies a list of Availability Zones in which this Kubernetes Cluster should be located.",
+        "required": false,
+        "default": "null"
+      },
+      "disk_encryption_set_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the Disk Encryption Set which should be used for the Nodes and Volumes. More information can be found in the documentation [here](https://docs.microsoft.com/en-us/azure/aks/azure-disk-customer-managed-keys).",
+        "required": false,
+        "default": "null"
+      },
+      "dns_prefix_private_cluster": {
+        "type": "string",
+        "description": "(Optional) Specifies the DNS prefix to use with private clusters. Changing this forces a new resource to be created. **NOTE**: One of `dns_prefix` or `dns_prefix_private_cluster` must be specified.",
+        "required": false,
+        "default": "null"
+      },
+      "edge_zone": {
+        "type": "string",
+        "description": "(Optional) Specifies the Edge Zone within the Azure Region where this Managed Kubernetes Cluster should exist. Changing this forces a new resource to be created. **NOTE**: If a property isn't required then it must be explicitly set as an empty list or `null`.",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = optional(set(string)) })",
+        "description": "(Required) An identity block as defined below object({ type = \"(Required) Specifies the type of Managed Service Identity that should be configured on this Windows Virtual Machine. Possible values are `SystemAssigned`, `UserAssigned`, `SystemAssigned, UserAssigned` (to enable both).\" identity_ids = \"(Optional) Specifies a list of User Assigned Managed Identity IDs to be assigned to this Windows Virtual Machine. This is required when `type` is set to `UserAssigned` or `SystemAssigned, UserAssigned`.\" })",
+        "required": false,
+        "default": "{ \"identity_ids\": null, \"type\": \"SystemAssigned\" }"
+      },
+      "ingress_application_gateway": {
+        "type": "object({ gateway_id = optional(string) gateway_name = optional(string) subnet_cidr = optional(string) subnet_id = optional(string) })",
+        "description": "// (Optional) A ingress_application_gateway block. { gateway_id = string - (Optional) The ID of the Application Gateway to integrate with the ingress controller of this Kubernetes Cluster. See [this](https://docs.microsoft.com/en-us/azure/application-gateway/tutorial-ingress-controller-add-on-existing) page for further details. gateway_name = string - (Optional) The name of the Application Gateway to be used or created in the Nodepool Resource Group, which in turn will be integrated with the ingress controller of this Kubernetes Cluster. See [this](https://docs.microsoft.com/en-us/azure/application-gateway/tutorial-ingress-controller-add-on-new) page for further details. subnet_cidr = string - (Optional) The subnet CIDR to be used to create an Application Gateway, which in turn will be integrated with the ingress controller of this Kubernetes Cluster. See [this](https://docs.microsoft.com/en-us/azure/application-gateway/tutorial-ingress-controller-add-on-new) page for further details. subnet_id = string - (Optional) The ID of the subnet on which to create an Application Gateway, which in turn will be integrated with the ingress controller of this Kubernetes Cluster. See [this](https://docs.microsoft.com/en-us/azure/application-gateway/tutorial-ingress-controller-add-on-new) page for further details. } **NOTE**: If a property isn't required then it must be explicitly set as an empty list or `null`.",
+        "required": false,
+        "default": "null"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "key_management_service": {
+        "type": "object({ key_vault_key_id = string key_vault_network_access = optional(string) })",
+        "description": "(Optional) A key_management_service block supports the following: { key_vault_key_id = string - (Required) Identifier of Azure Key Vault key. See key identifier format for more details. When Azure Key Vault key management service is enabled, this field is required and must be a valid key identifier. When enabled is false, leave the field empty. key_vault_network_access = string - (Optional) Network access of the key vault Network access of key vault. The possible values are Public and Private. Public means the key vault allows public access from all networks. Private means the key vault disables public access and enables private link. The default value is Public }",
+        "required": false,
+        "default": "null"
+      },
+      "key_vault_secrets_rotation_interval": {
+        "type": "string",
+        "description": "(Optional) The interval to poll for secret rotation. This attribute is only set when secret_rotation is true and defaults to 2m.",
+        "required": false,
+        "default": "\"2m\""
+      },
+      "kubernetes_version": {
+        "type": "string",
+        "description": "(Optional) Version of Kubernetes specified when creating the AKS managed cluster. If not specified, the latest recommended version will be used at provisioning time (but won't auto-upgrade). **NOTE**: Upgrading your cluster may take up to 10 minutes per node.",
+        "required": false,
+        "default": "null"
+      },
+      "linux_profile": {
+        "type": "object({ admin_username = string ssh_key = object({ key_data = string }) })",
+        "description": "(Optional) A linux_profile block supports the following: { admin_username = string - (Required) The Admin Username for the Cluster. Changing this forces a new resource to be created. ssh_key = { // (Required) An ssh_key block. Only one is currently allowed. Changing this forces a new resource to be created. key_data = string - (Required) The Public SSH Key used to access the cluster. Changing this forces a new resource to be created. } }",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "maintenance_window": {
+        "type": "object({ allowed = object({ day = string hours = list(number) }) not_allowed = object({ end = string start = string }) })",
+        "description": "(Optional) A maintenance_window block supports the following: { allowed = { // (Optional) One or more allowed block as defined below. day = string - (Required) A day in a week. Possible values are `Sunday`, `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday` and `Saturday`. hours = list(number) - (Required) An array of hour slots in a day. Possible values are between `0` and `23`. } not_allowed = { - (Optional) One or more not_allowed block as defined below. end = string - (Required) The end of a time span, formatted as an RFC3339 string. start = string - (Required) The start of a time span, formatted as an RFC3339 string. } } **NOTE**: If a property isn't required then it must be explicitly set as an empty list or `null`.",
+        "required": false,
+        "default": "null"
+      },
+      "maintenance_window_auto_upgrade": {
+        "type": "object({ day_of_month = optional(number) day_of_week = optional(string) duration = number frequency = string interval = number start_date = optional(string) start_time = optional(string) utc_offset = optional(string) week_index = optional(string) not_allowed = optional(set(object({ end = string start = string }))) })",
+        "description": "- `day_of_month` - (Optional) The day of the month for the maintenance run. Required in combination with RelativeMonthly frequency. Value between 0 and 31 (inclusive). - `day_of_week` - (Optional) The day of the week for the maintenance run. Options are `Monday`, `Tuesday`, `Wednesday`, `Thurday`, `Friday`, `Saturday` and `Sunday`. Required in combination with weekly frequency. - `duration` - (Required) The duration of the window for maintenance to run in hours. - `frequency` - (Required) Frequency of maintenance. Possible options are `Weekly`, `AbsoluteMonthly` and `RelativeMonthly`. - `interval` - (Required) The interval for maintenance runs. Depending on the frequency this interval is week or month based. - `start_date` - (Optional) The date on which the maintenance window begins to take effect. - `start_time` - (Optional) The time for maintenance to begin, based on the timezone determined by `utc_offset`. Format is `HH:mm`. - `utc_offset` - (Optional) Used to determine the timezone for cluster maintenance. - `week_index` - (Optional) The week in the month used for the maintenance run. Options are `First`, `Second`, `Third`, `Fourth`, and `Last`. --- `not_allowed` block supports the following: - `end` - (Required) The end of a time span, formatted as an RFC3339 string. - `start` - (Required) The start of a time span, formatted as an RFC3339 string.",
+        "required": false,
+        "default": "null"
+      },
+      "maintenance_window_node_os": {
+        "type": "object({ day_of_month = optional(number) day_of_week = optional(string) duration = number frequency = string interval = number start_date = optional(string) start_time = optional(string) utc_offset = optional(string) week_index = optional(string) not_allowed = optional(set(object({ end = string start = string }))) })",
+        "description": "- `day_of_month` - (Optional) The day of the month for the maintenance run. Required in combination with RelativeMonthly frequency. Value between 0 and 31 (inclusive). - `day_of_week` - (Optional) The day of the week for the maintenance run. Options are `Monday`, `Tuesday`, `Wednesday`, `Thurday`, `Friday`, `Saturday` and `Sunday`. Required in combination with weekly frequency. - `duration` - (Required) The duration of the window for maintenance to run in hours. - `frequency` - (Required) Frequency of maintenance. Possible options are `Daily`, `Weekly`, `AbsoluteMonthly` and `RelativeMonthly`. - `interval` - (Required) The interval for maintenance runs. Depending on the frequency this interval is week or month based. - `start_date` - (Optional) The date on which the maintenance window begins to take effect. - `start_time` - (Optional) The time for maintenance to begin, based on the timezone determined by `utc_offset`. Format is `HH:mm`. - `utc_offset` - (Optional) Used to determine the timezone for cluster maintenance. - `week_index` - (Optional) The week in the month used for the maintenance run. Options are `First`, `Second`, `Third`, `Fourth`, and `Last`. --- `not_allowed` block supports the following: - `end` - (Required) The end of a time span, formatted as an RFC3339 string. - `start` - (Required) The start of a time span, formatted as an RFC3339 string.",
+        "required": false,
+        "default": "null"
+      },
+      "monitor_metrics": {
+        "type": "object({ annotations_allowed = list(string) labels_allowed = list(string) })",
+        "description": "(Optional) Monitor metrics block supports the following: { annotations_allowed = list(string) - (Optional) Specifies a comma-separated list of Kubernetes annotation keys that will be used in the resource's labels metric. labels_allowed = list(string) - (Optional) Specifies a Comma-separated list of additional Kubernetes label keys that will be used in the resource's labels metric. }",
+        "required": false,
+        "default": "null"
+      },
+      "node_provisioning_profile": {
+        "type": "object({ default_node_pools = optional(string) mode = optional(string) })",
+        "description": "(Optional) A node_provisioning_profile block defined below. { default_node_pools = string - (Optional) Specifies whether default node pools should be provisioned automatically. Possible values are `Auto` and `None`. mode = string - (Optional) Specifies the provisioning mode for node pools created in this cluster. Possible values are `Auto` and `Manual`. }",
+        "required": false,
+        "default": "null"
+      },
+      "network_profile": {
+        "type": "object({ network_mode = optional(string) dns_service_ip = optional(string) network_data_plane = optional(string) network_policy = optional(string) network_plugin_mode = optional(string) pod_cidr = optional(string) pod_cidrs = optional(list(string)) service_cidr = optional(string) service_cidrs = optional(list(string)) load_balancer_sku = optional(string) ip_versions = optional(list(string)) nat_gateway_profile = optional(object({ idle_timeout_in_minutes = number managed_outbound_ip_count = number })) load_balancer_profile = optional(object({ outbound_ports_allocated = number idle_timeout_in_minutes = number managed_outbound_ip_count = number managed_outbound_ipv6_count = number outbound_ip_prefix_ids = list(string) outbound_ip_address_ids = list(string) })) })",
+        "description": "(Optional) A network_profile block as defined below: (If network_profile is not defined, kubenet profile will be used by default.) { network_plugin = string - (Required) Network plugin to use for networking. Currently supported values are azure and kubenet. Changing this forces a new resource to be created. network_mode = string - (Optional) Network mode to be used with Azure CNI. Possible values are `bridge` and `transparent`. This property can only be set when network_plugin is set to azure. Changing this forces a new resource to be created. network_policy = string - (Optional) Sets up network policy to be used with Azure CNI. [Network policy allows us to control the traffic flow between pods](https://docs.microsoft.com/en-us/azure/aks/use-network-policies). Currently supported values are `calico` and `azure`. Changing this forces a new resource to be created. dns_service_ip = string - (Optional) IP address within the Kubernetes service address range that will be used by cluster service discovery (kube-dns). Changing this forces a new resource to be created. docker_bridge_cidr = string - (Optional) IP address (in CIDR notation) used as the Docker bridge IP address on nodes. Changing this forces a new resource to be created. network_data_plane = string - (Optional) Specifies the eBPF data plane used for building the Kubernetes network. Possible value is cilium. Changing this forces a new resource to be created. network_plugin_mode = string - (Optional) Specifies the network plugin mode used for building the Kubernetes network. Possible value is Overlay. outbound_type = string - (Optional) The outbound (egress) routing method which should be used for this Kubernetes Cluster. Possible values are `loadBalancer` and `userDefinedRouting`. Defaults to `loadBalancer`. pod_cidr = string - (Optional) The CIDR to use for pod IP addresses. This field can only be set when `network_plugin` is set to `kubenet`. Changing this forces a new resource to be created. pod_cidrs = string - (Optional) A list of CIDRs to use for pod IP addresses. For single-stack networking a single IPv4 CIDR is expected. For dual-stack networking an IPv4 and IPv6 CIDR are expected. service_cidr = string - (Optional) The Network Range used by the Kubernetes service. This range should not be used by any network element on or connected to this VNet. Service address CIDR must be smaller than /12. docker_bridge_cidr, dns_service_ip and service_cidr should all be empty or all should be set. Changing this forces a new resource to be created. service_cidrs = string - (Optional) A list of CIDRs to use for Kubernetes services. For single-stack networking a single IPv4 CIDR is expected. For dual-stack networking an IPv4 and IPv6 CIDR are expected. load_balancer_sku = string - (Optional) Specifies the SKU of the Load Balancer used for this Kubernetes Cluster. Possible values are `Basic` and `Standard`. Defaults to `Standard`. ip_versions = list(string) - (Optional) (Optional) Specifies a list of IP versions the Kubernetes Cluster will use to assign IP addresses to its nodes and pods. Possible values are IPv4 and/or IPv6. IPv4 must always be specified. load_balancer_profile = // (Optional) A load_balancer_profile block. This can only be specified when `load_balancer_sku` is set to `Standard`. { outbound_ports_allocated = number - (Optional) Number of desired SNAT port for each VM in the clusters load balancer. Must be between `0` and `64000` inclusive. Defaults to `0`. idle_timeout_in_minutes = number - (Optional) Desired outbound flow idle timeout in minutes for the cluster load balancer. Must be between `4` and `120` inclusive. Defaults to `30`. managed_outbound_ip_count = number - (Optional) Count of desired managed outbound IPs for the cluster load balancer. Must be between `1` and `100` inclusive. User has to explicitly set managed_outbound_ip_count to empty slice (`[]`) to remove it. managed_outbound_ipv6_count = number - (Optional) The desired number of IPv6 outbound IPs created and managed by Azure for the cluster load balancer. Must be in the range of 1 to 100 (inclusive). The default value is 0 for single-stack and 1 for dual-stack. outbound_ip_prefix_ids = list(string) - (Optional) The ID of the outbound Public IP Address Prefixes which should be used for the cluster load balancer. User has to explicitly set outbound_ip_prefix_ids to empty slice (`[]`) to remove it. outbound_ip_address_ids = list(string) - (Optional) The ID of the Public IP Addresses which should be used for outbound communication for the cluster load balancer. User has to explicitly set outbound_ip_address_ids to empty slice (`[]`) to remove it. } } **NOTE1**: When `network_plugin` is set to azure - the `default_node_pool_vnet_subnet_id` variable must be set and `pod_cidr` (in this object) must not be set. **NOTE2**: `network_mode` can only be set to `bridge` for existing Kubernetes Clusters and cannot be used to provision new Clusters - this will be removed by Azure in the future. **NOTE3**: If a property isn't required then it must be explicitly set as an empty list or `null`.",
+        "required": false,
+        "default": "{ \"dns_service_ip\": \"192.168.0.10\", \"docker_bridge_cidr\": \"172.29.0.0/16\", \"load_balancer_sku\": \"standard\", \"network_plugin\": \"azure\", \"network_policy\": \"azure\", \"outbound_type\": \"loadBalancer\", \"service_cidr\": \"192.168.0.0/20\" }"
+      },
+      "node_os_upgrade_channel": {
+        "type": "string",
+        "description": "(Optional) The upgrade channel for this Kubernetes Cluster Nodes' OS Image. Possible values are `Unmanaged`, `SecurityPatch`, `NodeImage` and `None`.",
+        "required": false,
+        "default": "\"None\""
+      },
+      "node_resource_group": {
+        "type": "string",
+        "description": "(Optional) The name of the Resource Group where the Kubernetes Nodes should exist. Changing this forces a new resource to be created. **NOTE**: Azure requires that a new, non-existent Resource Group is used, as otherwise the provisioning of the Kubernetes Service will fail.",
+        "required": false,
+        "default": "null"
+      },
+      "oms_agent": {
+        "type": "object({ log_analytics_workspace_id = string })",
+        "description": "// (Optional) A oms_agent block. For more details, please visit [Create and configure an AKS cluster to use virtual nodes](https://docs.microsoft.com/en-us/azure/aks/virtual-nodes-portal). { log_analytics_workspace_id = string - (Required) The ID of the Log Analytics Workspace which the OMS Agent should send data to. }",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "private_cluster_public_fqdn_enabled": {
+        "type": "string",
+        "description": "(Optional) Specifies whether a Public FQDN for this Private Cluster should be added. **NOTE1**: This requires that the Preview Feature `Microsoft.ContainerService/EnablePrivateClusterPublicFQDN` is enabled and the Resource Provider is re-registered, see the documentation [here](https://docs.microsoft.com/en-us/azure/aks/private-clusters#create-a-private-aks-cluster-with-a-public-dns-address) for more information. **NOTE2**: If you use BYO DNS Zone, AKS cluster should either use a User Assigned Identity or a service principal (which is deprecated) with the Private DNS Zone Contributor role and access to this Private DNS Zone. If UserAssigned identity is used - to prevent improper resource order destruction - cluster should depend on the role assignment.",
+        "required": false,
+        "default": "false"
+      },
+      "private_dns_zone_id": {
+        "type": "string",
+        "description": "(Required) The private_dns_zone_id of the Kubernetes Cluster.",
+        "required": false,
+        "default": "\"System\""
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "service_principal": {
+        "type": "object({ client_id = string client_secret = string })",
+        "description": "(Optional) A service_principal block as documented below. One of either identity or service_principal must be specified. A service_principal block as documented below. One of either `identity` or `service_principal` must be specified. A migration scenario from service_principal to identity is supported. When upgrading service_principal to identity, your cluster's control plane and addon pods will switch to use managed identity, but the kubelets will keep using your configured service_principal until you upgrade your Node Pool. { client_id = string - (Required) The Client ID for the Service Principal. client_secret = string - (Required) The Client Secret for the Service Principal. }",
+        "required": false,
+        "default": "null"
+      },
+      "sku_tier": {
+        "type": "string",
+        "description": "(Optional) The SKU Tier that should be used for this Kubernetes Cluster. Possible values are `Free` and `Paid` (which includes the Uptime SLA).",
+        "required": false,
+        "default": "\"Standard\""
+      },
+      "storage_profile": {
+        "type": "object({ blob_driver_enabled = bool disk_driver_enabled = bool disk_driver_version = string file_driver_enabled = bool })",
+        "description": "(Optional) A storage_profile block as defined below: { blob_driver_enabled = bool - (Optional) Is the Blob CSI driver enabled? Defaults to false. disk_driver_enabled = bool - (Optional) Is the Disk CSI driver enabled? Defaults to true. disk_driver_version = string - (Optional) Disk CSI Driver version to be used. Possible values are v1 and v2. Defaults to v1. file_driver_enabled = bool - (Optional) Is the File CSI driver enabled? Defaults to true. }",
+        "required": false,
+        "default": "null"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "web_app_routing": {
+        "type": "object({ dns_zone_ids = list(string) })",
+        "description": "(Optional) A workload_autoscaler_profile block defined below. { dns_zone_ids = list (Required) Specifies the IDs of the DNS Zones in which DNS entries are created for applications deployed to the cluster when Web App Routing is enabled. For Bring-Your-Own DNS zones this property should be set to an empty string \"\". }",
+        "required": false,
+        "default": "null"
+      },
+      "workload_autoscaler_profile": {
+        "type": "object({ keda_enabled = bool })",
+        "description": "(Optional) A workload_autoscaler_profile block defined below. { keda_enabled = bool - (Optional) Specifies whether KEDA Autoscaler can be used for workloads. }",
+        "required": false,
+        "default": "null"
+      }
+    }
+  },
+  "outputs": {
+    "fqdn": {
+      "description": "The FQDN of the Azure Kubernetes Managed Cluster."
+    },
+    "id": {
+      "description": "The Kubernetes Managed Cluster ID."
+    },
+    "identity": {
+      "description": "The identity block exports the following: { principal_id - The principal id of the system assigned identity which is used by main components. tenant_id - The tenant id of the system assigned identity which is used by main components. }"
+    },
+    "ingress_application_gateway": {
+      "description": "Ingress application gateway to use for AGIC"
+    },
+    "ingress_application_gateway_managed_identity_object_id": {
+      "description": "The Object ID of the user-defined Managed Identity used by the Application Gateway."
+    },
+    "kube_admin_config": {
+      "description": "A kube_admin_config block as defined below. This is only available when Role Based Access Control with Azure Active Directory is enabled. { client_key - Base64 encoded private key used by clients to authenticate to the Kubernetes cluster. client_certificate - Base64 encoded public certificate used by clients to authenticate to the Kubernetes cluster. cluster_ca_certificate - Base64 encoded public CA certificate used as the root of trust for the Kubernetes cluster. host - The Kubernetes cluster server host. username - A username used to authenticate to the Kubernetes cluster. password - A password or token used to authenticate to the Kubernetes cluster. } **NOTE**: It's possible to use these credentials with the Kubernetes Provider like so: provider \"kubernetes\" { host = azurerm_kubernetes_cluster.main.kube_config.0.host username = azurerm_kubernetes_cluster.main.kube_config.0.username password = azurerm_kubernetes_cluster.main.kube_config.0.password client_certificate = base64decode(azurerm_kubernetes_cluster.main.kube_config.0.client_certificate) client_key = base64decode(azurerm_kubernetes_cluster.main.kube_config.0.client_key) cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.main.kube_config.0.cluster_ca_certificate) }"
+    },
+    "kube_admin_config_raw": {
+      "description": "Raw Kubernetes config for the admin account to be used by kubectl and other compatible tools. This is only available when Role Based Access Control with Azure Active Directory is enabled."
+    },
+    "kube_config": {
+      "description": "A kube_config block as defined below. This is only available when Role Based Access Control with Azure Active Directory is enabled. { client_key - Base64 encoded private key used by clients to authenticate to the Kubernetes cluster. client_certificate - Base64 encoded public certificate used by clients to authenticate to the Kubernetes cluster. cluster_ca_certificate - Base64 encoded public CA certificate used as the root of trust for the Kubernetes cluster. host - The Kubernetes cluster server host. username - A username used to authenticate to the Kubernetes cluster. password - A password or token used to authenticate to the Kubernetes cluster. } **NOTE**: It's possible to use these credentials with the Kubernetes Provider like so: provider \"kubernetes\" { host = azurerm_kubernetes_cluster.main.kube_config.0.host username = azurerm_kubernetes_cluster.main.kube_config.0.username password = azurerm_kubernetes_cluster.main.kube_config.0.password client_certificate = base64decode(azurerm_kubernetes_cluster.main.kube_config.0.client_certificate) client_key = base64decode(azurerm_kubernetes_cluster.main.kube_config.0.client_key) cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.main.kube_config.0.cluster_ca_certificate) }"
+    },
+    "kube_config_raw": {
+      "description": "Raw Kubernetes config to be used by kubectl and other compatible tools."
+    },
+    "local_tags": {
+      "description": "The Kubernetes Cluster tags."
+    },
+    "location": {
+      "description": "The location of the Kubernetes Managed Cluster."
+    },
+    "name": {
+      "description": "The name of the Kubernetes Managed Cluster."
+    },
+    "node_resource_group": {
+      "description": "The auto-generated Resource Group which contains the resources for this Managed Kubernetes Cluster."
+    },
+    "private_fqdn": {
+      "description": "The FQDN for the Kubernetes Cluster when private link has been enabled, which is only resolvable inside the Virtual Network used by the Kubernetes Cluster."
+    },
+    "resource": {
+      "description": "The Kubernetes Cluster resource."
+    },
+    "resource_group_name": {
+      "description": "The resource group name where the Kubernetes Managed Cluster lives."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Kubernetescluster' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

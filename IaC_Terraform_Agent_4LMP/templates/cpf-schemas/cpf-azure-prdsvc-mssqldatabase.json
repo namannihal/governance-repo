@@ -1,0 +1,337 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: MSSQL Database module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-mssqldatabase'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-mssqldatabase",
+  "module_type": "service",
+  "azure_service": "Mssqldatabase",
+  "module_name": "MSSQL Database module",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.7.1",
+    "0.7.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-mssqldatabase.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Key Vault",
+    "Storage Account",
+    "Storage Container",
+    "MS SQL Server"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_key_vault_key.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_mssql_database.sqldb",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.cmk",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_60s_cmk",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.cmk",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "mssqldatabase",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-mssqldatabase.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.7.1",
+        "0.7.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "identity",
+      "location",
+      "org_id",
+      "server_id"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "auto_pause_delay_in_minutes": {
+        "type": "number",
+        "description": "(Optional) Time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled. Enabling auto-pause for a serverless database is not supported if long-term backup retention is enabled.",
+        "required": false,
+        "default": "null"
+      },
+      "cmk_name": {
+        "type": "string",
+        "description": "(optional) Customer managed key name to be used (max 127 chars)",
+        "required": false,
+        "default": "null"
+      },
+      "cmk_rotation_policy": {
+        "type": "object({ notify_before_expiry = optional(string) time_before_expiry = optional(string) time_after_creation = optional(string, null) expire_after = optional(string) })",
+        "description": "(Optional) A rotation policy block as defined below object({ notify_before_expiry = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" time_before_expiry = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" time_after_creation = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" expire_after = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" })",
+        "required": false,
+        "default": "{ \"expire_after\": \"P365D\", \"notify_before_expiry\": \"P358D\", \"time_after_creation\": null, \"time_before_expiry\": \"P7D\" }"
+      },
+      "collation": {
+        "type": "string",
+        "description": "(Optional) Specifies the collation of the database.",
+        "required": false,
+        "default": "\"SQL_Latin1_General_CP1_CI_AS\""
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "create_mode": {
+        "type": "string",
+        "description": "(Optional) The create mode of the database. Possible values are Copy, Default, OnlineSecondary, PointInTimeRestore, Recovery, Restore, RestoreExternalBackup, RestoreExternalBackupSecondary, RestoreLongTermRetentionBackup and Secondary",
+        "required": false,
+        "default": "\"Default\""
+      },
+      "create_role_assignment_db_key": {
+        "type": "bool",
+        "description": "Enable assigning the `Key Vault Crypto User` role to the service identity to allow its access to the key vault keys.",
+        "required": false,
+        "default": "false"
+      },
+      "creation_source_database_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the source database from which to create the new database. This should only be used for databases with create_mode values that use another database as reference.",
+        "required": false,
+        "default": "null"
+      },
+      "customer_managed_key": {
+        "type": "object({ key_vault_id = string expiration_date = string identity_principal_id = string })",
+        "description": "(Optional) An customer_managed_key block as defined below object({ key_vault_id = \"(Required) The resource ID of the Key Vault where the Key Vault Key resides.\" expiration_date = \"(Required) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').\" identity_principal_id = \"(Required) The principal ID of the User Assigned Identity that has access to the key.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "data_encryption_key": {
+        "type": "string",
+        "description": "(Optional) ID of the key for Transparent Data Encryption.",
+        "required": false,
+        "default": "null"
+      },
+      "database_name": {
+        "type": "string",
+        "description": "(Optional) Name for the database",
+        "required": false,
+        "default": "null"
+      },
+      "elastic_pool_id": {
+        "type": "string",
+        "description": "(Optional) Specifies the ID of the elastic pool containing this database.",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "geo_backup_enabled": {
+        "type": "bool",
+        "description": "(Optional) Specifies if the Geo Backup Policy is enabled",
+        "required": false,
+        "default": "true"
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = list(string) })",
+        "description": "(Required) An identity block as defined below object({ type = \"(Required) Specifies the type of Managed Service Identity that should be configured on this MS SQL Database. Possible values are `UserAssigned`.\" identity_ids = \"(Required) Specifies a list of User Assigned Managed Identity IDs to be assigned to this MS SQL Database. This is required when `type` is set to `UserAssigned`.\" })",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "ledger_enabled": {
+        "type": "bool",
+        "description": "(Optional) A boolean that specifies if this is a ledger database",
+        "required": false,
+        "default": "false"
+      },
+      "license_type": {
+        "type": "string",
+        "description": "(Optional) Specifies the license type applied to this database. Possible values are LicenseIncluded and BasePrice when using Provisioned Database and `null` for Using Serverless DB. Under Provisioned Database SKUs, this is only settable for `Business Critical` and `General Purpose` Provisioned Service tiers.",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "long_term_retention_policy": {
+        "type": "object({ weekly_retention = string #(Optional) The weekly retention policy for an LTR backup in an ISO 8601 format. Valid value is between 1 to 520 weeks. e.g. P1Y, P1M, P1W or P7D. monthly_retention = string #(Optional) The monthly retention policy for an LTR backup in an ISO 8601 format. Valid value is between 1 to 120 months. e.g. P1Y, P1M, P4W or P30D. yearly_retention = string #(Optional) The yearly retention policy for an LTR backup in an ISO 8601 format. Valid value is between 1 to 10 years. e.g. P1Y, P12M, P52W or P365D. week_of_year = number #(Optional) The week of year to take the yearly backup. Value has to be between 1 and 52. })",
+        "description": "(Optional) A long_term_retention_policy block",
+        "required": false,
+        "default": "{ \"monthly_retention\": null, \"week_of_year\": 1, \"weekly_retention\": null, \"yearly_retention\": null }"
+      },
+      "maintenance_configuration_name": {
+        "type": "string",
+        "description": "(Optional) The name of the Public Maintenance Configuration window to apply to the database",
+        "required": false,
+        "default": "\"SQL_Default\""
+      },
+      "max_size_gb": {
+        "type": "number",
+        "description": "(Optional) The max size of the database in gigabytes",
+        "required": false,
+        "default": "null"
+      },
+      "min_capacity": {
+        "type": "number",
+        "description": "(Optional) Minimal capacity that database will always have allocated, if not paused. This property is only settable for General Purpose and HyperScale Serverless databases. It sets the minimum capacity for the database, with a default of 0.5 cores.",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "read_replica_count": {
+        "type": "number",
+        "description": "(Optional) The number of readonly secondary replicas associated with the database to which readonly application intent connections may be routed. This property is only settable for Hyperscale edition databases. If zone redundancy is enabled, the minimum replica count is 1.",
+        "required": false,
+        "default": "0"
+      },
+      "read_scale": {
+        "type": "bool",
+        "description": "(Optional) If enabled, connections that have application intent set to readonly in their connection string may be routed to a readonly secondary replica. This property is only settable for Premium, Hyperscale and Business Critical databases.",
+        "required": false,
+        "default": "false"
+      },
+      "recover_database_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the database to be recovered. This property is only applicable when the create_mode is Recovery.",
+        "required": false,
+        "default": "null"
+      },
+      "restore_dropped_database_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the database to be restored. This property is only applicable when the create_mode is Restore.",
+        "required": false,
+        "default": "null"
+      },
+      "restore_point_in_time": {
+        "type": "string",
+        "description": "(Optional) Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database. This property is only settable for create_mode= PointInTimeRestore databases.",
+        "required": false,
+        "default": "null"
+      },
+      "sample_name": {
+        "type": "string",
+        "description": "(Optional) Specifies the name of the sample schema to apply when creating this database. Possible value is AdventureWorksLT.",
+        "required": false,
+        "default": "null"
+      },
+      "secondary_type": {
+        "type": "string",
+        "description": "(Optional) Specify how do you want replica to be made? Valid values include Geo, Named and Standby. Defaults to Geo. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "\"Geo\""
+      },
+      "server_id": {
+        "type": "string",
+        "description": "(Required) Specifies the sql server ID to associate it with database.",
+        "required": true
+      },
+      "short_term_retention_policy": {
+        "type": "object({ retention_days = number #(Required) Point In Time Restore configuration. Value has to be between 7 and 35. backup_interval_in_hours = number #(Optional) The hours between each differential backup. This is only applicable to live databases but not dropped databases. Value has to be 12 or 24. Defaults to 12 hours. })",
+        "description": "(Optional) A short_term_retention_policy block",
+        "required": false,
+        "default": "{ \"backup_interval_in_hours\": null, \"retention_days\": null }"
+      },
+      "sku_name": {
+        "type": "string",
+        "description": "(Optional) Specifies the name of the sku used by the database. Changing this forces a new resource to be created. For example, GP_S_Gen5_2,HS_Gen4_1,BC_Gen5_2, ElasticPool, Basic,S0, P2 ,DW100c, DS100.",
+        "required": false,
+        "default": "\"S0\""
+      },
+      "storage_account_type": {
+        "type": "string",
+        "description": "(Optional) Specifies the storage account type used to store backups for this database. Possible values are Geo, Local and Zone, and GeoZone. The default value is Local.",
+        "required": false,
+        "default": "\"Local\""
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "threat_detection_policy": {
+        "type": "object({ state = string #(Optional) The State of the Policy. Possible values are Enabled, Disabled or New. disabled_alerts = list(any) #(Optional) Specifies a list of alerts which should be disabled. Possible values include Access_Anomaly, Sql_Injection and Sql_Injection_Vulnerability. email_account_admins = string #(Optional) Should the account administrators be emailed when this alert is triggered? Possible values are Disabled and Enabled. email_addresses = list(any) #(Optional) A list of email addresses which alerts should be sent to. retention_days = string #(Optional) Specifies the number of days to keep in the Threat Detection audit logs. storage_account_access_key = string #(Optional) Specifies the identifier key of the Threat Detection audit storage account. Required if state is Enabled. storage_endpoint = string #(Optional) Specifies the blob storage endpoint (e.g. https://example.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs. Required if state is Enabled. })",
+        "description": "(Optional) Threat detection policy configuration.",
+        "required": false,
+        "default": "{ \"disabled_alerts\": null, \"email_account_admins\": null, \"email_addresses\": null, \"retention_days\": null, \"state\": null, \"storage_account_access_key\": null, \"storage_endpoint\": null }"
+      },
+      "transparent_data_encryption_key_automatic_rotation_enabled": {
+        "type": "any",
+        "description": "(Optional) Specify whether TDE automatically rotates the encryption Key to latest version or not. Defaults to true.",
+        "required": false,
+        "default": "true"
+      },
+      "zone_redundant": {
+        "type": "bool",
+        "description": "(Optional) Whether or not this database is zone redundant, which means the replicas of this database will be spread across multiple availability zones. This property is only settable for Premium, Business Critical, General Purpose and Hyperscale service tiers.",
+        "required": false,
+        "default": "false"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The ID of the MS SQL Database."
+    },
+    "name": {
+      "description": "The name of the MS SQL Database."
+    },
+    "resource": {
+      "description": "The Azure SQL Database Resource."
+    },
+    "tde_key_vault_key_id": {
+      "description": "The ID of the Key Vault key used for Transparent Data Encryption. Use this when configuring geo-replicas with customer-managed TDE."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Mssqldatabase' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Key Vault",
+      "Storage Account",
+      "Storage Container",
+      "MS SQL Server"
+    ]
+  }
+}

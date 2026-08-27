@@ -1,0 +1,228 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Chaos Studio Experiment module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-chaosstudioexperiment'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-chaosstudioexperiment",
+  "module_type": "service",
+  "azure_service": "Chaosstudioexperiment",
+  "module_name": "Chaos Studio Experiment module",
+  "latest_tag": "2.0.2",
+  "available_tags": [
+    "2.0.2",
+    "2.0.1",
+    "2.0.0",
+    "1.2.1",
+    "1.2.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-chaosstudioexperiment.git//?ref=2.0.2",
+  "terraform_requirements": {
+    "azapi": ">=1.9",
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Key Vault",
+    "Network Security Group",
+    "Route Table",
+    "Subnet",
+    "Private Endpoint for KeyVault",
+    "Role Assignment for KeyVault",
+    "Proximity Placement Group for Windows Virtual Machine",
+    "User Assigned Identity",
+    "Key Vault Secret",
+    "Windows Virtual Machine"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azapi_resource.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azapi_resource_action.exp_patch_tags",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_chaos_studio_capability.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_chaos_studio_experiment.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "chaosstudioexperiment",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-chaosstudioexperiment.git//?ref=2.0.2",
+      "version": "2.0.2",
+      "available_versions": [
+        "2.0.2",
+        "2.0.1",
+        "2.0.0",
+        "1.2.1",
+        "1.2.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "chaos_studio_capability_type",
+      "chaos_studio_target_resource_id",
+      "chaos_studio_target_type",
+      "environment",
+      "location",
+      "name",
+      "org_id",
+      "resource_group_name",
+      "selectors",
+      "steps"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "chaos_studio_agent_target_mi": {
+        "type": "map(string)",
+        "description": "(Optional) The managed identity clientid, secret and tenantid to register the vm agent target { clientId = \"xxxxxxxxxxxxxxxxxxxxxxxxxx\" tenantId = \"xxxxxxxxxxxxxxxxxxxxxxxxxx\" type = \"AzureManagedIdentity\" }",
+        "required": false,
+        "default": "{}"
+      },
+      "chaos_studio_agent_target_subnetids": {
+        "type": "map(string)",
+        "description": "(Optional) The relay and container subnet id to register private aks target { containerSubnetId = \"/subscription/xxx/xxx/xxx/xx\" relaySubnetId = \"/subscription/xxx/xxx/xxx/xx\" }",
+        "required": false,
+        "default": "{}"
+      },
+      "chaos_studio_capability_type": {
+        "type": "string",
+        "description": "(Required) Type of the Capability for Azure Chaos Capability",
+        "required": true
+      },
+      "chaos_studio_target_enabled": {
+        "type": "bool",
+        "description": "(Optional) Whether the target registration is necessary or not. If a target has multiple capabilities it can be registered only once",
+        "required": false,
+        "default": "false"
+      },
+      "chaos_studio_target_id": {
+        "type": "string",
+        "description": "(Optional) The chaos studio target id that is needed only when additional capabilities are needed for a already registered target",
+        "required": false,
+        "default": "\"\""
+      },
+      "chaos_studio_target_resource_id": {
+        "type": "string",
+        "description": "(Required) Resource ID of the Target Resource for Azure Chaos Target Resource",
+        "required": true
+      },
+      "chaos_studio_target_type": {
+        "type": "string",
+        "description": "(Required) Type of the Target Resource for Azure Chaos Target Resource",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = optional(set(string)) })",
+        "description": "(Optional) An identity block as defined below object({ type = \"(Required) Specifies the type of Managed Service Identity that should be configured on this Windows Virtual Machine. Possible values are `SystemAssigned`, `UserAssigned`, `SystemAssigned, UserAssigned` (to enable both).\" identity_ids = \"(Optional) Specifies a list of User Assigned Managed Identity IDs to be assigned to this Windows Virtual Machine. This is required when `type` is set to `UserAssigned` or `SystemAssigned, UserAssigned`.\" })",
+        "required": false,
+        "default": "{ \"identity_ids\": null, \"type\": \"SystemAssigned\" }"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "name": {
+        "type": "string",
+        "description": "(Required) Specifies the name which should be used for this Storage Mover.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "selectors": {
+        "type": "map(object({ selector_name = string }))",
+        "description": "(Required) A selectors block supports the following: # chaos_studio_target_ids = \"(Required) A list of Chaos Studio Target IDs that should be part of this Selector.\" selector_name = \"(Required) The name of this Selector.\"",
+        "required": true
+      },
+      "steps": {
+        "type": "map(object({ branch = map(object({ experiment_branch_name = string actions = map(object({ action_type = string duration = optional(string) parameters = optional(map(any)) selector_name = optional(string) urn = optional(string) })) })) experiment_step_name = string }))",
+        "description": "(Required) A map of Steps block supports the following: object({ branch = (Required) A map of branch blocks as defined below: object({ experiment_branch_name = \"(Required) The name of the branch.\" actions = (Required) A map of branch blocks as defined below: object({ action_type = \"(Required) The type of action that should be added to the experiment. Possible values are `continuous`, `delay` and `discrete`.\" duration = \"(Optional) An ISO8601 formatted string specifying the duration for a delay or continuous action.\" parameters = \"(Optional) A key-value map of additional parameters to configure the action. The values that are accepted by this depend on the urn i.e. the capability/fault that is applied.\" selector_name = \"(Optional) The name of the Selector to which this action should apply to. This must be specified if the action_type is continuous or discrete.\" urn = \"(Optional) The Unique Resource Name of the action, this value is provided by the azurerm_chaos_studio_capability resource e.g. azurerm_chaos_studio_capability.example.urn. This must be specified if the action_type is `continuous` or `discrete`.\" }) }) experiment_step_name = \"(Required) The name of the Step.\" })",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "capability_id": {
+      "description": "The Resource ID of the Azure Chaos Studio."
+    },
+    "capability_resource": {
+      "description": "The Azure Chaos Studio resource."
+    },
+    "chaos_studio_experiment_id": {
+      "description": "The Resource ID of the Azure Chaos Studio."
+    },
+    "chaos_studio_experiment_name": {
+      "description": "The Name of the Azure Chaos Studio."
+    },
+    "chaos_studio_experiment_resource": {
+      "description": "The Azure Chaos Studio resource."
+    },
+    "chaos_studio_target_id": {
+      "description": "The Resource ID of the Azure Chaos Studio Target."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Chaosstudioexperiment' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Key Vault",
+      "Network Security Group",
+      "Route Table",
+      "Subnet",
+      "Private Endpoint for KeyVault",
+      "Role Assignment for KeyVault",
+      "Proximity Placement Group for Windows Virtual Machine",
+      "User Assigned Identity",
+      "Key Vault Secret",
+      "Windows Virtual Machine"
+    ]
+  }
+}

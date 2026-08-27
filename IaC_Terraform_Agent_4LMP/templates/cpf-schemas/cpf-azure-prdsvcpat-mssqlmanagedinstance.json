@@ -1,0 +1,612 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: SQL Managed Instance Service Pattern",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvcpat-mssqlmanagedinstance'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvcpat-mssqlmanagedinstance",
+  "module_type": "service-pattern",
+  "azure_service": "Mssqlmanagedinstance",
+  "module_name": "SQL Managed Instance Service Pattern",
+  "latest_tag": "",
+  "available_tags": [],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-mssqlmanagedinstance.git//",
+  "terraform_requirements": {
+    "tls": "~> 3.0",
+    "azurerm": ">= 4.33",
+    "random": "3.6.0",
+    "terraform": ">= 1.5.0",
+    "azuread": ">= 2.46.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_private_dns_a_record.sqlmi_a_record",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_private_dns_a_record.sqlmi_a_record_failover",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "random_password.password",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_rotating.expiration_date",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_keyvault_pe",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_keyvault_pe_failover",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_sqlmi_pe",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_sqlmi_pe_failover",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_storage_blob_pe",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_storage_blob_pe_failover",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_client_config.current",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "mssqlmanagedinstance",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-mssqlmanagedinstance.git//",
+      "version": "latest",
+      "available_versions": []
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "administrator_login",
+      "app_id",
+      "environment",
+      "expiration_date",
+      "failover_storage_account_type",
+      "failover_zone_redundant_enabled",
+      "firewall_private_ip_address",
+      "key_vault_config",
+      "license_type",
+      "location",
+      "org_id",
+      "resource_group_name",
+      "shared_nrtbl_vnet_id",
+      "sku_name",
+      "storage_config",
+      "storage_size_in_gb",
+      "vcores"
+    ],
+    "properties": {
+      "admin_email": {
+        "type": "string",
+        "description": "(Optional) The email of the Azure AD User or Group to be added as administrator of this PostgreSQL Server.",
+        "required": false,
+        "default": "null"
+      },
+      "admin_object_id": {
+        "type": "string",
+        "description": "(Optional) The object ID of the Azure AD User or Group to be added as administrator of this PostgreSQL Server.",
+        "required": false,
+        "default": "null"
+      },
+      "administrator_login": {
+        "type": "string",
+        "description": "(Required) The administrator login name for the new server. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "auto_rotation_enabled": {
+        "type": "bool",
+        "description": "(Optional) When enabled, the SQL Managed Instance will continuously check the key vault for any new versions of the key being used as the TDE protector. If a new version of the key is detected, the TDE protector on the SQL Managed Instance will be automatically rotated to the latest key version within 60 minutes.",
+        "required": false,
+        "default": "true"
+      },
+      "azuread_authentication_only": {
+        "type": "bool",
+        "description": "(Optional) Specify if you want to enable only Entra ID authentication.",
+        "required": false,
+        "default": "true"
+      },
+      "cmk_key_name": {
+        "type": "string",
+        "description": "(optional) Key name to be used (max 127 chars)",
+        "required": false,
+        "default": "null"
+      },
+      "collation": {
+        "type": "string",
+        "description": "(Optional) Specifies how the SQL Managed Instance will be collated. Changing this forces a new resource to be created",
+        "required": false,
+        "default": "\"SQL_Latin1_General_CP1_CI_AS\""
+      },
+      "containers": {
+        "type": "object({ metadata = optional(map(any), null) context = optional(string, null) instance = optional(string, null) })",
+        "description": "(Optional) Storage Container configuartions to be used for SQL MI Vulnerability Assessment.",
+        "required": false,
+        "default": "null"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "create_private_dns_zone": {
+        "type": "bool",
+        "description": "(Optional) Whether to create a private DNS zone for the SQL MI private endpoint. Defaults to true.",
+        "required": false,
+        "default": "true"
+      },
+      "create_role_assignment": {
+        "type": "bool",
+        "description": "(Optional) Whether to create a role assignment to the service identity to allow access to the key vault keys.",
+        "required": false,
+        "default": "true"
+      },
+      "database_format": {
+        "type": "string",
+        "description": "(Optional) Specifies the internal format of the SQL Managed Instance databases specific to the SQL engine version. Possible values are `AlwaysUpToDate` and `SQLServer2022`. Defaults to `SQLServer2022`. Note: Changing from `AlwaysUpToDate` to `SQLServer2022` forces a new resource to be created.",
+        "required": false,
+        "default": "\"SQLServer2022\""
+      },
+      "deploy_sqlmi_pe": {
+        "type": "bool",
+        "description": "(Optional) Whether to deploy a private endpoint for sql managed instance.",
+        "required": false,
+        "default": "false"
+      },
+      "deploy_sqlmi_pe_failover": {
+        "type": "bool",
+        "description": "(Optional) Whether to deploy a private endpoint for sql managed failover instance.",
+        "required": false,
+        "default": "false"
+      },
+      "enable_entra_id_authentication": {
+        "type": "bool",
+        "description": "(Optional) Specify if you want to enable Entra ID authentication.",
+        "required": false,
+        "default": "true"
+      },
+      "enable_user_assigned_identity": {
+        "type": "bool",
+        "description": "(Optional) Whether to enable user assigned identity for the SQL Managed Instance. Defaults to false.",
+        "required": false,
+        "default": "false"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "expiration_date": {
+        "type": "string",
+        "description": "(Required) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').",
+        "required": true
+      },
+      "failover_enabled": {
+        "type": "bool",
+        "description": "(Optional). Set if the Failover should be enabled for the Managed Instance.",
+        "required": false,
+        "default": "true"
+      },
+      "failover_storage_account_type": {
+        "type": "string",
+        "description": "(Required) Specifies the storage account type in secondary region used to store backups for this database. Changing this forces a new resource to be created. Possible values are GRS, LRS and ZRS.",
+        "required": true
+      },
+      "failover_zone_redundant_enabled": {
+        "type": "bool",
+        "description": "(Required) Specifies whether or not the SQL Managed Instance is zone redundant in secondary region. Defaults to `false`.",
+        "required": true
+      },
+      "firewall_private_ip_address": {
+        "type": "string",
+        "description": "(Required). Private IP of the firewall located in the region where the Primary instance will be deployed.",
+        "required": true
+      },
+      "firewall_private_ip_address_failover": {
+        "type": "string",
+        "description": "(Optional). SPrivate IP of the firewall located in the region where the failover instance will be deployed.",
+        "required": false,
+        "default": "null"
+      },
+      "general_purpose_v2_enabled": {
+        "type": "bool",
+        "description": "(Optional) Specifies whether the SQL Managed Instance should use the Next-gen General Purpose service tier. Defaults to false. Can only be set to true when using a General Purpose (GP_*) SKU.",
+        "required": false,
+        "default": "false"
+      },
+      "hybrid_secondary_usage": {
+        "type": "string",
+        "description": "(Optional) Specifies the hybrid secondary usage for disaster recovery of the SQL Managed Instance. Possible values are `Active` and `Passive`. Defaults to `Active`.",
+        "required": false,
+        "default": "\"Active\""
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = optional(list(string)) })",
+        "description": "(Optional) An identity block supports the following: object({ type = \"(Required) Specifies the type of Managed Service Identity that should be configured on this SQL Managed Instance.\" identity_ids = \"(Optional) A list of User Assigned Managed Identity IDs to be assigned to this SQL Managed Instance. Required if used together with customer_managed_key block.\" })",
+        "required": false,
+        "default": "{ \"identity_ids\": null, \"type\": \"SystemAssigned\" }"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "instancepe": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "key_size": {
+        "type": "number",
+        "description": "(Optional) Specifies the Size of the RSA key to create in bytes. Allowed values are 1024, 2048, 3072 or 4096.",
+        "required": false,
+        "default": "2048"
+      },
+      "key_type": {
+        "type": "string",
+        "description": "(Optional) Specifies the Key Type to use for the Key Vault Key.",
+        "required": false,
+        "default": "\"RSA-HSM\""
+      },
+      "key_vault_config": {
+        "type": "object({ context = optional(string, null) context_failover = optional(string, null) instance = optional(string, null) instance_failover = optional(string, null) deploy_kv_and_pe = optional(bool, true) deploy_kv_and_pe_failover = optional(bool, true) key_vault_id = optional(string, null) key_vault_id_failover = optional(string, null) enabled_for_deployment = optional(bool, false) enabled_for_disk_encryption = optional(bool, true) enabled_for_template_deployment = optional(bool, false) soft_delete_retention_days = optional(number, 30) kv_admin_role_app_spn_object_id = optional(string, null) public_network_access_enabled = optional(bool, false) sku_name = optional(string, \"premium\") network_acls = optional(object({ bypass = optional(string, \"None\") default_action = optional(string, \"Deny\") ip_rules = optional(list(string), []) virtual_network_subnet_ids = optional(list(string), []) }), {}) private_endpoint = optional(object({ is_manual_connection = optional(bool, false) static_ip_required = optional(bool, false) private_connection_resource_alias = optional(string, null) kv_ip_configuration = optional(map(object({ private_ip_address = string subresource_name = optional(string, \"vault\") member_name = optional(string, \"default\") })), {}) }), { is_manual_connection = false static_ip_required = false private_connection_resource_alias = null } ) })",
+        "description": "Object with cofigration for the Keyvault. As defined below context = context to be used for KeyVaults being deployed resources. context_failover = context to be used for KeyVaults being deployed resources in secondary region. instance = instance to be used for KeyVaults being deployed resources. instance_failover = instance to be used for KeyVaults being deployed resources in secondary region. deploy_kv_and_pe = (Optional). Boolean to deploy KeyVault and Private Endpoint for KeyVault. Default is true. deploy_kv_and_pe_failover = (Optional). Boolean to deploy KeyVault and Private Endpoint for KeyVault in secondary region. Default is true. key_vault_id = (Optional). KeyVault ID to be used for Private Endpoint for KeyVault. Required if deploy_kv_and_pe is false. key_vault_id_failover = (Optional). KeyVault ID to be used for Private Endpoint for KeyVault in secondary region. Required if deploy_kv_and_pe is false. enabled_for_deployment = (Optional). Boolean to enable KeyVault for deployment. Default is false. enabled_for_disk_encryption = (Optional). Boolean to enable KeyVault for disk encryption. Default is true. enabled_for_template_deployment = (Optional). Boolean to enable KeyVault for template deployment. Default is false. soft_delete_retention_days = (Optional) The number of days that items should be retained for once soft-deleted. sku_name = (Optional). Sku name for KeyVault. Default is premium. kv_admin_role_app_spn_object_id = (Optional). Object ID for the SPN to add KeyVault administrator role. public_network_access_enabled = (Optional). Specifies whether public network access is enabled for the Key Vault network_acls = (Optional). Object with network ACLs for KeyVault. As defined below { bypass = (Optional). Specifies whether traffic is bypassed for Azure services. Default is None. Possible values are None, AzureServices, Logging, Metrics, or AzureServices,Logging,Metrics. default_action = (Optional). Specifies the default action of allow or deny when no other rules match. Default is Deny. Possible values are Allow and Deny. ip_rules = (Optional). List of IP addresses or CIDR ranges to whitelist. Only IPV4 addresses are allowed. This list must not include IP address ranges within Azure services. This list can include IP addresses ranges from on-premises ranges. virtual_network_subnet_ids = (Optional). List of virtual network subnet ids to whitelist. This list must not include IP address ranges within Azure services. } private_endpoint = (Optional). Object with private endpoint configuration for KeyVault. As defined below { is_manual_connection = (Optional). Boolean to indicate if the connection is manual. Default is false. static_ip_required = (Optional). Boolean to indicate if static IP is required. Default is false. private_connection_resource_alias = (Optional). Resource alias of the private connection. Required if is_manual_connection is true. kv_ip_configuration = (Optional). Object with IP configuration for KeyVault. As defined below { private_ip_address = (Required). Private IP address of the IP configuration. subresource_name = (Optional). Subresource name of the IP configuration. Default is vault. member_name = (Optional). Member name of the IP configuration. Default is default. } }",
+        "required": true
+      },
+      "key_vault_tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on Key Vault related resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "license_type": {
+        "type": "string",
+        "description": "(Required) Type of license the Managed Instance will use. Possible values are LicenseIncluded and BasePrice.",
+        "required": true
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "maintenance_configuration_name": {
+        "type": "string",
+        "description": "(Optional) The name of the Public Maintenance Configuration window to apply to the SQL Managed Instance. Valid values include SQL_Default or an Azure Location in the format SQL_{Location}_MI_{Size}(for example SQL_EastUS_MI_1).",
+        "required": false,
+        "default": "\"SQL_Default\""
+      },
+      "maintenance_configuration_name_failover": {
+        "type": "string",
+        "description": "(Optional) The name of the Public Maintenance Configuration window to apply to the failover SQL Managed Instance. Valid values include SQL_Default or an Azure Location in the format SQL_{Location}_MI_{Size}(for example SQL_CentralUS_MI_2). If not specified, defaults to the value of maintenance_configuration_name.",
+        "required": false,
+        "default": "\"SQL_Default\""
+      },
+      "mssqlmi_db_variables": {
+        "type": "map(object({ context = string instance = string name = optional(string, null) retention_days = optional(number, 7) retention_policy = optional(bool, true) long_term_retention_policies = optional(map(object({ weekly_retention = string monthly_retention = string yearly_retention = string week_of_year = number })), {}) }))",
+        "description": "Defaults to `{}`. A map of sqlmi db to create. - `context` - (Optional) - Defaults to `null`. Context to be used for all service bus queues resources. - `instance` - (Optional) - Defaults to `null`. Instance tpo be used for all service bus queues resources. - `name` - (Optional) - Provide a custom name for the managed SQL database. If not set, a name will be generated. - `retention_days` - (Optional) - Specifies the short term retention policy - retention days for the new databases. - `retention_policy` - (Optional) - Should retention policy be applied or skip as per input. - `long_term_retention_policies` - (Optional) - Defaults to `{}`. Map containing long_term_retention_policy for this Managed Database. - `weekly_retention` - (Optional) - The weekly retention policy for an LTR backup in an ISO 8601 format. Valid value is between 1 to 520 weeks. e.g. P1Y, P1M, P1W or P7D - `monthly_retention` - (Optional) - The monthly retention policy for an LTR backup in an ISO 8601 format. Valid value is between 1 to 120 months. e.g. P1Y, P1M, P4W or P30D - `yearly_retention` - (Optional) - The yearly retention policy for an LTR backup in an ISO 8601 format. Valid value is between 1 to 10 years. e.g. P1Y, P12M, P52W or P365D. - `week_of_year` - (Optional) - The week of year to take the yearly backup. Value has to be between 1 and 52.",
+        "required": false,
+        "default": "{}"
+      },
+      "network_config": {
+        "type": "object({ context = optional(string, null) instance = optional(string, null) context_failover = optional(string, null) instance_failover = optional(string, null) deploy_delegated_subnet = optional(bool, true) delegated_subnet_address_prefix = optional(string, null) deploy_delegated_subnet_failover = optional(bool, true) delegated_subnet_address_prefix_failover = optional(string, null) privateendpoint_subnet_id = optional(string, null) privateendpoint_subnet_id_failover = optional(string, null) delegated_subnet_id = optional(string, null) delegated_subnet_id_failover = optional(string, null) special_subnet_name = optional(string, null) special_subnet_name_failover = optional(string, null) service_endpoints = optional(list(string), []) enforce_private_link_endpoint_network_policies = optional(string, \"Disabled\") private_link_service_network_policies_enabled = optional(bool, false) subnet_default_outbound_access = optional(bool, true) security_rules = optional(map(object({ name = string description = string priority = number direction = string access = string protocol = string source_port_range = string destination_port_range = string source_address_prefix = string destination_address_prefix = string source_application_security_group_ids = list(string) destination_application_security_group_ids = list(string) })), {}) security_rules_failover = optional(map(object({ name = string description = string priority = number direction = string access = string protocol = string source_port_range = string destination_port_range = string source_address_prefix = string destination_address_prefix = string source_application_security_group_ids = list(string) destination_application_security_group_ids = list(string) })), {}) route_table = optional(object({ route_table_id = optional(string, null) route_table_id_failover = optional(string, null) bgp_route_propagation_enabled = optional(bool, true) route = optional(map(object({ name = string address_prefix = string next_hop_type = string next_hop_in_ip_address = string })), {}) }), { bgp_route_propagation_enabled = true route = {} route_table_id = null route_table_id_failover = null }) })",
+        "description": "(Required). Object with cofigration for the Storage Account. As defined below context = context to be used for Storage Account being deployed resources. instance = instance to be used for Storage Account being deployed resources. context_failover = context to be used for Storage Account being deployed resources in secondary region. instance_failover = instance to be used for Storage Account being deployed resources in secondary region. deploy_delegated_subnet = Boolean to deploy new delegated subnet for SQL MI deployments. delegated_subnet_address_prefix = Address prefix for the delegated subnet for SQL MI. Must be passed as `null` if `deploy_delegated_subnet` is `true`. deploy_delegated_subnet_failover = Boolean to deploy new delegated subnet for SQL MI deployments in secondary region. delegated_subnet_address_prefix_failover = Address prefix for the delegated subnet for SQL MI in secondary region. Must be passed as `null` if `deploy_delegated_subnet_failover` is `true`. privateendpoint_subnet_id = Subnet id for the private endpoints to be used by the pattern. delegated_subnet_id = (Optional) The ID of the delegated Subnet where the SQL MI will be deployed. delegated_subnet_id_failover = (Optional) The ID of the delegated Subnet where the SQL MI will be deployed in secondary region. subnet_default_outbound_access = (Optional) Specifies the default outbound access setting for the subnet. security_rules = (Optional). Map of objects mentioned below security rules for the NSG. As defined below { name = \"(Required) The name of the security rule.\" description = \"(Optional) A description for this rule. Restricted to 140 characters.\" priority = \"(Required) Specifies the priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each rule in the collection. The lower the priority number, the higher the priority of the rule.\" direction = \"(Required) The direction specifies if rule will be evaluated on incoming or outgoing traffic. Possible values are Inbound and Outbound.\" access = \"(Required) Specifies whether network traffic is allowed or denied. Possible values are Allow and Deny.\" protocol = \"(Required) Network protocol this rule applies to. Possible values include Tcp, Udp, Icmp, Esp, Ah or * (which matches all).\" source_port_range = \"(Optional) Source Port or Range. Integer or range between 0 and 65535 or * to match any. This is required if source_port_ranges is not specified.\" destination_port_range = \"(Optional) Destination Port or Range. Integer or range between 0 and 65535 or * to match any. This is required if destination_port_ranges is not specified.\" source_address_prefix = \"(Optional) CIDR or source IP range or * to match any IP. Tags such as VirtualNetwork, AzureLoadBalancer and Internet can also be used. This is required if source_address_prefixes is not specified.\" destination_address_prefix = \"(Optional) CIDR or destination IP range or * to match any IP. Tags such as VirtualNetwork, AzureLoadBalancer and Internet can also be used. This is required if destination_address_prefixes is not specified.\" source_application_security_group_ids = \"(Optional) A List of source Application Security Group IDs\" destination_application_security_group_ids = \"(Optional) A List of destination Application Security Group IDs\" } security_rules_failover = (Optional). Map of objects mentioned below security rules for the NSG in secondary region. As defined below { name = \"(Required) The name of the security rule.\" description = \"(Optional) A description for this rule. Restricted to 140 characters.\" priority = \"(Required) Specifies the priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each rule in the collection. The lower the priority number, the higher the priority of the rule.\" direction = \"(Required) The direction specifies if rule will be evaluated on incoming or outgoing traffic. Possible values are Inbound and Outbound.\" access = \"(Required) Specifies whether network traffic is allowed or denied. Possible values are Allow and Deny.\" protocol = \"(Required) Network protocol this rule applies to. Possible values include Tcp, Udp, Icmp, Esp, Ah or * (which matches all).\" source_port_range = \"(Optional) Source Port or Range. Integer or range between 0 and 65535 or * to match any. This is required if source_port_ranges is not specified.\" destination_port_range = \"(Optional) Destination Port or Range. Integer or range between 0 and 65535 or * to match any. This is required if destination_port_ranges is not specified.\" source_address_prefix = \"(Optional) CIDR or source IP range or * to match any IP. Tags such as VirtualNetwork, AzureLoadBalancer and Internet can also be used. This is required if source_address_prefixes is not specified.\" destination_address_prefix = \"(Optional) CIDR or destination IP range or * to match any IP. Tags such as VirtualNetwork, AzureLoadBalancer and Internet can also be used. This is required if destination_address_prefixes is not specified.\" source_application_security_group_ids = \"(Optional) A List of source Application Security Group IDs\" destination_application_security_group_ids = \"(Optional) A List of destination Application Security Group IDs\" } route_table = (Optional). Object with route table configuration for Virtual Machine Subnet. As defined below { route_table_id = (Optional). Route table ID to be used for SQL MI Subnet. Required if route is not provided. route_table_id_failover = (Optional). Route table ID to be used for SQL MI Subnet in secondary region. Required if route is not provided. route = (Optional). A Map of objects mentioned below for route configuration of the route table. { name = \"(Required) The name of the route.\" address_prefix = \"(Required) The destination CIDR to which the route applies.\" next_hop_type = \"(Required) The type of Azure hop the packet should be sent to. Possible values are VirtualNetworkGateway, VnetLocal, Internet, VirtualAppliance and None.\" next_hop_in_ip_address = \"(Optional) The IP address packets should be forwarded to. Next hop values are only allowed in routes where the next hop type is VirtualAppliance.\" } bgp_route_propagation_enabled = \"(Optional). Boolean flag which controls propagation of routes learned by BGP on that route table. True means enable. False means disable. Default is True\" }",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "platform_rtbl_vnet_id": {
+        "type": "string",
+        "description": "(Optional). The ARM Resource Id of the Routeable Virtual Network in platform Resource group.",
+        "required": false,
+        "default": "null"
+      },
+      "private_dns_zone_name": {
+        "type": "string",
+        "description": "(Optional) Name of the private DNS zone to create the A record in. Defaults to module-managed zone when null.",
+        "required": false,
+        "default": "null"
+      },
+      "private_endpoint": {
+        "type": "object({ context = optional(string, null) instance = optional(string, null) is_manual_connection = optional(bool, false) static_ip_required = optional(bool, false) private_connection_resource_alias = optional(string, null) ip_configuration = optional(map(object({ private_ip_address = string subresource_name = optional(string, \"managedInstance\") member_name = optional(string, \"default\") })), {}) soa_record = optional(object({ email = string expire_time = optional(string) minimum_ttl = optional(number) refresh_time = optional(number) retry_time = optional(number) ttl = optional(number) }), { email = \"pdnsz-host.microsoft.com\" }) private_dns_zone_vnet_links_registration_enabled = optional(bool, false) private_dns_a_record = optional(object({ ttl = number }), { ttl = 300 }) })",
+        "description": "- `private_endpoint` - (Optional) - Object with private endpoint configuration for SQL Managed Instance. As defined below - `is_manual_connection` - (Optional). Boolean to indicate if the connection is manual. Default is false. - `static_ip_required` - (Optional). Boolean to indicate if static IP is required. Default is false. - `private_connection_resource_alias` = (Optional) To create private connection resource alias - `ip_configuration` - (Optional). Object with IP configuration for KeyVault. As defined below - `private_ip_address` - (Required). Private IP address of the IP configuration. - `subresource_name` - (Optional). Subresource name of the IP configuration. Default is vault. - `member_name` - (Optional). Member name of the IP configuration. Default is default. - `soa_record` - (Required) An `soa_record` for the Private DNS Zone. Changing this forces a new resource to be created.\" - `email` - (Required) The email contact for the SOA record. - `expire_time` - (Optional) The expire time for the SOA record. Defaults to 2419200. - `minimum_ttl` - (Optional) The minimum Time To Live for the SOA record. By convention, it is used to determine the negative caching duration. Defaults to 300. - `refresh_time` - (Optional) The refresh time for the SOA record. Defaults to 3600. - `retry_time` - (Optional) The retry time for the SOA record. Defaults to 300. - `ttl` - (Optional) The Time To Live of the SOA Record in seconds. Defaults to 3600. - `private_dns_zone_vnet_links_registration_enabled` - (Optional) Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled ? - `private_dns_a_record` - (Optional) An object for creating a record for the SQL MI private endpoint. - `ttl` - (Required) ttl for a record",
+        "required": false,
+        "default": "{}"
+      },
+      "private_endpoint_failover": {
+        "type": "object({ context = optional(string, null) instance = optional(string, null) is_manual_connection = optional(bool, false) static_ip_required = optional(bool, false) private_connection_resource_alias = optional(string, null) ip_configuration = optional(map(object({ private_ip_address = string subresource_name = optional(string, \"managedInstance\") member_name = optional(string, \"default\") })), {}) soa_record = optional(object({ email = string expire_time = optional(string) minimum_ttl = optional(number) refresh_time = optional(number) retry_time = optional(number) ttl = optional(number) }), { email = \"pdnsz-host.microsoft.com\" }) private_dns_zone_vnet_links_registration_enabled = optional(bool, false) private_dns_a_record = optional(object({ ttl = number }), { ttl = 300 }) })",
+        "description": "- `private_endpoint_failover` - (Optional) - Object with private endpoint configuration for SQL Managed Failover Instance. As defined below - `is_manual_connection` - (Optional). Boolean to indicate if the connection is manual. Default is false. - `static_ip_required` - (Optional). Boolean to indicate if static IP is required. Default is false. - `private_connection_resource_alias` = (Optional) To create private connection resource alias - `ip_configuration` - (Optional). Object with IP configuration for KeyVault. As defined below - `private_ip_address` - (Required). Private IP address of the IP configuration. - `subresource_name` - (Optional). Subresource name of the IP configuration. Default is vault. - `member_name` - (Optional). Member name of the IP configuration. Default is default. - `soa_record` - (Required) An `soa_record` for the Private DNS Zone. Changing this forces a new resource to be created.\" - `email` - (Required) The email contact for the SOA record. - `expire_time` - (Optional) The expire time for the SOA record. Defaults to 2419200. - `minimum_ttl` - (Optional) The minimum Time To Live for the SOA record. By convention, it is used to determine the negative caching duration. Defaults to 300. - `refresh_time` - (Optional) The refresh time for the SOA record. Defaults to 3600. - `retry_time` - (Optional) The retry time for the SOA record. Defaults to 300. - `ttl` - (Optional) The Time To Live of the SOA Record in seconds. Defaults to 3600. - `private_dns_zone_vnet_links_registration_enabled` - (Optional) Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled ? - `private_dns_a_record` - (Optional) An object for creating a record for the SQL MI private endpoint. - `ttl` - (Required) ttl for a record",
+        "required": false,
+        "default": "{}"
+      },
+      "proxy_override": {
+        "type": "string",
+        "description": "(Optional) Specifies how the SQL Managed Instance will be accessed. Valid values include Default, Proxy, and Redirect.",
+        "required": false,
+        "default": "\"Redirect\""
+      },
+      "read_write_endpoint_failover_policy": {
+        "type": "object({ mode = optional(string, \"Automatic\") grace_minutes = optional(number, null) })",
+        "description": "- `read_write_endpoint_failover_policy` - (Optional) - Object to define the read write endpoint policy for failover. - `mode` - (Required) - The failover mode. Possible values are Automatic or Manual. - `grace_minutes` - (Optional) - Applies only if mode is Automatic. The grace period in minutes before failover with data loss is attempted.",
+        "required": false,
+        "default": "{}"
+      },
+      "readonly_endpoint_failover_policy_enabled": {
+        "type": "bool",
+        "description": "(Optional) Failover policy for the read-only endpoint. Defaults to true.",
+        "required": false,
+        "default": "true"
+      },
+      "recurring_scans": {
+        "type": "object({ recurring_scans_enabled = bool recurring_scans_admins = bool recurring_scans_email = list(string) })",
+        "description": "- `recurring_scans` - (Optional) - The recurring scans settings. The recurring_scans block supports fields documented below. - `recurring_scans_enabled` - (Optional) Boolean flag which specifies if recurring scans is enabled or disabled. Defaults to false. - `recurring_scans_admins` - (Optional) Boolean flag which specifies if the schedule scan notification will be sent to the subscription administrators. Defaults to true. - `recurring_scans_email` - (Optional) Specifies an array of e-mail addresses to which the scan notification is sent.",
+        "required": false,
+        "default": "{ \"recurring_scans_admins\": true, \"recurring_scans_email\": null, \"recurring_scans_enabled\": true }"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Reqired). The name of the Shared Resources Resource Group. This Resource group usually contains the shared resources(non-routeable vnet).",
+        "required": true
+      },
+      "resource_group_name_secondary_location": {
+        "type": "string",
+        "description": "(Optional). The name of the Shared Resources Resource Group in the secondary region. This Resource group usually contains the shared resources(non-routeable vnet).",
+        "required": false,
+        "default": "null"
+      },
+      "rotation_policy": {
+        "type": "object({ notify_before_expiry = string time_before_expiry = string time_after_creation = optional(string, null) expire_after = string })",
+        "description": "(Optional) A rotation policy block as defined below object({ notify_before_expiry = \"(Required) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" time_before_expiry = \"(Required) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" time_after_creation = \"(Optional) Rotate automatically at a duration after create as an ISO 8601 duration.\" expire_after = \"(Required) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" })",
+        "required": false,
+        "default": "{ \"expire_after\": \"P365D\", \"notify_before_expiry\": \"P351D\", \"time_after_creation\": \"P358D\", \"time_before_expiry\": null }"
+      },
+      "rt_vnet_pe_subnet_id": {
+        "type": "string",
+        "description": "(Optional). The ARM Resource Id of the subnet in Routeable Virtual Network in platform Resource group.",
+        "required": false,
+        "default": "null"
+      },
+      "rt_vnet_pe_subnet_id_failover": {
+        "type": "string",
+        "description": "(Optional). The ARM Resource Id of the subnet in Routeable Virtual Network in platform Resource group for failover instance.",
+        "required": false,
+        "default": "null"
+      },
+      "secondary_location": {
+        "type": "string",
+        "description": "(Optional) The secondary region for SQL MI failover..",
+        "required": false,
+        "default": "null"
+      },
+      "secondary_type": {
+        "type": "string",
+        "description": "(Optional) The type of the secondary Managed Instance. Possible values are Geo, Standby. Defaults to Geo.",
+        "required": false,
+        "default": "\"Geo\""
+      },
+      "security_alert": {
+        "type": "object({ disabled_alerts = list(string) security_alert_enabled = bool email_account_admins_enabled = bool email_addresses = optional(list(string)) retention_days = number })",
+        "description": "(Optional) Managed Instance Security Alert Policy block as defined below object({ disabled_alerts = \"(Optional) Specifies an array of alerts that are disabled. Possible values are Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action and Brute_Force\" enabled = \"(Optional) Specifies the state of the Security Alert Policy, whether it is enabled or disabled. Possible values are true, false.\" email_account_admins_enabled = \"(Optional) Boolean flag which specifies if the alert is sent to the account administrators or not. Defaults to false.\" email_addresses = \"(Optional) Specifies an array of email addresses to which the alert is sent.\" retention_days = \"(Optional) Specifies the number of days to keep in the Threat Detection audit logs. Defaults to 0.\" storage_account_access_key = \"(Optional) Specifies the identifier key of the Threat Detection audit storage account. This is mandatory when you use storage_endpoint to specify a storage account blob endpoint.\" })",
+        "required": false,
+        "default": "{ \"disabled_alerts\": [ \"Sql_Injection\", \"Sql_Injection_Vulnerability\", \"Access_Anomaly\", \"Data_Exfiltration\", \"Unsafe_Action\", \"Brute_Force\" ], \"email_account_admins_enabled\": true, \"email_addresses\": null, \"retention_days\": 7, \"security_alert_enabled\": false }"
+      },
+      "security_alert_failover": {
+        "type": "object({ disabled_alerts = list(string) security_alert_enabled = bool email_account_admins_enabled = bool email_addresses = optional(list(string)) retention_days = number })",
+        "description": "(Optional) Managed Instance Security Alert Policy block as defined below object({ disabled_alerts = \"(Optional) Specifies an array of alerts that are disabled. Possible values are Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action and Brute_Force\" enabled = \"(Optional) Specifies the state of the Security Alert Policy, whether it is enabled or disabled. Possible values are true, false.\" email_account_admins_enabled = \"(Optional) Boolean flag which specifies if the alert is sent to the account administrators or not. Defaults to false.\" email_addresses = \"(Optional) Specifies an array of email addresses to which the alert is sent.\" retention_days = \"(Optional) Specifies the number of days to keep in the Threat Detection audit logs. Defaults to 0.\" storage_account_access_key = \"(Optional) Specifies the identifier key of the Threat Detection audit storage account. This is mandatory when you use storage_endpoint to specify a storage account blob endpoint.\" })",
+        "required": false,
+        "default": "{ \"disabled_alerts\": [ \"Sql_Injection\", \"Sql_Injection_Vulnerability\", \"Access_Anomaly\", \"Data_Exfiltration\", \"Unsafe_Action\", \"Brute_Force\" ], \"email_account_admins_enabled\": true, \"email_addresses\": null, \"retention_days\": 7, \"security_alert_enabled\": false }"
+      },
+      "security_alert_with_storage": {
+        "type": "bool",
+        "description": "Enable or disable Security Alert policy with storage account.",
+        "required": false,
+        "default": "false"
+      },
+      "shared_nrtbl_vnet_id": {
+        "type": "string",
+        "description": "(Reqired). The ARM Resource Id of the Non-Routeable Virtual Network in shared Resource group.",
+        "required": true
+      },
+      "shared_nrtbl_vnet_id_failover": {
+        "type": "string",
+        "description": "(Reqired). The ARM Resource Id of the Non-Routeable Virtual Network in shared Resource group in secondary region.",
+        "required": false,
+        "default": "null"
+      },
+      "sku_name": {
+        "type": "string",
+        "description": "(Required) Specifies the SKU Name for the SQL Managed Instance. Valid values include GP_Gen4, GP_Gen5, GP_Gen8IM, GP_Gen8IH, BC_Gen4, BC_Gen5, BC_Gen8IM or BC_Gen8IH.",
+        "required": true
+      },
+      "sku_name_failover": {
+        "type": "string",
+        "description": "(Optional) Specifies the SKU Name for the SQL Managed Instance failover. Valid values include GP_Gen4, GP_Gen5, GP_Gen8IM, GP_Gen8IH, BC_Gen4, BC_Gen5, BC_Gen8IM or BC_Gen8IH.",
+        "required": false,
+        "default": "null"
+      },
+      "start_stop_description": {
+        "type": "string",
+        "description": "(Optional) Specifies the description of the start/stop schedule.",
+        "required": false,
+        "default": "null"
+      },
+      "start_stop_schedule": {
+        "type": "list(object({ start_day = string start_time = string stop_day = string stop_time = string }))",
+        "description": "(Optional) A list of schedule blocks for the SQL Managed Instance start/stop schedule. object({ start_day = \"(Required) Start day of the schedule. Possible values are Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday.\" start_time = \"(Required) Start time of the schedule in 24-hour format (e.g., 08:00).\" stop_day = \"(Required) Stop day of the schedule. Possible values are Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday.\" stop_time = \"(Required) Stop time of the schedule in 24-hour format (e.g., 17:00).\" })",
+        "required": false,
+        "default": "[]"
+      },
+      "start_stop_timezone_id": {
+        "type": "string",
+        "description": "(Optional) Specifies the time zone of the start/stop schedule. Defaults to UTC.",
+        "required": false,
+        "default": "\"UTC\""
+      },
+      "storage_account_type": {
+        "type": "string",
+        "description": "(Optional) Specifies the storage account type used to store backups for this database. Changing this forces a new resource to be created. Possible values are GRS, LRS and ZRS.",
+        "required": false,
+        "default": "\"GRS\""
+      },
+      "storage_config": {
+        "type": "object({ context = optional(string, null) context_failover = optional(string, null) instance = optional(string, null) instance_failover = optional(string, null) deploy_sa_and_pe = optional(bool, true) deploy_sa_and_pe_failover = optional(bool, true) storage_account_name = optional(string, null) storage_account_name_failover = optional(string, null) storage_account_id = optional(string, null) storage_account_id_failover = optional(string, null) account_tier = optional(string, \"Standard\") account_replication_type = optional(string, \"GRS\") account_replication_type_failover = optional(string, \"LRS\") account_kind = optional(string, \"StorageV2\") access_tier = optional(string, \"Hot\") large_file_share_enabled = optional(bool, false) nfsv3_enabled = optional(bool, false) enable_key_access = optional(bool, false) retention_policy_days = optional(number, 30) cmk_key_expiration_date = optional(string, null) kv_secret_expiration_date = optional(string, null) enable_file_share_AADDS_authentication = optional(bool, true) default_to_oauth_authentication = optional(bool, true) network_access_enabled = optional(bool, false) https_traffic_only_enabled = optional(bool, true) cross_tenant_replication_enabled = optional(bool, false) storage_policy_required = optional(bool, false) restore_policy = optional(number, 29) static_website = optional(object({ index_document = optional(string) error_404_document = optional(string) }), {}) customer_managed_key = object({ expiration_date = string }) cmk_key_rotation_policy = optional(object({ notify_before_expiry = optional(string, \"P358D\") time_before_expiry = optional(string, \"P7D\") time_after_creation = optional(string, null) expire_after = optional(string, \"P365D\") }), {}) custom_domain = optional(map(object({ name = string use_subdomain = string })), {}) encryption_scopes = optional(map(object({ name = string key_vault_key_id = string })), {}) network_rules = optional(object({ bypass = list(string) ip_rules = list(string) virtual_network_subnet_ids = list(string) }), { ip_rules = [] virtual_network_subnet_ids = [] bypass = [\"AzureServices\"] } ) rules = optional(map(object({ name = string enabled = bool filters = object({ blob_types = set(string) prefix_match = set(string) match_blob_index_tag = optional(object({ name = string operation = optional(string, \"==\") value = string })) }) actions = object({ base_blob = optional(object({ tier_to_cool_after_days_since_modification_greater_than = optional(number) tier_to_cool_after_days_since_last_access_time_greater_than = optional(number) tier_to_cool_after_days_since_creation_greater_than = optional(number) auto_tier_to_hot_from_cool_enabled = optional(bool, false) tier_to_archive_after_days_since_modification_greater_than = optional(number) tier_to_archive_after_days_since_last_access_time_greater_than = optional(number) tier_to_archive_after_days_since_creation_greater_than = optional(number) tier_to_archive_after_days_since_last_tier_change_greater_than = optional(number) tier_to_cold_after_days_since_modification_greater_than = optional(number) tier_to_cold_after_days_since_last_access_time_greater_than = optional(number) tier_to_cold_after_days_since_creation_greater_than = optional(number) delete_after_days_since_modification_greater_than = optional(number) delete_after_days_since_last_access_time_greater_than = optional(number) delete_after_days_since_creation_greater_than = optional(number) })) snapshot = optional(object({ change_tier_to_archive_after_days_since_creation = optional(number) tier_to_archive_after_days_since_last_tier_change_greater_than = optional(number) change_tier_to_cool_after_days_since_creation = optional(number) tier_to_cold_after_days_since_creation_greater_than = optional(number) delete_after_days_since_creation_greater_than = optional(number) })) version = optional(object({ change_tier_to_archive_after_days_since_creation = optional(number) tier_to_archive_after_days_since_last_tier_change_greater_than = optional(number) change_tier_to_cool_after_days_since_creation = optional(number) tier_to_cold_after_days_since_creation_greater_than = optional(number) delete_after_days_since_creation = optional(number) })) }) })), {} ) private_endpoints = optional(object({ blob = optional(object({ enable = optional(bool, true) is_manual_connection = optional(bool, false) static_ip_required = optional(bool, false) ip_configuration = optional(map(object({ private_ip_address = string subresource_name = string member_name = optional(string, \"default\") })), {}) }), { is_manual_connection = false static_ip_required = false private_connection_resource_alias = null } ) }), { blob = { is_manual_connection = false static_ip_required = false private_connection_resource_alias = null } } ) })",
+        "description": "(Required). Object with cofigration for the Storage Account. As defined below context = context to be used for Storage Account being deployed resources. context_failover = context to be used for Storage Account being deployed resources in failover region. instance = instance to be used for Storage Account being deployed resources. instance_failover = instance to be used for Storage Account being deployed resources in failover region. deploy_sa_and_pe = (Optional). Boolean to deploy Storage Account and Private Endpoint for blob. Default is true. deploy_sa_and_pe_failover = (Optional). Boolean to deploy Storage Account and Private Endpoint for blob in failover region. Default is true. storage_account_name = (Optional). Storage Account name to be used by the pattern. Required if deploy_kv_and_pe is false. storage_account_name_failover = (Optional). Storage Account name to be used by the pattern in failover region. Required if deploy_kv_and_pe is false. storage_account_id = (Optional). Storage Account ID to be used by the pattern. Required if deploy_kv_and_pe is false. storage_account_id_failover = (Optional). Storage Account ID to be used by the pattern in failover region. Required if deploy_kv_and_pe is false. account_tier = (Optional) Defines the Tier to use for this storage account. Valid options are Standard and Premium. account_replication_type = (Optional) Defines the type of replication to use for this storage account. Valid options are LRS, GRS, RAGRS, ZRS, GZRS and RAGZRS. account_replication_type_failover = (Optional) Defines the type of replication to use for this storage account in failover region. Valid options are LRS, GRS, RAGRS, ZRS, GZRS and RAGZRS. account_kind = (Optional) Defines the Kind of account. Valid options are BlobStorage, BlockBlobStorage, FileStorage, Storage and StorageV2. access_tier = (Optional) Defines the Access Tier for the Storage Account. &#8226; Possible values are: `Cool`, `Hot`. large_file_share_enabled = (Optional) Set to `true`, the Storage Account will be enabled for large file shares. nfsv3_enabled = (Optional) Set to `true`, the `NFSV3` protocol will be enabled. enable_key_access = (Optional) If set to `false` any requests to the account that are authorized with Shared Key, including shared access signatures (SAS), will be denied. retention_policy_days = (Optional) Specifies the number of days that the containers, blob, queues and share should be retained, the value must be between between 1 and 365. cmk_key_expiration_date = (Required) Expiration UTC datetime (Y-m-d'T'H:M:S'Z') for customer managed encryption key. kv_secret_expiration_date = (Required) Expiration UTC datetime (Y-m-d'T'H:M:S'Z') for Storage Account access key Key vault Secret. enable_file_share_AADDS_authentication = (Optional) Enable authentication to File Shares via Active Directory Domain Services`. restore_policy = \"(Optional) The number of days for point in time restore. Must be less than the days specified in delete_retention_policy\" https_traffic_only_enabled = \"(Optional) to implement securtiy control, this property needs to be true to use techniques to establish an encrypted data channels over untrusted networks. However this needs to be false for file share because Azure Files doesn't currently support encryption-in-transit with the NFS protocol and relies instead on network-level security..\" cross_tenant_replication_enabled = \"(Optional) Specifies whether cross-tenant replication is enabled for the storage account.\" cmk_key_rotation_policy = (Optional) A rotation policy block as defined below object({ notify_before_expiry = (Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration. time_before_expiry = (Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration. time_after_creation = (Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration. expire_after = (Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration. }) encryption_scopes = (Optional) Map of the encryption scopes in the Storage Account.. As defined below object({ name = (Required). Name of the encryption scope. key_vault_key_id = (Required). Key Vault Id for encryption. }) rules = (Optional) A map of rule block as documented below: object({ name = \"(Required) The name of the rule. Rule name is case-sensitive. It must be unique within a policy.\" enabled = \"(Required) Boolean to specify whether the rule is enabled.\" filters = \"(Required) The filters block supports the following: object({ blob_types = \"(Required) An array of predefined values. Valid options are `blockBlob` and `appendBlob`.\" prefix_match = \"(Optional) An array of strings for prefixes to be matched.\" match_blob_index_tag = \"(Optional) A match_blob_index_tag block as defined below. The block defines the blob index tag based filtering for blob objects.\" object({ name = \"(Required) The filter tag name used for tag based filtering for blob objects.\" operation = \"(Optional) The comparison operator which is used for object comparison and filtering. Possible value is ==. Defaults to ==.\" value = \"(Required) The filter tag value used for tag based filtering for blob objects.\" }) })\" actions = \"(Required) An actions block as documented below: object({ base_blob = (Optional) A base_blob block as documented below: object({ tier_to_cool_after_days_since_modification_greater_than = \"(Optional) The age in days after last modification to tier blobs to cool storage. Supports blob currently at Hot tier. Must be between 0 and 99999.\" tier_to_cool_after_days_since_last_access_time_greater_than = \"(Optional) The age in days after last access time to tier blobs to cool storage. Supports blob currently at Hot tier. Must be between 0 and 99999.\" tier_to_cool_after_days_since_creation_greater_than = \"(Optional) The age in days after creation to cool storage. Supports blob currently at Hot tier. Must be between 0 and 99999.\" auto_tier_to_hot_from_cool_enabled = \"(Optional) Whether a blob should automatically be tiered from cool back to hot if it's accessed again after being tiered to cool. Defaults to false.\" tier_to_archive_after_days_since_modification_greater_than = \"(Optional) The age in days after last modification to tier blobs to archive storage. Supports blob currently at Hot or Cool tier. Must be between 0 and 99999.\" tier_to_archive_after_days_since_last_access_time_greater_than = \"(Optional) The age in days after last access time to tier blobs to archive storage. Supports blob currently at Hot or Cool tier. Must be between 0 and99999.\" tier_to_archive_after_days_since_creation_greater_than = \"(Optional) The age in days after creation to archive storage. Supports blob currently at Hot or Cool tier. Must be between 0 and99999.\" tier_to_archive_after_days_since_last_tier_change_greater_than = \"(Optional) The age in days after last tier change to the blobs to skip to be archved. Must be between 0 and 99999.\" tier_to_cold_after_days_since_modification_greater_than = \"(Optional) The age in days after last modification to tier blobs to cold storage. Supports blob currently at Hot tier. Must be between 0 and 99999.\" tier_to_cold_after_days_since_last_access_time_greater_than = \"(Optional) The age in days after last access time to tier blobs to cold storage. Supports blob currently at Hot tier. Must be between 0 and 99999.\" tier_to_cold_after_days_since_creation_greater_than = \"(Optional) The age in days after creation to cold storage. Supports blob currently at Hot tier. Must be between 0 and 99999.\" delete_after_days_since_modification_greater_than = \"(Optional) The age in days after last modification to delete the blob. Must be between 0 and 99999.\" delete_after_days_since_last_access_time_greater_than = \"(Optional) The age in days after last access time to delete the blob. Must be between 0 and 99999.\" delete_after_days_since_creation_greater_than = \"(Optional) The age in days after creation to delete the blob. Must be between 0 and 99999.\" }) snapshot = (Optional) A snapshot block as documented below: object({ change_tier_to_archive_after_days_since_creation = \"(Optional) The age in days after creation to tier blob snapshot to archive storage. Must be between 0 and 99999.\" tier_to_archive_after_days_since_last_tier_change_greater_than = \"(Optional) The age in days after last tier change to the blobs to skip to be archved. Must be between 0 and 99999.\" change_tier_to_cool_after_days_since_creation = \"(Optional) The age in days after creation to tier blob snapshot to cool storage. Must be between 0 and 99999.\" tier_to_cold_after_days_since_creation_greater_than = \"(Optional) The age in days after creation to cold storage. Supports blob currently at Hot tier. Must be between 0 and 99999.\" delete_after_days_since_creation_greater_than = \"(Optional) The age in days after creation to delete the blob snapshot. Must be between 0 and 99999.\" }) version = (Optional) A version block as documented below: object({ change_tier_to_archive_after_days_since_creation = \"(Optional) The age in days after creation to tier blob version to archive storage. Must be between 0 and 99999.\" tier_to_archive_after_days_since_last_tier_change_greater_than = \"(Optional) The age in days after last tier change to the blobs to skip to be archved. Must be between 0 and 99999.\" change_tier_to_cool_after_days_since_creation = \"(Optional) The age in days creation create to tier blob version to cool storage. Must be between 0 and 99999.\" tier_to_cold_after_days_since_creation_greater_than = \"(Optional) The age in days after creation to cold storage. Supports blob currently at Hot tier. Must be between 0 and 99999.\" delete_after_days_since_creation = \"(Optional) The age in days after creation to delete the blob version. Must be between 0 and 99999.\" }) })\" }) private_endpoint = (Optional). Object with private endpoint configuration for Storage Account. As defined below object({ blob = (Required). Private endpoint for Storage blob. object({ is_manual_connection = (Optional). Boolean to indicate if the connection is manual. Default is false. static_ip_required = (Optional). Boolean to indicate if static IP is required. Default is false. ip_configuration = (Optional). Object with IP configuration for KeyVault. As defined below object({ private_ip_address = (Required). Private IP address of the IP configuration. subresource_name = (Optional). Subresource name of the IP configuration. Default is vault. member_name = (Optional). Member name of the IP configuration. Default is default. }) }) }) `",
+        "required": true
+      },
+      "storage_size_in_gb": {
+        "type": "number",
+        "description": "(Required) Maximum storage space for the SQL Managed instance. This should be a multiple of 32 (GB).",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "timezone_id": {
+        "type": "string",
+        "description": "(Optional) The TimeZone ID that the SQL Managed Instance will be operating in. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "\"UTC\""
+      },
+      "use_unique_failover_group_name": {
+        "type": "bool",
+        "description": "(Optional) If true, creates a unique naming module for failover group with global scope. If false (default), uses the existing failover instance naming for backward compatibility. Defaults to false.",
+        "required": false,
+        "default": "false"
+      },
+      "vcores": {
+        "type": "number",
+        "description": "(Required) Number of cores that should be assigned to the SQL Managed Instance. Values can be 8, 16, or 24 for Gen4 SKUs, or 4, 8, 16, 24, 32, 40, 64, or 80 for Gen5 SKUs.",
+        "required": true
+      },
+      "vulnerability_assessment": {
+        "type": "object({ enabled = optional(bool) enabled_failover = optional(bool) })",
+        "description": "enabled_failover = \"(Optional) Specifies the state of the vulnerability assessment for failover instance, whether it is enabled or disabled. Possible values are true, false.\" enabled = \"(Optional) Specifies the state of the vulnerability assessment, whether it is enabled or disabled. Possible values are true, false.\"",
+        "required": false,
+        "default": "{ \"enabled\": false, \"enabled_failover\": false }"
+      },
+      "zone_redundant_enabled": {
+        "type": "bool",
+        "description": "(Optional) Specifies whether or not the SQL Managed Instance is zone redundant. Defaults to `false`.",
+        "required": false,
+        "default": "false"
+      }
+    }
+  },
+  "outputs": {
+    "delegated_subnet": {
+      "description": "The delegated subnet module outputs."
+    },
+    "delegated_subnet_failover": {
+      "description": "The delegated subnet module outputs."
+    },
+    "delegated_subnet_nsg": {
+      "description": "The networksecuritygroup module outputs for delegated subnet."
+    },
+    "delegated_subnet_nsg_failover": {
+      "description": "The networksecuritygroup module outputs for delegated subnet."
+    },
+    "delegated_subnet_routetable": {
+      "description": "The routetable module outputs for delegated subnet."
+    },
+    "delegated_subnet_routetable_failover": {
+      "description": "The routetable module outputs for delegated subnet."
+    },
+    "keyvault": {
+      "description": "The keyvault module outputs."
+    },
+    "keyvault_failover": {
+      "description": "The Secondary region keyvault module outputs."
+    },
+    "keyvault_pe": {
+      "description": "The keyvault-pe module outputs."
+    },
+    "keyvault_pe_failover": {
+      "description": "The Secondary region keyvault-pe module outputs."
+    },
+    "keyvaultsecret_sqlmi": {
+      "description": "The sqlmi keyvault secret module outputs."
+    },
+    "mssqlmanageddatabase": {
+      "description": "The SQL Managed Instance Database outputs."
+    },
+    "mssqlmanagedinstance": {
+      "description": "The SQL Managed Instance outputs."
+    },
+    "mssqlmanagedinstance_private_dns_a_record": {
+      "description": "The SQL Managed Instance Private DNS A Record outputs."
+    },
+    "mssqlmanagedinstance_private_dns_a_record_failover": {
+      "description": "The SQL Managed Instance Private DNS A Record outputs."
+    },
+    "mssqlmanagedinstance_privatednszone": {
+      "description": "The SQL Managed Instance Private DNS Zone outputs."
+    },
+    "mssqlmanagedinstance_privateendpoint": {
+      "description": "The SQL Managed Instance Private Endpoint outputs."
+    },
+    "mssqlmanagedinstance_privateendpoint_failover": {
+      "description": "The SQL Managed Instance Private Endpoint outputs."
+    },
+    "privateendpoint_blob": {
+      "description": "The private endpoint module outputs for storage blob."
+    },
+    "privateendpoint_blob_failover": {
+      "description": "The Secondary region private endpoint module outputs for storage blob."
+    },
+    "storageaccount": {
+      "description": "The storage account module outputs."
+    },
+    "storageaccount_failover": {
+      "description": "The Secondary region storage account module outputs."
+    },
+    "storagecontainer": {
+      "description": "The storage container module outputs."
+    },
+    "storagecontainer_failover": {
+      "description": "The Secondary region storage container module outputs."
+    },
+    "userassignedidentity_sa": {
+      "description": "The user assigned identity module outputs for Storage Account."
+    },
+    "userassignedidentity_sa_failover": {
+      "description": "The Secondary region user assigned identity module outputs for Storage Account."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Mssqlmanagedinstance' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a service pattern module. It bundles multiple related services/configurations.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

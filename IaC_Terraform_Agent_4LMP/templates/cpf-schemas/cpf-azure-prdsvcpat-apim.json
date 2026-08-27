@@ -1,0 +1,426 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: API Management Service Pattern (Internal APIs)",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvcpat-apim'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvcpat-apim",
+  "module_type": "service-pattern",
+  "azure_service": "Apim",
+  "module_name": "API Management Service Pattern (Internal APIs)",
+  "latest_tag": "",
+  "available_tags": [],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-apim.git//",
+  "terraform_requirements": {
+    "azurerm": ">= 4.33, < 5.0.0",
+    "time": "~>0.11.1",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "time_sleep.wait_120_seconds",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_client_config.current",
+      "type": "data source"
+    },
+    {
+      "terraform_resource": "azurerm_client_config.this",
+      "type": "data source"
+    },
+    {
+      "terraform_resource": "azurerm_firewall.afw",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "apim",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-apim.git//",
+      "version": "latest",
+      "available_versions": []
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "allowed_tenants",
+      "api_oauth_display_name",
+      "api_oauth_metadata_endpoint",
+      "api_oauth_name",
+      "app_id",
+      "azure_firewall_id",
+      "environment",
+      "key_vault_config",
+      "location",
+      "network_config",
+      "org_id",
+      "publisher",
+      "resource_group_name",
+      "shared_nrtbl_vnet_id",
+      "sku_name"
+    ],
+    "properties": {
+      "additional_location": {
+        "type": "map(object({ location = string capacity = optional(number) zones = optional(list(string)) public_ip_address_id = optional(string) virtual_network_configuration = optional(object({ subnet_id = string })) gateway_disabled = optional(bool) }))",
+        "description": "(Optional) One or more additional_location blocks as defined below. location = \"(Required) The name of the Azure Region in which the API Management Service should be expanded to.\" capacity = \"(Optional) The number of compute units in this region. Defaults to the capacity of the main region.\" zones = \"(Optional) A list of availability zones. Changing this forces a new resource to be created.\" public_ip_address_id = \"(Optional) ID of a standard SKU IPv4 Public IP. Availability zones and custom public IPs are only supported in the Premium tier.\" virtual_network_configuration = \"(Optional) A virtual_network_configuration block as defined below. Required when virtual_network_type is External or Internal.:\" subnet_id = \"(Required) The id of the subnet that will be used for the API Management.\" gateway_disabled = \"(Optional) Only valid for an Api Management service deployed in multiple locations. This can be used to disable the gateway in this additional location.\"",
+        "required": false,
+        "default": "{}"
+      },
+      "allowed_tenants": {
+        "type": "list(string)",
+        "description": "(Required) List of allowed AAD Tenants.",
+        "required": true
+      },
+      "api_diagnostic_name": {
+        "type": "string",
+        "description": "(Required) The name of this Logger, which must be unique within the API Management Service. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "api_oauth_display_name": {
+        "type": "string",
+        "description": "(Required) A user-friendly name for this OpenID Connect",
+        "required": true
+      },
+      "api_oauth_metadata_endpoint": {
+        "type": "string",
+        "description": "(Required) The URI of the Metadata endpoint.",
+        "required": true
+      },
+      "api_oauth_name": {
+        "type": "string",
+        "description": "(Required) The name of OpenID Connect",
+        "required": true
+      },
+      "apim_certificates": {
+        "type": "map(object({ name = string data = optional(string, null) password = optional(string, null) key_vault_secret_id = optional(string, null) key_vault_identity_client_id = optional(string, null) }))",
+        "description": "(Optional) A subscriptions block supports the following: name = (Required) The name of the API Management Certificate. Changing this forces a new resource to be created. data = (Optional) The base-64 encoded certificate data, which must be a PFX file. password = (Optional) The password used for this certificate. key_vault_secret_id = (Optional) The ID of the Key Vault Secret containing the SSL Certificate, which must be of the type application/x-pkcs12. key_vault_identity_client_id = (Optional) The Client ID of the User Assigned Managed Identity to use for retrieving certificate.",
+        "required": false,
+        "default": "{}"
+      },
+      "apim_logger": {
+        "type": "object({ #enabled = optional(bool, false) apim_logger_name = string application_insights_instrumentation_key = optional(string, null) application_insights_resource_id = optional(string, null) })",
+        "description": "(Optional) An APIM logger supports the following: apim_logger_name = \"(Required) The name of this Logger, which must be unique within the API Management Service. Changing this forces a new resource to be created.\" application_insights_instrumentation_key = \"(Optional) The instrumentation key used to push data to Application Insights.\" application_insights_resource_id = \"(Optional) Azure Resource Id of a log target Azure Application Insights resource.\"",
+        "required": false,
+        "default": "null"
+      },
+      "apim_logger_enabled": {
+        "type": "bool",
+        "description": "(Optional) APIM logger is required or not required",
+        "required": false,
+        "default": "false"
+      },
+      "apim_policies": {
+        "type": "map(object({ xml_content = optional(string) }))",
+        "description": "(Optional) A apim_policies block supports the following: xml_content = (Optional) The XML Content for APIM Policy.",
+        "required": false,
+        "default": "{}"
+      },
+      "apis_and_policies": {
+        "type": "map(object({ revision = string display_name = string description = optional(string) api_type = optional(string) path = optional(string) protocols = optional(list(string)) service_url = optional(string) subscription_key_parameter_names = optional(object({ header = optional(string) query = optional(string) })) subscription_required = optional(bool) import = optional(object({ content_format = string content_value = string wsdl_selector = optional(object({ service_name = optional(string) endpoint_name = optional(string) })) })) contact = optional(object({ email = optional(string) name = optional(string) url = optional(string) })) license = optional(object({ name = optional(string) url = optional(string) })) policies = optional(map(object({ xml_content = optional(string) xml_link = optional(string) })), {}) }))",
+        "description": "(Optional) A apis block supports the following. revision = (Required) The Revision which used for this API. Changing this forces a new resource to be created. display_name = (Optional) The display name of the API. description = (Optional) A description of the API Management API, which may include HTML formatting tags. api_type = (Optional) Type of API. Possible values are graphql, http, soap, and websocket. Defaults to http. path = (Optional) The Path for this API Management API, which is a relative URL which uniquely identifies this API and all of its resource paths within the API Management Service. protocols = (Optional) A list of protocols the operations in this API can be invoked. Possible values are http, https, ws, and wss. service_url = (Optional) Absolute URL of the backend service implementing this API. subscription_key_parameter_names = A subscription_key_parameter_names block supports the following: header - (Required) The name of the HTTP Header which should be used for the Subscription Key. query - (Required) The name of the QueryString parameter which should be used for the Subscription Key. subscription_required = (Optional) Should this API require a subscription key? Defaults to true. import = (Optional) A import block as documented below. content_format = (Required) The format of the content from which the API Definition should be imported. Possible values are: openapi, openapi+json, openapi+json-link, openapi-link, swagger-json, swagger-link-json, wadl-link-json, wadl-xml, wsdl and wsdl-link. content_value = (Required) The Content from which the API Definition should be imported. When a content_format of *-link-* is specified this must be a URL, otherwise this must be defined inline wsdl_selector = (Optional) A wsdl_selector block as defined below, which allows you to limit the import of a WSDL to only a subset of the document. This can only be specified when content_format is wsdl or wsdl-link. contact = (Optional) A contact block as documented below. email = (Optional) The email address of the contact person/organization. name = (Optional) The name of the contact person/organization. url = (Optional) Absolute URL of the contact information. license = (Optional) A license block as documented below. name = (Optional) The name of the license . url = (Optional) Absolute URL of the license. policies = (Optional) A policies block supports the following: xml_content = (Optional) The XML Content for this Policy. xml_link = (Optional) A link to a Policy XML Document, which must be publicly available.",
+        "required": false,
+        "default": "{}"
+      },
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "applicationinsights_config": {
+        "type": "object({ context = optional(string, null) instance = optional(string, null) deploy_appinsights = optional(bool, false) log_analytics_resource_id = optional(string, null) connection_string = optional(string, null) instrumentation_key = optional(string, null) deploy_uai_metrics_publisher = optional(bool, true) uai_principal_id = optional(string, null) application_type = optional(string, null) daily_data_cap_in_gb = optional(number, 100) daily_data_cap_notifications_disabled = optional(bool, true) retention_in_days = optional(number, 90) sampling_percentage = optional(number, 100) disable_ip_masking = optional(bool, false) internet_ingestion_enabled = optional(bool, true) internet_query_enabled = optional(bool, true) force_customer_storage_for_profiler = optional(bool, false) api_key_enabled = optional(bool, true) read_permissions = optional(list(string), [\"agentconfig\", \"aggregate\", \"api\", \"draft\", \"extendqueries\", \"search\"]) write_permissions = optional(list(string), [\"annotations\"]) local_authentication_disabled = optional(bool, true) })",
+        "description": "Object with cofigration for Log anlytics Workspace , As Defined below context = \"(Optional) The context to be used for App Insights. If not provided the pattern conterxt is picked.\" instance = \"(Optional) The instance to be used for App Insights. If not provided the pattern conterxt is picked.\" deploy_appinsights = \"(Optional) Whether to deploy App Insights. Defaults to True.\" appinsights_id = \"(Optional) The ARM resource id for App Insights.\" connection_string = optional(string, null) instrumentation_key = optional(string, null) deploy_uai_metrics_publisher = \"(Optional) Whether to deploy User Assigned Identity which should be used be assigned the Monitoring Metrics Publisher role. Defaults to True.\" uai_principal_id = \"(Optional) Principal id of the User Assigned Identity which should be used be assigned the Monitoring Metrics Publisher role\" application_type = \"(Required) Specifies the type of Application Insights to create. Changing this forces a new resource to be created\" daily_data_cap_in_gb = \"(Optional) Specifies the Application Insights component daily data volume cap in GB. Default is 100.\" daily_data_cap_notifications_disabled = \"(Optional) Specifies if a notification email will be send when the daily data volume cap is met. Defaults to true.\" retention_in_days = \"(Optional) Specifies the retention period in days.\" sampling_percentage = \"(Optional) Specifies the percentage of the data produced by the monitored application that is sampled for Application Insights telemetry. Default is 100.\" disable_ip_masking = \"(Optional) Disables masking and log the real client IP.\" internet_ingestion_enabled = \"(Optional) Should the Application Insights component support ingestion over the Public Internet? Default is true.\" internet_query_enabled = \"(Optional) Should the Application Insights component support querying over the Public Internet? Default is true\" force_customer_storage_for_profiler = \"(Optional) Should the Application Insights component force users to create their own storage account for profiling? Deafult is false.\" api_key_enabled = \"(Optional) Should api key created or skip as per input. Default is true\" read_permissions = \"(Optional) Specifies the list of read permissions granted to the API key. Valid values are agentconfig, aggregate, api, draft, extendqueries, search. Please note these values are case sensitive. Changing this forces a new resource to be created.\" write_permissions = \"(Optional) Specifies the list of write permissions granted to the API key. Valid values are annotations. Please note these values are case sensitive. Changing this forces a new resource to be created.\" local_authentication_disabled = \"(Optional) Disable Non-Azure AD based Auth. Defaults to false.\"",
+        "required": false,
+        "default": "{ \"api_key_enabled\": true, \"appinsights_id\": null, \"application_type\": \"web\", \"connection_string\": null, \"daily_data_cap_in_gb\": 100, \"daily_data_cap_notifications_disabled\": true, \"deploy_appinsights\": true, \"deploy_uai_metrics_publisher\": true, \"disable_ip_masking\": false, \"force_customer_storage_for_profiler\": false, \"instrumentation_key\": null, \"internet_ingestion_enabled\": true, \"internet_query_enabled\": true, \"read_permissions\": [ \"agentconfig\", \"aggregate\", \"api\", \"draft\", \"extendqueries\", \"search\" ], \"retention_in_days\": 90, \"sampling_percentage\": 100, \"uai_principal_id\": null, \"write_permissions\": [ \"annotations\" ] }"
+      },
+      "azure_firewall_id": {
+        "type": "string",
+        "description": "(Required). The Resource Id of the firewall.",
+        "required": true
+      },
+      "backend_request": {
+        "type": "object({ body_bytes = optional(number, 32) headers_to_log = optional(list(string), []) data_masking = optional(object({ query_params = optional(list(object({ mode = string value = string })), []) headers = optional(list(object({ mode = string value = string })), []) })) })",
+        "description": "(Optional) A backend_request block supports the following: body_bytes = \"(Optional) Number of payload bytes to log (up to 8192).\" headers_to_log = \"(Optional) Specifies a list of headers to log.\" data_masking = (Optional) A data_masking block as defined below: query_params = (Optional) A query_params block as defined below: mode = \"(Required) The data masking mode. Possible values are `Mask` and `Hide` for query_params.\" value = \"(Required) The name of the query parameter to mask.\" headers = (Optional) A headers block as defined below: mode = \"(Required) The data masking mode. The only possible value is `Mask` for headers.\" value = \"(Required) The name of the header to mask.\"",
+        "required": false,
+        "default": "null"
+      },
+      "backend_response": {
+        "type": "object({ body_bytes = optional(number, 32) headers_to_log = optional(list(string), []) data_masking = optional(object({ query_params = optional(list(object({ mode = string value = string })), []) headers = optional(list(object({ mode = string value = string })), []) })) })",
+        "description": "(Optional) A backend_request block supports the following: body_bytes = \"(Optional) Number of payload bytes to log (up to 8192).\" headers_to_log = \"(Optional) Specifies a list of headers to log.\" data_masking = (Optional) A data_masking block as defined below: query_params = (Optional) A query_params block as defined below: mode = \"(Required) The data masking mode. Possible values are `Mask` and `Hide` for query_params.\" value = \"(Required) The name of the query parameter to mask.\" headers = (Optional) A headers block as defined below: mode = \"(Required) The data masking mode. The only possible value is `Mask` for headers.\" value = \"(Required) The name of the header to mask.\"",
+        "required": false,
+        "default": "null"
+      },
+      "certificate": {
+        "type": "map(object({ encoded_certificate = string store_name = string certificate_password = optional(string) }))",
+        "description": "(Optional) One or more certificate blocks as defined below. encoded_certificate = \"(Required) The Base64 Encoded PFX or Base64 Encoded X.509 Certificate.\" store_name = \"(Required) The name of the Certificate Store where this certificate should be stored. Possible values are CertificateAuthority and Root.\" certificate_password = \"(Optional) The password for the certificate.\"",
+        "required": false,
+        "default": "null"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "custom_domains": {
+        "type": "map(object({ developer_portal = optional(object({ host_name = string certificate = optional(string, null) certificate_password = optional(string, null) key_vault_certificate_id = optional(string, null) negotiate_client_certificate = optional(bool, false) ssl_keyvault_identity_client_id = optional(string, null) }), null) management = optional(object({ host_name = string certificate = optional(string, null) certificate_password = optional(string, null) key_vault_certificate_id = optional(string, null) negotiate_client_certificate = optional(bool, false) ssl_keyvault_identity_client_id = optional(string, null) }), null) portal = optional(object({ host_name = string certificate = optional(string, null) certificate_password = optional(string, null) key_vault_certificate_id = optional(string, null) negotiate_client_certificate = optional(bool, false) ssl_keyvault_identity_client_id = optional(string, null) }), null) scm = optional(object({ host_name = string certificate = optional(string, null) certificate_password = optional(string, null) key_vault_certificate_id = optional(string, null) negotiate_client_certificate = optional(bool, false) ssl_keyvault_identity_client_id = optional(string, null) }), null) gateway = optional(object({ host_name = string certificate = optional(string, null) certificate_password = optional(string, null) key_vault_certificate_id = optional(string, null) default_ssl_binding = optional(bool, true) negotiate_client_certificate = optional(bool, false) ssl_keyvault_identity_client_id = optional(string, null) }), null) }))",
+        "description": "(Optional) A apis block supports the following. developer_portal = (Optional) A developer_portal block as documented below. host_name = (Required) The Hostname to use for the corresponding endpoint. certificate = (Optional) The Base64 Encoded Certificate. (Mutually exclusive with key_vault_certificate_id.) certificate_password = (Optional) The password associated with the certificate provided above. key_vault_certificate_id = (Optional) The ID of the Key Vault Secret containing the SSL Certificate, which must be should be of the type application/x-pkcs12. negotiate_client_certificate = (Optional) Should Client Certificate Negotiation be enabled for this Hostname? Defaults to false. ssl_keyvault_identity_client_id = (Optional) System or User Assigned Managed identity clientId as generated by Azure AD, which has GET access to the keyVault containing the SSL certificate. management = (Optional) A developer_portal block as documented below. host_name = (Required) The Hostname to use for the corresponding endpoint. certificate = (Optional) The Base64 Encoded Certificate. (Mutually exclusive with key_vault_certificate_id.) certificate_password = (Optional) The password associated with the certificate provided above. key_vault_certificate_id = (Optional) The ID of the Key Vault Secret containing the SSL Certificate, which must be should be of the type application/x-pkcs12. negotiate_client_certificate = (Optional) Should Client Certificate Negotiation be enabled for this Hostname? Defaults to false. ssl_keyvault_identity_client_id = (Optional) System or User Assigned Managed identity clientId as generated by Azure AD, which has GET access to the keyVault containing the SSL certificate. portal = (Optional) A developer_portal block as documented below. host_name = (Required) The Hostname to use for the corresponding endpoint. certificate = (Optional) The Base64 Encoded Certificate. (Mutually exclusive with key_vault_certificate_id.) certificate_password = (Optional) The password associated with the certificate provided above. key_vault_certificate_id = (Optional) The ID of the Key Vault Secret containing the SSL Certificate, which must be should be of the type application/x-pkcs12. negotiate_client_certificate = (Optional) Should Client Certificate Negotiation be enabled for this Hostname? Defaults to false. ssl_keyvault_identity_client_id = (Optional) System or User Assigned Managed identity clientId as generated by Azure AD, which has GET access to the keyVault containing the SSL certificate. scm = (Optional) A developer_portal block as documented below. host_name = (Required) The Hostname to use for the corresponding endpoint. certificate = (Optional) The Base64 Encoded Certificate. (Mutually exclusive with key_vault_certificate_id.) certificate_password = (Optional) The password associated with the certificate provided above. key_vault_certificate_id = (Optional) The ID of the Key Vault Secret containing the SSL Certificate, which must be should be of the type application/x-pkcs12. negotiate_client_certificate = (Optional) Should Client Certificate Negotiation be enabled for this Hostname? Defaults to false. ssl_keyvault_identity_client_id = (Optional) System or User Assigned Managed identity clientId as generated by Azure AD, which has GET access to the keyVault containing the SSL certificate. gateway = (Optional) A developer_portal block as documented below. host_name = (Required) The Hostname to use for the corresponding endpoint. certificate = (Optional) The Base64 Encoded Certificate. (Mutually exclusive with key_vault_certificate_id.) certificate_password = (Optional) The password associated with the certificate provided above. key_vault_certificate_id = (Optional) The ID of the Key Vault Secret containing the SSL Certificate, which must be should be of the type application/x-pkcs12. default_ssl_binding = (Optional) Is the certificate associated with this Hostname the Default SSL Certificate? This is used when an SNI header isn't specified by a client. Defaults to false. negotiate_client_certificate = (Optional) Should Client Certificate Negotiation be enabled for this Hostname? Defaults to false. ssl_keyvault_identity_client_id = (Optional) System or User Assigned Managed identity clientId as generated by Azure AD, which has GET access to the keyVault containing the SSL certificate.",
+        "required": false,
+        "default": "{}"
+      },
+      "delegation": {
+        "type": "object({ subscriptions_enabled = optional(bool) user_registration_enabled = optional(bool) url = optional(string) validation_key = optional(string) })",
+        "description": "(Optional) A delegation block as defined below: subscriptions_enabled = \"(Optional) Should subscription requests be delegated to an external url? Defaults to false.\" user_registration_enabled = \"(Optional) Should user registration requests be delegated to an external url? Defaults to false.\" url = \"(Optional) The delegation URL.\" validation_key = \"(Optional) A base64-encoded validation key to validate, that a request is coming from Azure API Management.\"",
+        "required": false,
+        "default": "null"
+      },
+      "enable_route_migration_mode": {
+        "type": "bool",
+        "description": "(Optional) Enable migration mode for route table upgrade from v0.4.0 to v1.0.2. Set to true for existing deployments to avoid route conflicts during migration. Set to false for new deployments. Default is false.",
+        "required": false,
+        "default": "false"
+      },
+      "enable_systemassigned_identity": {
+        "type": "bool",
+        "description": "(Optional). Whether to deploy the APIM with SystemAssigned identity. By default this is false and the VM is deployed with userassigned identity only.",
+        "required": false,
+        "default": "false"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "frontend_request": {
+        "type": "object({ body_bytes = optional(number, 32) headers_to_log = optional(list(string), []) data_masking = optional(object({ query_params = optional(list(object({ mode = string value = string })), []) headers = optional(list(object({ mode = string value = string })), []) })) })",
+        "description": "(Optional) A backend_request block supports the following: body_bytes = \"(Optional) Number of payload bytes to log (up to 8192).\" headers_to_log = \"(Optional) Specifies a list of headers to log.\" data_masking = (Optional) A data_masking block as defined below: query_params = (Optional) A query_params block as defined below: mode = \"(Required) The data masking mode. Possible values are `Mask` and `Hide` for query_params.\" value = \"(Required) The name of the query parameter to mask.\" headers = (Optional) A headers block as defined below: mode = \"(Required) The data masking mode. The only possible value is `Mask` for headers.\" value = \"(Required) The name of the header to mask.\"",
+        "required": false,
+        "default": "null"
+      },
+      "frontend_response": {
+        "type": "object({ body_bytes = optional(number, 32) headers_to_log = optional(list(string), []) data_masking = optional(object({ query_params = optional(list(object({ mode = string value = string })), []) headers = optional(list(object({ mode = string value = string })), []) })) })",
+        "description": "(Optional) A backend_request block supports the following: body_bytes = \"(Optional) Number of payload bytes to log (up to 8192).\" headers_to_log = \"(Optional) Specifies a list of headers to log.\" data_masking = (Optional) A data_masking block as defined below: query_params = (Optional) A query_params block as defined below: mode = \"(Required) The data masking mode. Possible values are `Mask` and `Hide` for query_params.\" value = \"(Required) The name of the query parameter to mask.\" headers = (Optional) A headers block as defined below: mode = \"(Required) The data masking mode. The only possible value is `Mask` for headers.\" value = \"(Required) The name of the header to mask.\"",
+        "required": false,
+        "default": "null"
+      },
+      "gateway_disabled": {
+        "type": "bool",
+        "description": "(Optional) Disable the gateway in main region? This is only supported when additional_location is set.",
+        "required": false,
+        "default": "false"
+      },
+      "hostname_configuration": {
+        "type": "object({ management = optional(map(object({ host_name = string key_vault_certificate_id = optional(string) certificate = optional(string) certificate_password = optional(string) negotiate_client_certificate = optional(bool) ssl_keyvault_identity_client_id = optional(string) })), {}) portal = optional(map(object({ host_name = string key_vault_certificate_id = optional(string) certificate = optional(string) certificate_password = optional(string) negotiate_client_certificate = optional(bool) ssl_keyvault_identity_client_id = optional(string) })), {}) developer_portal = optional(map(object({ host_name = string key_vault_certificate_id = optional(string) certificate = optional(string) certificate_password = optional(string) negotiate_client_certificate = optional(bool) ssl_keyvault_identity_client_id = optional(string) })), {}) scm = optional(map(object({ host_name = string key_vault_certificate_id = optional(string) certificate = optional(string) certificate_password = optional(string) negotiate_client_certificate = optional(bool) ssl_keyvault_identity_client_id = optional(string) })), {}) proxy = optional(map(object({ default_ssl_binding = optional(bool) host_name = optional(string) key_vault_certificate_id = optional(string) certificate = optional(string) certificate_password = optional(string) negotiate_client_certificate = optional(bool) ssl_keyvault_identity_client_id = optional(string) })), {}) })",
+        "description": "(Optional) A hostname_configuration block as defined below: management = (Optional) One or more management blocks as documented below: host_name = \"(Required) The Hostname to use for the Management API.\" key_vault_certificate_id = \"(Optional) The ID of the Key Vault Secret containing the SSL Certificate, which must be should be of the type application/x-pkcs12.\" certificate = \"(Optional) The Base64 Encoded Certificate.\" certificate_password = \"(Optional) The password associated with the certificate provided above.\" negotiate_client_certificate = \"(Optional) Should Client Certificate Negotiation be enabled for this Hostname? Defaults to false.\" ssl_keyvault_identity_client_id = \"(Optional) System or User Assigned Managed identity clientId as generated by Azure AD, which has GET access to the keyVault containing the SSL certificate.\" portal = (Optional) One or more portal blocks as documented below: host_name = \"(Required) The Hostname to use for the Management API.\" key_vault_certificate_id = \"(Optional) The ID of the Key Vault Secret containing the SSL Certificate, which must be should be of the type application/x-pkcs12.\" certificate = \"(Optional) The Base64 Encoded Certificate.\" certificate_password = \"(Optional) The password associated with the certificate provided above.\" negotiate_client_certificate = \"(Optional) Should Client Certificate Negotiation be enabled for this Hostname? Defaults to false.\" ssl_keyvault_identity_client_id = \"(Optional) System or User Assigned Managed identity clientId as generated by Azure AD, which has GET access to the keyVault containing the SSL certificate.\" developer_portal = (Optional) One or more developer_portal blocks as documented below: host_name = \"(Required) The Hostname to use for the Management API.\" key_vault_certificate_id = \"(Optional) The ID of the Key Vault Secret containing the SSL Certificate, which must be should be of the type application/x-pkcs12.\" certificate = \"(Optional) The Base64 Encoded Certificate.\" certificate_password = \"(Optional) The password associated with the certificate provided above.\" negotiate_client_certificate = \"(Optional) Should Client Certificate Negotiation be enabled for this Hostname? Defaults to false.\" ssl_keyvault_identity_client_id = \"(Optional) System or User Assigned Managed identity clientId as generated by Azure AD, which has GET access to the keyVault containing the SSL certificate.\" scm = (Optional) One or more scm blocks as documented below: host_name = \"(Required) The Hostname to use for the Management API.\" key_vault_certificate_id = \"(Optional) The ID of the Key Vault Secret containing the SSL Certificate, which must be should be of the type application/x-pkcs12.\" certificate = \"(Optional) The Base64 Encoded Certificate.\" certificate_password = \"(Optional) The password associated with the certificate provided above.\" negotiate_client_certificate = \"(Optional) Should Client Certificate Negotiation be enabled for this Hostname? Defaults to false.\" ssl_keyvault_identity_client_id = \"(Optional) System or User Assigned Managed identity clientId as generated by Azure AD, which has GET access to the keyVault containing the SSL certificate.\" proxy = (Optional) One or more proxy blocks as documented below: default_ssl_binding = \"(Optional) Is the certificate associated with this Hostname the Default SSL Certificate? This is used when an SNI header isn't specified by a client. Defaults to false.\" host_name = \"(Required) The Hostname to use for the Management API.\" key_vault_certificate_id = \"(Optional) The ID of the Key Vault Secret containing the SSL Certificate, which must be should be of the type application/x-pkcs12.\" certificate = \"(Optional) The Base64 Encoded Certificate.\" certificate_password = \"(Optional) The password associated with the certificate provided above.\" negotiate_client_certificate = \"(Optional) Should Client Certificate Negotiation be enabled for this Hostname? Defaults to false.\" ssl_keyvault_identity_client_id = \"(Optional) The Managed Identity Client ID to use to access the Key Vault. This Identity must be specified in the identity block to be used.\"",
+        "required": false,
+        "default": "null"
+      },
+      "http_correlation_protocol": {
+        "type": "string",
+        "description": "(Optional) The HTTP Correlation Protocol to use. Possible values are `None`, `Legacy` or `W3C`.",
+        "required": false,
+        "default": "\"None\""
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "key_vault_config": {
+        "type": "object({ context = optional(string, null) instance = optional(string, null) deploy_kv_and_pe = optional(bool, true) use_exisiting_cmk_keyvault_key = optional(bool, false) cmk_key_vault_key_id = optional(string, null) key_vault_id = optional(string, null) enabled_for_deployment = optional(bool, false) enabled_for_disk_encryption = optional(bool, true) enabled_for_template_deployment = optional(bool, false) soft_delete_retention_days = optional(number, 30) kv_admin_role_app_spn_object_id = optional(string, null) public_network_access_enabled = optional(bool, false) sku_name = optional(string, \"premium\") kv_secret_expiration_in_months = string network_acls = optional(object({ bypass = optional(string, \"None\") ip_rules = optional(list(string), []) virtual_network_subnet_ids = optional(list(string), []) }), {}) private_endpoint = optional(object({ is_manual_connection = optional(bool, false) static_ip_required = optional(bool, false) private_connection_resource_id = optional(string, null) request_message = optional(string, null) private_connection_resource_alias = optional(string, null) kv_ip_configuration = optional(map(object({ private_ip_address = string subresource_name = optional(string, \"vault\") member_name = optional(string, \"default\") })), {}) }), {}) })",
+        "description": "Object with cofigration for the Keyvault. As defined below context = context to be used for KeyVaults being deployed resources. instance = instance to be used for KeyVaults being deployed resources. deploy_kv_and_pe = (Optional). Boolean to deploy KeyVault and Private Endpoint for KeyVault. Default is true. key_vault_id = (Optional). KeyVault ID to be used for Private Endpoint for KeyVault. Required if deploy_kv_and_pe is false. enabled_for_deployment = (Optional). Boolean to enable KeyVault for deployment. Default is false. enabled_for_disk_encryption = (Optional). Boolean to enable KeyVault for disk encryption. Default is true. enabled_for_template_deployment = (Optional). Boolean to enable KeyVault for template deployment. Default is false. soft_delete_retention_days = (Optional) The number of days that items should be retained for once soft-deleted. sku_name = (Optional). Sku name for KeyVault. Default is premium. kv_secret_expiration_in_months = (Required). Number of months for which the secrets in KeyVault should be valid. public_network_access_enabled = (optional). Specifies whether public network access is enabled for the Key Vault. network_acls = (Optional). Object with network ACLs for KeyVault. As defined below { bypass = (Optional). Specifies whether traffic is bypassed for Azure services. Default is None. Possible values are None, AzureServices, Logging, Metrics, or AzureServices,Logging,Metrics. ip_rules = (Optional). List of IP addresses or CIDR ranges to whitelist. Only IPV4 addresses are allowed. This list must not include IP address ranges within Azure services. This list can include IP addresses ranges from on-premises ranges. virtual_network_subnet_ids = (Optional). List of virtual network subnet ids to whitelist. This list must not include IP address ranges within Azure services. } private_endpoint = (Optional). Object with private endpoint configuration for KeyVault. As defined below { is_manual_connection = (Optional). Boolean to indicate if the connection is manual. Default is false. static_ip_required = (Optional). Boolean to indicate if static IP is required. Default is false. private_connection_resource_id = (Optional). Resource ID of the private connection. Required if is_manual_connection is true. private_connection_resource_alias = (Optional). Resource alias of the private connection. Required if is_manual_connection is true. request_message = (Optional) A message passed to the owner of the remote resource when the private endpoint attempts to establish the connection to the remote resource. The provider allows a maximum request message length of `140` characters, however the request message maximum length is dependent on the service the private endpoint is connected to. Only valid if `is_manual_connection` is set to true. kv_ip_configuration = (Optional). Object with IP configuration for KeyVault. As defined below { private_ip_address = (Required). Private IP address of the IP configuration. subresource_name = (Optional). Subresource name of the IP configuration. Default is vault. member_name = (Optional). Member name of the IP configuration. Default is default. } }",
+        "required": true
+      },
+      "key_vault_tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on Key Vault related resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "kv_secret_aad_client_id": {
+        "type": "string",
+        "description": "client ID.",
+        "required": false,
+        "default": "\"4aaea735-14a8-e300-ccf7-61d0bfcb8377\""
+      },
+      "kv_secret_aad_client_secret": {
+        "type": "string",
+        "description": "SPN client ID.",
+        "required": false,
+        "default": "\"020513f9-f4ae-942f-f89b-6b7bff11b6a0\""
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "log_client_ip": {
+        "type": "bool",
+        "description": "(Optional) Log the Client IP address.",
+        "required": false,
+        "default": "false"
+      },
+      "loganalytics_config": {
+        "type": "object({ context = optional(string, null) instance = optional(string, null) deploy_loganalytics = optional(bool, false) #log_analytics_resource_id = optional(string, null) sku = optional(string, \"PerGB2018\") retention_in_days = optional(number, 365) allow_resource_only_permissions = optional(bool, true) daily_quota_gb = optional(number, -1) internet_ingestion_enabled = optional(bool, false) internet_query_enabled = optional(bool, false) reservation_capacity_in_gb_per_day = optional(number, null) cmk_for_query_forced = optional(bool, false) data_classification_tag_value = optional(string, \"\") log_analytics_data_export = optional(object({ name = string table_names = list(string) destination_resource_id = string enabled = optional(bool) }), null) identity = optional(object({ type = string identity_ids = optional(set(string)) }), { type = \"SystemAssigned\" identity_ids = null }) data_collection_rule_id = optional(string, null) log_analytics_custom_tables = optional(map(object({ description = optional(string, null) restoredLogs = optional(object({ endRestoreTime = string sourceTable = string startRestoreTime = string }), null) columns = list(object({ name = string displayName = string type = string description = optional(string, null) dataTypeHint = optional(string, null) })) searchResults = optional(object({ description = string endSearchTime = string limit = number query = string startSearchTime = string }), null) retention_in_days = optional(number, 365) total_retention_days = optional(number, 365) plan = string })), {}) })",
+        "description": "Object with cofigration for Log anlytics Workspace , As Defined below context = \"(Optional) The context to be used for Log analytics. If not provided the pattern conterxt is picked.\" instance = \"(Optional) The instance to be used for Log analytics. If not provided the pattern conterxt is picked.\" deploy_loganalytics = \"(Optional) Weather to deploy log analytics. Defaults to True.\" log_analytics_resource_id = \"(Optional) The ARM resource id for log analytics worksapce to be used for app isnghts deployment.\" sku = \"(Optional) The SKU for the Log Analytics workspace.\" retention_in_days = \"(Optional) The retention in days for the Log Analytics workspace.\" allow_resource_only_permissions = \"(Optional) The resource permissions log for the Log Analytics workspace.\" daily_quota_gb = \"(Optional) The daily quota in GB for the Log Analytics workspace.\" internet_ingestion_enabled = \"(Optional) The internet ingestion enabled for the Log Analytics workspace.\" internet_query_enabled = \"(Optional) The internet query enabled for the Log Analytics workspace.\" reservation_capacity_in_gb_per_day = \"(Optional) The reservation capacity in GB per day for the Log Analytics workspace.\" cmk_for_query_forced = \"(Optional) The cmk_for_query_forced for the Log Analytics workspace.\" data_classification_tag_value = \"(Optional) The value of the data classification tag required by policy.\" log_analytics_data_export = (Optional) object({ name = (Required) The name of the Log Analytics Data Export Rule. Changing this forces a new Log Analytics Data Export Rule to be created. table_names = (Required) A list of table names to export to the destination resource, for example: [\"Heartbeat\", \"SecurityEvent\"]. destination_resource_id = (Required) The destination resource ID. It should be a storage account, an event hub namespace or an event hub. If the destination is an event hub namespace, an event hub would be created for each table automatically. enabled = (Optional) Is this Log Analytics Data Export Rule enabled? Possible values include true or false. Defaults to false. }) identity = \"(Optional) An identity block as defined below. Defaults to SystemAssigned.\" type = \"(Required) Specifies the identity type of the Log Analytics Workspace. Possible values are SystemAssigned (where Azure will generate a Service Principal for you) and UserAssigned where you can specify the Service Principal IDs in the identity_ids field.\" identity_ids = \"(Optional) Specifies a list of user managed identity ids to be assigned. Required if type is UserAssigned.\" data_collection_rule_id = \"(Optional) The ID of the Data Collection Rule to use for this workspace.\" log_analytics_custom_tables = \"(Optional) A map of custom tables to create in the Log Analytics workspace.\" description = \"(Optional) Description of the custom table's purpose and usage.\" restoredLogs = \"(Optional) Object for restored logs configuration.\" endRestoreTime = \"(Required) The timestamp to end the restore by (UTC).\" sourceTable = \"(Required) The table to restore data from.\" startRestoreTime = \"(Required) The timestamp to start the restore from (UTC).\" columns = \"(Required) List of column definitions for the custom table.\" name = \"(Required) The name of the column.\" displayName = \"(Required) The display name of the column.\" type = \"(Required) The data type of the column (e.g., 'string', 'datetime', 'int', 'real', 'boolean', 'guid', 'dynamic').\" description = \"(Optional) Description of the column's purpose.\" dataTypeHint = \"(Optional) Column data type logical hint. Valid values: 'armPath', 'guid', 'ip', 'uri'.\" searchResults = \"(Optional) Object for search results configuration.\" description = \"(Required) Description of the search results configuration.\" endSearchTime = \"(Required) The end time for search results in ISO 8601 format.\" limit = \"(Required) The maximum number of search results to return.\" query = \"(Required) The KQL query to execute for search results.\" startSearchTime = \"(Required) The start time for search results in ISO 8601 format.\" retention_in_days = \"(Optional) The table retention period in days (4-4383, or -1 for default).\" total_retention_days = \"(Optional) The total retention period in days (4-4383, or -1 for default).\" plan = \"(Required) The table plan type. Valid values: 'Analytics', 'Basic'.\"",
+        "required": false,
+        "default": "{ \"allow_resource_only_permissions\": true, \"cmk_for_query_forced\": false, \"daily_quota_gb\": -1, \"data_classification_tag_value\": \"\", \"deploy_loganalytics\": true, \"internet_ingestion_enabled\": true, \"internet_query_enabled\": true, \"log_analytics_data_export\": null, \"reservation_capacity_in_gb_per_day\": null, \"retention_in_days\": 365, \"sku\": \"PerGB2018\" }"
+      },
+      "metrics": {
+        "type": "bool",
+        "description": "(Optional) Emit custom metrics via emit-metric policy. Applicable only to Application Insights diagnostic settings.",
+        "required": false,
+        "default": "false"
+      },
+      "min_api_version": {
+        "type": "string",
+        "description": "(Optional) The version which the control plane API calls to API Management service are limited with version equal to or newer than.",
+        "required": false,
+        "default": "null"
+      },
+      "named_values": {
+        "type": "map(object({ name = string display_name = string value = string secret = bool value_from_key_vault = optional(object({ secret_id = string identity_client_id = optional(string) })) }))",
+        "description": "(Optional) A namedvalues block supports the following: name = (Required) The name of the API Management Named Value. Changing this forces a new resource to be created. display_name = (Required) The display name of this API Management Named Value. value = (Optional) The value of this API Management Named Value. secret = (Optional) Specifies whether the API Management Named Value is secret. Valid values are true or false. The default value is false. value_from_key_vault = (Optional) value_from_key_vault block supports the following: secret_id = (Required) The resource ID of the Key Vault Secret. identity_client_id = (Optional) The client ID of User Assigned Identity, for the API Management Service, which will be used to access the key vault secret. The System Assigned Identity will be used in absence.",
+        "required": false,
+        "default": "{}"
+      },
+      "network_config": {
+        "type": "object({ context = optional(string, null) instance = optional(string, null) subnet_default_outbound_access = optional(bool, false) use_existing_subnet = optional(bool, false) deploy_pip = optional(bool, false) apim_subnet_address_prefix = optional(string, null) subnet_id = optional(string, null) public_access_enabled = optional(bool, true) pip_id = optional(string, null) security_rules = optional(map(object({ name = string description = string priority = number direction = string access = string protocol = string source_port_range = string destination_port_range = string source_address_prefix = string destination_address_prefix = string source_application_security_group_ids = list(string) destination_application_security_group_ids = list(string) })), {}) pip = optional(object({ allocation_method = string sku = string sku_tier = string ip_version = string zones = list(string) reverse_fqdn = string domain_name_label = string idle_timeout_in_minutes = number ddos_protection_mode = string ddos_protection_plan_id = string ip_tags = map(any) public_ip_prefix_id = string })) route_table = optional(object({ route_table_id = optional(string, null) route = optional(map(object({ name = string address_prefix = string next_hop_type = string next_hop_in_ip_address = string })), {}) bgp_route_propagation_enabled = optional(bool, true) }), { route_table_id = null bgp_route_propagation_enabled = true route = null }) })",
+        "description": "(Required). Object with cofigration for the Storage Account. As defined below context = context to be used for Storage Account being deployed resources. instance = instance to be used for Storage Account being deployed resources. subnet_default_outbound_access = (Optional) Specifies the default outbound access setting for the subnet. use_existing_subnet = (Required) Boolean to use existing subnet for the Virtial Machine deployments. orclevm_subnet_address_prefix = (Required). Address prefix for the subnet where Oracle Virtual Machines will be deployed. Must be passed as `null` if `use_existing_subnet` is `true`. subnet_id = (Required) The ID of the Subnet where the VM Network Interface should be located in. security_rules = (Optional). Map of objects mentioned below security rules of the NSG to be deployed and attached with Virtual Machiine Subnet. As defined below { name = \"(Required) The name of the security rule.\" description = \"(Optional) A description for this rule. Restricted to 140 characters.\" priority = \"(Required) Specifies the priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each rule in the collection. The lower the priority number, the higher the priority of the rule.\" direction = \"(Required) The direction specifies if rule will be evaluated on incoming or outgoing traffic. Possible values are Inbound and Outbound.\" access = \"(Required) Specifies whether network traffic is allowed or denied. Possible values are Allow and Deny.\" protocol = \"(Required) Network protocol this rule applies to. Possible values include Tcp, Udp, Icmp, Esp, Ah or * (which matches all).\" source_port_range = \"(Optional) Source Port or Range. Integer or range between 0 and 65535 or * to match any. This is required if source_port_ranges is not specified.\" destination_port_range = \"(Optional) Destination Port or Range. Integer or range between 0 and 65535 or * to match any. This is required if destination_port_ranges is not specified.\" source_address_prefix = \"(Optional) CIDR or source IP range or * to match any IP. Tags such as VirtualNetwork, AzureLoadBalancer and Internet can also be used. This is required if source_address_prefixes is not specified.\" destination_address_prefix = \"(Optional) CIDR or destination IP range or * to match any IP. Tags such as VirtualNetwork, AzureLoadBalancer and Internet can also be used. This is required if destination_address_prefixes is not specified.\" source_application_security_group_ids = \"(Optional) A List of source Application Security Group IDs\" destination_application_security_group_ids = \"(Optional) A List of destination Application Security Group IDs\" } route_table = (Optional). Object with route table configuration for Virtual Machine Subnet. As defined below { route_table_id = (Optional). Route table ID to be used for PSQL Subnet. Required if route is not provided. route = (Optional). A Map of objects mentioned below for route configuration of the route table. { name = \"(Required) The name of the route.\" address_prefix = \"(Required) The destination CIDR to which the route applies.\" next_hop_type = \"(Required) The type of Azure hop the packet should be sent to. Possible values are VirtualNetworkGateway, VnetLocal, Internet, VirtualAppliance and None.\" next_hop_in_ip_address = \"(Optional) The IP address packets should be forwarded to. Next hop values are only allowed in routes where the next hop type is VirtualAppliance.\" } bgp_route_propagation_enabled = (Optional). Boolean flag which controls propagation of routes learned by BGP on that route table. True means disable. False means enable. Default is false. }",
+        "required": true
+      },
+      "notification_sender_email": {
+        "type": "string",
+        "description": "(Optional) The email address from which the notification emails will be sent.",
+        "required": false,
+        "default": "null"
+      },
+      "operation_name_format": {
+        "type": "string",
+        "description": "(Optional) The format of the Operation Name for Application Insights telemetries. Possible values are `Name`, and `Url`.",
+        "required": false,
+        "default": "\"Name\""
+      },
+      "operations_and_policies": {
+        "type": "map(object({ operation_id = string api_key = string display_name = string method = string url_template = string description = string request = optional(list(object({ description = optional(string) header = optional(list(object({ name = string required = bool type = string description = optional(string, null) default_value = optional(string, null) values = optional(list(string), []) schema_id = optional(string, null) type_name = optional(string, null) example = optional(list(object({ name = string summary = optional(string, null) description = optional(string, null) value = optional(string, null) external_value = optional(string, null) })), []) })), []) query_parameter = optional(list(object({ name = string required = bool type = string description = optional(string, null) default_value = optional(string, null) values = optional(list(string), []) schema_id = optional(string, null) type_name = optional(string, null) example = optional(list(object({ name = string summary = optional(string, null) description = optional(string, null) value = optional(string, null) external_value = optional(string, null) })), []) })), []) representation = optional(list(object({ content_type = string schema_id = optional(string, null) type_name = optional(string, null) form_parameter = optional(list(object({ name = string required = bool type = string description = optional(string, null) default_value = optional(string, null) values = optional(list(string), []) schema_id = optional(string, null) type_name = optional(string, null) example = optional(list(object({ name = string summary = optional(string, null) description = optional(string, null) value = optional(string, null) external_value = optional(string, null) })), []) })), []) })), []) })), []) response = optional(list(object({ status_code = number description = string header = optional(list(object({ name = string required = bool type = string description = optional(string, null) default_value = optional(string, null) values = optional(list(string), []) schema_id = optional(string, null) type_name = optional(string, null) example = optional(list(object({ name = string summary = optional(string, null) description = optional(string, null) value = optional(string, null) external_value = optional(string, null) })), []) })), []) representation = optional(list(object({ content_type = string schema_id = optional(string, null) type_name = optional(string, null) form_parameter = optional(list(object({ name = string required = bool type = string description = optional(string, null) default_value = optional(string, null) values = optional(list(string), []) schema_id = optional(string, null) type_name = optional(string, null) example = optional(list(object({ name = string summary = optional(string, null) description = optional(string, null) value = optional(string, null) external_value = optional(string, null) })), []) })), []) })), []) })), []) template_parameter = optional(list(object({ name = string required = bool type = string description = optional(string, null) default_value = optional(string, null) values = optional(list(string)) schema_id = optional(string, null) type_name = optional(string, null) })), []) policies = optional(map(object({ xml_content = optional(string) xml_link = optional(string) })), {}) }))",
+        "description": "(Optional) A apim_operations block supports the following: operation_id = (Required) A unique identifier for this API Operation. Changing this forces a new resource to be created. api_name = (Required) The name of the API within the API Management Service where this API Operation should be created. Changing this forces a new resource to be created. display_name = (Required) The Display Name for this API Management Operation. method = (Required) The HTTP Method used for this API Management Operation, like GET, DELETE, PUT or POST - but not limited to these values. url_template = (Required) The relative URL Template identifying the target resource for this operation, which may include parameters. description = (Optional) A description for this API Operation, which may include HTML formatting tags. request = (Optional) A request block as documented below. description = (Optional) A description of the HTTP Request, which may include HTML tags. header = (Optional) A header block supports the following: name = (Required) The Name of this Header. required = (Required) Is this Header Required? type = (Required) The Type of this Header, such as a string. description = (Optional) A description of this Header. default_value = (Optional) The default value for this Header values = (Optional) One or more acceptable values for this Header. schema_id = (Optional) The name of the Schema. type_name = (Optional) The type name defined by the Schema. example = (Optional) An example block supports the following: name = (Required) The name of this example. summary = (Optional) A short description for this example. description = (Optional) A long description for this example. value = (Optional) The example of the representation. external_value = (Optional) A URL that points to the literal example. query_parameter = (Optional) A query_parameter block supports the following: name = (Required) The Name of this Header. required = (Required) Is this Header Required? type = (Required) The Type of this Header, such as a string. description = (Optional) A description of this Header. default_value = (Optional) The default value for this Header values = (Optional) One or more acceptable values for this Header. schema_id = (Optional) The name of the Schema. type_name = (Optional) The type name defined by the Schema. example = (Optional) An example block supports the following: name = (Required) The name of this example. summary = (Optional) A short description for this example. description = (Optional) A long description for this example. value = (Optional) The example of the representation. external_value = (Optional) A URL that points to the literal example. representation = (Optional) A representation block supports the following: content_type = (Required) The Content Type of this representation, such as application/json. schema_id = (Optional) The ID of an API Management Schema which represents this Response. type_name = Optional) The Type Name defined by the Schema. form_parameter = (Optional) A form_parameter block supports the following: name = (Required) The Name of this Header. required = (Required) Is this Header Required? type = (Required) The Type of this Header, such as a string. description = (Optional) A description of this Header. default_value = (Optional) The default value for this Header values = (Optional) One or more acceptable values for this Header. schema_id = (Optional) The name of the Schema. type_name = (Optional) The type name defined by the Schema. example = (Optional) An example block supports the following: name = (Required) The name of this example. summary = (Optional) A short description for this example. description = (Optional) A long description for this example. value = (Optional) The example of the representation. external_value = (Optional) A URL that points to the literal example. response = Optional) An response block supports the following: status_code = (Required) The HTTP Status Code. description = (Optional) A description of the HTTP Response, which may include HTML tags. header = (Optional) A header block supports the following: name = (Required) The Name of this Header. required = (Required) Is this Header Required? type = (Required) The Type of this Header, such as a string. description = (Optional) A description of this Header. default_value = (Optional) The default value for this Header values = (Optional) One or more acceptable values for this Header. schema_id = (Optional) The name of the Schema. type_name = (Optional) The type name defined by the Schema. example = (Optional) An example block supports the following: name = (Required) The name of this example. summary = (Optional) A short description for this example. description = (Optional) A long description for this example. value = (Optional) The example of the representation. external_value = (Optional) A URL that points to the literal example. representation = (Optional) An representation block supports the following: content_type = (Required) The Content Type of this representation, such as application/json. schema_id = (Optional) The ID of an API Management Schema which represents this Response. type_name = Optional) The Type Name defined by the Schema. form_parameter = (Optional) A form_parameter block supports the following: name = (Required) The Name of this Header. required = (Required) Is this Header Required? type = (Required) The Type of this Header, such as a string. description = (Optional) A description of this Header. default_value = (Optional) The default value for this Header values = (Optional) One or more acceptable values for this Header. schema_id = (Optional) The name of the Schema. type_name = (Optional) The type name defined by the Schema. example = (Optional) An example block supports the following: name = (Required) The name of this example. summary = (Optional) A short description for this example. description = (Optional) A long description for this example. value = (Optional) The example of the representation. external_value = (Optional) A URL that points to the literal example. template_parameter = (Optional) An example block supports the following: name = (Required) The Name of this Template Parameter required = (Required) Is this Template Parameter Required? type = (Required) The Type of this Template Parameter, such as a string. description = (Optional) A description of this Template Parameter. default_value = (Optional) The default value for this Template Parameter. values = (Optional) One or more acceptable values for this Template Parameter. schema_id = (Optional) The name of the Schema. type_name = (Optional) The type name defined by the Schema. policies = (Optional) A policies block supports the following: xml_content = (Optional) The XML Content for this Policy. xml_link = (Optional) A link to a Policy XML Document, which must be publicly available.",
+        "required": false,
+        "default": "{}"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "privateendpoint_subnet_id": {
+        "type": "string",
+        "description": "(optional) Specify the subnet id where the private endpoit will be created.",
+        "required": false,
+        "default": "null"
+      },
+      "product_apis": {
+        "type": "map(object({ api_name = string product_id = string }))",
+        "description": "(Optional) A product_policies block supports the following: api_name = (Required) The Name of the API Management API within the API Management Service. Changing this forces a new resource to be created. product_id = (Required) The ID of the API Management Product within the API Management Service. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "{}"
+      },
+      "products_and_policies": {
+        "type": "map(object({ display_name = string published = bool description = optional(string) subscription_required = optional(string) approval_required = optional(bool) subscriptions_limit = optional(string) terms = optional(string) policies = optional(map(object({ xml_content = optional(string) xml_link = optional(string) })), {}) }))",
+        "description": "(Optional) A products block supports the following: display_name = (Required) The Display Name for this API Management Product. published = (Required) Is this Product Published? description = (Optional) A description of this Product, which may include HTML formatting tags. subscription_required = (Optional) Is a Subscription required to access API`s included in this Product? Defaults to true. approval_required = (Optional) Do subscribers need to be approved prior to being able to use the Product? NOTE: approval_required can only be set when subscription_required is set to true. subscriptions_limit = (Optional) The number of subscriptions a user can have to this Product at the same time. NOTE: subscriptions_limit can only be set when subscription_required is set to true. terms = (Optional) The Terms and Conditions for this Product, which must be accepted by Developers before they can begin the Subscription process. policies = (Optional) A policies block supports the following: xml_content = (Optional) The XML Content for this Policy. xml_link = (Optional) A link to a Policy XML Document, which must be publicly available. `",
+        "required": false,
+        "default": "{}"
+      },
+      "publisher": {
+        "type": "object({ publisher_name = string publisher_email = string })",
+        "description": "(Required) Publisher information for the API Management service. publisher_name = \"(Required) Name of the publisher/company.\" publisher_email = \"(Required) Email of the publisher/company.\"",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "sampling_percentage": {
+        "type": "number",
+        "description": "(Optional) Sampling (%). For high traffic APIs, please read this documentation to understand performance implications and log sampling. Valid values are between `0` and `100`.",
+        "required": false,
+        "default": "0"
+      },
+      "security": {
+        "type": "object({ enable_backend_ssl30 = optional(bool) enable_backend_tls10 = optional(bool) enable_backend_tls11 = optional(bool) enable_backend_tls12 = optional(bool) enable_frontend_ssl30 = optional(bool) enable_frontend_tls10 = optional(bool) enable_frontend_tls11 = optional(bool) enable_frontend_tls12 = optional(bool) tls_ecdhe_ecdsa_with_aes128_cbc_sha_ciphers_enabled = optional(bool) tls_ecdhe_ecdsa_with_aes256_cbc_sha_ciphers_enabled = optional(bool) tls_ecdhe_rsa_with_aes128_cbc_sha_ciphers_enabled = optional(bool) tls_ecdhe_rsa_with_aes256_cbc_sha_ciphers_enabled = optional(bool) tls_rsa_with_aes128_cbc_sha256_ciphers_enabled = optional(bool) tls_rsa_with_aes128_cbc_sha_ciphers_enabled = optional(bool) tls_rsa_with_aes128_gcm_sha256_ciphers_enabled = optional(bool) tls_rsa_with_aes256_gcm_sha384_ciphers_enabled = optional(bool) tls_rsa_with_aes256_cbc_sha256_ciphers_enabled = optional(bool) tls_rsa_with_aes256_cbc_sha_ciphers_enabled = optional(bool) triple_des_ciphers_enabled = optional(bool) })",
+        "description": "(Optional) A security block as defined below. enable_backend_ssl30 = \"(Optional) Should SSL 3.0 be enabled on the backend of the gateway? Defaults to false. This maps to the Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Ssl30 field.\" enable_backend_tls10 = \"(Optional) Should TLS 1.0 be enabled on the backend of the gateway? Defaults to false. This maps to the Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10 field.\" enable_backend_tls11 = \"(Optional) Should TLS 1.1 be enabled on the backend of the gateway? Defaults to false. This maps to the Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11 field.\" enable_backend_tls12 = \"(Optional) Should TLS 1.2 be enabled on the backend of the gateway? Defaults to false. This maps to the Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls12 field.\" enable_frontend_ssl30 = \"(Optional) Should SSL 3.0 be enabled on the frontend of the gateway? Defaults to false. This maps to the Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Ssl30 field.\" enable_frontend_tls10 = \"(Optional) Should TLS 1.0 be enabled on the frontend of the gateway? Defaults to false. This maps to the Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10 field.\" enable_frontend_tls11 = \"(Optional) Should TLS 1.1 be enabled on the frontend of the gateway? Defaults to false. This maps to the Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11 field.\" enable_frontend_tls12 = \"(Optional) Should TLS 1.2 be enabled on the frontend of the gateway? Defaults to false. This maps to the Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls12 field.\" tls_ecdhe_ecdsa_with_aes128_cbc_sha_ciphers_enabled = \"(Optional) Should the TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA cipher be enabled? Defaults to false. This maps to the Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA field.\" tls_ecdhe_ecdsa_with_aes256_cbc_sha_ciphers_enabled = \"(Optional) Should the TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA cipher be enabled? Defaults to false. This maps to the Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA field.\" tls_ecdhe_rsa_with_aes128_cbc_sha_ciphers_enabled = \"(Optional) Should the TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA cipher be enabled? Defaults to false. This maps to the Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA field.\" tls_ecdhe_rsa_with_aes256_cbc_sha_ciphers_enabled = \"(Optional) Should the TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA cipher be enabled? Defaults to false. This maps to the Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA field.\" tls_rsa_with_aes128_cbc_sha256_ciphers_enabled = \"(Optional) Should the TLS_RSA_WITH_AES_128_CBC_SHA256 cipher be enabled? Defaults to false. This maps to the Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256 field.\" tls_rsa_with_aes128_cbc_sha_ciphers_enabled = \"(Optional) Should the TLS_RSA_WITH_AES_128_CBC_SHA cipher be enabled? Defaults to false. This maps to the Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA field.\" tls_rsa_with_aes128_gcm_sha256_ciphers_enabled = \"(Optional) Should the TLS_RSA_WITH_AES_128_GCM_SHA256 cipher be enabled? Defaults to false. This maps to the Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_GCM_SHA256 field.\" tls_rsa_with_aes256_gcm_sha384_ciphers_enabled = \"(Optional) Should the TLS_RSA_WITH_AES_256_GCM_SHA384 cipher be enabled? Defaults to false. This maps to the Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_256_GCM_SHA384 field.\" tls_rsa_with_aes256_cbc_sha256_ciphers_enabled = \"(Optional) Should the TLS_RSA_WITH_AES_256_CBC_SHA256 cipher be enabled? Defaults to false. This maps to the Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_256_CBC_SHA256 field.\" tls_rsa_with_aes256_cbc_sha_ciphers_enabled = \"(Optional) Should the TLS_RSA_WITH_AES_256_CBC_SHA cipher be enabled? Defaults to false. This maps to the Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_256_CBC_SHA field.\" triple_des_ciphers_enabled = \"(Optional) Should the TLS_RSA_WITH_3DES_EDE_CBC_SHA cipher be enabled for alL TLS versions (1.0, 1.1 and 1.2)? This maps to the Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168 field.\"",
+        "required": false,
+        "default": "{ \"enable_backend_ssl30\": null, \"enable_backend_tls10\": null, \"enable_backend_tls11\": false, \"enable_frontend_ssl30\": null, \"enable_frontend_tls10\": null, \"enable_frontend_tls11\": null, \"tls_ecdhe_ecdsa_with_aes128_cbc_sha_ciphers_enabled\": false, \"tls_ecdhe_ecdsa_with_aes256_cbc_sha_ciphers_enabled\": false, \"tls_ecdhe_rsa_with_aes128_cbc_sha_ciphers_enabled\": false, \"tls_ecdhe_rsa_with_aes256_cbc_sha_ciphers_enabled\": false, \"tls_rsa_with_aes128_cbc_sha256_ciphers_enabled\": false, \"tls_rsa_with_aes128_cbc_sha_ciphers_enabled\": false, \"tls_rsa_with_aes128_gcm_sha256_ciphers_enabled\": false, \"tls_rsa_with_aes256_cbc_sha256_ciphers_enabled\": false, \"tls_rsa_with_aes256_cbc_sha_ciphers_enabled\": false, \"tls_rsa_with_aes256_gcm_sha384_ciphers_enabled\": false, \"triple_des_ciphers_enabled\": false }"
+      },
+      "shared_nrtbl_vnet_id": {
+        "type": "string",
+        "description": "(Reqired). The ARM Resource Id of the Non-Routeable Virtual Network in shared Resource group.",
+        "required": true
+      },
+      "sign_in": {
+        "type": "object({ enabled = bool })",
+        "description": "(Optional) A sign_in block as defined below. enabled = \"(Required) Should anonymous users be redirected to the sign in page?\"",
+        "required": false,
+        "default": "null"
+      },
+      "sign_up": {
+        "type": "object({ enabled = bool terms_of_service = object({ consent_required = bool enabled = bool text = optional(string) }) })",
+        "description": "(Optional) A sign_up block as defined below. enabled = \"(Required) Can users sign up on the development portal?\" terms_of_service = \"(Required) A terms_of_service block as defined below.\" consent_required = \"(Required) Should the user be asked for consent during sign up?\" enabled = \"(Required) Should Terms of Service be displayed during sign up?\" text = \"(Optional) The Terms of Service which users are required to agree to in order to sign up.\"",
+        "required": false,
+        "default": "null"
+      },
+      "sku_name": {
+        "type": "string",
+        "description": "(Required) sku_name is a string consisting of two parts separated by an underscore(_). The first part is the name, valid values include: Consumption, Developer, Basic, Standard and Premium. The second part is the capacity (e.g. the number of deployed units of the sku), which must be a positive integer (e.g. Developer_1). Premium SKU's are limited to a default maximum of 12 (i.e. Premium_12), this can, however, be increased via support request. Consumption SKU capacity should be 0 (e.g. Consumption_0) as this tier includes automatic scaling.",
+        "required": true
+      },
+      "subscriptions": {
+        "type": "map(object({ display_name = string user_id = optional(string) api_id = optional(string) product_id = optional(string) primary_key = optional(string) secondary_key = optional(string) state = optional(string) subscription_id = optional(string) allow_tracing = optional(string) }))",
+        "description": "(Optional) A subscriptions block supports the following: display_name = (Required) The display name of this Subscription. user_id = (Optional) The ID of the User which should be assigned to this Subscription. Changing this forces a new resource to be created. api_id = (Optional) The ID of the API which should be assigned to this Subscription. Changing this forces a new resource to be created. product_id = (Optional) The ID of the Product which should be assigned to this Subscription. Changing this forces a new resource to be created. primary_key = (Optional) The primary subscription key to use for the subscription. secondary_key = (Optional) The secondary subscription key to use for the subscription. state = (Optional) The state of this Subscription. Possible values are active, cancelled, expired, rejected, submitted and suspended. Defaults to submitted. subscription_id = (Optional) An Identifier which should used as the ID of this Subscription. If not specified a new Subscription ID will be generated. Changing this forces a new resource to be created. allow_tracing = (Optional) Determines whether tracing can be enabled. Defaults to true.",
+        "required": false,
+        "default": "{}"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "tenant_access": {
+        "type": "object({ enabled = bool })",
+        "description": "(Optional) A tenant_access block as defined below. enabled = \"(Required) Should the access to the management API be enabled?\"",
+        "required": false,
+        "default": "null"
+      },
+      "verbosity": {
+        "type": "string",
+        "description": "(Optional) The verbosity level applied to traces emitted by trace policies. Possible values are `verbose`, `information` or `error`.",
+        "required": false,
+        "default": "\"information\""
+      },
+      "zones": {
+        "type": "list(string)",
+        "description": "(Optional) Specifies a list of Availability Zones in which this API Management service should be located. Changing this forces a new API Management service to be created. Availability zones are only supported in the Premium tier.",
+        "required": false,
+        "default": "null"
+      }
+    }
+  },
+  "outputs": {
+    "ApiManagement": {
+      "description": "The API Management module outputs."
+    },
+    "userassignedidentity_apim": {
+      "description": "The userassignedidentity_APIM module outputs."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Apim' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a service pattern module. It bundles multiple related services/configurations.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

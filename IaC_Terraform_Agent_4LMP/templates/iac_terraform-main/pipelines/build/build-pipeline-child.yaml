@@ -1,0 +1,95 @@
+default:
+  tags: [Refinitiv,Linux,Medium]
+
+#include:
+#
+#  #
+#  # Include BAS CICD Framework versioned pipeline code
+#  #
+#  - project: 'app/itc-93303/bas-cicd-templates'
+#    #ref: templates-0.0.8
+#    file:
+#      - 'templates/markdown/jobs/markdown-to-pdf.yaml'
+#      - 'templates/helper_scripts.yaml'
+#      - 'templates/iac/jobs/terraform-standalone-validate.yaml'
+
+stages:
+  - build
+
+#
+# Code release tagger
+#
+1-pipeline-dev-build:
+  stage: build
+  environment:
+    name: release
+  variables:
+    TAG_PREFIX: pipeline
+    PACKAGE_FOLDER: ${LSEG_PIPELINE_PACKAGE_FOLDER}
+    INCLUDE_CODE_FOLDERS: ${LSEG_INCLUDE_PIPELINE_FOLDERS}
+  trigger:
+    include: 
+      - project: 'app/itc-93303/bas-cicd-templates'
+        ref: templates-0.0.29
+        file:
+          - 'templates/build/pipelines/build-pipeline-v1.yaml'
+    strategy: depend
+    forward:
+      pipeline_variables: true
+      yaml_variables: true
+
+2-code-dev-build:
+  stage: build
+  when: manual
+  environment:
+    name: release
+  variables:
+    TAG_PREFIX: code
+    PACKAGE_FOLDER: ${LSEG_CODE_PACKAGE_FOLDER}
+    INCLUDE_CODE_FOLDERS: ${LSEG_INCLUDE_CODE_FOLDERS}
+  trigger:
+    include: 
+      - project: 'app/itc-93303/bas-cicd-templates'
+        ref: templates-0.0.29
+        file:
+          - 'templates/build/pipelines/build-pipeline-v1.yaml'
+    strategy: depend
+    forward:
+      pipeline_variables: true
+      yaml_variables: true
+
+3-values-dev-build:
+  stage: build
+  when: manual
+  variables:
+    TAG_PREFIX: dev
+    PACKAGE_FOLDER: "${TAG_PREFIX}${LSEG_VALUES_PACKAGE_FOLDER}"
+    INCLUDE_CODE_FOLDERS: ${LSEG_INCLUDE_VALUES_FOLDERS}
+  trigger:
+    include: 
+      - project: 'app/itc-93303/bas-cicd-templates'
+        ref: templates-0.0.29
+        file:
+          - 'templates/build/pipelines/build-pipeline-v1.yaml'
+    strategy: depend
+    forward:
+      pipeline_variables: true
+      yaml_variables: true
+
+4-values-qa-build:
+  stage: build
+  when: manual
+  variables:
+    TAG_PREFIX: qa
+    PACKAGE_FOLDER: "${TAG_PREFIX}${LSEG_VALUES_PACKAGE_FOLDER}"
+    INCLUDE_CODE_FOLDERS: ${LSEG_INCLUDE_VALUES_FOLDERS}
+  trigger:
+    include: 
+      - project: 'app/itc-93303/bas-cicd-templates'
+        ref: templates-0.0.29
+        file:
+          - 'templates/build/pipelines/build-pipeline-v1.yaml'
+    strategy: depend
+    forward:
+      pipeline_variables: true
+      yaml_variables: true

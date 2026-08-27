@@ -1,0 +1,33 @@
+3-check-dev-CPF-modules:
+  stage: build
+  extends: [.dev_pipeline_vars]
+  variables:
+    ENV: dev
+    REGION: "eus2"
+  needs:
+    - 2-bootstrap-create-cicd-vars
+  trigger:
+    include: 
+      - local: 'pipelines/iac/iac-check-modules-child.yaml'
+    #strategy: depend
+    forward:
+      pipeline_variables: true
+      yaml_variables: true
+  when: manual
+
+3-check-qa-CPF-modules:
+  stage: build
+  extends: [.dev_pipeline_vars]
+  variables:
+    ENV: qa
+    REGION: "eus2"
+  needs:
+    - 2-bootstrap-create-cicd-vars
+  trigger:
+    include: 
+      - local: 'pipelines/iac/iac-check-modules-child.yaml'
+    #strategy: depend
+    forward:
+      pipeline_variables: true
+      yaml_variables: true
+  when: manual

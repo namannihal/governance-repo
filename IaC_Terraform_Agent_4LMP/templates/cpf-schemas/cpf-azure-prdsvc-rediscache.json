@@ -1,0 +1,234 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Redis Cache module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-rediscache'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-rediscache",
+  "module_type": "service",
+  "azure_service": "Rediscache",
+  "module_name": "Redis Cache module",
+  "latest_tag": "1.1.1",
+  "available_tags": [
+    "1.1.1",
+    "1.1.0",
+    "1.0.4",
+    "1.0.3",
+    "1.0.2"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-rediscache.git//?ref=1.1.1",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Subnet ID",
+    "Managed Identity"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_redis_cache.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_redis_cache_access_policy_assignment.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_redis_firewall_rule.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "rediscache",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-rediscache.git//?ref=1.1.1",
+      "version": "1.1.1",
+      "available_versions": [
+        "1.1.1",
+        "1.1.0",
+        "1.0.4",
+        "1.0.3",
+        "1.0.2"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "capacity",
+      "environment",
+      "location",
+      "org_id",
+      "patch_schedule",
+      "resource_group_name"
+    ],
+    "properties": {
+      "access_keys_authentication_enabled": {
+        "type": "bool",
+        "description": "(Optional) Whether access key authentication is enabled. Must be set to false when active_directory_authentication_enabled is true. Defaults to false to comply with AZU-MCR-IA_030 security control.",
+        "required": false,
+        "default": "false"
+      },
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "capacity": {
+        "type": "number",
+        "description": "(Required) The size of the Redis cache to deploy. Valid values for a `C` SKU family (`Basic` or `Standard`) are `0`, `1`, `2`, `3`, `4`, `5`, `6`. For `P` SKU family (`Premium`) valid values are `1`, `2`, `3`, `4`,`5`.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "disable_access_key_authentication": {
+        "type": "bool",
+        "description": "(Deprecated) Use access_keys_authentication_enabled instead. Specifies whether access key authentication should be disabled.",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "firewall_rules": {
+        "type": "list(object({ name = string start_ip_address = string end_ip_address = string }))",
+        "description": "\"(Optional) List of Azure Redis Cache firewall rule specification.\" object({ name = (Required) Specifies the name of the Firewall Rule. start_ip_address = (Required) The starting IP Address to allow through the firewall for this rule end_ip_address = (Required) The ending IP Address to allow through the firewall for this rule })",
+        "required": false,
+        "default": "[]"
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = optional(set(string)) })",
+        "description": "(Required) An identity block as defined below object({ type = \"(Required) Specifies the type of Managed Service Identity that should be configured on this Redis Cluster. Possible values are SystemAssigned, UserAssigned, SystemAssigned, UserAssigned (to enable both).\" identity_ids = \"(Optional) A list of User Assigned Managed Identity IDs to be assigned to this Redis Cluster.\" })",
+        "required": false,
+        "default": "{ \"identity_ids\": null, \"type\": \"SystemAssigned\" }"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "non_ssl_port_enabled": {
+        "type": "bool",
+        "description": "(Optional) Enable the non-SSL port (6379) - secure Redis instances will only accept SSL connections on port 6380. Defaults to false for security.",
+        "required": false,
+        "default": "false"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "patch_schedule": {
+        "type": "object({ day_of_week = string start_hour_utc = optional(number, 5) })",
+        "description": "\"(Optional) The scheduled maintenance for Azure Cache for Redis service to regularly updates the cache with the latest platform features and fixes.\" object({ day_of_week = (Required) the Weekday name - possible values include Monday, Tuesday, Wednesday etc. start_hour_utc = (Optional) the Start Hour for maintenance in UTC - possible values range from 0 - 23. })",
+        "required": true
+      },
+      "policy_assignments": {
+        "type": "map(object({ name = string access_policy_name = string object_id = string object_id_alias = string }))",
+        "description": "\"(Optional) Map of access policy assignments for the Redis Cache. This is only applicable if AAD authentication is enabled.\" object({ name = (Required) The name of the Redis Cache Access Policy Assignment. Changing this forces a new Redis Cache Access Policy Assignment to be created. access_policy_name = (Required) The name of the Access Policy to be assigned. Changing this forces a new Redis Cache Access Policy Assignment to be created. object_id = (Required) The principal ID to be assigned the Access Policy. Changing this forces a new Redis Cache Access Policy Assignment to be created. object_id_alias = (Required) The alias of the principal ID. User-friendly name for object ID. Also represents username for token based authentication. Changing this forces a new Redis Cache Access Policy Assignment to be created. })",
+        "required": false,
+        "default": "{}"
+      },
+      "private_static_ip_address": {
+        "type": "string",
+        "description": "(Optional) The Static IP Address to assign to the Redis Cache when hosted inside the Virtual Network. This argument implies the use of `subnet_id`. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "redis_configuration": {
+        "type": "object({ aof_backup_enabled = optional(bool, false) aof_storage_connection_string_0 = optional(string, null) aof_storage_connection_string_1 = optional(string, null) authentication_enabled = optional(bool, true) active_directory_authentication_enabled = optional(bool, true) maxmemory_reserved = optional(number, null) maxmemory_delta = optional(number, null) maxfragmentationmemory_reserved = optional(number, null) maxmemory_policy = optional(string, null) rdb_backup_enabled = optional(bool, false) rdb_backup_frequency = optional(number) rdb_backup_max_snapshot_count = optional(number, null) rdb_storage_connection_string = optional(number, null) data_persistence_authentication_method = optional(string, \"SAS\") })",
+        "description": "\"(Optional) Amount of replicas to create per master for this Redis Cache.\" object({ aof_backup_enabled = (Optional) Enable or disable AOF persistence for this Redis Cache. Defaults to false. aof_storage_connection_string_0 = (Optional) First Storage Account connection string for AOF persistence. aof_storage_connection_string_1 = (Optional) Second Storage Account connection string for AOF persistence. authentication_enabled = (Optional) If set to false, the Redis instance will be accessible without authentication. Defaults to true. active_directory_authentication_enabled = (Optional) Enable Microsoft Entra (AAD) authentication. Defaults to true. maxmemory_reserved = (Optional) Value in megabytes reserved for non-cache usage e.g. failover. Defaults are shown below. maxmemory_delta = (Optional) The max-memory delta for this Redis instance. Defaults are shown below. maxfragmentationmemory_reserved = (Optional) Value in megabytes reserved to accommodate for memory fragmentation. Defaults are shown below. maxmemory_policy = (Optional) How Redis will select what to remove when maxmemory is reached. Defaults are shown below. Defaults to volatile-lru. rdb_backup_enabled = (Optional) Is Backup Enabled? Only supported on Premium SKUs. Defaults to false. rdb_backup_frequency = (Optional) The Backup Frequency in Minutes. Only supported on Premium SKUs. Possible values are: 15, 30, 60, 360, 720 and 1440. rdb_backup_max_snapshot_count = (Optional) The maximum number of snapshots to create as a backup. Only supported for Premium SKUs. rdb_storage_connection_string = (Optional) The Connection String to the Storage Account. Only supported for Premium SKUs. data_persistence_authentication_method = (Optional) The authentication method for data persistence. Defaults to SAS. })",
+        "required": false,
+        "default": "{ \"active_directory_authentication_enabled\": true, \"aof_backup_enabled\": false, \"aof_storage_connection_string_0\": null, \"aof_storage_connection_string_1\": null, \"authentication_enabled\": true, \"data_persistence_authentication_method\": \"SAS\", \"maxfragmentationmemory_reserved\": null, \"maxmemory_delta\": null, \"maxmemory_policy\": null, \"maxmemory_reserved\": null, \"rdb_backup_enabled\": false, \"rdb_backup_frequency\": null, \"rdb_backup_max_snapshot_count\": null, \"rdb_storage_connection_string\": null }"
+      },
+      "redis_version": {
+        "type": "string",
+        "description": "(Optional) The version of Redis to use. Defaults to the latest version supported by Azure Cache for Redis.",
+        "required": false,
+        "default": "\"6\""
+      },
+      "replicas_per_master": {
+        "type": "number",
+        "description": "(Optional) Amount of replicas to create per master for this Redis Cache.",
+        "required": false,
+        "default": "null"
+      },
+      "replicas_per_primary": {
+        "type": "number",
+        "description": "(Optional) Amount of replicas to create per primary for this Redis Cache. If both replicas_per_primary and replicas_per_master are set, they need to be equal.",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "shard_count": {
+        "type": "number",
+        "description": "(Optional) Only available when using the Premium SKU The number of Shards to create on the Redis Cluster.",
+        "required": false,
+        "default": "null"
+      },
+      "sku": {
+        "type": "string",
+        "description": "(Required) The SKU of Redis Cache. Possible values are `Basic`, `Standard` or `Premium`.",
+        "required": false,
+        "default": "\"Standard\""
+      },
+      "subnet_id": {
+        "type": "string",
+        "description": "(Optional) Only available when using the Premium SKU The ID of the Subnet within which the Redis Cache should be deployed. This Subnet must only contain Azure Cache for Redis instances without any other type of resources. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "zones": {
+        "type": "list(string)",
+        "description": "(Optional) Specifies a list of Availability Zones in which this Redis Cache should be located. Changing this forces a new Redis Cache to be created.",
+        "required": false,
+        "default": "[]"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The Resource ID of the Azure Cache for Redis."
+    },
+    "name": {
+      "description": "The name of Azure Redis Cache."
+    },
+    "resource": {
+      "description": "The Redis Cache resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Rediscache' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Subnet ID",
+      "Managed Identity"
+    ]
+  }
+}

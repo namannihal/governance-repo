@@ -1,0 +1,50 @@
+# Run pipeline for feature/* branches and main branch (automatic + manual)
+workflow:
+  rules:
+    - if: '$CI_COMMIT_BRANCH =~ /^feature\//'
+      when: always
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: always
+
+include:
+  ###################################
+  # Include versioned pipeline code #
+  ###################################
+
+  - project: "app/itc-93303/bas-cicd-templates"
+    ref: templates-0.0.29
+    file:
+      - "templates/markdown/jobs/markdown-to-pdf.yaml"
+      - "templates/helper_scripts.yaml"
+
+  ######################
+  # Azure environments #
+  ######################
+
+  - "/environments/dev/pipeline-vars/pipeline-vars.yaml"
+  - "/environments/dev/subscription-vars/subscription.yaml"
+  - "/environments/qa/pipeline-vars/pipeline-vars.yaml"
+  - "/environments/qa/subscription-vars/subscription.yaml"
+  - "/environments/ppr/pipeline-vars/pipeline-vars.yaml"
+  - "/environments/ppr/subscription-vars/subscription.yaml"
+  - "/environments/prd/pipeline-vars/pipeline-vars.yaml"
+  - "/environments/prd/subscription-vars/subscription.yaml"
+
+  ################
+  # local jobs   #
+  ################
+  - "/pipelines/bootstrap/bootstrap-variables-job.yaml"
+  - "/pipelines/build/markdown-to-pdf.yaml"
+  - "/pipelines/build/build-pipeline-parent.yaml"
+  - "/pipelines/iac/iac-deployment-parent.yaml"
+  - "/pipelines/iac/iac-check-modules-parent.yaml"
+
+variables:
+  FUNCTIONAL_TEST_DISABLED: "true"
+
+default:
+  tags: [Refinitiv, Linux, Medium]
+
+stages:
+  - build
+  - deploy

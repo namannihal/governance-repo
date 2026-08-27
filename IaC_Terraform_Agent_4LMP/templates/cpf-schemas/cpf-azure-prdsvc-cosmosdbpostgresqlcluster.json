@@ -1,0 +1,284 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Cosmos DB PostgreSQL Cluster module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-cosmosdbpostgresqlcluster'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-cosmosdbpostgresqlcluster",
+  "module_type": "service",
+  "azure_service": "Cosmosdbpostgresqlcluster",
+  "module_name": "Cosmos DB PostgreSQL Cluster module",
+  "latest_tag": "1.0.1",
+  "available_tags": [
+    "1.0.1",
+    "1.0.0",
+    "0.2.2",
+    "0.2.1",
+    "0.2.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cosmosdbpostgresqlcluster.git//?ref=1.0.1",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "resource_group",
+    "random_password"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_cosmosdb_postgresql_cluster.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_cosmosdb_postgresql_coordinator_configuration.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_cosmosdb_postgresql_node_configuration.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_cosmosdb_postgresql_role.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "cosmosdbpostgresqlcluster",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cosmosdbpostgresqlcluster.git//?ref=1.0.1",
+      "version": "1.0.1",
+      "available_versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.2.2",
+        "0.2.1",
+        "0.2.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "node_count",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "administrator_login_password": {
+        "type": "string",
+        "description": "(Optional) The password of the administrator login. This is required when source_resource_id is not set.",
+        "required": false,
+        "default": "null"
+      },
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "citus_version": {
+        "type": "string",
+        "description": "(Optional) The citus extension version on the Azure Cosmos DB for PostgreSQL Cluster. Possible values are 8.3, 9.0, 9.1, 9.2, 9.3, 9.4, 9.5, 10.0, 10.1, 10.2, 11.0, 11.1, 11.2, 11.3 and 12.1.",
+        "required": false,
+        "default": "null"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "coordinator_configuration": {
+        "type": "map(object({ name = string value = string }))",
+        "description": "(Optional) map(object({ name = \"(Required) The name of the Coordinator Configuration on Azure Cosmos DB for PostgreSQL Cluster. Changing this forces a new resource to be created.\" value = \"(Required) The value of the Coordinator Configuration on Azure Cosmos DB for PostgreSQL Cluster.\" }))",
+        "required": false,
+        "default": "{}"
+      },
+      "coordinator_public_ip_access_enabled": {
+        "type": "bool",
+        "description": "(Optional) Is public access enabled on coordinator? Defaults to true.",
+        "required": false,
+        "default": "true"
+      },
+      "coordinator_server_edition": {
+        "type": "string",
+        "description": "(Optional) The edition of the coordinator server. Possible values are BurstableGeneralPurpose, BurstableMemoryOptimized, GeneralPurpose and MemoryOptimized. Defaults to GeneralPurpose.",
+        "required": false,
+        "default": "\"GeneralPurpose\""
+      },
+      "coordinator_storage_quota_in_mb": {
+        "type": "string",
+        "description": "(Optional) The coordinator storage allowed for the Azure Cosmos DB for PostgreSQL Cluster. Possible values are 32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608, 16777216, and 33554432.",
+        "required": false,
+        "default": "null"
+      },
+      "coordinator_vcore_count": {
+        "type": "string",
+        "description": "(Optional) The coordinator vCore count for the Azure Cosmos DB for PostgreSQL Cluster. Possible values are 1, 2, 4, 8, 16, 32, 64 and 96.",
+        "required": false,
+        "default": "null"
+      },
+      "cosmosdb_postgresql_role": {
+        "type": "map(object({ name = string password = string }))",
+        "description": "(Optional) map(object({ name = \"(Required) The name which should be used for this Azure Cosmos DB for PostgreSQL Role. Changing this forces a new resource to be created.\" password = \"(Required) The password of the Azure Cosmos DB for PostgreSQL Role. Changing this forces a new resource to be created.\" }))",
+        "required": false,
+        "default": "{}"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "ha_enabled": {
+        "type": "bool",
+        "description": "(Optional) Is high availability enabled for the Azure Cosmos DB for PostgreSQL cluster? Defaults to false.",
+        "required": false,
+        "default": "false"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "maintenance_window": {
+        "type": "object({ day_of_week = string start_hour = string start_minute = string })",
+        "description": "object({ day_of_week = \"(Optional) The day of week for maintenance window, where the week starts on a Sunday, i.e. Sunday = 0, Monday = 1. Defaults to 0.\" start_hour = \"(Optional) The start hour for maintenance window. Defaults to 0.\" start_minute = \"(Optional) The start minute for maintenance window. Defaults to 0.\" })",
+        "required": false,
+        "default": "null"
+      },
+      "node_configuration": {
+        "type": "map(object({ name = string value = string }))",
+        "description": "(Optional) map(object({ name = \"(Required) The name of the Node Configuration on Azure Cosmos DB for PostgreSQL Cluster. Changing this forces a new resource to be created.\" value = \"(Required) The value of the Node Configuration on Azure Cosmos DB for PostgreSQL Cluster.\" }))",
+        "required": false,
+        "default": "{}"
+      },
+      "node_count": {
+        "type": "number",
+        "description": "(Required) The worker node count of the Azure Cosmos DB for PostgreSQL Cluster. Possible value is between 0 and 20 except 1.",
+        "required": true
+      },
+      "node_public_ip_access_enabled": {
+        "type": "bool",
+        "description": "(Optional) Is public access enabled on worker nodes. Defaults to false.",
+        "required": false,
+        "default": "false"
+      },
+      "node_server_edition": {
+        "type": "string",
+        "description": "(Optional) The edition of the node server. Possible values are BurstableGeneralPurpose, BurstableMemoryOptimized, GeneralPurpose and MemoryOptimized. Defaults to MemoryOptimized.",
+        "required": false,
+        "default": "\"MemoryOptimized\""
+      },
+      "node_storage_quota_in_mb": {
+        "type": "string",
+        "description": "(Optional) The storage quota in MB on each worker node. Possible values are 32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608 and 16777216.",
+        "required": false,
+        "default": "null"
+      },
+      "node_vcores": {
+        "type": "string",
+        "description": "(Optional) The vCores count on each worker node. Possible values are 1, 2, 4, 8, 16, 32, 64, 96 and 104.",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "point_in_time_in_utc": {
+        "type": "string",
+        "description": "(Optional) The date and time in UTC (ISO8601 format) for the Azure Cosmos DB for PostgreSQL cluster restore.",
+        "required": false,
+        "default": "null"
+      },
+      "preferred_primary_zone": {
+        "type": "string",
+        "description": "(Optional) The preferred primary availability zone for the Azure Cosmos DB for PostgreSQL cluster.",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "shards_on_coordinator_enabled": {
+        "type": "string",
+        "description": "(Optional) Is shards on coordinator enabled for the Azure Cosmos DB for PostgreSQL cluster",
+        "required": false,
+        "default": "null"
+      },
+      "source_location": {
+        "type": "string",
+        "description": "(Optional) The Azure region of the source Azure Cosmos DB for PostgreSQL cluster for read replica clusters.",
+        "required": false,
+        "default": "null"
+      },
+      "source_resource_id": {
+        "type": "string",
+        "description": "(Optional) The resource ID of the source Azure Cosmos DB for PostgreSQL cluster for read replica clusters.",
+        "required": false,
+        "default": "null"
+      },
+      "sql_version": {
+        "type": "string",
+        "description": "(Optional) The major PostgreSQL version on the Azure Cosmos DB for PostgreSQL cluster. Possible values are 11, 12, 13, 14, 15 and 16.",
+        "required": false,
+        "default": "null"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "coordinator_id": {
+      "description": "The ID of the created coordinator."
+    },
+    "coordinator_resource": {
+      "description": "The created coordinator resource."
+    },
+    "id": {
+      "description": "The ID of the created cluster."
+    },
+    "name": {
+      "description": "The ID of the created cluster."
+    },
+    "node_id": {
+      "description": "The ID of the created node."
+    },
+    "node_resource": {
+      "description": "The created node resource."
+    },
+    "resource": {
+      "description": "The created Cosmos DB PostgreSQL Cluster resource."
+    },
+    "role_id": {
+      "description": "The ID of the created role."
+    },
+    "role_resource": {
+      "description": "The created role resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Cosmosdbpostgresqlcluster' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "resource_group",
+      "random_password"
+    ]
+  }
+}

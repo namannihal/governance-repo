@@ -1,0 +1,226 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Service Bus Subscription module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-servicebussubscription'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-servicebussubscription",
+  "module_type": "service",
+  "azure_service": "Servicebussubscription",
+  "module_name": "Service Bus Subscription module",
+  "latest_tag": "1.1.1",
+  "available_tags": [
+    "1.1.1",
+    "1.1.0",
+    "1.0.0",
+    "0.7.0",
+    "0.6.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-servicebussubscription.git//?ref=1.1.1",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Virtual Network",
+    "Subnet",
+    "Network Security Group",
+    "Route Table",
+    "Key Vault",
+    "Private Endpoint",
+    "User Assigned Identity",
+    "Service Bus Namespace",
+    "Service Bus Topic"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_servicebus_subscription.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_servicebus_subscription_rule.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "servicebussubscription",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-servicebussubscription.git//?ref=1.1.1",
+      "version": "1.1.1",
+      "available_versions": [
+        "1.1.1",
+        "1.1.0",
+        "1.0.0",
+        "0.7.0",
+        "0.6.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "max_delivery_count",
+      "org_id",
+      "topic_id"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "auto_delete_on_idle": {
+        "type": "string",
+        "description": "(Optional) The idle interval after which the topic is automatically deleted as an ISO 8601 duration. The minimum duration is 5 minutes or `PT5M`.",
+        "required": false,
+        "default": "\"P10675199DT2H48M5.4775807S\""
+      },
+      "batched_operations_enabled": {
+        "type": "bool",
+        "description": "(Optional) Boolean flag which controls whether the Subscription supports batched operations.",
+        "required": false,
+        "default": "null"
+      },
+      "client_scoped_subscription": {
+        "type": "object({ client_id = optional(string, null) is_client_scoped_subscription_shareable = optional(bool, true) is_client_scoped_subscription_durable = optional(bool) })",
+        "description": "(Optional) A `client_scoped_subscription` block as defined below. Used only for `Premium` SKU: client_id = \"(Optional) Specifies the Client ID of the application that created the client-scoped subscription. Changing this forces a new resource to be created.\" is_client_scoped_subscription_shareable = \"(Optional) Whether the client scoped subscription is shareable. Defaults to `true` Changing this forces a new resource to be created.\" is_client_scoped_subscription_durable = \"(Optional) Whether the client scoped subscription is durable. This property can only be controlled from the application side.\"",
+        "required": false,
+        "default": "null"
+      },
+      "client_scoped_subscription_enabled": {
+        "type": "bool",
+        "description": "(Optional) whether the subscription is scoped to a client ID. Defaults to `false`. Used only for `Premium` SKU.",
+        "required": false,
+        "default": "false"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "dead_lettering_on_filter_evaluation_error": {
+        "type": "bool",
+        "description": "(Optional) Boolean flag which controls whether the Subscription has dead letter support on filter evaluation exceptions. Defaults to `true`.",
+        "required": false,
+        "default": "true"
+      },
+      "dead_lettering_on_message_expiration": {
+        "type": "bool",
+        "description": "(Optional) Boolean flag which controls whether the Subscription has dead letter support when a message expires.",
+        "required": false,
+        "default": "true"
+      },
+      "default_message_ttl": {
+        "type": "string",
+        "description": "(Optional) The Default message timespan to live as an ISO 8601 duration. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.",
+        "required": false,
+        "default": "\"P10675199DT2H48M5.4775807S\""
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "forward_dead_lettered_messages_to": {
+        "type": "string",
+        "description": "(Optional) The name of a Queue or Topic to automatically forward Dead Letter messages to.",
+        "required": false,
+        "default": "null"
+      },
+      "forward_to": {
+        "type": "string",
+        "description": "(Optional) The name of a Queue or Topic to automatically forward messages to.",
+        "required": false,
+        "default": "null"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "lock_duration": {
+        "type": "string",
+        "description": "(Optional) The lock duration for the subscription as an ISO 8601 duration. The default value is 1 minute or `PT1M` . The maximum value is 5 minutes or `PT5M`.",
+        "required": false,
+        "default": "\"PT1M\""
+      },
+      "max_delivery_count": {
+        "type": "number",
+        "description": "(Required) The maximum number of deliveries. Value can range from `1` to `2000`",
+        "required": true
+      },
+      "name": {
+        "type": "string",
+        "description": "(Optional) Specifies the name of the ServiceBus Subscription resource. If not provided, the resource name is created leveraging LSEG variables as per standard naming convention. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "requires_session": {
+        "type": "bool",
+        "description": "(Optional) Boolean flag which controls whether this Subscription supports the concept of a session. By default is true, can be false in case FIFO is not required for the specific use case.",
+        "required": false,
+        "default": "true"
+      },
+      "status": {
+        "type": "string",
+        "description": "(Optional) The status of the Subscription. Possible values are `Active`, `ReceiveDisabled`, or `Disabled`. Defaults to `Active`.",
+        "required": false,
+        "default": "\"Active\""
+      },
+      "subscription_rules": {
+        "type": "map(object({ filter_type = string sql_filter = optional(string) action = optional(string) correlation_filter = optional(object({ content_type = optional(string) correlation_id = optional(string) label = optional(string) message_id = optional(string) reply_to = optional(string) reply_to_session_id = optional(string) session_id = optional(string) to = optional(string) properties = optional(map(string)) })) }))",
+        "description": "(Optional) A map of servicebus_topic_authorization_rule object as defined below. This creates a `azurerm_servicebus_topic_authorization_rule` for each item in the map: Key = \"(Required) Specifies the name of the ServiceBus Subscription Rule. Changing this forces a new resource to be created.\" Value = object({ filter_type = \"(Required) Type of filter to be applied to a BrokeredMessage. Possible values are `SqlFilter` and `CorrelationFilter`.\" sql_filter = \"(Optional) Represents a filter written in SQL language-based syntax that to be evaluated against a BrokeredMessage. Required when filter_type is set to SqlFilter.\" action = \"(Optional) Represents set of actions written in SQL language-based syntax that is performed against a BrokeredMessage.\" correlation_filter = \"(Optional) A correlation_filter block as documented below to be evaluated against a BrokeredMessage. Required when filter_type is set to `CorrelationFilter`. Object({ content_type = \"(Optional) Content type of the message.\" correlation_id = \"(Optional) Identifier of the correlation.\" label = \"(Optional) Application specific label.\" message_id = \"(Optional) Identifier of the message.\" reply_to = \"(Optional) Address of the queue to reply to.\" reply_to_session_id = \"(Optional) Session identifier to reply to.\" session_id = \"(Optional) Session identifier.\" to = \"(Optional) Address to send to.\" properties = \"(Optional) A list of user defined properties to be included in the filter. Specified as a map of name/value pairs.\" }) })",
+        "required": false,
+        "default": "{}"
+      },
+      "topic_id": {
+        "type": "string",
+        "description": "(Required) The ID of the ServiceBus Topic to create this Subscription in. Changing this forces a new resource to be created.",
+        "required": true
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The ID of the Service Bus Subscription created."
+    },
+    "name": {
+      "description": "The Name of the Service Bus Subscription created."
+    },
+    "resource": {
+      "description": "The Service Bus Subscription resource created."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Servicebussubscription' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Virtual Network",
+      "Subnet",
+      "Network Security Group",
+      "Route Table",
+      "Key Vault",
+      "Private Endpoint",
+      "User Assigned Identity",
+      "Service Bus Namespace",
+      "Service Bus Topic"
+    ]
+  }
+}

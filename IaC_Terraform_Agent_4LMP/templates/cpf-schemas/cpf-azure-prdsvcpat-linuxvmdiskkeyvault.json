@@ -1,0 +1,182 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Linux VM and Managed Disks Pattern",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvcpat-linuxvmdiskkeyvault'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvcpat-linuxvmdiskkeyvault",
+  "module_type": "service-pattern",
+  "azure_service": "Linuxvmdiskkeyvault",
+  "module_name": "Linux VM and Managed Disks Pattern",
+  "latest_tag": "",
+  "available_tags": [],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-linuxvmdiskkeyvault.git//",
+  "terraform_requirements": {
+    "azurerm": ">= 3.51",
+    "time": "~> 0.9",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "time_sleep.wait_keyvault_pe",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_resource_group.this",
+      "type": "data source"
+    },
+    {
+      "terraform_resource": "azurerm_resources.key_vault",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "linuxvmdiskkeyvault",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-linuxvmdiskkeyvault.git//",
+      "version": "latest",
+      "available_versions": []
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "disk_encryption_set",
+      "environment",
+      "keyvault",
+      "linuxvirtualmachine",
+      "location",
+      "manageddisk",
+      "org_id",
+      "private_endpoint",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "disk_encryption_set": {
+        "type": "object({ key_details = object({ key_size = number key_type = string expiration_date = string }) rotation_policy = optional(object({ notify_before_expiry = optional(string, \"P358D\") time_before_expiry = optional(string, \"P7D\") time_after_creation = optional(string, null) expire_after = optional(string, \"P365D\") })) encryption_type = optional(string, \"EncryptionAtRestWithCustomerKey\") })",
+        "description": "(Required) A Disk Encryption Set block consists of below variables: encryption_type = \"(Optional) The type of key used to encrypt the data of the disk. Changing this forces a new resource to be created.\" (Required) A key_details block as defined below: key_size = \"(Required) Size of the Key\" key_type = \"(Required) Type of the Key\" expiration_date = \"(Required) Expiration date of the Key\" (Optional) A rotation policy block as defined below object({ notify_before_expiry = \"(Required) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" time_before_expiry = \"(Required) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" time_after_creation = \"(Optional) Rotate automatically at a duration after create as an ISO 8601 duration.\" expire_after = \"(Required) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" })",
+        "required": true
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "keyvault": {
+        "type": "object({ sku_name = optional(string, \"premium\") enabled_for_deployment = optional(bool, false) enabled_for_disk_encryption = optional(bool, true) enabled_for_template_deployment = optional(bool, false) })",
+        "description": "(Optional) : sku_name = \"(Optional) The Name of the Sku used for the Key Vault. Possible values are standard and premium.\" enabled_for_deployment = \"(Optional) Specifies whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key vault.\" enabled_for_disk_encryption = \"(Optional) Specifies whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys.\" enabled_for_template_deployment = \"(Optional) Specifies whether Azure Resource Manager is permitted to retrieve secrets from the key vault.\"",
+        "required": true
+      },
+      "linuxvirtualmachine": {
+        "type": "object({ size = string admin_username = string username = string admin_ssh_public_key = string zone = optional(string, null) license_type = optional(string, null) availability_set_id = optional(string, null) proximity_placement_group_id = optional(string, null) computer_name = optional(string, null) source_image_id = optional(string, null) image_marketplace = optional(bool, false) secure_boot_enabled = optional(bool, false) edge_zone = optional(string, null) priority = optional(string, \"Regular\") vtpm_enabled = optional(bool, false) user_data = optional(string, null) dedicated_host_id = optional(string, null) dedicated_host_group_id = optional(string, null) custom_data = optional(string, null) virtual_machine_scale_set_id = optional(string, null) boot_diagnostics_storage_account_uri = optional(string, null) os_disk = optional(object({ storage_account_type = optional(string, \"StandardSSD_LRS\") disk_size_gb = optional(number, 127) caching = optional(string, \"ReadWrite\") }), null) source_image_reference = optional(object({ publisher = string offer = string sku = string version = string }), null) plan = optional(object({ name = optional(string) publisher = optional(string) product = optional(string) }), null) identity = object({ type = optional(string, \"SystemAssigned\") identity_ids = optional(set(string), null) }) termination_notification = optional(object({ enabled = bool timeout = optional(string) }), null) })",
+        "description": "A Linux Virtual Machine that should be created with below variables: size = \"(Required) The SKU which should be used for this Virtual Machine.\" admin_username = \"(Required) The username of the local administrator used for the Virtual Machine.\" username = \"(Required) The Username for which this Public SSH Key should be configured. Changing this forces a new resource to be created.\" admin_ssh_public_key = \"(Required) The Public Key which should be used for authentication, which needs to be at least 2048-bit and in ssh-rsa format. Changing this forces a new resource to be created.\" zone = \"(Optional) Specifies the Availability Zones in which this Linux Virtual Machine should be located. Changing this forces a new Linux Virtual Machine to be created.\" license_type = \"(Optional) Specifies the BYOL Type for this Virtual Machine. Possible values are RHEL_BYOS and SLES_BYOS.\" availability_set_id = \"(Optional) Specifies the ID of the Availability Set in which the Virtual Machine should exist. Changing this forces a new resource to be created.\" proximity_placement_group_id = \"(Optional) The ID of the Proximity Placement Group which the Virtual Machine should be assigned to.\" computer_name = \"(Optional) Specifies the Hostname which should be used for this Virtual Machine.\" source_image_id = \"(Optional) The ID of the Image which this Virtual Machine should be created from.\" image_marketplace = \"(Optional) This will decide if you want to create VM from Marketplace Image or not?\" secure_boot_enabled = \"(Optional) Specifies whether secure boot should be enabled on the virtual machine. Changing this forces a new resource to be created.\" edge_zone = \"(Optional) Specifies the Edge Zone within the Azure Region where this Linux Virtual Machine Scale Set should exist. Changing this forces a new Linux Virtual Machine Scale Set to be created.\" priority = \"(Optional) Specifies the priority of this Virtual Machine. Possible values are Regular and Spot. Defaults to Regular. Changing this forces a new resource to be created.\" vtpm_enabled = \"(Optional) Specifies whether vTPM should be enabled on the virtual machine. Changing this forces a new resource to be created.\" user_data = \"(Optional) The Base64-Encoded User Data which should be used for this Virtual Machine.\" dedicated_host_id = \"(Optional) The ID of a Dedicated Host where this machine should be run on. Conflicts with dedicated_host_group_id.\" dedicated_host_group_id = \"(Optional) The ID of a Dedicated Host Group that this Linux Virtual Machine should be run within. Conflicts with dedicated_host_id.\" custom_data = \"(Optional) The custom data to be used for the Virtual Machine.\" virtual_machine_scale_set_id = \"(Optional) Specifies the Orchestrated Virtual Machine Scale Set that this Virtual Machine should be created within. Changing this forces a new resource to be created.\" boot_diagnostics_storage_account_uri = \"(Optional) The Primary/Secondary Endpoint for the Azure Storage Account which should be used to store Boot Diagnostics.\" (Optional) os_disk variable consists of below items: object({ storage_account_type = \"(Optional) The Type of Storage Account which should back this the Internal OS Disk. Possible values are Standard_LRS, StandardSSD_LRS, Premium_LRS, StandardSSD_ZRS and Premium_ZRS.\" disk_size_gb = \"(Optional) The Size of the Internal OS Disk in GB, if you wish to vary from the size used in the image this Virtual Machine is sourced from.\" caching = \"(Optional) The Type of Caching which should be used for the Internal OS Disk. Possible values are None, ReadOnly and ReadWrite.\" }) (Optional) source_image_reference variable consists of below items: object({ publisher = \"(Required) Specifies the publisher of the image used to create the virtual machines. Changing this forces a new resource to be created.\" offer = \"(Required) Specifies the offer of the image used to create the virtual machines. Changing this forces a new resource to be created.\" sku = \"(Required) Specifies the SKU of the image used to create the virtual machines. Changing this forces a new resource to be created.\" version = \"(Required) Specifies the version of the image used to create the virtual machines. Changing this forces a new resource to be created.\" }) (Optional) Specifies the Plan which should be used for this Virtual Machine: name = \"(Optional) Specifies the name of the image from the marketplace. Changing this forces a new resource to be created.\" publisher = \"(Optional) Specifies the publisher of the image. Changing this forces a new resource to be created.\" product = \"(Optional) Specifies the product of the image from the marketplace. Changing this forces a new resource to be created.\" (Required) An identity block as defined below object({ type = \"(Required) Specifies the type of Managed Service Identity that should be configured on this Linux Virtual Machine. Possible values are `SystemAssigned`, `UserAssigned`, `SystemAssigned, UserAssigned` (to enable both).\" identity_ids = \"(Optional) Specifies a list of User Assigned Managed Identity IDs to be assigned to this Linux Virtual Machine. This is required when `type` is set to `UserAssigned` or `SystemAssigned, UserAssigned`.\" }) (Optional) A termination_notification block as defined below: enabled = \"(Required) Should the termination notification be enabled on this Virtual Machine?\" timeout = \"(Optional) Length of time (in minutes, between 5 and 15) a notification to be sent to the VM on the instance metadata server till the VM gets deleted. The time duration should be specified in ISO 8601 format. Defaults to PT5M.\" })",
+        "required": true
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "manageddisk": {
+        "type": "map(object({ availability_zone = optional(string, null) storage_account_type = optional(string, \"StandardSSD_LRS\") source_uri = optional(string, \"\") source_resource_id = optional(string, \"\") image_reference_id = optional(string, \"\") os_type = optional(string, null) disk_size_gb = optional(string, \"128\") disk_number = string diskattachment = optional(object({ lun = number caching = optional(string, \"ReadWrite\") })) }))",
+        "description": "(Optional) Managed Disk that should be created with below variables: availability_zone = \"(Optional) The Availability Zone in which this Managed Disk should be located. Make sure the disk sku you want to use can be created in availability zone.\" storage_account_type = \"(Optional) The type of storage to use for the managed disk. Possible values are Standard_LRS, StandardSSD_ZRS, Premium_LRS, PremiumV2_LRS, Premium_ZRS, StandardSSD_LRS or UltraSSD_LRS.\" source_uri = \"(Optional) URI to a valid VHD file to be used for the disk creation.\" source_resource_id = \"(Optional) The ID of an existing Managed Disk or Snapshot to copy from.\" image_reference_id = \"(Optional) ID of an existing platform/marketplace disk image to copy from\" os_type = \"(Optional) Specify a value when the source is an Import, Copy or Image.\" disk_size_gb = \"(Optional) The resource ID of a Disk Encryption Set which should be used to encrypt this Managed Disk.\" disk_number = \"(Required) The number of the disk. This can be used to differentiate between multiple disks attached to a Virtual Machine.\" (Optional) Disk Attachment that should be created with below variables: lun = \"The Logical Unit Number of the Data Disk, which needs to be unique within the Virtual Machine.\" caching = \"(Optional) The Type of Caching which should be used for the Disk Attachment. Possible values are None, ReadOnly and ReadWrite.\"",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "private_endpoint": {
+        "type": "object({ subnet_id = string is_manual_connection = string dns_zone_group_name = string private_dns_zone_ids = list(string) static_ip_required = bool private_connection_resource_alias = optional(string, null) ip_configuration = optional(map(object({ private_ip_address = string subresource_name = optional(string, \"vault\") member_name = optional(string, \"default\") })), {}) })",
+        "description": "(Required) A Private Endpoint consists of below variables: subnet_id = \"(Required) The ID of the Subnet from which Private IP Addresses will be allocated for this Private Endpoint. Changing this forces a new resource to be created.\" is_manual_connection = \"(Required) Does the Private Endpoint require Manual Approval from the remote resource owner? Changing this forces a new resource to be created.\" dns_zone_group_name = \"(Required) Specifies the Name of the Private DNS Zone Group.\" private_dns_zone_ids = \"(Required) Specifies the list of Private DNS Zones to include within the private_dns_zone_group.\" static_ip_required = \"(Required) Whether a Static IP is required to be assigned to Private Endpoint or not.\" private_connection_resource_alias = \"(Optional) The Service Alias of the Private Link Enabled Remote Resource which this Private Endpoint should be connected to. One of private_connection_resource_id or private_connection_resource_alias must be specified. Changing this forces a new resource to be created.\" ip_configuration = (Optional) map(object({ private_ip_address = \"(Required) Specifies the static IP address within the private endpoint's subnet to be used. Changing this forces a new resource to be created.\" subresource_name = \"(Optional) Specifies the subresource this IP address applies to.\" member_name = \"(Optional) Specifies the member name this IP address applies to.\" }))",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "key_vault_secrets": {
+        "type": "map(object({ secret_number = string value = string content_type = optional(string, null) not_before_date = optional(string, null) expiration_date = optional(string, null) }))",
+        "description": "(Required) An identity block as defined below object({ secret_number = \"(Required) Specifies secret number for multiple secrets to be created.\" value = \"(Required) Specifies the value of the Key Vault Secret.\" content_type = \"(Optional) Specifies the content type for the Key Vault Secret.\" not_before_date = \"(Optional) Key not usable before the provided UTC datetime (Y-m-d'T'H:M:S'Z').\" expiration_date = \"(Optional) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').\" })",
+        "required": false,
+        "default": "{}"
+      },
+      "network_acls": {
+        "type": "object({ bypass = optional(string, \"None\") default_action = optional(string, \"Deny\") ip_rules = optional(list(string), []) virtual_network_subnet_ids = optional(list(string), []) })",
+        "description": "(Optional) The network ACL configuration for the Key Vault. If not specified then the Key Vault will be created with a firewall that blocks access. Specify `null` to create the Key Vault with no firewall. - `bypass` - (Optional) Should Azure Services bypass the ACL. Possible values are `AzureServices` and `None`. Defaults to `None`. - `default_action` - (Optional) The default action when no rule matches. Possible values are `Allow` and `Deny`. Defaults to `Deny`. - `ip_rules` - (Optional) A list of IP rules in CIDR format. Defaults to `[]`. - `virtual_network_subnet_ids` - (Optional) When using with Service Endpoints, a list of subnet IDs to associate with the Key Vault. Defaults to `[]`.",
+        "required": false,
+        "default": "{}"
+      },
+      "network_interface": {
+        "type": "object({ ip_configurations = list(object({ private_ip_address = optional(string) private_ip_address_version = optional(string, \"IPv4\") private_ip_address_allocation = optional(string, \"Dynamic\") subnet_id = optional(string) primary = optional(bool, false) gateway_load_balancer_frontend_ip_configuration_id = optional(string) })) dns_servers = optional(list(string)) edge_zone = optional(string) accelerated_networking_enabled = optional(bool, false) internal_dns_name_label = optional(string) })",
+        "description": "A Network Interface that should be created and attached to this Virtual Machine. ip_configurations = list(object({ private_ip_address = \"(Optional) The Static IP Address which should be used. When `private_ip_address_allocation` is set to `Static` this field can be configured.\" private_ip_address_version = \"(Optional) The IP Version to use. Possible values are `IPv4` or `IPv6`. Defaults to `IPv4`.\" private_ip_address_allocation = \"(Required) The allocation method used for the Private IP Address. Possible values are `Dynamic` and `Static`. Defaults to `Dynamic`.\" subnet_id = \"(Required) The ID of the Subnet where the VM Network Interface should be located in.\" primary = \"(Optional) Is this the Primary IP Configuration? Must be `true` for the first `ip_configuration`. Defaults to `false`.\" gateway_load_balancer_frontend_ip_configuration_id = \"(Optional) The Frontend IP Configuration ID of a Gateway SKU Load Balancer.\" })) dns_servers = \"(Optional) A list of IP Addresses defining the DNS Servers which should be used for this Network Interface. Configuring DNS Servers on the Network Interface will override the DNS Servers defined on the Virtual Network.\" edge_zone = \"(Optional) Specifies the Edge Zone within the Azure Region where this Network Interface should exist. Changing this forces a new Network Interface to be created.\" accelerated_networking_enabled = \"(Optional) Should Accelerated Networking be enabled? Defaults to `false`. Only certain Virtual Machine sizes are supported for Accelerated Networking - [more information can be found in this document](https://docs.microsoft.com/azure/virtual-network/create-vm-accelerated-networking-cli). To use Accelerated Networking in an Availability Set, the Availability Set must be deployed onto an Accelerated Networking enabled cluster.\" internal_dns_name_label = \"(Optional) The (relative) DNS Name used for internal communications between Virtual Machines in the same Virtual Network.\"",
+        "required": false,
+        "default": "{ \"accelerated_networking_enabled\": null, \"dns_servers\": null, \"edge_zone\": null, \"internal_dns_name_label\": null, \"ip_configurations\": [ { \"gateway_load_balancer_frontend_ip_configuration_id\": null, \"primary\": true, \"private_ip_address\": null, \"private_ip_address_allocation\": null, \"private_ip_address_version\": null, \"subnet_id\": null } ] }"
+      },
+      "supporting_resource": {
+        "type": "object({ key_vault_id = optional(string) })",
+        "description": "(Optional) A supporting_resource block as defined below: key_vault_id = \"(Optional) The ID of the existing Key Vault.\"",
+        "required": false,
+        "default": "null"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "diskencryptionset_resource": {
+      "description": "The Disk Encryption Set resource."
+    },
+    "key_vault_private_endpoint_resource": {
+      "description": "The Key Vault and Private Endpoint resource."
+    },
+    "linuxvirtualmachine_id": {
+      "description": "ID of the Linux Virtual Machine."
+    },
+    "linuxvirtualmachine_name": {
+      "description": "Name of the Linux Virtual Machine."
+    },
+    "linuxvirtualmachine_resource": {
+      "description": "The Linux Virtual Machine resource."
+    },
+    "manageddisk_id": {
+      "description": "The ID of Managed Disks resources."
+    },
+    "manageddisk_name": {
+      "description": "The name of Managed Disks resources."
+    },
+    "manageddisk_resource": {
+      "description": "The Managed Disks resources."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Linuxvmdiskkeyvault' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a service pattern module. It bundles multiple related services/configurations.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

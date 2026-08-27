@@ -1,0 +1,313 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Backup Vault Module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-dataprotectionbackupvault'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-dataprotectionbackupvault",
+  "module_type": "service",
+  "azure_service": "Dataprotectionbackupvault",
+  "module_name": "Azure Backup Vault Module",
+  "latest_tag": "3.0.2",
+  "available_tags": [
+    "3.0.2",
+    "3.0.1",
+    "3.0.0",
+    "2.2.2",
+    "2.2.1"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-dataprotectionbackupvault.git//?ref=3.0.2",
+  "terraform_requirements": {
+    "azapi": ">= 1.9",
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "key vault",
+    "managed identity",
+    "Network security Group",
+    "Subnet",
+    "Route table",
+    "keyVault",
+    "Time sleep"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azapi_resource.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azapi_update_resource.backup_vault_encryption",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_data_protection_backup_policy_blob_storage.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_data_protection_backup_policy_disk.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_data_protection_backup_policy_postgresql_flexible_server.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.this",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "dataprotectionbackupvault",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-dataprotectionbackupvault.git//?ref=3.0.2",
+      "version": "3.0.2",
+      "available_versions": [
+        "3.0.2",
+        "3.0.1",
+        "3.0.0",
+        "2.2.2",
+        "2.2.1"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_id"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "blob_backup_policy": {
+        "type": "object({ backup_repeating_time_intervals = optional(list(string), []) operational_default_retention_duration = optional(string, ) vault_default_retention_duration = optional(string, ) time_zone = optional(string, \"UTC\") retention_rules = optional(list(object({ name = string priority = number duration = optional(string) criteria = list(object({ absolute_criteria = optional(string) days_of_month = optional(list(number)) days_of_week = optional(list(string)) weeks_of_month = optional(list(string)) months_of_year = optional(list(string)) scheduled_backup_times = optional(list(string)) })) life_cycle = optional(list(object({ data_store_type = string duration = string })), []) })), []) })",
+        "description": "(Optional) Properties configuration for the Blob Storage backup policy. object({ backup_repeating_time_intervals = \"(Optional) List of repeating time intervals in ISO 8601 interval format.\" operational_default_retention_duration = \"(Optional) Operational (short-term) default retention duration in ISO 8601 format (e.g. P7D).\" vault_default_retention_duration = \"(Optional) Vault (long-term) default retention duration in ISO 8601 format (e.g. P30D).\" time_zone = \"(Optional) Time zone used by the backup schedule.\" retention_rules = (Optional)list(object({ name = \"(Required) Name of the retention rule.\" priority = \"(Required) Numeric priority; lower number = higher priority.\" duration = \"(Required) Default duration applied when life_cycle list not supplied (ISO 8601).\" criteria = (Optional)list(object({ absolute_criteria = \"(Optional) Possible values include FirstOfDay, FirstOfWeek, FirstOfMonth, etc.\" days_of_month = \"(Optional) List of days of month (1-31).\" days_of_week = \"(Optional) List of days e.g. Monday, Tuesday, ...\" weeks_of_month = \"(Optional) List of week indicators e.g. First, Second, Third, Fourth, Last.\" months_of_year = \"(Optional) List of months e.g. January, February, ...\" scheduled_backup_times = \"(Optional) List of RFC3339 timestamps for scheduled backups.\" }) life_cycle = list(object({ data_store_type = \"(Required) The type of data store. The only possible value is VaultStore.\" duration = \"(Required) The retention duration in ISO 8601 format (e.g., P30D, P6M, P1Y).\" })) })) })",
+        "required": false,
+        "default": "{ \"backup_repeating_time_intervals\": [ \"R/2023-11-22T11:40:16+00:00/PT4H\" ], \"operational_default_retention_duration\": \"P7D\", \"retention_rules\": [], \"time_zone\": \"UTC\", \"vault_default_retention_duration\": \"P30D\" }"
+      },
+      "cmk_name": {
+        "type": "string",
+        "description": "(optional) Customer managed key name to be used (max 127 chars)",
+        "required": false,
+        "default": "null"
+      },
+      "cmk_rotation_policy": {
+        "type": "object({ notify_before_expiry = string time_before_expiry = string time_after_creation = optional(string, null) expire_after = string })",
+        "description": "(Optional) A rotation policy block as defined below object({ notify_before_expiry = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" time_before_expiry = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" time_after_creation = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" expire_after = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" })",
+        "required": false,
+        "default": "{ \"expire_after\": \"P365D\", \"notify_before_expiry\": \"P358D\", \"time_after_creation\": null, \"time_before_expiry\": \"P7D\" }"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "create_backup_vault": {
+        "type": "bool",
+        "description": "(Optional) Whethere to Create Backup Vaule When Backup Vault is already exists.",
+        "required": false,
+        "default": "true"
+      },
+      "create_blob_backup_policy": {
+        "type": "bool",
+        "description": "Set to true to enable blob storage backup policy, false otherwise.",
+        "required": false,
+        "default": "false"
+      },
+      "create_disk_backup_policy": {
+        "type": "bool",
+        "description": "Set to true to enable VM backup policy, false otherwise.",
+        "required": false,
+        "default": "true"
+      },
+      "create_postgresqlserver_backup_policy": {
+        "type": "bool",
+        "description": "Set to true to enable postgre sqlserver backup policy, false otherwise.",
+        "required": false,
+        "default": "true"
+      },
+      "cross_subscription_restore_state": {
+        "type": "string",
+        "description": "(Optional) The state for cross subscription restore settings. Possible value is Disabled.",
+        "required": false,
+        "default": "\"Disabled\""
+      },
+      "customer_managed_key": {
+        "type": "object({ key_vault_id = string expiration_date = string })",
+        "description": "(Optional) An customer_managed_key block as defined below object({ key_vault_id = \"(Required) The resource ID of the Key Vault where the Key Vault Key resides.\" cmk_expiration_date = \"(Required) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').\" })",
+        "required": false,
+        "default": "null"
+      },
+      "datastore_type": {
+        "type": "string",
+        "description": "(Optional) Specifies the type of the data store.Possible values are ArchiveStore, SnapshotStore and VaultStore.",
+        "required": false,
+        "default": "\"VaultStore\""
+      },
+      "disk_backup_policy": {
+        "type": "object({ backup_repeating_time_intervals = list(string) default_retention_duration = string time_zone = string retention_rule = list(object({ name = string duration = string priority = number criteria = object({ absolute_criteria = string }) })) })",
+        "description": "(Optional) Properties configuration for the Disk Backup Policy. object({ backup_repeating_time_intervals = \"(Optional) Specifies a list of repeating time interval. It should follow ISO 8601 repeating time interval.\" default_retention_duration = \"(Optional) Default retention duration in ISO 8601 format.\" time_zone = \"(Optional) Specifies the Time Zone which should be used by the backup schedule.\" retention_rule = list(object({ name = \"(Required) The name which should be used for this Backup Policy Disk. Changing this forces a new Backup Policy Disk to be created.\" duration = \"(Required) Duration of deletion after given timespan. It should follow ISO 8601 duration format. Changing this forces a new Backup Policy Disk to be created.\" priority = \"(Required) Retention Tag priority. Changing this forces a new Backup Policy Disk to be created.\" criteria = object({ absolute_criteria = \"(Optional) Possible values are FirstOfDay and FirstOfWeek. Changing this forces a new Backup Policy Disk to be created.\" }) })",
+        "required": false,
+        "default": "{ \"backup_repeating_time_intervals\": [ \"R/2023-11-22T11:40:16+00:00/PT4H\" ], \"default_retention_duration\": \"P7D\", \"retention_rule\": [], \"time_zone\": \"UTC\" }"
+      },
+      "encryption_state": {
+        "type": "string",
+        "description": "(Optional) The state for encryption settings. Possible values are Disabled, Enabled.",
+        "required": false,
+        "default": "\"Disabled\""
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "existing_backup_vault_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the an existing Backup Vault.",
+        "required": false,
+        "default": "null"
+      },
+      "identity": {
+        "type": "string",
+        "description": "(Required) Specifies the type of Managed Service Identity that should be configured on this Data Protection Backup Vault. Only possible value is SystemAssigned.",
+        "required": false,
+        "default": "\"SystemAssigned\""
+      },
+      "immutability_state": {
+        "type": "string",
+        "description": "(Optional) The state for immutability settings. Possible values are Disabled, Locked, Unlocked.",
+        "required": false,
+        "default": "\"Locked\""
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "key_vault_tags": {
+        "type": "map(any)",
+        "description": "(Optional) Key Vault related tags to be set on key vault child resources.",
+        "required": false,
+        "default": "{}"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "postgresql_backup_policy": {
+        "type": "object({ backup_repeating_time_intervals = list(string) time_zone = string duration = string data_store_type = string retention_rules = list(object({ name = string priority = number duration = string data_store_type = string criteria = object({ absolute_criteria = optional(string) days_of_week = optional(list(string)) weeks_of_month = optional(list(string)) months_of_year = optional(list(string)) scheduled_backup_times = optional(list(string)) }) })) })",
+        "description": "(Optional) Properties configuration for the PostgreSQL Flexible Server backup policy. object({ backup_repeating_time_intervals = \"(Optional) Specifies a list of repeating time interval.It should follow ISO 8601 repeating time interval. Changing this forces a new resource to be created.\" time_zone = \"(Optional) Specifies the Time Zone which should be used by the backup schedule. Changing this forces a new resource to be created.\" duration = \"(Required) The retention duration up to which the backups are to be retained in the data stores. It should follow ISO 8601 duration format. Changing this forces a new resource to be created.\" data_store_type = \"(Required) The type of data store. The only possible value is `VaultStore`. Changing this forces a new resource to be created.\" retention_rules = list(object({ name = \"(Required) Specifies the name of the Backup Policy for the PostgreSQL Flexible Server. Changing this forces a new resource to be created.\" priority = \"(Required) Specifies the priority of the rule. The priority number must be unique for each rule. The lower the priority number, the higher the priority of the rule. Changing this forces a new resource to be created.\" duration = \"(Required) The retention duration up to which the backups are to be retained in the data stores. It should follow ISO 8601 duration format. Changing this forces a new resource to be created.\" data_store_type = \"(Required) The type of data store for this rule. The only possible value is VaultStore. Changing this forces a new resource to be created.\" criteria = object({ absolute_criteria = \"(Optional) Possible values are AllBackup, FirstOfDay, FirstOfWeek, FirstOfMonth and FirstOfYear. These values mean the first successful backup of the day/week/month/year. Changing this forces a new resource to be created.\" days_of_week = \"(Optional) Possible values are Monday, Tuesday, Thursday, Friday, Saturday and Sunday. Changing this forces a new resource to be created.\" weeks_of_month = \"(Optional) Possible values are First, Second, Third, Fourth and Last. Changing this forces a new resource to be created.\" months_of_year = \"(Optional) Possible values are January, February, March, April, May, June, July, August, September, October, November and December. Changing this forces a new resource to be created.\" scheduled_backup_times = \"(Optional) Specify a list of backup times for backup in the RFC3339 format. Changing this forces a new resource to be created.\" })",
+        "required": false,
+        "default": "{ \"backup_repeating_time_intervals\": [ \"R/2023-11-22T11:40:16+00:00/PT4H\" ], \"data_store_type\": \"VaultStore\", \"duration\": \"P7D\", \"retention_rules\": [], \"time_zone\": \"UTC\" }"
+      },
+      "redundancy": {
+        "type": "string",
+        "description": "(Optional) Specifies the backup storage redundancy. Possible values are GeoRedundant and LocallyRedundant.",
+        "required": false,
+        "default": "\"LocallyRedundant\""
+      },
+      "resource_group_id": {
+        "type": "string",
+        "description": "(Required) The resource ID of the Resource Group in which to create the resource. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "retentiondurationindays": {
+        "type": "number",
+        "description": "(Optional) Soft Delete retention Duration in Days.",
+        "required": false,
+        "default": "30"
+      },
+      "soft_delete_state": {
+        "type": "string",
+        "description": "(Optional) The state for soft delete settings. Possible values are AlwaysOn, Off, On.",
+        "required": false,
+        "default": "\"AlwaysOn\""
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "blobstorage_policy_id": {
+      "description": "The Resource ID of the Blob Storage Backup Policy."
+    },
+    "blobstorage_policy_name": {
+      "description": "The Name of the Blob Storage Backup Policy."
+    },
+    "blobstorage_policy_resource": {
+      "description": "The Blob Storage Backup Policy resource."
+    },
+    "disk_policy_id": {
+      "description": "The Resource ID of the Disk Backup Policy."
+    },
+    "disk_policy_name": {
+      "description": "The Name of the Disk Backup Policy."
+    },
+    "disk_policy_resource": {
+      "description": "The Disk Backup Policy resource."
+    },
+    "id": {
+      "description": "The Resource ID of the Azure Backup Vault."
+    },
+    "name": {
+      "description": "The Name of the Azure Backup Vault."
+    },
+    "postgresql_policy_id": {
+      "description": "The Resource ID of the PostgreSQL Flexible Server Backup Policy."
+    },
+    "postgresql_policy_name": {
+      "description": "The Name of the PostgreSQL Flexible Server Backup Policy."
+    },
+    "postgresql_policy_resource": {
+      "description": "The PostgreSQL Flexible Server Backup Policy resource."
+    },
+    "principal_id": {
+      "description": "The Principal ID of the Azure Backup Vault."
+    },
+    "resource": {
+      "description": "The Azure Backup Vault Resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Dataprotectionbackupvault' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "key vault",
+      "managed identity",
+      "Network security Group",
+      "Subnet",
+      "Route table",
+      "keyVault",
+      "Time sleep"
+    ]
+  }
+}

@@ -1,0 +1,246 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure App Configuration module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-appconfiguration'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-appconfiguration",
+  "module_type": "service",
+  "azure_service": "Appconfiguration",
+  "module_name": "Azure App Configuration module",
+  "latest_tag": "1.0.3",
+  "available_tags": [
+    "1.0.3",
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.1.1"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-appconfiguration.git//?ref=1.0.3",
+  "terraform_requirements": {
+    "azapi": ">=2.2.0",
+    "azurerm": ">=4.33",
+    "time": ">=0.12.0",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group",
+    "Virtual Network",
+    "Network Security Group",
+    "Subnet",
+    "Key Vault",
+    "Private Endpoint"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_app_configuration.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.appconf_dataowner",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.this_cmk",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_for_role_appconf_dataowner",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_client_config.current",
+      "type": "data source"
+    },
+    {
+      "terraform_resource": "azurerm_resource_group.this",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "appconfiguration",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-appconfiguration.git//?ref=1.0.3",
+      "version": "1.0.3",
+      "available_versions": [
+        "1.0.3",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.1.1"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "customer_managed_key",
+      "environment",
+      "identity",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "cmk_key_name": {
+        "type": "string",
+        "description": "(optional) Key name to be used (max 127 chars)",
+        "required": false,
+        "default": "null"
+      },
+      "cmk_rotation_policy": {
+        "type": "object({ notify_before_expiry = string time_before_expiry = string time_after_creation = optional(string, null) expire_after = string })",
+        "description": "(Optional) A rotation policy block as defined below object({ notify_before_expiry = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" time_before_expiry = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" time_after_creation = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" expire_after = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" })",
+        "required": false,
+        "default": "{ \"expire_after\": \"P365D\", \"notify_before_expiry\": \"P358D\", \"time_after_creation\": null, \"time_before_expiry\": \"P7D\" }"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "create_role_assignment": {
+        "type": "bool",
+        "description": "Whether to create the Key Vault Crypto Service Encryption User role assignment. Set to false if the role assignment already exists.",
+        "required": false,
+        "default": "true"
+      },
+      "customer_managed_key": {
+        "type": "object({ key_vault_id = string expiration_date = string identity_principal_id = string identity_client_id = string })",
+        "description": "(Required) An customer_managed_key block as defined below object({ key_vault_id = \"(Required) The resource ID of the Key Vault where the Key Vault Key resides.\" expiration_date = \"(Required) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').\" identity_principal_id = \"(Required) Principal id of the User Assigned Identity which should be used to access the CMK encryption key in the Key Vault. This identity will be granted `Key Vault Crypto Service Encryption User` role on the Key vault. This must be the principal id of one of the `User Assigned Identities` assigned to the storage Account.\" identity_client_id = \"(Required) Client id of the User Assigned Identity which should be used to access the CMK encryption key in the Key Vault.\" })",
+        "required": true
+      },
+      "data_plane_proxy_authentication_mode": {
+        "type": "string",
+        "description": "(Required) The data plane proxy authentication mode. Possible values are `Local` and `Pass-through`.`Local` mode validates authentication locally within the App Configuration service, while `Pass-through` mode forwards authentication to the upstream service.",
+        "required": false,
+        "default": "\"Pass-through\""
+      },
+      "data_plane_proxy_private_link_delegation_enabled": {
+        "type": "bool",
+        "description": "(Required) Whether data plane proxy private link delegation is enabled. Defaults to `true`. When enabled, this allows the App Configuration service to delegate private link connections to downstream services, enabling secure connectivity through private endpoints while maintaining network isolation. This is particularly useful in scenarios where the App Configuration needs to access other Azure services through private links.",
+        "required": false,
+        "default": "true"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = optional(list(string)) })",
+        "description": "(Required) An identity block as defined below object({ type = \"(Required) Specifies the type of Managed Service Identity that should be configured on this app configuration. Possible values are 'UserAssigned', or 'SystemAssigned, UserAssigned' (to enable both).\" identity_ids = \"(Optional) A list of User Assigned Managed Identity IDs to be assigned to this app configuration.\" })",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "key_vault_tags": {
+        "type": "map(any)",
+        "description": "(Optional) Key Vault related tags to be set on key vault child resources.",
+        "required": false,
+        "default": "{}"
+      },
+      "local_auth_enabled": {
+        "type": "bool",
+        "description": "(Required) Whether local authentication methods is enabled. Defaults to `false`.",
+        "required": false,
+        "default": "false"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "public_network_access": {
+        "type": "string",
+        "description": "(Required) The Public Network Access setting of the App Configuration. Possible values are Enabled and Disabled.",
+        "required": false,
+        "default": "\"Disabled\""
+      },
+      "purge_protection_enabled": {
+        "type": "bool",
+        "description": "(Optional) Whether Purge Protection is enabled. Defaults to `false`.",
+        "required": false,
+        "default": "false"
+      },
+      "replica": {
+        "type": "list(object({ name = string location = string }))",
+        "description": "(Optional) A list of replica blocks to create geo-replicated instances of the App Configuration store for enhanced availability. object({ name = \"(Required) The name of the replica. Changing this forces a new resource to be created.\" location = \"(Required) The location of the replica.\" })",
+        "required": false,
+        "default": "[]"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "sku": {
+        "type": "string",
+        "description": "(Required) The SKU name of the App Configuration. Possible values are free, developer, standard and premium. Defaults to free.Downgrading will force a new resource to be created.",
+        "required": false,
+        "default": "\"premium\""
+      },
+      "soft_delete_retention_days": {
+        "type": "number",
+        "description": "(Optional) The number of days that items should be retained for once soft-deleted. This field only works for `standard` sku. This value can be between `1 and 7` days. Defaults to 7. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "7"
+      },
+      "spn_object_id": {
+        "type": "string",
+        "description": "(Optional) The object ID of the service principal.",
+        "required": false,
+        "default": "null"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The Resource ID of the azure app configuration."
+    },
+    "name": {
+      "description": "The Name of the azure app configuration."
+    },
+    "resource": {
+      "description": "The azure app configuration resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Appconfiguration' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group",
+      "Virtual Network",
+      "Network Security Group",
+      "Subnet",
+      "Key Vault",
+      "Private Endpoint"
+    ]
+  }
+}

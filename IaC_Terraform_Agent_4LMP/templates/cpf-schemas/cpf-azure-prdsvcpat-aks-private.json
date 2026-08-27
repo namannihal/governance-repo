@@ -1,0 +1,539 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Kubernetes Service (AKS) solution pattern [GOVI0001950](https://lseg.service-now.com/x/lsegp/cto/record/x_lsegp_eag_governance_item/0734dd1983fcc6503408b1c8beaad361)",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvcpat-aks-private'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvcpat-aks-private",
+  "module_type": "service-pattern",
+  "azure_service": "Aks Private",
+  "module_name": "Azure Kubernetes Service (AKS) solution pattern [GOVI0001950](https://lseg.service-now.com/x/lsegp/cto/record/x_lsegp_eag_governance_item/0734dd1983fcc6503408b1c8beaad361)",
+  "latest_tag": "",
+  "available_tags": [],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-aks-private.git//",
+  "terraform_requirements": {
+    "kubernetes": "~> 2.37",
+    "azapi": "~> 2.6.0",
+    "kubectl": "~> 2.2.0",
+    "local": "2.5.3",
+    "tls": "~> 4.1",
+    "terraform": ">= 1.5.0",
+    "helm": "~> 3.0",
+    "azurerm": "~> 4.69",
+    "null": "3.2.4",
+    "azuread": "~> 3.4",
+    "time": "~> 0.13.1"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_disk_encryption_set.des",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.kek",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_key.kek1",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_private_dns_zone_virtual_network_link.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "helm_release.flux_operator",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "kubectl_manifest.flux",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "kubectl_manifest.kustomization_infra_common",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "kubectl_manifest.kustomization_istio",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "kubectl_manifest.kustomization_istio_gateway",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "kubectl_manifest.kustomization_karpenter",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "kubectl_manifest.kustomization_keda",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "kubectl_manifest.kustomization_nginx",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "kubectl_manifest.source_infra_common",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "kubectl_manifest.source_infra_helm",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "kubernetes_config_map.flux-cluster-config",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "kubernetes_secret.flux-helm-secrets",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "kubernetes_secret.gitlabtoken",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.flux_crds",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_for_des_reader_sync",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_for_rbac_sync",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "time_sleep.wait_for_rbac_sync_des",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "tls_private_key.eus_ssh",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_client_config.spn",
+      "type": "data source"
+    },
+    {
+      "terraform_resource": "azurerm_firewall.afw",
+      "type": "data source"
+    },
+    {
+      "terraform_resource": "azurerm_subscription.sub",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "aks-private",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvcpat/terraform/azure-prdsvcpat-terraform-aks-private.git//",
+      "version": "latest",
+      "available_versions": []
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "aks",
+      "aks_subnet",
+      "akv",
+      "akv_key_acr",
+      "akv_key_cmk",
+      "app_id",
+      "azure_key_vault_id",
+      "azurerm_disk_encryption_set",
+      "client_id",
+      "client_secret",
+      "cloudability_access_key",
+      "cloudability_env_id",
+      "cloudability_secret_key",
+      "dd_api_key",
+      "dx1_pat_token",
+      "dx1_user",
+      "environment",
+      "falcon_cid",
+      "falcon_docker_password",
+      "falcon_docker_username",
+      "falcon_token",
+      "location",
+      "nrt_vnet_id",
+      "org_id",
+      "pe_subnet_id",
+      "rt_vnet_id",
+      "subscription_id"
+    ],
+    "properties": {
+      "acr": {
+        "type": "object({ instance = string sku_tier = string retention_policy_in_days = string identity_type = optional(string, \"SystemAssigned\") georeplications = any encryption = optional(bool, true) network_rule_set = optional(any, null) trust_policy_enabled = optional(bool, false) zone_redundancy_enabled = bool data_endpoint_enabled = bool tags = optional(any, null) pe_static_ip_required = optional(bool, false) pe_ip_configuration = any })",
+        "description": "Azure container registry values. Check example in .test/deployTest folder for more details",
+        "required": false,
+        "default": "null"
+      },
+      "acr_encryption_enable": {
+        "type": "bool",
+        "description": "Enable encryption for ACR",
+        "required": false,
+        "default": "false"
+      },
+      "add_group": {
+        "type": "any",
+        "description": "Azure AD groups that should have Read access to AKS cluster",
+        "required": false,
+        "default": "null"
+      },
+      "additional_network_security_rules": {
+        "type": "map(object({ name = string description = optional(string) protocol = string source_port_range = optional(string) source_port_ranges = optional(list(string)) destination_port_range = optional(string) destination_port_ranges = optional(list(string)) source_address_prefix = optional(string) source_address_prefixes = optional(list(string)) source_application_security_group_ids = optional(list(string)) destination_address_prefix = optional(string) destination_address_prefixes = optional(list(string)) destination_application_security_group_ids = optional(list(string)) access = string priority = number direction = string }))",
+        "description": "Network security Rules",
+        "required": false,
+        "default": "null"
+      },
+      "additional_nodepool": {
+        "type": "map(object({ node_pool_name = string node_pool_vm_size = string node_pool_os_disk_size_gb = number node_pool_os_disk_type = optional(string, \"Managed\") node_pool_mode = optional(string, \"User\") node_pool_os_type = optional(string, \"Linux\") node_pool_node_labels = map(string) node_pool_node_count = number node_pool_auto_scaling_enabled = bool node_pool_min_count = number node_pool_max_count = number node_pool_max_pods = number node_pool_custom_ca_trust_enabled = optional(bool, false) node_pool_host_encryption_enabled = optional(bool, true) node_pool_host_group_id = optional(string, null) node_pool_node_public_ip_enabled = optional(bool, false) node_pool_fips_enabled = optional(bool, false) node_pool_priority = optional(string, \"Regular\") eviction_policy = optional(string, \"Delete\") node_pool_spot_max_price = number node_pool_node_taints = any node_pool_zones = optional(list(number), [\"1\", \"2\", \"3\"]) kubernetes_version = optional(string) user_node_pool_linux_os_config = optional(any, null) user_node_pool_upgrade_settings = optional(any, { max_surge = \"10%\" }) node_pool_capacity_reservation_group_id = optional(string, null) node_pool_temporary_name_for_rotation = optional(string, \"tmpaddpool1\") }))",
+        "description": "AKS user node pool map",
+        "required": false,
+        "default": "{}"
+      },
+      "aks": {
+        "type": "object({ automatic_upgrade_channel = optional(string, null) node_os_upgrade_channel = optional(string, \"None\") enable_disk_encryption_aks = optional(string) kubernetes_version = string private_public_fqdn_enabled = optional(bool, false) sku_tier = optional(string, \"Standard\") support_plan = optional(string, \"KubernetesOfficial\") workload_autoscaler_profile = map(string) default_node_pool_name = optional(string, \"default\") default_node_pool_node_count = optional(number, null) default_node_pool_vm_size = optional(string, \"Standard_D2s_v5\") default_node_pool_capacity_reservation_group_id = optional(string, null) default_node_pool_auto_scaling_enabled = optional(bool, true) default_node_pool_host_encryption_enabled = optional(bool, true) default_node_pool_node_public_ip_enabled = optional(bool, false) default_node_pool_fips_enabled = optional(bool, false) default_node_pool_kubelet_disk_type = optional(string, \"OS\") default_node_pool_host_group_id = optional(string, null) default_node_pool_max_pods = optional(number, 110) default_node_pool_node_public_ip_prefix_id = optional(string, null) default_node_pool_node_labels = optional(any, null) default_node_pool_only_critical_addons_enabled = optional(bool, null) default_node_pool_orchestrator_version = optional(string) default_node_pool_os_disk_size_gb = optional(number, 128) default_node_pool_os_disk_type = optional(string, \"Managed\") default_node_pool_os_sku = optional(string, \"Ubuntu\") default_node_pool_proximity_placement_group_id = optional(string, null) default_node_pool_scale_down_mode = optional(string, null) default_node_pool_zones = optional(list(number), [\"1\", \"2\", \"3\"]) default_node_pool_ultra_ssd_enabled = optional(bool, false) default_node_pool_min_count = optional(number) default_node_pool_max_count = optional(number) default_node_pool_kubelet_config = optional(any, null) default_node_pool_linux_os_config = optional(any, null) default_node_pool_upgrade_settings = optional(any, { max_surge = \"10%\" }) default_node_pool_temporary_name_for_rotation = optional(string, \"tmpnodepool1\") key_management_service_keyvault_network_access = optional(string, \"Private\") edge_zone = optional(any, null) auto_scaler_profile = optional(object({ balance_similar_node_groups = optional(bool) expander = optional(string, \"random\") max_graceful_termination_sec = optional(number) max_node_provisioning_time = optional(string) max_unready_nodes = optional(number) max_unready_percentage = optional(number) new_pod_scale_up_delay = optional(string) scale_down_delay_after_add = optional(string) scale_down_delay_after_delete = optional(string) scale_down_delay_after_failure = optional(string) scan_interval = optional(string, \"10s\") scale_down_unneeded = optional(string) scale_down_unready = optional(string) scale_down_utilization_threshold = optional(number) empty_bulk_delete_max = optional(number) skip_nodes_with_local_storage = optional(bool) skip_nodes_with_system_pods = optional(bool, true) })) key_vault_secrets_rotation_interval = optional(string, \"2m\") maintenance_window = optional(any, null) maintenance_window_auto_upgrade = optional(object({ frequency = string interval = number day_of_week = string start_time = string utc_offset = string duration = number }), { frequency = \"Weekly\" interval = 1 day_of_week = \"Friday\" start_time = \"00:00\" utc_offset = \"+00:00\" duration = 4 }) maintenance_window_node_os = optional(object({ frequency = string interval = number day_of_week = string start_time = string utc_offset = string duration = number }), { frequency = \"Weekly\" interval = 1 day_of_week = \"Friday\" start_time = \"00:00\" utc_offset = \"+00:00\" duration = 4 }) network_profile = map(string) service_principal = optional(any, null) monitor_metrics = optional(any, null) web_app_routing = optional(any, null) identity_type = optional(string, \"UserAssigned\") linux_profile_adminusername = string })",
+        "description": "Azure Kubernetes Service Configuration. Check example in .test/deployTest folder for more details",
+        "required": true
+      },
+      "aks_subnet": {
+        "type": "object({ address_prefixes = string enforce_private_link_endpoint_network_policies = optional(string, \"Disabled\") private_link_service_network_policies_enabled = optional(bool, false) enable_nsg_association = optional(bool, false) instance = string })",
+        "description": "AKS subnet configuration",
+        "required": true
+      },
+      "akv": {
+        "type": "object({ expiration_date = optional(string, null) rotation_policy = optional(map(string), { expire_after = \"P365D\" notify_before_expiry = \"P351D\" time_before_expiry = null time_after_creation = \"P358D\" }) key_opts = optional(list(string), [\"decrypt\", \"encrypt\", \"sign\", \"unwrapKey\", \"verify\", \"wrapKey\"]) })",
+        "description": "Azure keyvault configuration values",
+        "required": true
+      },
+      "akv_key_acr": {
+        "type": "object({ key_name = string key_type = optional(string, \"RSA-HSM\") key_size = optional(number, \"2048\") expiration_date = optional(string, null) rotation_policy = optional(map(string), { expire_after = \"P365D\" notify_before_expiry = \"P351D\" time_before_expiry = null time_after_creation = \"P358D\" }) key_opts = optional(list(string), [\"decrypt\", \"encrypt\", \"sign\", \"unwrapKey\", \"verify\", \"wrapKey\"]) })",
+        "description": "Azure Key Vault Key for ACR Configuration. Check example in .test/deployTest folder for more details",
+        "required": true
+      },
+      "akv_key_cmk": {
+        "type": "object({ key_name = string key_type = optional(string, \"RSA-HSM\") key_size = optional(number, \"2048\") expiration_date = optional(string, null) rotation_policy = optional(map(string), { expire_after = \"P365D\" notify_before_expiry = \"P351D\" time_before_expiry = null time_after_creation = \"P358D\" }) key_opts = optional(list(string), [\"decrypt\", \"encrypt\", \"sign\", \"unwrapKey\", \"verify\", \"wrapKey\"]) })",
+        "description": "Azure Key Vault Key for AKS CMK Configuration. Check example in .test/deployTest folder for more details",
+        "required": true
+      },
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "app_resource_group_name": {
+        "type": "string",
+        "description": "Routable app resource group name",
+        "required": false,
+        "default": "null"
+      },
+      "artifactory_token": {
+        "type": "string",
+        "description": "Artifactory registry token",
+        "required": false,
+        "default": "\"\""
+      },
+      "artifactory_url": {
+        "type": "string",
+        "description": "Artifactory registry URL",
+        "required": false,
+        "default": "\"artifactory.lseg.com\""
+      },
+      "artifactory_username": {
+        "type": "string",
+        "description": "Artifactory registry username",
+        "required": false,
+        "default": "\"\""
+      },
+      "azure_firewall": {
+        "type": "map(string)",
+        "description": "Define existing Azure firewall Name and Resource Group. Check example in .test/deployTest folder for more details",
+        "required": false,
+        "default": "{}"
+      },
+      "azure_key_vault_id": {
+        "type": "string",
+        "description": "ID for existing Key-Vault",
+        "required": true
+      },
+      "azurerm_disk_encryption_set": {
+        "type": "object({ name = string encryption_type = string auto_key_rotation_enabled = bool })",
+        "description": "Disk Encryption set configuration Values",
+        "required": true
+      },
+      "client_id": {
+        "type": "string",
+        "description": "SPN client ID. Fetched from DX1 vault",
+        "required": true
+      },
+      "client_secret": {
+        "type": "string",
+        "description": "SPN client Secret. Fetched from DX1 vault",
+        "required": true
+      },
+      "cloudability_access_key": {
+        "type": "string",
+        "description": "cloudability access key",
+        "required": true
+      },
+      "cloudability_env_id": {
+        "type": "string",
+        "description": "cloudability environment id",
+        "required": true
+      },
+      "cloudability_secret_key": {
+        "type": "string",
+        "description": "cloudability secret key",
+        "required": true
+      },
+      "cloudability_upload_region": {
+        "type": "string",
+        "description": "cloudability upload region",
+        "required": false,
+        "default": "\"eu-central-1\""
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "datadog_container_registry": {
+        "type": "string",
+        "description": "n/a",
+        "required": false,
+        "default": "\"gcr.io\""
+      },
+      "datadog_site": {
+        "type": "string",
+        "description": "n/a",
+        "required": false,
+        "default": "\"datadoghq.eu\""
+      },
+      "dd_api_key": {
+        "type": "string",
+        "description": "Datadog API key",
+        "required": true
+      },
+      "deploy_acr_and_privateendpoint": {
+        "type": "bool",
+        "description": "Enable this to Deploy ACR and private endpoint for it",
+        "required": false,
+        "default": "false"
+      },
+      "deploy_additional_nodepool": {
+        "type": "bool",
+        "description": "Deploy Additional User Node Pool",
+        "required": false,
+        "default": "false"
+      },
+      "deploy_istio": {
+        "type": "bool",
+        "description": "Enable this setting to deploy Istio Service Mesh. Default is 'false'",
+        "required": false,
+        "default": "false"
+      },
+      "deploy_istio_gateway": {
+        "type": "bool",
+        "description": "Deploy Istio ingress gateway",
+        "required": false,
+        "default": "false"
+      },
+      "deploy_karpenter": {
+        "type": "bool",
+        "description": "Enable AKS Node Auto Provisioning (Karpenter)",
+        "required": false,
+        "default": "false"
+      },
+      "deploy_keda": {
+        "type": "bool",
+        "description": "Enable this setting to deploy Keda. Default is 'false'",
+        "required": false,
+        "default": "false"
+      },
+      "deploy_nginx_ingress": {
+        "type": "bool",
+        "description": "Enable this setting to deploy Nginx Ingress Controller. Default is 'false'",
+        "required": false,
+        "default": "false"
+      },
+      "deploy_private_dns_zone_vnet_link": {
+        "type": "bool",
+        "description": "Deploy Virtual network link for Routable Vnet",
+        "required": false,
+        "default": "false"
+      },
+      "dx1_pat_token": {
+        "type": "string",
+        "description": "DX1 User Personal Access Token Value",
+        "required": true
+      },
+      "dx1_user": {
+        "type": "string",
+        "description": "DX1 User Personal Access Token Name",
+        "required": true
+      },
+      "enable_artifactory": {
+        "type": "bool",
+        "description": "Enable this setting to use Artifactory registry for istio, keda and nginx images. Default is 'false'",
+        "required": false,
+        "default": "false"
+      },
+      "enable_disk_encryption_aks": {
+        "type": "bool",
+        "description": "Enable Disk Encryption for AKS",
+        "required": false,
+        "default": "true"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "falcon_cid": {
+        "type": "string",
+        "description": "Crowdstrike Agent CID",
+        "required": true
+      },
+      "falcon_docker_password": {
+        "type": "string",
+        "description": "Crowdstrike Docker registry password",
+        "required": true
+      },
+      "falcon_docker_username": {
+        "type": "string",
+        "description": "Crowdstrike Docker registry username",
+        "required": true
+      },
+      "falcon_token": {
+        "type": "string",
+        "description": "Crowdstrike falcon token",
+        "required": true
+      },
+      "flux_version": {
+        "type": "string",
+        "description": "(Optional) Version of the flux operator",
+        "required": false,
+        "default": "\"2.x\""
+      },
+      "gitops_aks_common_repo_reference": {
+        "type": "string",
+        "description": "GitOps common repo reference type, can be branch or tag",
+        "required": false,
+        "default": "\"tag\""
+      },
+      "gitops_aks_common_repo_version": {
+        "type": "string",
+        "description": "Always use tag revisions for all environments.",
+        "required": false,
+        "default": "\"\""
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "node_resource_group": {
+        "type": "string",
+        "description": "(Optional) Custom name for the AKS node resource group. Required for regions with long CLI names (e.g. germanywestcentral) to prevent exceeding Azure's 80-character resource group name limit. If not set, Azure auto-generates the name as MC_{resource_group}_{cluster_name}_{location}.",
+        "required": false,
+        "default": "null"
+      },
+      "nrt_vnet_id": {
+        "type": "string",
+        "description": "Non-Routable virtual Network ID",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "pe_subnet_id": {
+        "type": "string",
+        "description": "Subnet ID for use by Private Endpoints",
+        "required": true
+      },
+      "rt_vnet_id": {
+        "type": "string",
+        "description": "Routable virtual Network ID",
+        "required": true
+      },
+      "shared_vnet_name": {
+        "type": "string",
+        "description": "Non Routetable vnet name",
+        "required": false,
+        "default": "null"
+      },
+      "subscription_id": {
+        "type": "string",
+        "description": "Subscription ID where resources will be deployed",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "time_delay": {
+        "type": "string",
+        "description": "Added Time delay for RBAC sync",
+        "required": false,
+        "default": "\"90s\""
+      }
+    }
+  },
+  "outputs": {
+    "acr_resource": {
+      "description": "Azure Container Registry Details"
+    },
+    "aks-cluster-additional-pool": {
+      "description": "AKS cluster additional nodepool details"
+    },
+    "aks_id": {
+      "description": "ID of the AKS Cluster"
+    },
+    "aks_managed_identity_resource": {
+      "description": "User assigned Identity details"
+    },
+    "aks_name": {
+      "description": "The name of the AKS Cluster"
+    },
+    "aks_resource": {
+      "description": "Resource details of the AKS cluster"
+    },
+    "aks_rg_name": {
+      "description": "AKS Cluster Resource Group Name"
+    },
+    "nsg": {
+      "description": "Network Security Group Details"
+    },
+    "oidc_issuer_url": {
+      "description": "The OIDC Issuer URL of the AKS cluster. Used for federated credential integration with Azure AD Workload Identity."
+    },
+    "routetable": {
+      "description": "Route Table details"
+    },
+    "subnet-aks": {
+      "description": "AKS Subnet details"
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Aks Private' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a service pattern module. It bundles multiple related services/configurations.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

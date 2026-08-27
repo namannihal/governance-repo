@@ -1,0 +1,320 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Data Lake Store module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-datalakestore'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-datalakestore",
+  "module_type": "service",
+  "azure_service": "Datalakestore",
+  "module_name": "Data Lake Store module",
+  "latest_tag": "1.1.0",
+  "available_tags": [
+    "1.1.0",
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.8.1"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-datalakestore.git//?ref=1.1.0",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "resource_group",
+    "virtual_network",
+    "user_assign_identity",
+    "key_vault",
+    "Private endpoint",
+    "keyvault",
+    "subnet",
+    "route table",
+    "network_security_group",
+    "time_sleep"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_key_vault_key.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_key_vault_secret.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.cmk",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_storage_account.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_storage_encryption_scope.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_storage_management_policy.lifecycle",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "datalakestore",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-datalakestore.git//?ref=1.1.0",
+      "version": "1.1.0",
+      "available_versions": [
+        "1.1.0",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.8.1"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "customer_managed_key",
+      "environment",
+      "identity",
+      "key_vault_id",
+      "kv_secret_expiration_date",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "access_tier": {
+        "type": "string",
+        "description": "(Optional) Defines the Access Tier for the Storage Account. &#8226; Possible values are: `Cool`, `Hot`.",
+        "required": false,
+        "default": "\"Hot\""
+      },
+      "account_kind": {
+        "type": "string",
+        "description": "(Optional) Defines the Kind of account. Valid options are BlobStorage, BlockBlobStorage, FileStorage, Storage and StorageV2.",
+        "required": false,
+        "default": "\"StorageV2\""
+      },
+      "account_replication_type": {
+        "type": "string",
+        "description": "(Optional) Defines the type of replication to use for this storage account. Valid options for Standard Storage Account are LRS, GRS, RAGRS, ZRS, GZRS and RAGZRS. GRS is not supported for Premium Storage Account.",
+        "required": false,
+        "default": "\"GRS\""
+      },
+      "account_tier": {
+        "type": "string",
+        "description": "(Optional) Defines the Tier to use for this storage account. Valid options are Standard and Premium.",
+        "required": false,
+        "default": "\"Standard\""
+      },
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "cmk_key_name": {
+        "type": "string",
+        "description": "(optional) Key name to be used (max 127 chars)",
+        "required": false,
+        "default": "null"
+      },
+      "cmk_rotation_policy": {
+        "type": "object({ notify_before_expiry = string time_before_expiry = string time_after_creation = optional(string, null) expire_after = string })",
+        "description": "(Optional) A rotation policy block as defined below object({ notify_before_expiry = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" time_before_expiry = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" time_after_creation = \"(Optional) Rotate automatically at a duration before expiry as an ISO 8601 duration.\" expire_after = \"(Optional) Expire a Key Vault Key after given duration as an ISO 8601 duration.\" })",
+        "required": false,
+        "default": "{ \"expire_after\": \"P365D\", \"notify_before_expiry\": \"P358D\", \"time_after_creation\": null, \"time_before_expiry\": \"P7D\" }"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "create_role_assignment": {
+        "type": "bool",
+        "description": "(Optional) Whether to create a role assignment to the service identity to allow access to the key vault keys.",
+        "required": false,
+        "default": "true"
+      },
+      "customer_managed_key": {
+        "type": "object({ key_vault_id = string expiration_date = string identity_principal_id = string })",
+        "description": "(Required) A customer_managed_key block as defined below object({ key_vault_id = \"(Required) The resource ID of the Key Vault where the Key Vault Key resides.\" expiration_date = \"(Required) Expiration UTC datetime (Y-m-d'T'H:M:S'Z').\" identity_principal_id = \"(Required) The principal ID of the User Assigned Identity that has access to the key.\" })",
+        "required": true
+      },
+      "default_to_oauth_authentication": {
+        "type": "bool",
+        "description": "(Optional) Default to Azure Active Directory authorization in the Azure portal when accessing the Storage Account",
+        "required": false,
+        "default": "true"
+      },
+      "edge_zone": {
+        "type": "string",
+        "description": "(Optional) Specifies the Edge Zone within the Azure Region where this Storage Account should exist. Changing this forces a new Storage Account to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "enable_key_access": {
+        "type": "bool",
+        "description": "(Optional) If set to `false` any requests to the account that are authorized with Shared Key, including shared access signatures (SAS), will be denied.",
+        "required": false,
+        "default": "true"
+      },
+      "encryption_scopes": {
+        "type": "map(object({ name = string key_vault_key_id = string }))",
+        "description": "(Optional) Map of the encryption scopes in the Storage Account.",
+        "required": false,
+        "default": "{}"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = list(string) })",
+        "description": "(Required) An identity block as defined below object({ type = \"(Required) Specifies the type of Managed Service Identity that should be configured on this Storage Account. Possible values are `UserAssigned`, `SystemAssigned, UserAssigned` (to enable both).\" identity_ids = \"(Required) Specifies a list of User Assigned Managed Identity IDs to be assigned to this Storage Account. This is required when `type` is set to `UserAssigned` or `SystemAssigned, UserAssigned`.\" })",
+        "required": true
+      },
+      "infrastructure_encryption_enabled": {
+        "type": "string",
+        "description": "(Optional) Determines if the Infrastruction Encryption of the storage account should be enabled or disabled.",
+        "required": false,
+        "default": "true"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "key_vault_id": {
+        "type": "string",
+        "description": "(Required) ID of the existing Key vault to store the Customer Managed Key for Encryption.",
+        "required": true
+      },
+      "key_vault_tags": {
+        "type": "map(any)",
+        "description": "(Optional) Key Vault related tags to be set on key vault child resources.",
+        "required": false,
+        "default": "{}"
+      },
+      "kv_secret_expiration_date": {
+        "type": "string",
+        "description": "(Required) Expiration UTC datetime (Y-m-d'T'H:M:S'Z') for Storage Account access key Key vault Secret.",
+        "required": true
+      },
+      "large_file_share_enabled": {
+        "type": "bool",
+        "description": "(Optional) Set to `true`, the Storage Account will be enabled for large file shares.",
+        "required": false,
+        "default": "false"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "network_access_enabled": {
+        "type": "bool",
+        "description": "Enable or disable public network access for the storage account.",
+        "required": false,
+        "default": "false"
+      },
+      "network_rules": {
+        "type": "object({ bypass = list(string) ip_rules = list(string) virtual_network_subnet_ids = list(string) })",
+        "description": "(Optional) A network_rules block as defined below object({ default_action = \"(Required) The Default Action to use when no rules match ip_rules / virtual_network_subnet_ids. Possible values are `\\\"Allow\\\"` and `\\\"Deny\\\"`.\" bypass = \"(Optional) Specifies whether traffic is bypassed for Logging/Metrics/AzureServices. Valid options are any combination of [`\\\"Logging\\\"`, `\\\"Metrics\\\"`, `\\\"AzureServices\\\"`, `\\\"None\\\"`].\" ip_rules = \"(Optional) One or more Public IP Addresses or CIDR Blocks which should be able to access the Storage Account.\" virtual_network_subnet_ids = \"(Optional) One or more Subnet IDs which should be able to access the Storage Account.\" })",
+        "required": false,
+        "default": "{ \"bypass\": [ \"AzureServices\" ], \"ip_rules\": [], \"virtual_network_subnet_ids\": [] }"
+      },
+      "nfsv3_enabled": {
+        "type": "bool",
+        "description": "(Optional) Set to `true`, the `NFSV3` protocol will be enabled.",
+        "required": false,
+        "default": "false"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "persist_access_key": {
+        "type": "bool",
+        "description": "(Optional) Set `true` to store storage access key in `key vault`.",
+        "required": false,
+        "default": "false"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "retention_policy_days": {
+        "type": "number",
+        "description": "(Optional) Specifies the number of days that the containers, blob and share should be retained, the value must be between between 1 and 365.",
+        "required": false,
+        "default": "30"
+      },
+      "rules": {
+        "type": "map(object({ name = string enabled = bool filters = object({ blob_types = set(string) prefix_match = set(string) match_blob_index_tag = optional(object({ name = string operation = optional(string, \"==\") value = string })) }) actions = object({ base_blob = optional(object({ tier_to_cool_after_days_since_modification_greater_than = optional(number) tier_to_cool_after_days_since_last_access_time_greater_than = optional(number) tier_to_cool_after_days_since_creation_greater_than = optional(number) auto_tier_to_hot_from_cool_enabled = optional(bool, false) tier_to_archive_after_days_since_modification_greater_than = optional(number) tier_to_archive_after_days_since_last_access_time_greater_than = optional(number) tier_to_archive_after_days_since_creation_greater_than = optional(number) tier_to_archive_after_days_since_last_tier_change_greater_than = optional(number) tier_to_cold_after_days_since_modification_greater_than = optional(number) tier_to_cold_after_days_since_last_access_time_greater_than = optional(number) tier_to_cold_after_days_since_creation_greater_than = optional(number) delete_after_days_since_modification_greater_than = optional(number) delete_after_days_since_last_access_time_greater_than = optional(number) delete_after_days_since_creation_greater_than = optional(number) })) snapshot = optional(object({ change_tier_to_archive_after_days_since_creation = optional(number) tier_to_archive_after_days_since_last_tier_change_greater_than = optional(number) change_tier_to_cool_after_days_since_creation = optional(number) tier_to_cold_after_days_since_creation_greater_than = optional(number) delete_after_days_since_creation_greater_than = optional(number) })) version = optional(object({ change_tier_to_archive_after_days_since_creation = optional(number) tier_to_archive_after_days_since_last_tier_change_greater_than = optional(number) change_tier_to_cool_after_days_since_creation = optional(number) tier_to_cold_after_days_since_creation_greater_than = optional(number) delete_after_days_since_creation = optional(number) })) }) }))",
+        "description": "(Optional) A map of rule block as documented below: object({ name = \"(Required) The name of the rule. The rule name is case-sensitive. It must be unique within a policy.\" enabled = \"(Required) Specify whether the rule is enabled.\" filters = \"(Required) The filters block supports the following: object({ blob_types = \"(Required) An array of predefined values. The possible values are `blockBlob` and `appendBlob`.\" prefix_match = \"(Optional) An array of strings for prefixes to be matched.\" match_blob_index_tag = \"(Optional) A `match_blob_index_tag` block defined as follows. The block defines the blob index tag-based filtering for blob objects.\" object({ name = \"(Required) The filter tag name used for tag-based filtering for blob objects.\" operation = \"(Optional) The comparison operator that is used for object comparison and filtering. The possible value is `==`. Defaults to `==`.\" value = \"(Required) The filter tag value used for tag-based filtering for blob objects.\" }) })\" actions = \"(Required) An actions block defined as follows: object({ base_blob = (Optional) A base_blob block defined as follows: object({ tier_to_cool_after_days_since_modification_greater_than = \"(Optional) The age in days after last modification to tier blobs to cool storage. Supports blob currently at Hot tier. Must be between `0` and `99999`.\" tier_to_cool_after_days_since_last_access_time_greater_than = \"(Optional) The age in days after last access time to tier blobs to cool storage. Supports blob currently at Hot tier. Must be between `0` and `99999`.\" tier_to_cool_after_days_since_creation_greater_than = \"(Optional) The age in days after creation to cool storage. Supports blob currently at Hot tier. Must be between `0` and `99999`.\" auto_tier_to_hot_from_cool_enabled = \"(Optional) Specifies whether a blob should automatically be tiered from cool back to hot if it's accessed again after being tiered to cool. Defaults to false.\" tier_to_archive_after_days_since_modification_greater_than = \"(Optional) The age in days after last modification to tier blobs to archive storage. Supports blob currently at Hot or Cool tier. Must be between `0` and `99999`.\" tier_to_archive_after_days_since_last_access_time_greater_than = \"(Optional) The age in days after last access time to tier blobs to archive storage. Supports blob currently at Hot or Cool tier. Must be between 0 and99999.\" tier_to_archive_after_days_since_creation_greater_than = \"(Optional) The age in days after creation to archive storage. Supports blob currently at Hot or Cool tier. Must be between 0 and99999.\" tier_to_archive_after_days_since_last_tier_change_greater_than = \"(Optional) The age in days after last tier change to the blobs to skip to be archved. Must be between `0` and `99999`.\" tier_to_cold_after_days_since_modification_greater_than = \"(Optional) The age in days after last modification to tier blobs to cold storage. Supports blob currently at Hot tier. Must be between `0` and `99999`.\" tier_to_cold_after_days_since_last_access_time_greater_than = \"(Optional) The age in days after last access time to tier blobs to cold storage. Supports blob currently at Hot tier. Must be between `0` and `99999`.\" tier_to_cold_after_days_since_creation_greater_than = \"(Optional) The age in days after creation to cold storage. Supports blob currently at Hot tier. Must be between `0` and `99999`.\" delete_after_days_since_modification_greater_than = \"(Optional) The age in days after last modification to delete the blob. Must be between `0` and `99999`.\" delete_after_days_since_last_access_time_greater_than = \"(Optional) The age in days after last access time to delete the blob. Must be between `0` and `99999`.\" delete_after_days_since_creation_greater_than = \"(Optional) The age in days after creation to delete the blob. Must be between `0` and `99999`.\" }) snapshot = (Optional) A snapshot block as documented below: object({ change_tier_to_archive_after_days_since_creation = \"(Optional) The age in days after creation to tier blob snapshot to archive storage. Must be between `0` and `99999`.\" tier_to_archive_after_days_since_last_tier_change_greater_than = \"(Optional) The age in days after last tier change to the blobs to skip to be archved. Must be between `0` and `99999`.\" change_tier_to_cool_after_days_since_creation = \"(Optional) The age in days after creation to tier blob snapshot to cool storage. Must be between `0` and `99999`.\" tier_to_cold_after_days_since_creation_greater_than = \"(Optional) The age in days after creation to cold storage. Supports blob currently at Hot tier. Must be between `0` and `99999`.\" delete_after_days_since_creation_greater_than = \"(Optional) The age in days after creation to delete the blob snapshot. Must be between `0` and `99999`.\" }) version = (Optional) A version block as documented below: object({ change_tier_to_archive_after_days_since_creation = \"(Optional) The age in days after creation to tier blob version to archive storage. Must be between `0` and `99999`.\" tier_to_archive_after_days_since_last_tier_change_greater_than = \"(Optional) The age in days after last tier change to the blobs to skip to be archved. Must be between `0` and `99999`.\" change_tier_to_cool_after_days_since_creation = \"(Optional) The age in days creation create to tier blob version to cool storage. Must be between `0` and `99999`.\" tier_to_cold_after_days_since_creation_greater_than = \"(Optional) The age in days after creation to cold storage. Supports blob currently at Hot tier. Must be between `0` and `99999`.\" delete_after_days_since_creation = \"(Optional) The age in days after creation to delete the blob version. Must be between `0` and `99999`.\" }) })\" })",
+        "required": false,
+        "default": "{}"
+      },
+      "sftp_enabled": {
+        "type": "bool",
+        "description": "(Optional) Boolean, enable SFTP for the storage account. SFTP support requires is_hns_enabled set to true. Defaults to false",
+        "required": false,
+        "default": "false"
+      },
+      "smb_settings": {
+        "type": "object({ versions = list(string) channel_encryption_type = set(string) })",
+        "description": "(Optional) SMB settings for the storage account.",
+        "required": false,
+        "default": "{ \"channel_encryption_type\": [ \"AES-256-GCM\" ], \"versions\": [ \"SMB3.1.1\" ] }"
+      },
+      "storage_policy_required": {
+        "type": "bool",
+        "description": "(Optional) Specifies whether the storage account management policy is required.",
+        "required": false,
+        "default": "false"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The ID of the Storage Account."
+    },
+    "name": {
+      "description": "The name of the Storage Account."
+    },
+    "resource": {
+      "description": "The Storage Account resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Datalakestore' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "resource_group",
+      "virtual_network",
+      "user_assign_identity",
+      "key_vault",
+      "Private endpoint",
+      "keyvault",
+      "subnet",
+      "route table",
+      "network_security_group",
+      "time_sleep"
+    ]
+  }
+}

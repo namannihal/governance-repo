@@ -1,0 +1,160 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: __product name__ module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-datafactorydataset'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-datafactorydataset",
+  "module_type": "service",
+  "azure_service": "Datafactorydataset",
+  "module_name": "__product name__ module",
+  "latest_tag": "1.0.1",
+  "available_tags": [
+    "1.0.1",
+    "1.0.0",
+    "0.1.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-datafactorydataset.git//?ref=1.0.1",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_data_factory_custom_dataset.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_data_factory_dataset_azure_blob.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_data_factory_dataset_azure_sql_table.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_resource_group.this",
+      "type": "data source"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "datafactorydataset",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-datafactorydataset.git//?ref=1.0.1",
+      "version": "1.0.1",
+      "available_versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.1.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "azure_blob_dataset_config": {
+        "type": "map(object({ name = string data_factory_id = string linked_service_name = string folder = optional(string, null) description = optional(string, null) annotations = optional(list(string), []) parameters = optional(map(string), {}) additional_properties = optional(map(string), {}) path = optional(string, null) filename = optional(string, null) dynamic_path_enabled = optional(bool, false) dynamic_filename_enabled = optional(bool, false) schema_column = optional(list(object({ name = string type = optional(string, null) description = optional(string, null) })), []) }))",
+        "description": "(Optional) Map of Azure Blob Dataset configurations for Data Factory. name = \"(Required) The name of the Azure Blob Dataset. Must be unique within a data factory.\" data_factory_id = \"(Required) The Data Factory ID in which to associate the Linked Service with.\" linked_service_name = \"(Required) The explicit name of the Data Factory Linked Service.\" linked_service_key = \"(Optional) The key of the linked service in azure_blob_storage_linked_service_config map. If not specified, uses the dataset's own key.\" folder = \"(Optional) The folder that this Dataset is in. If not specified, the Dataset will appear at the root level.\" description = \"(Optional) The description for the Data Factory Dataset.\" annotations = \"(Optional) List of tags that can be used for describing the Data Factory Dataset.\" parameters = \"(Optional) A map of parameters to associate with the Data Factory Dataset.\" additional_properties = \"(Optional) A map of additional properties to associate with the Data Factory Dataset.\" path = \"(Optional) The path of the Azure Blob.\" filename = \"(Optional) The filename of the Azure Blob.\" dynamic_path_enabled = \"(Optional) Is the path using dynamic expression, function or system variables? Defaults to false.\" dynamic_filename_enabled = \"(Optional) Is the filename using dynamic expression, function or system variables? Defaults to false.\" schema_column = \"(Optional) A list of schema_column blocks: name = \"(Required) The name of the column.\" type = \"(Optional) Type of the column. Valid values are Byte, Byte[], Boolean, Date, DateTime, DateTimeOffset, Decimal, Double, Guid, Int16, Int32, Int64, Single, String, TimeSpan. Please note these values are case sensitive.\" description = \"(Optional) The description of the column.\"",
+        "required": false,
+        "default": "{}"
+      },
+      "azure_sqltable_dataset_config": {
+        "type": "map(object({ name = string data_factory_id = string schema = optional(string, null) table = optional(string, null) folder = optional(string, null) description = optional(string, null) linked_service_id = string annotations = optional(list(string), []) parameters = optional(map(string), {}) additional_properties = optional(map(string), {}) schema_column = optional(map(object({ name = string type = optional(string, null) description = optional(string, null) })), null) }))",
+        "description": "(Optional) Configuration for Azure SQL Table Dataset Services is below. name = \"(Required) Specifies the name of the Data Factory Dataset Azure SQL Table.\" data_factory_id = \"(Required) The Data Factory ID in which to associate the Linked Service with.\" schema = \"(Optional) The schema name of the table in the Azure SQL Database.\" table = \"(Optional) The table name of the table in the Azure SQL Database.\" folder = \"(Optional) The folder that this Dataset is in. If not specified, the Dataset will appear at the root level.\" description = \"(Optional) The description for the Data Factory Dataset Azure SQL Table.\" linked_service_id = \"(Required) The Data Factory Linked Service ID in which to associate the Dataset with\" annotations = \"(Optional) List of tags that can be used for describing the Data Factory Dataset Azure SQL Table.\" parameters = \"(Optional) A map of parameters to associate with the Data Factory Dataset Azure SQL Table.\" additional_properties = \"(Optional) A map of additional properties to associate with the Data Factory Dataset Azure SQL Table.\" schema_column = \"(Optional) A schema_column block as defined below.\" name = \"(Required) The name of the column.\" type = \"(Optional) Type of the column. Valid values are Byte, Byte[], Boolean, Date, DateTime,DateTimeOffset, Decimal, Double, Guid, Int16, Int32, Int64, Single, String, TimeSpan . Please note these values are case sensitive.\" description = \"(Optional) The description of the column.\"",
+        "required": false,
+        "default": "null"
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "custom_dataset_config": {
+        "type": "map(object({ name = string data_factory_id = string type = string type_properties_json = string additional_properties = optional(map(string), {}) annotations = optional(list(string), []) description = optional(string, null) folder = optional(string, null) parameters = optional(map(string), {}) schema_json = optional(string, null) linked_service = object({ name = string parameters = optional(map(string), {}) }) }))",
+        "description": "(Optional) Configuration for Custom Data Factory Dataset (Generic). name = \"(Required) Specifies the name of the Data Factory Dataset. Changing this forces a new resource to be created. Must be globally unique. See the Microsoft documentation for all restrictions.\" data_factory_id = \"(Required) The Data Factory ID in which to associate the Dataset with. Changing this forces a new resource.\" type = \"(Required) The type of dataset that will be associated with Data Factory. Changing this forces a new resource to be created.\" type_properties_json = \"(Required) A JSON object that contains the properties of the Data Factory Dataset. Refer to datafactory/models.go for the shape of the expected JSON. For example, the JSON object for AzureBlob-typed Dataset will be unmarshaled into AzureBlobDatasetTypeProperties struct.\" additional_properties = \"(Optional) A map of additional properties to associate with the Data Factory Dataset.\" annotations = \"(Optional) List of tags that can be used for describing the Data Factory Dataset.\" description = \"(Optional) The description for the Data Factory Dataset.\" folder = \"(Optional) The folder that this Dataset is in. If not specified, the Dataset will appear at the root level.\" parameters = \"(Optional) A map of parameters to associate with the Data Factory Dataset.\" schema_json = \"(Optional) A JSON object that contains the schema of the Data Factory Dataset.\" linked_service = \"(Required) A linked_service block as defined below:\" name = \"(Required) The name of the Data Factory Linked Service.\" parameters = \"(Optional) A map of parameters to associate with the Data Factory Linked Service.\"",
+        "required": false,
+        "default": "{}"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "blobdataset_ids": {
+      "description": "The IDs of the Azure Blob Datasets."
+    },
+    "blobdataset_names": {
+      "description": "The names of the Azure Blob Datasets."
+    },
+    "blobdataset_resources": {
+      "description": "The Azure Blob Dataset resources."
+    },
+    "customdataset_ids": {
+      "description": "The IDs of the Data Factory Custom Datasets."
+    },
+    "customdataset_names": {
+      "description": "The names of the Data Factory Custom Datasets."
+    },
+    "customdataset_resources": {
+      "description": "The Data Factory Custom Dataset resources."
+    },
+    "sqltabledataset_ids": {
+      "description": "The IDs of the Data Factory sqltable Datasets."
+    },
+    "sqltabledataset_names": {
+      "description": "The names of the Data Factory sqltable Datasets."
+    },
+    "sqltabledataset_resources": {
+      "description": "The Data Factory sqltable Dataset resources."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Datafactorydataset' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

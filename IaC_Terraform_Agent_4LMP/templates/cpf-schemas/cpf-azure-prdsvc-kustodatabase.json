@@ -1,0 +1,151 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Data Explorer Kusto Database module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-kustodatabase'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-kustodatabase",
+  "module_type": "service",
+  "azure_service": "Kustodatabase",
+  "module_name": "Azure Data Explorer Kusto Database module",
+  "latest_tag": "1.0.1",
+  "available_tags": [
+    "1.0.1",
+    "1.0.0",
+    "0.1.2",
+    "0.1.1",
+    "0.1.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-kustodatabase.git//?ref=1.0.1",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_kusto_database.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_kusto_database_principal_assignment.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_kusto_eventhub_data_connection.eventhub_connection",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "kustodatabase",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-kustodatabase.git//?ref=1.0.1",
+      "version": "1.0.1",
+      "available_versions": [
+        "1.0.1",
+        "1.0.0",
+        "0.1.2",
+        "0.1.1",
+        "0.1.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "cluster_name",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "cluster_name": {
+        "type": "string",
+        "description": "(Required) Specifies the name of the Kusto Cluster this database will be added to. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "hot_cache_period": {
+        "type": "string",
+        "description": "(Optional) The time the data that should be kept in cache for fast queries as ISO 8601 timespan. Default is unlimited. For more information see: ISO 8601 Timespan.",
+        "required": false,
+        "default": "null"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "kusto_database_principal_assignments": {
+        "type": "map(object({ name = string principal_id = string principal_type = string role = string tenant_id = string }))",
+        "description": "(Optional) Configuration for Kusto database Principal assignments is below. name = \"(Required) The name of the Kusto database principal assignment. Changing this forces a new resource to be created.\" principal_id = \"(Required) The name of the Kusto database. Changing this forces a new resource to be created.\" principal_type = \"(Required) The type of the principal. Valid values include App, Group, User. Changing this forces a new resource to be created.\" role = \"(Required) The database role assigned to the principal. Valid values include Admin, Ingestor, Monitor, UnrestrictedViewer, User and Viewer. Changing this forces a new resource to be created.\" tenant_id = \"(Required) The tenant id in which the principal resides. Changing this forces a new resource to be created.\"",
+        "required": false,
+        "default": "{}"
+      },
+      "kusto_eventhub_data_connection": {
+        "type": "map(object({ name = string cluster_name = string eventhub_id = string consumer_group = string compression = optional(string) event_system_properties = optional(list(string)) table_name = optional(string) identity_id = optional(string) mapping_rule_name = optional(string) data_format = optional(string) database_routing_type = optional(string) }))",
+        "description": "(Optional) Configuration for Kusto Eventhub data connection below. name = \"(Required) The name of the Kusto EventHub Data Connection to create. Changing this forces a new resource to be created.\" cluster_name = \"(Required) Specifies the name of the Kusto Cluster this data connection will be added to. Changing this forces a new resource to be created.\" compression = \"(Optional) Specifies compression type for the connection. Allowed values: GZip and None. Defaults to None. Changing this forces a new resource to be created.\" database_name = \"(Required) Specifies the name of the Kusto Database this data connection will be added to. Changing this forces a new resource to be created.\" eventhub_id = \"(Required) Specifies the resource id of the EventHub this data connection will use for ingestion. Changing this forces a new resource to be created.\" event_system_properties = \"(Optional) Specifies a list of system properties for the Event Hub.\" consumer_group = \"(Required) Specifies the EventHub consumer group this data connection will use for ingestion. Changing this forces a new resource to be created.\" table_name = \"(Optional) Specifies the target table name used for the message ingestion. Table must exist before resource is created.\" identity_id = \"(Optional) The resource ID of a managed identity (system or user assigned) to be used to authenticate with event hub.\" mapping_rule_name = \"(Optional) Specifies the mapping rule used for the message ingestion. Mapping rule must exist before resource is created.\" data_format = \"(Optional) Specifies the data format of the EventHub messages. Allowed values: APACHEAVRO, AVRO, CSV, JSON, MULTIJSON, ORC, PARQUET, PSV, RAW, SCSV, SINGLEJSON, SOHSV, TSVE, TSV, TXT, and W3CLOGFILE.\" database_routing_type = \"(Optional) Indication for database routing information from the data connection, by default only database routing information is allowed. Allowed values: Single, Multi. Changing this forces a new resource to be created. Defaults to Single.\"",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "soft_delete_period": {
+        "type": "string",
+        "description": "(Optional) The time the data should be kept before it stops being accessible to queries as ISO 8601 timespan. Default is unlimited. For more information see: ISO 8601 Timespan.",
+        "required": false,
+        "default": "null"
+      }
+    }
+  },
+  "outputs": {
+    "eventhub_ids": {
+      "description": "The IDs of the Event Hub Connection IDs."
+    },
+    "id": {
+      "description": "The Kusto database ID."
+    },
+    "name": {
+      "description": "The name of the database."
+    },
+    "resource": {
+      "description": "The Resource of the database."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Kustodatabase' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

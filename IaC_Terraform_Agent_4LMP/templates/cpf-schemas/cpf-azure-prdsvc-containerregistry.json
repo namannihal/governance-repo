@@ -1,0 +1,186 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Container Registry module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-containerregistry'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-containerregistry",
+  "module_type": "service",
+  "azure_service": "Containerregistry",
+  "module_name": "Azure Container Registry module",
+  "latest_tag": "1.1.4",
+  "available_tags": [
+    "1.1.4",
+    "1.1.3",
+    "1.1.2",
+    "1.1.1",
+    "1.1.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-containerregistry.git//?ref=1.1.4",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_container_registry.acr",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "containerregistry",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-containerregistry.git//?ref=1.1.4",
+      "version": "1.1.4",
+      "available_versions": [
+        "1.1.4",
+        "1.1.3",
+        "1.1.2",
+        "1.1.1",
+        "1.1.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "data_endpoint_enabled": {
+        "type": "bool",
+        "description": "(Optional) Whether to enable dedicated data endpoints for this Container Registry? This is only supported on resources with the Premium SKU.",
+        "required": false,
+        "default": "false"
+      },
+      "encryption": {
+        "type": "object({ key_vault_key_id = string identity_client_id = string })",
+        "description": "(Optional) One or more encryption block as defined in the following schema: &bull; `key_vault_key_id` = string - (Required) indicates the ID of the Key Vault key. &bull; `identity_client_id` = string - (Required) indicates the client ID of the managed identity associated with the encryption key. **NOTE**: The managed identity used in encryption also needs to be part of the identity block under identity_ids. If a property above is not needed then it needs to be explicitly set to `null` or `[]` (empty list).",
+        "required": false,
+        "default": "null"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "export_policy_enabled": {
+        "type": "bool",
+        "description": "(Optional) Whether the export policy is enabled for this Container Registry. Defaults to false. Set this to `true` when using public_network_access_enabled with network_rule_set to allow the runners to push container images.",
+        "required": false,
+        "default": "false"
+      },
+      "georeplications": {
+        "type": "list(object({ location = string zone_redundancy_enabled = bool tags = map(string) }))",
+        "description": "(Optional) A list of Azure locations where the container registry should be geo-replicated. One or more georeplications block as defined in the following schema: &bull; `location` = string - (Required) A location where the container registry should be geo-replicated. &bull; `zone_redundancy_enabled` = bool - (Optional) For the given location, zone redundancy should be enabled. Defaults to false &bull; `tags` = map(string) - (Optional) A mapping of tags to assign to this replication location. **NOTE**: This field can only be set only when the sku_tier for the container registry is premium. If a property above is not needed then it needs to be explicitly set to `null` or `[]` (empty list).",
+        "required": false,
+        "default": "[]"
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = optional(set(string)) })",
+        "description": "(Required) An identity block as defined below object({ type = \"(Required) Specifies the type of Managed Service Identity that should be configured on this Windows Virtual Machine. Possible values are `SystemAssigned`, `UserAssigned`, `SystemAssigned, UserAssigned` (to enable both).\" identity_ids = \"(Optional) Specifies a list of User Assigned Managed Identity IDs to be assigned to this Windows Virtual Machine. This is required when `type` is set to `UserAssigned` or `SystemAssigned, UserAssigned`.\" })",
+        "required": false,
+        "default": "{ \"identity_ids\": null, \"type\": \"SystemAssigned\" }"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "network_rule_set": {
+        "type": "object({ default_action = string ip_rule = list(object({ ip_range = string action = string })) })",
+        "description": "(Optional) One or more network_rule_set block as defined in the following schema: **NOTE**: Network Rule Set is only supported on resources with the `Premium` SKU. Azure automatically configures Network Rules - to remove these you'll need to specify an network_rule_set block with default_action set to `Deny`. If a property above is not needed then it needs to be explicitly set to `null` or `[]` (empty list). Schema and property description is the following: { default_action = string - (Optional) The behaviour for requests matching no rules. Possible values are `Allow` or `Deny`. Defaults to `Allow`. ip_rule = [{ //Optional ip_range = string - (Required) The CIDR block from which requests will match the rule. action = string - (Required) The behaviour for requests matching this rule. At this time the only supported value is `Allow`. }] }",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "public_network_access_enabled": {
+        "type": "bool",
+        "description": "(Optional) Whether public network access is enabled for this Container Registry. Defaults to false. Set this to `true` to allow public access from shared runners to push container images. When enabled, use network_rule_set to define IP-based access rules for the runners.",
+        "required": false,
+        "default": "false"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "retention_policy_in_days": {
+        "type": "number",
+        "description": "(Optional) The number of days to retain an untagged manifest after which it gets purged. This is only supported on resources with the `Premium` SKU.",
+        "required": false,
+        "default": "null"
+      },
+      "sku_tier": {
+        "type": "string",
+        "description": "(Required) The SKU name of the container registry. Possible values are Basic, Standard and Premium.",
+        "required": false,
+        "default": "\"Premium\""
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "trust_policy_enabled": {
+        "type": "bool",
+        "description": "(Optional) Boolean value that indicates whether the trust policy is enabled. **NOTE**: Trust Policy is only supported on resources with the `Premium` SKU.",
+        "required": false,
+        "default": "false"
+      },
+      "zone_redundancy_enabled": {
+        "type": "bool",
+        "description": "(Optional) Whether zone redundancy is enabled for this Container Registry? Changing this forces a new resource to be created. Defaults to false. This is only supported on resources with the `Premium` SKU.",
+        "required": false,
+        "default": "false"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The ID of the Container Registry."
+    },
+    "name": {
+      "description": "The name of the Container Registry."
+    },
+    "resource": {
+      "description": "The Container Registry resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Containerregistry' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group"
+    ]
+  }
+}

@@ -1,0 +1,174 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Logic App Workflow Module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-logicappworkflow'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-logicappworkflow",
+  "module_type": "service",
+  "azure_service": "Logicappworkflow",
+  "module_name": "Azure Logic App Workflow Module",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.2.4",
+    "0.2.3"
+  ],
+  "gitlab_repository": "https://gitlab.dx1.lseg.com/app/app-51285/cloud-security-controls/azure-clear-listing/-/tree/main/azure/services",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-logicappworkflow.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_logic_app_workflow.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "logicappworkflow",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-logicappworkflow.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.2.4",
+        "0.2.3"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "access_control": {
+        "type": "object({ action = optional(object({ allowed_caller_ip_address_range = list(string) })) content = optional(object({ allowed_caller_ip_address_range = list(string) })) trigger = optional(object({ allowed_caller_ip_address_range = list(string) open_authentication_policy = object({ name = string claim = object({ name = string value = string }) }) })) workflow_management = optional(object({ allowed_caller_ip_address_range = list(string) })) })",
+        "description": "(Optional) A access_control block as defined below. action = \"(Optional) One or more management blocks as documented below.\" allowed_caller_ip_address_range = \"(Required) A list of the allowed caller IP address ranges.\" content = \"(Optional) One or more management blocks as documented below.\" allowed_caller_ip_address_range = \"(Required) A list of the allowed caller IP address ranges.\" trigger = \"(Optional) One or more management blocks as documented below.\" allowed_caller_ip_address_range = \"(Required) A list of the allowed caller IP address ranges.\" open_authentication_policy = \"(Optional) A open_authentication_policy block as defined below.\" name = \"(Required) The OAuth policy name for the Logic App Workflow.\" claim = \"(Required) A claim block as defined below.\" name = \"(Required) The name of the OAuth policy claim for the Logic App Workflow.\" value = \"(Required) The value of the OAuth policy claim for the Logic App Workflow.\" workflow_management = \"(Optional) One or more management blocks as documented below.\" allowed_caller_ip_address_range = \"(Required) A list of the allowed caller IP address ranges.\"",
+        "required": false,
+        "default": "{ \"action\": { \"allowed_caller_ip_address_range\": null }, \"content\": { \"allowed_caller_ip_address_range\": null }, \"trigger\": { \"allowed_caller_ip_address_range\": null, \"open_authentication_policy\": { \"claim\": { \"name\": null, \"value\": null }, \"name\": null } }, \"workflow_management\": { \"allowed_caller_ip_address_range\": null } }"
+      },
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "enabled": {
+        "type": "bool",
+        "description": "(Optional) Is the Logic App Workflow enabled.",
+        "required": false,
+        "default": "true"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = optional(list(string)) })",
+        "description": "(Optional) A Identity block as defined below. type = \"(Required) Specifies the type of Managed Service Identity that should be configured on this Logic App Workflow.\" identity_ids = \"(Optional) Specifies a list of User Assigned Managed Identity IDs to be assigned to this Logic App Workflow.\"",
+        "required": false,
+        "default": "{ \"identity_ids\": null, \"type\": \"SystemAssigned\" }"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "integration_service_environment_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the Integration Service Environment to which this Logic App Workflow belongs.",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "logic_app_integration_account_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the integration account linked by this Logic App Workflow.",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "parameters": {
+        "type": "map(string)",
+        "description": "(Optional) A map of Key-Value pairs.",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "workflow_parameters": {
+        "type": "map(string)",
+        "description": "(Optional) Specifies a map of Key-Value pairs of the Parameter Definitions to use for this Logic App Workflow.",
+        "required": false,
+        "default": "null"
+      },
+      "workflow_schema": {
+        "type": "string",
+        "description": "(Optional) Specifies the Schema to use for this Logic App Workflow.",
+        "required": false,
+        "default": "null"
+      },
+      "workflow_version": {
+        "type": "string",
+        "description": "(Optional) Specifies the version of the Schema used for this Logic App Workflow.",
+        "required": false,
+        "default": "\"1.0.0.0\""
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The Resource ID of the Azure Logic App Workflow."
+    },
+    "name": {
+      "description": "The Name of the Azure Logic App Workflow."
+    },
+    "resource": {
+      "description": "The Resource of the Azure Logic App Workflow."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Logicappworkflow' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group"
+    ]
+  }
+}

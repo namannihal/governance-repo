@@ -1,0 +1,22 @@
+2-bootstrap-create-cicd-vars: 
+  stage: build
+  tags: [ "Refinitiv", "Linux", "Medium" ]
+  extends: [.bootstrap-variables]
+  needs:
+    - 1-create-release-tags
+  script:
+    - |+
+      echo "Bootstrapping project variables..."
+      update_gitlab_variable "LSEG_CODE_PACKAGE_FOLDER" "code-packages" "The package registry folder used for code packages."
+      update_gitlab_variable "LSEG_PIPELINE_PACKAGE_FOLDER" "pipeline-packages" "The package registry folder used for pipeline packages."
+      update_gitlab_variable "LSEG_VALUES_PACKAGE_FOLDER" "-packages" "The package registry folder used for values packages."
+      update_gitlab_variable "LSEG_ENVIRONMENTS_THAT_MUST_USE_PACKAGES" "" "The environment(s) that must use packages."
+      update_gitlab_variable "LSEG_ENVIRONMENTS_THAT_MUST_USE_TAGS" "qa, prod-beta, prod-live" "The environment(s) that must use tags."
+      update_gitlab_variable "LSEG_INCLUDE_CODE_FOLDERS" "terraform" "The folder(s) to include in the Code package build."
+      update_gitlab_variable "LSEG_INCLUDE_PIPELINE_FOLDERS" "pipelines" "The folder(s) to include in the Pipeline package build."
+      update_gitlab_variable "LSEG_INCLUDE_VALUES_FOLDERS" "environments" "The folder(s) to include in the Values package build."
+      echo "Bootstrapping project variables complete."
+    - |+
+      list_gitlab_variables
+      echo "==="
+

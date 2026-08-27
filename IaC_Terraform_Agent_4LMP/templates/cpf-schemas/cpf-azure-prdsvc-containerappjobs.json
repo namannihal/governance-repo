@@ -1,0 +1,253 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Container App Jobs module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-containerappjobs'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-containerappjobs",
+  "module_type": "service",
+  "azure_service": "Containerappjobs",
+  "module_name": "Container App Jobs module",
+  "latest_tag": "1.1.2",
+  "available_tags": [
+    "1.1.2",
+    "1.1.1",
+    "1.1.0",
+    "1.0.0",
+    "0.1.2"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-containerappjobs.git//?ref=1.1.2",
+  "terraform_requirements": {
+    "azapi": ">=1.9",
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "container app environment",
+    "Azure container registry",
+    "Key vault",
+    "User assigned identity"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azapi_update_resource.event_patch",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_container_app_job.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_role_assignment.this_cgr",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "containerappjobs",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-containerappjobs.git//?ref=1.1.2",
+      "version": "1.1.2",
+      "available_versions": [
+        "1.1.2",
+        "1.1.1",
+        "1.1.0",
+        "1.0.0",
+        "0.1.2"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "container",
+      "container_app_environment_id",
+      "container_registry_id",
+      "environment",
+      "location",
+      "org_id",
+      "replica_timeout_in_seconds",
+      "resource_group_name",
+      "trigger_type",
+      "uai_principal_id"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "container": {
+        "type": "map(object({ args = optional(list(string), null) command = optional(list(string), null) cpu = number env = optional(map(object({ name = string secret_name = optional(string, null) value = optional(string, null) })), null) image = string liveness_probe = optional(object({ failure_count_threshold = optional(number, 3) header = optional(object({ name = string value = string }), null) host = optional(string, null) initial_delay = optional(number, null) interval_seconds = optional(number, 10) path = optional(string, \"/\") port = number timeout = optional(number, 1) transport = string }), null) memory = string name = string readiness_probe = optional(object({ failure_count_threshold = optional(number, 3) header = optional(object({ name = string value = string }), null) host = optional(string, null) interval_seconds = optional(number, 10) path = optional(string, \"/\") port = number success_count_threshold = optional(number, 3) timeout = optional(number, 1) transport = string }), null) startup_probe = optional(object({ failure_count_threshold = optional(number, 3) header = optional(object({ name = string value = string }), null) host = optional(string, null) interval_seconds = optional(number, 10) path = optional(string, \"/\") port = number timeout = optional(number, 1) transport = string }), null) volume_mounts = optional(object({ name = string path = string sub_path = optional(string, null) }), null) }))",
+        "description": "(Required) object({ container = (Required) One or more container blocks as detailed below. map(object({ args = (Optional) A list of extra arguments to pass to the container. command = (Optional) A command to pass to the container to override the default. This is provided as a list of command line elements without spaces. cpu = (Required) The amount of vCPU to allocate to the container. Possible values include 0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, and 2.0. env = (Optional) One or more env blocks as detailed below. map(object({ name = (Required) The name of the environment variable for the container. secret_name = (Optional) The name of the secret that contains the value for this environment variable. value = (Optional) The value for this environment variable. })) image = (Required) The image to use to create the container. liveness_probe = (Optional) A liveness_probe block as detailed below. object({ failure_count_threshold = (Optional) The number of consecutive failures required to consider this probe as failed. Possible values are between 1 and 10. Defaults to 3. header = (Optional) A header block as detailed below. object({ name = (Required) The HTTP Header Name. value = (Required) The HTTP Header value. }) host = (Optional) The probe hostname. Defaults to the pod IP address. Setting a value for Host in headers can be used to override this for HTTP and HTTPS type probes. initial_delay = (Optional) The time in seconds to wait after the container has started before the probe is started. interval_seconds = (Optional) How often, in seconds, the probe should run. Possible values are in the range 1 - 240. Defaults to 10. path = (Optional) The URI to use with the host for http type probes. Not valid for TCP type probes. Defaults to /. port = (Required) The port number on which to connect. Possible values are between 1 and 65535. timeout = (Optional) Time in seconds after which the probe times out. Possible values are in the range 1 - 240. Defaults to 1. transport = (Required) Type of probe. Possible values are TCP, HTTP, and HTTPS. }) memory = (Required) The amount of memory to allocate to the container. Possible values include 0.5Gi, 1.0Gi, 1.5Gi, 2.0Gi, 2.5Gi, 3.0Gi, 3.5Gi, and 4.0Gi. name = (Required) The name of the container readiness_probe = (Optional) A readiness_probe block as detailed below. object({ failure_count_threshold = (Optional) The number of consecutive failures required to consider this probe as failed. Possible values are between 1 and 10. Defaults to 3. header = (Optional) A header block as detailed below. object({ name = (Required) The HTTP Header Name. value = (Required) The HTTP Header Value. }) host = (Optional) The probe hostname. Defaults to the pod IP address. Setting a value for Host in headers can be used to override this for HTTP and HTTPS type probes. interval_seconds = (Optional) How often, in seconds, the probe should run. Possible values are between 1 and 240. Defaults to 10 path = (Optional) The URI to use for http type probes. Not valid for TCP type probes. Defaults to /. port = (Required) The port number on which to connect. Possible values are between 1 and 65535. success_count_threshold = (Optional) The number of consecutive successful responses required to consider this probe as successful. Possible values are between 1 and 10. Defaults to 3. timeout = (Optional) Time in seconds after which the probe times out. Possible values are in the range 1 - 240. Defaults to 1. transport = (Required) Type of probe. Possible values are TCP, HTTP, and HTTPS. }) startup_probe = (Optional) object({ failure_count_threshold = (Optional) The number of consecutive failures required to consider this probe as failed. Possible values are between 1 and 10. Defaults to 3. header = (Optional) A header block as detailed below. object({ name = (Required) The HTTP Header Name. value = (Required) The HTTP Header Value. }) host = (Optional) The value for the host header which should be sent with this probe. If unspecified, the IP Address of the Pod is used as the host header. Setting a value for Host in headers can be used to override this for HTTP and HTTPS type probes. interval_seconds = (Optional) How often, in seconds, the probe should run. Possible values are between 1 and 240. Defaults to 10 path = (Optional) The URI to use with the host for http type probes. Not valid for TCP type probes. Defaults to /. port = (Required) The port number on which to connect. Possible values are between 1 and 65535. timeout = (Optional) Time in seconds after which the probe times out. Possible values are in the range 1 - 240. Defaults to 1. transport = (Required) Type of probe. Possible values are TCP, HTTP, and HTTPS. }) volume_mounts = (Optional) object({ name = (Required) The name of the Volume to be mounted in the container. path = (Required) The path in the container at which to mount this volume. sub_path = (Optional) The sub path of the volume to be mounted in the container. })",
+        "required": true
+      },
+      "container_app_environment_id": {
+        "type": "string",
+        "description": "(Required) The ID of the Container App Environment within which this Container App should exist. Changing this forces a new resource to be created.",
+        "required": true
+      },
+      "container_registry_id": {
+        "type": "string",
+        "description": "(Required) The private container registry for the Container Instances.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "create_role_assignment": {
+        "type": "bool",
+        "description": "Whether to create the role assignment for this app.",
+        "required": false,
+        "default": "true"
+      },
+      "enable_key_vault_role_assignment": {
+        "type": "bool",
+        "description": "(Optional) Whether to create the Key Vault Secrets User role assignment.",
+        "required": false,
+        "default": "true"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "event_trigger_config": {
+        "type": "object({ parallelism = optional(number) replica_completion_count = optional(number) scale = optional(object({ max_executions = optional(number) min_executions = optional(number) polling_interval_in_seconds = optional(number) rules = optional(object({ name = optional(string) custom_rule_type = optional(string) identity = optional(string) metadata = optional(map(string)) authentication = optional(object({ secret_name = optional(string) trigger_parameter = optional(string) })) })) })) })",
+        "description": "(Optional) Configuration for event trigger. Required when trigger_type is set to 'event'. object({ parallelism = (Optional) Number of parallel replicas of a job that can run at a given time. Controls concurrent execution capacity. replica_completion_count = (Optional) Minimum number of successful replica completions before overall job completion. Must be less than or equal to parallelism. scale = (Optional) Configuration for event-based scaling behavior. object({ max_executions = (Optional) Maximum number of job executions that are created for a trigger. min_executions = (Optional) Minimum number of job executions that are created for a trigger. polling_interval_in_seconds = (Optional) Interval to check each event source in seconds. rules = (Optional) Configuration for the event trigger rules. object({ name = (Optional) Name of the rule for identification purposes. custom_rule_type = (Optional) The type of custom rule to use (e.g., \"azure-storage-queue\", \"azure-service-bus\", etc.). identity = (Optional) The identity to use for accessing the event source. This can either be the Resource ID of a User Assigned Identity, or System for the System Assigned Identity. metadata = (Optional) A map of key-value pairs containing configuration for the custom rule (e.g., queue name, topic name). authentication = (Optional) Authentication configuration for the event source. object({ secret_name = (Optional) Reference to a secret containing authentication credentials. trigger_parameter = (Optional) The parameter to use for passing the authentication information. }) }) }) })",
+        "required": false,
+        "default": "null"
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = list(string) })",
+        "description": "(Optional) An identity block supports the following: object({ type = (Required) The type of managed identity to assign. Possible values are SystemAssigned, UserAssigned, and SystemAssigned, UserAssigned (to enable both). identity_ids = (Optional) - A list of one or more Resource IDs for User Assigned Managed identities to assign. Required when type is set to UserAssigned or SystemAssigned, UserAssigned. })",
+        "required": false,
+        "default": "{ \"identity_ids\": null, \"type\": \"SystemAssigned\" }"
+      },
+      "init_container": {
+        "type": "object({ args = optional(list(string), null) command = optional(list(string), null) cpu = number env = optional(map(object({ name = string secret_name = optional(string, null) value = optional(string, null) })), null) image = string memory = string name = string volume_mounts = optional(object({ name = string path = string sub_path = optional(string, null) }), null) })",
+        "description": "(Optional) object({ args = (Optional) A list of extra arguments to pass to the container. command = (Optional) A command to pass to the container to override the default. This is provided as a list of command line elements without spaces. cpu = (Required) The amount of vCPU to allocate to the container. Possible values include 0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, and 2.0. env = (Optional) One or more env blocks as detailed below. map(object({ name = (Required) The name of the environment variable for the container. secret_name = (Optional) The name of the secret that contains the value for this environment variable. value = (Optional) The value for this environment variable. })) image = (Required) The image to use to create the container. memory = (Required) The amount of memory to allocate to the container. Possible values include 0.5Gi, 1.0Gi, 1.5Gi, 2.0Gi, 2.5Gi, 3.0Gi, 3.5Gi, and 4.0Gi. name = (Required) The name of the container volume_mounts = (Optional) object({ name = (Required) The name of the Volume to be mounted in the container. path = (Required) The path in the container at which to mount this volume. sub_path = (Optional) The sub path of the volume to be mounted in the container. }) })",
+        "required": false,
+        "default": "null"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "key_vault_id": {
+        "type": "string",
+        "description": "(Optional) The resource ID of the Key Vault where the Key Vault Key resides.",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "manual_trigger_config": {
+        "type": "object({ parallelism = optional(number) replica_completion_count = optional(number) })",
+        "description": "(Optional) Configuration for manual trigger. Required when trigger_type is set to 'manual'. object({ parallelism = (Optional) Number of parallel replicas of a job that can run at a given time. replica_completion_count = (Optional) Minimum number of successful replica completions before overall job completion. })",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "registry": {
+        "type": "object({ server = optional(string) identity = optional(string) })",
+        "description": "(Optional) object({ server = (Optional) The hostname for the Container Registry. identity = (Optional) Resource ID for the User Assigned Managed identity to use when pulling from the Container Registry. })",
+        "required": false,
+        "default": "null"
+      },
+      "replica_retry_limit": {
+        "type": "number",
+        "description": "(Optional) The maximum number of retries for replicas.",
+        "required": false,
+        "default": "10"
+      },
+      "replica_timeout_in_seconds": {
+        "type": "number",
+        "description": "(Required) The timeout duration in seconds for replicas.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "schedule_trigger_config": {
+        "type": "object({ cron_expression = string parallelism = optional(number) replica_completion_count = optional(number) })",
+        "description": "(Optional) Configuration for schedule trigger. Required when trigger_type is set to 'schedule'. object({ cron_expression = (Required) Cron formatted repeating schedule of a Cron Job. parallelism = (Optional) Number of parallel replicas of a job that can run at a given time. replica_completion_count = (Optional) Minimum number of successful replica completions before overall job completion. })",
+        "required": false,
+        "default": "null"
+      },
+      "secret": {
+        "type": "map(object({ name = string identity = optional(string) key_vault_secret_id = optional(string) }))",
+        "description": "(Optional) Note: Secrets cannot be removed from the service once added, attempting to do so will result in an error. Their values may be zeroed, i.e. set to \"\", but the named secret must persist. This is due to a technical limitation on the service which causes the service to become unmanageable. map(object({ name = (Required) The Secret name. identity = (Optional) The identity to use for accessing the Key Vault secret reference. This can either be the Resource ID of a User Assigned Identity, or System for the System Assigned Identity. Identity must be used together with key_vault_secret_id key_vault_secret_id = (Optional) The ID of a Key Vault secret. This can be a versioned or version-less ID. }))",
+        "required": false,
+        "default": "null"
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "trigger_type": {
+        "type": "string",
+        "description": "(Required) The type of trigger to use for the Container App Job. Valid options are: - 'manual': Job is triggered manually through user intervention or API call - 'event': Job is triggered in response to specific events (requires event_trigger_config) - 'schedule': Job is triggered on a time-based schedule defined by a cron expression (requires schedule_trigger_config)",
+        "required": true
+      },
+      "uai_principal_id": {
+        "type": "string",
+        "description": "(Required) Principal id of the User Assigned Identity which should be used to access the images from container registry. This identity will be granted `AcrPull` role on the Container Registry.",
+        "required": true
+      },
+      "volume": {
+        "type": "map(object({ name = optional(string) storage_name = optional(string) storage_type = optional(string, \"EmptyDir\") }))",
+        "description": "(Optional) map(object({ name = (Optional) The name of the volume. storage_name = (Optional) The name of the AzureFile storage. storage_type = (Optional) The type of storage volume. Possible values include AzureFile and EmptyDir. Defaults to EmptyDir. }))",
+        "required": false,
+        "default": "null"
+      },
+      "workload_profile_name": {
+        "type": "string",
+        "description": "(Optional) The name of the Workload Profile in the Container App Environment to place this Container App. Omit this value to use the default Consumption Workload Profile. The possible values could be the name of the workload_profile used in 'azurerm_container_app_environment'.",
+        "required": false,
+        "default": "\"Consumption\""
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The Resource ID of the Container App."
+    },
+    "name": {
+      "description": "The name of the Container App."
+    },
+    "resource": {
+      "description": "The Container App resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Containerappjobs' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "container app environment",
+      "Azure container registry",
+      "Key vault",
+      "User assigned identity"
+    ]
+  }
+}

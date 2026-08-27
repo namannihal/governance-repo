@@ -1,0 +1,164 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure CDN Front Door Firewall Policy module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-cdnfrontdoorfirewallpolicy'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-cdnfrontdoorfirewallpolicy",
+  "module_type": "service",
+  "azure_service": "Cdnfrontdoorfirewallpolicy",
+  "module_name": "Azure CDN Front Door Firewall Policy module",
+  "latest_tag": "1.1.0",
+  "available_tags": [
+    "1.1.0",
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.9.1"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cdnfrontdoorfirewallpolicy.git//?ref=1.1.0",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_cdn_frontdoor_firewall_policy.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "cdnfrontdoorfirewallpolicy",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-cdnfrontdoorfirewallpolicy.git//?ref=1.1.0",
+      "version": "1.1.0",
+      "available_versions": [
+        "1.1.0",
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.9.1"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name",
+      "sku_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "custom_block_response_body": {
+        "type": "string",
+        "description": "(Optional) If a custom_rule block's action type is block, this is the response body. The body must be specified in base64 encoding",
+        "required": false,
+        "default": "null"
+      },
+      "custom_block_response_status_code": {
+        "type": "number",
+        "description": "(Optional) If a custom_rule block's action type is block, this is the response status code. Possible values are 200, 403, 405, 406, or 429",
+        "required": false,
+        "default": "200"
+      },
+      "custom_rules": {
+        "type": "map(object({ name = string action = string type = string # Optional enabled = bool priority = number rate_limit_duration_in_minutes = optional(number) rate_limit_threshold = optional(number) match_condition = optional(list(object({ match_variable = string match_values = list(string) operator = string selector = string negation_condition = bool transforms = list(string) }))) }))",
+        "description": "(Optional) map(object({ name = \"(Required) Gets name of the resource that is unique within a policy. This name can be used to access the resource.\" action = \"(Required) The action to perform when the rule is matched. Possible values are Allow, Block, Log, or Redirect.\" rule_type = (Required) Describes the type of rule. Possible values are `MatchRule` and `RateLimitRule`. enabled = \"(Optional) Is the rule is enabled or disabled? Defaults to true.\" priority = \"(Optional) The priority of the rule. Rules with a lower value will be evaluated before rules with a higher value. Defaults to 1.\" rate_limit_duration_in_minutes = \"(Optional) The rate limit duration in minutes. Defaults to 1.\" rate_limit_threshold = \"(Optional) The rate limit threshold. Defaults to 10.\" match_condition = (Optional) list(object({ match_variable = \"(Required) The request variable to compare with. Possible values are Cookies, PostArgs, QueryString, RemoteAddr, RequestBody, RequestHeader, RequestMethod, RequestUri, or SocketAddr.\" match_values = \"(Required) Up to 600 possible values to match. Limit is in total across all match_condition blocks and match_values arguments. String value itself can be up to 256 characters in length.\" operator = \"(Required) Comparison type to use for matching with the variable value. Possible values are Any, BeginsWith, Contains, EndsWith, Equal, GeoMatch, GreaterThan, GreaterThanOrEqual, IPMatch, LessThan, LessThanOrEqual or RegEx.\" selector = \"(Optional) Match against a specific key if the match_variable is QueryString, PostArgs, RequestHeader or Cookies.\" negation_condition = \"(Optional) Should the result of the condition be negated.\" transforms = \"(Optional) Up to 5 transforms to apply. Possible values are Lowercase, RemoveNulls, Trim, Uppercase, URLDecode or URLEncode.\" })) }))",
+        "required": false,
+        "default": "{}"
+      },
+      "default_rate_limit_rule": {
+        "type": "object({ action = string priority = number rate_limit_duration_in_minutes = optional(number) rate_limit_threshold = optional(number) match_condition = optional(list(object({ match_variable = string match_values = list(string) operator = string selector = string negation_condition = bool transforms = list(string) }))) })",
+        "description": "A default rule of RateLimitRule type is given by default - (Optional) map(object({ action = \"(Required) The action to perform when the rule is matched. Possible values are Allow, Block, Log, or Redirect.\" enabled = \"(Optional) Is the rule is enabled or disabled? Defaults to true.\" priority = \"(Optional) The priority of the rule. Rules with a lower value will be evaluated before rules with a higher value. Defaults to 1.\" rate_limit_duration_in_minutes = \"(Optional) The rate limit duration in minutes. Defaults to 1.\" rate_limit_threshold = \"(Optional) The rate limit threshold. Defaults to 10.\" match_condition = (Optional) list(object({ match_variable = \"(Required) The request variable to compare with. Possible values are Cookies, PostArgs, QueryString, RemoteAddr, RequestBody, RequestHeader, RequestMethod, RequestUri, or SocketAddr.\" match_values = \"(Required) Up to 600 possible values to match. Limit is in total across all match_condition blocks and match_values arguments. String value itself can be up to 256 characters in length.\" operator = \"(Required) Comparison type to use for matching with the variable value. Possible values are Any, BeginsWith, Contains, EndsWith, Equal, GeoMatch, GreaterThan, GreaterThanOrEqual, IPMatch, LessThan, LessThanOrEqual or RegEx.\" selector = \"(Optional) Match against a specific key if the match_variable is QueryString, PostArgs, RequestHeader or Cookies.\" negation_condition = \"(Optional) Should the result of the condition be negated.\" transforms = \"(Optional) Up to 5 transforms to apply. Possible values are Lowercase, RemoveNulls, Trim, Uppercase, URLDecode or URLEncode.\" })) }))",
+        "required": false,
+        "default": "{ \"action\": \"Block\", \"match_condition\": [ { \"match_values\": [ \"windows\" ], \"match_variable\": \"RequestHeader\", \"negation_condition\": false, \"operator\": \"Contains\", \"selector\": \"UserAgent\", \"transforms\": null } ], \"priority\": 10, \"rate_limit_duration_in_minutes\": 1, \"rate_limit_threshold\": 2000 }"
+      },
+      "default_ruleset_exclusions": {
+        "type": "map(object({ rule_group_name = string rules = map(object({ rule_id = string action = optional(string, \"AnomalyScoring\") exclusions = optional(map(object({ match_variable = string operator = string selector = string })), {}) })) }))",
+        "description": "map(object({ rule_group_name = \"(Required) The managed rule group to override.\" rules = map(object({ rule_id = \"(Required) Identifier for the managed rule.\" action = \"(Optional) The action to be applied when the managed rule matches or when the anomaly score is 5 or greater. Possible values for DRS 1.1 and below are Allow, Log, Block, and Redirect. For DRS 2.0 and above the possible values are Log or AnomalyScoring. Defaults to AnomalyScoring.\" exclusions = optional(map(object({ match_variable = \"(Required) The variable type to be excluded. Possible values are QueryStringArgNames, RequestBodyPostArgNames, RequestCookieNames, RequestHeaderNames, RequestBodyJsonArgNames.\" operator = \"(Required) Comparison operator to apply to the selector when specifying which elements in the collection this exclusion applies to. Possible values are: Equals, Contains, StartsWith, EndsWith, EqualsAny. RequestBodyJsonArgNames is only available on Default Rule Set (DRS) 2.0 or later\" selector = \"(Required) Selector for the value in the match_variable attribute this exclusion applies to. Selector must be set to * if operator is set to EqualsAny.\" })), {}) })) }))",
+        "required": false,
+        "default": "{}"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "managed_rules": {
+        "type": "map(object({ type = string version = string action = string override = map(object({ rule_group_name = string })) rule = map(object({ rule_id = string action = string enabled = bool })) }))",
+        "description": "(Optional) map(object({ type = \"(Required) The name of the managed rule to use with this resource. Possible values include DefaultRuleSet, Microsoft_DefaultRuleSet, BotProtection or Microsoft_BotManagerRuleSet.\" version = \"(Required) The version of the managed rule to use with this resource. Possible values depends on which DRS type you are using, for the DefaultRuleSet type the possible values include 1.0 or preview-0.1. For Microsoft_DefaultRuleSet the possible values include 1.1, 2.0 or 2.1. For BotProtection the value must be preview-0.1 and for Microsoft_BotManagerRuleSet the value must be 1.0.\" action = \"(Required) The action to perform for all DRS rules when the managed rule is matched or when the anomaly score is 5 or greater depending on which version of the DRS you are using. Possible values include Allow, Log, Block, and Redirect.\" override = (Optional) map(object({ rule_group_name = \"(Required) The managed rule group to override.\" })) rule = (Optional) map(object({ rule_id = \"(Required) Identifier for the managed rule.\" action = \"(Required) The action to be applied when the managed rule matches or when the anomaly score is 5 or greater. Possible values for DRS 1.1 and below are Allow, Log, Block, and Redirect. For DRS 2.0 and above the possible values are Log or AnomalyScoring.\" enabled = \"(Optional) Is the managed rule override enabled or disabled. Defaults to false\" })) }))",
+        "required": false,
+        "default": "{}"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "redirect_url": {
+        "type": "string",
+        "description": "(Optional) If action type is redirect, this field represents redirect URL for the client.",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "sku_name": {
+        "type": "string",
+        "description": "(Required) The sku's pricing tier for this Front Door Firewall Policy. Possible values include Standard_AzureFrontDoor or Premium_AzureFrontDoor",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "The ID of the CDN frontdoor firewall policy."
+    },
+    "name": {
+      "description": "The name of the CDN frontdoor firewall policy."
+    },
+    "resource": {
+      "description": "The Cdn Frontdoor Firewall Policy resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Cdnfrontdoorfirewallpolicy' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": []
+  }
+}

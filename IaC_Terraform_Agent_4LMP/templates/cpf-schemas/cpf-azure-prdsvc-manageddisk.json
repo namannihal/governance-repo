@@ -1,0 +1,269 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Azure Managed Disk module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-manageddisk'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-manageddisk",
+  "module_type": "service",
+  "azure_service": "Manageddisk",
+  "module_name": "Azure Managed Disk module",
+  "latest_tag": "1.1.1",
+  "available_tags": [
+    "1.1.1",
+    "1.1.0",
+    "1.0.1",
+    "1.0.0",
+    "0.9.0"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-manageddisk.git//?ref=1.1.1",
+  "terraform_requirements": {
+    "azapi": ">=1.9",
+    "azurerm": ">= 4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Windows Virtual Machine",
+    "Linux Virtual Machine"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azapi_update_resource.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_managed_disk.this",
+      "type": "resource"
+    },
+    {
+      "terraform_resource": "azurerm_virtual_machine_data_disk_attachment.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "manageddisk",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-manageddisk.git//?ref=1.1.1",
+      "version": "1.1.1",
+      "available_versions": [
+        "1.1.1",
+        "1.1.0",
+        "1.0.1",
+        "1.0.0",
+        "0.9.0"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "attach_disk_to_vm",
+      "disk_encryption_set_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "attach_disk_to_vm": {
+        "type": "bool",
+        "description": "(Required) Whether to attach the disk to a virtual machine. When false, creates a standalone disk for VMSS scenarios.",
+        "required": true
+      },
+      "availability_zone": {
+        "type": "string",
+        "description": "(Optional) The Availability Zone in which this Managed Disk should be located. Make sure the disk sku you want to use can be created in availability zone.",
+        "required": false,
+        "default": "null"
+      },
+      "caching": {
+        "type": "string",
+        "description": "(Optional) Specifies the caching requirements for this Data Disk.",
+        "required": false,
+        "default": "\"ReadWrite\""
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 71 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "data_access_auth_mode": {
+        "type": "string",
+        "description": "(Optional)Specifies the authentication mode for data access.",
+        "required": false,
+        "default": "\"AzureActiveDirectory\""
+      },
+      "disk_encryption_set_id": {
+        "type": "string",
+        "description": "(Required) The resource ID of a Disk Encryption Set which should be used to encrypt this Managed Disk.",
+        "required": true
+      },
+      "disk_iops_read_only": {
+        "type": "number",
+        "description": "(Optional) The number of IOPS allowed across all VMs mounting the shared disk as read-only; only settable for UltraSSD disks and PremiumV2 disks with shared disk enabled. One operation can transfer between 4k and 256k bytes.",
+        "required": false,
+        "default": "null"
+      },
+      "disk_iops_read_write": {
+        "type": "number",
+        "description": "(Optional) The number of IOPS allowed for this disk; only settable for UltraSSD disks and PremiumV2 disks. One operation can transfer between 4k and 256k bytes.",
+        "required": false,
+        "default": "null"
+      },
+      "disk_mbps_read_only": {
+        "type": "number",
+        "description": "(Optional) The bandwidth allowed across all VMs mounting the shared disk as read-only; only settable for UltraSSD disks and PremiumV2 disks with shared disk enabled. MBps means millions of bytes per second.",
+        "required": false,
+        "default": "null"
+      },
+      "disk_mbps_read_write": {
+        "type": "number",
+        "description": "(Optional) The bandwidth allowed for this disk; only settable for UltraSSD disks and PremiumV2 disks. MBps means millions of bytes per second.",
+        "required": false,
+        "default": "null"
+      },
+      "disk_size_gb": {
+        "type": "string",
+        "description": "(Optional) Specifies the size of the managed disk to create in gigabytes. If create_option is Copy or FromImage, then the value must be equal to or greater than the source's size. The size can only be increased. Defaults to `128`",
+        "required": false,
+        "default": "\"128\""
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "gallery_image_reference_id": {
+        "type": "string",
+        "description": "(Optional) ID of a Gallery Image Version to copy when create_option is FromImage. This field cannot be specified if image_reference_id is specified. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "hyper_v_generation": {
+        "type": "string",
+        "description": "(Optional) The HyperV Generation of the Disk when the source of an Import or Copy operation targets a source that contains an operating system. Possible values are V1 and V2. For ImportSecure it must be set to V2. Changing this forces a new resource to be created. Defaults to `V2`",
+        "required": false,
+        "default": "\"V2\""
+      },
+      "image_reference_id": {
+        "type": "string",
+        "description": "(Optional) ID of an existing platform/marketplace disk image to copy from",
+        "required": false,
+        "default": "\"\""
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "lun": {
+        "type": "number",
+        "description": "(Optional) The Logical Unit Number of the Data Disk, which needs to be unique within the Virtual Machine. Required when virtual_machine_id is provided. Valid range is 0-63.",
+        "required": false,
+        "default": "null"
+      },
+      "max_shares": {
+        "type": "number",
+        "description": "(Optional) The maximum number of VMs that can attach to the disk at the same time. Value greater than one indicates a disk that can be mounted on multiple VMs at the same time.",
+        "required": false,
+        "default": "null"
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "os_type": {
+        "type": "string",
+        "description": "(Optional) Specify a value when the source is an Import, Copy or Image.",
+        "required": false,
+        "default": "null"
+      },
+      "performance_tier": {
+        "type": "string",
+        "description": "(Optional) The disk performance tier to use. This feature is currently supported only for premium SSDs.",
+        "required": false,
+        "default": "null"
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the managed disk.",
+        "required": true
+      },
+      "source_resource_id": {
+        "type": "string",
+        "description": "(Optional) The ID of an existing Managed Disk or Snapshot to copy from.",
+        "required": false,
+        "default": "\"\""
+      },
+      "source_uri": {
+        "type": "string",
+        "description": "(Optional) URI to a valid VHD file to be used for the disk creation.",
+        "required": false,
+        "default": "\"\""
+      },
+      "storage_account_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the Storage Account where the source_uri is located. Required when create_option is set to `Import` or `ImportSecure`. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "null"
+      },
+      "storage_account_type": {
+        "type": "string",
+        "description": "(Optional) The type of storage to use for the managed disk. Possible values are Standard_LRS, StandardSSD_ZRS, Premium_LRS, PremiumV2_LRS, Premium_ZRS, StandardSSD_LRS or UltraSSD_LRS.",
+        "required": false,
+        "default": "\"StandardSSD_LRS\""
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      },
+      "trusted_launch_enabled": {
+        "type": "bool",
+        "description": "(Optional) Specifies if Trusted Launch is enabled for the Managed Disk. Changing this forces a new resource to be created.",
+        "required": false,
+        "default": "false"
+      },
+      "virtual_machine_id": {
+        "type": "string",
+        "description": "(Optional) The ID of the virtual machine to attach the disk to. If null, creates a standalone disk.",
+        "required": false,
+        "default": "null"
+      }
+    }
+  },
+  "outputs": {
+    "id": {
+      "description": "ID of the managed disk."
+    },
+    "name": {
+      "description": "Name of the managed disk."
+    },
+    "resource": {
+      "description": "The Managed Disk resource."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Manageddisk' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Windows Virtual Machine",
+      "Linux Virtual Machine"
+    ]
+  }
+}

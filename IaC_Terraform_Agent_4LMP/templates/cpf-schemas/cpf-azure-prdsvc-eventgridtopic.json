@@ -1,0 +1,156 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CPF Module Schema: Event Grid Topic module",
+  "description": "JSON schema for CPF module 'cpf-azure-prdsvc-eventgridtopic'. Use this to generate Terraform code that calls the CPF module.",
+  "cpf_id": "cpf-azure-prdsvc-eventgridtopic",
+  "module_type": "service",
+  "azure_service": "Eventgridtopic",
+  "module_name": "Event Grid Topic module",
+  "latest_tag": "1.0.2",
+  "available_tags": [
+    "1.0.2",
+    "1.0.1",
+    "1.0.0",
+    "0.3.2",
+    "0.3.1"
+  ],
+  "gitlab_repository": "",
+  "terraform_source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-eventgridtopic.git//?ref=1.0.2",
+  "terraform_requirements": {
+    "azurerm": ">=4.33",
+    "terraform": ">= 1.5.0"
+  },
+  "prerequisites": [
+    "Resource Group"
+  ],
+  "azure_resources_created": [
+    {
+      "terraform_resource": "azurerm_eventgrid_topic.this",
+      "type": "resource"
+    }
+  ],
+  "terraform_usage": {
+    "module_call_template": {
+      "module_label": "eventgridtopic",
+      "source": "git::https://gitlab.dx1.lseg.com/app/app-51310/azure/prdsvc/terraform/azure-prdsvc-terraform-eventgridtopic.git//?ref=1.0.2",
+      "version": "1.0.2",
+      "available_versions": [
+        "1.0.2",
+        "1.0.1",
+        "1.0.0",
+        "0.3.2",
+        "0.3.1"
+      ]
+    }
+  },
+  "inputs": {
+    "type": "object",
+    "required": [
+      "app_id",
+      "environment",
+      "location",
+      "org_id",
+      "resource_group_name"
+    ],
+    "properties": {
+      "app_id": {
+        "type": "string",
+        "description": "(Required) A descriptive name (abbreviation) for the workload (application) as it is registered in Leanix. The identifier format in Leanix is 'APP-12345', for the purpose of naming resources only 5 number will be used.",
+        "required": true
+      },
+      "context": {
+        "type": "string",
+        "description": "(Optional) Application context information for the resource(s) (max 10 chars).",
+        "required": false,
+        "default": "null"
+      },
+      "custom_topic_var": {
+        "type": "object({ input_schema = optional(string) })",
+        "description": "(Optional) A custom_topic_var block supports the following: input_schema = \"(Optional) Specifies the schema in which incoming events will be published to this domain. Allowed values are CloudEventSchemaV1_0, CustomEventSchema, or EventGridSchema. Defaults to eventgridschema. Changing this forces a new resource to be created.\"",
+        "required": false,
+        "default": "{ \"input_schema\": \"EventGridSchema\" }"
+      },
+      "environment": {
+        "type": "string",
+        "description": "(Required) The environment where the resource is deployed. Given as abbreviation to leave more characters to the other naming components (max 3 chars).",
+        "required": true
+      },
+      "identity": {
+        "type": "object({ type = string identity_ids = list(string) })",
+        "description": "(Optional) An identity block supports the following: object({ type = \"(Required) Specifies the type of Managed Service Identity that should be configured on this Event Grid .\" identity_ids = \"(Optional) A list of User Assigned Managed Identity IDs to be assigned to this Event Grid .\" })",
+        "required": false,
+        "default": "{ \"identity_ids\": null, \"type\": \"UserAssigned\" }"
+      },
+      "input_mapping_default_values": {
+        "type": "object({ event_type = optional(string) data_version = optional(string) subject = optional(string) })",
+        "description": "(Optional) A input_mapping_default_values block as defined below. Changing this forces a new resource to be created.: event_type = \"(Optional) Specifies the default event type of the EventGrid Event to associate with the domain. Changing this forces a new resource to be created.\" data_version = \"(Optional) Specifies the default data version of the EventGrid Event to associate with the domain. Changing this forces a new resource to be created.\" subject = \"(Optional) Specifies the default subject of the EventGrid Event to associate with the domain. Changing this forces a new resource to be created.\"",
+        "required": false,
+        "default": "{ \"data_version\": null, \"event_type\": null, \"subject\": null }"
+      },
+      "input_mapping_fields": {
+        "type": "object({ id = optional(string) topic = optional(string) event_type = optional(string) event_time = optional(string) data_version = optional(string) subject = optional(string) })",
+        "description": "(Optional) An input_mapping_fields block supports the following: id = \"(Optional) Specifies the id of the EventGrid Event to associate with the domain. Changing this forces a new resource to be created.\" topic = \"(Optional) Specifies the topic of the EventGrid Event to associate with the domain. Changing this forces a new resource to be created.\" event_type = \"(Optional) Specifies the event type of the EventGrid Event to associate with the domain. Changing this forces a new resource to be created.\" event_time = \"(Optional) Specifies the event time of the EventGrid Event to associate with the domain. Changing this forces a new resource to be created.\" data_version = \"(Optional) Specifies the data version of the EventGrid Event to associate with the domain. Changing this forces a new resource to be created.\" subject = \"(Optional) Specifies the subject of the EventGrid Event to associate with the domain. Changing this forces a new resource to be created.\"",
+        "required": false,
+        "default": "{ \"data_version\": null, \"event_time\": null, \"event_type\": null, \"id\": null, \"subject\": null, \"topic\": null }"
+      },
+      "instance": {
+        "type": "string",
+        "description": "(Optional) Instance number, if context includes/requires multiple resources of the same type (max 3 int).",
+        "required": false,
+        "default": "null"
+      },
+      "location": {
+        "type": "string",
+        "description": "(Required) Location of the resource group.",
+        "required": true
+      },
+      "org_id": {
+        "type": "string",
+        "description": "(Required) Three letter code representing organization/tenant/CSP.",
+        "required": true
+      },
+      "resource_group_name": {
+        "type": "string",
+        "description": "(Required) Name of the Resource Group in which to create the resource.",
+        "required": true
+      },
+      "tags": {
+        "type": "map(any)",
+        "description": "(Optional) Tags to be set on each resource.",
+        "required": false,
+        "default": "{}"
+      }
+    }
+  },
+  "outputs": {
+    "endpoint": {
+      "description": "The Endpoint associated with the EventGrid Topic."
+    },
+    "id": {
+      "description": "The ID of the Event Grid Topic."
+    },
+    "identity_details": {
+      "description": "The identity details of the EventGrid Topic."
+    },
+    "name": {
+      "description": "The name of the Event Grid Topic."
+    },
+    "primary_access_key": {
+      "description": "The Primary Shared Access Key associated with the EventGrid Topic."
+    },
+    "resource": {
+      "description": "The EventGrid Topic resource."
+    },
+    "secondary_access_key": {
+      "description": "The Secondary Shared Access Key associated with the EventGrid Topic."
+    }
+  },
+  "agent_instructions": {
+    "summary": "To provision 'Eventgridtopic' via Terraform, call this CPF module with the inputs defined below. Required inputs have no default and must be provided.",
+    "module_type_notes": "This is a single-service CPF module. It provisions one Azure resource type.",
+    "naming_convention": "Resource names are auto-generated by the module using app_id, environment, and region.",
+    "prerequisite_modules": [
+      "Resource Group"
+    ]
+  }
+}
