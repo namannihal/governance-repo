@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "sourceFile": "LMP Migration Testing Strategy.docx",
+  "sourceSha256": "6335E66062C6BFEB30D3C97A257DBF2865051438B4121428BD89E8AA518CF0F9",
+  "markdownFile": "LMP-Migration-Testing-Strategy.md",
+  "markdownSha256": "9255CB6C754FF1D37E8B9B87ED57EBA8F7D0CD1F95AFE8884EC9E0BD22B7DAF2",
+  "indexFile": "INDEX.md",
+  "indexSha256": "AA4724471120C3060A3BB8ED8549E143815A0B5369BEC72E624A2494BCFCC0EC",
+  "counts": {
+    "level1Headings": 16,
+    "level2Headings": 45,
+    "level3Headings": 11,
+    "sourceTables": 24,
+    "media": 5
+  },
+  "requiredIndexMarkers": [
+    "requirements-testing",
+    "architecture-testing",
+    "plan-testing",
+    "Normative conflict resolutions",
+    "Existing automated unit suites continue",
+    "7.2 High Availability Testing",
+    "7.3 Disaster Recovery Testing",
+    "HA planning and assurance",
+    "Production execution by the Application L2 Team",
+    "Production DR execution is the acceptance test",
+    "Security versus penetration",
+    "Integration testing classification",
+    "Do not create a standalone Integration Testing row",
+    "UAT is Applicable for every R-Type",
+    "LSEG L2 OAT Game Day Scenario Catalog",
+    "24 Game Day, 9 standard-change, and 18 validation-only recommendations",
+    "Architecture OAT applicability via `oat-scenario-design`",
+    "OAT scenario planning via `oat-scenario-planning`",
+    "Automation review and high-level scenario sizing",
+    "explicit Application Team review action",
+    "reusable evidence-intake and human-input layer",
+    "Architecture Section 14.4",
+    "`Draft` permits owned",
+    "does not approve a draft or fail publication solely because"
+  ],
+  "media": [
+    { "file": "image1.png", "sha256": "D109069972F0F1F7804D70A09EB33D06ABF3D010D6F2F06E0F460B74030C34C0" },
+    { "file": "image2.png", "sha256": "53D9775D3EA58E2C793BE1D7DEAE59A92C661D53E666FB04F2F9F5ABF6974EC0" },
+    { "file": "image3.png", "sha256": "1C550FEB7F75AC8ABCD50C19904666D70085A41827B3E3992524AABE77038CFF" },
+    { "file": "image4.png", "sha256": "AD81B7DC9BA6C5ECD5A85C6F83618BBE8C301F20B9C51ADFFD158C923AB8F92C" },
+    { "file": "image5.png", "sha256": "2D4E3D523A199252B3802341EB59199ACF365E7C99C91224C3881CEE3F4B6A1F" }
+  ]
+}

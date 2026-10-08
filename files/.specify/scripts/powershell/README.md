@@ -1,0 +1,39 @@
+# PowerShell Automation Scripts
+
+Reusable, git/JSON-aware helper scripts for the Spec-Kit-style migration workflow. All scripts are
+Windows PowerShell 5.1+ compatible and have no external module dependencies.
+
+| Script | Purpose | Example |
+|--------|---------|---------|
+| `common.ps1` | Dot-sourced helper functions (repo root, current branch, spec numbering, slug generation, feature paths, JSON/text output). Not run directly. | `. .specify/scripts/powershell/common.ps1` |
+| `create-new-feature.ps1` | Computes the next `NNN-slug` feature name, creates/checks out a matching git branch, creates `specs/<NNN-slug>/`, source record folders/indexes, creates the root `CHANGELOG.md` for that feature, and the authoritative `requirements/migration-transition.md` profile. Run first, via `/speckit.requirements`. | `pwsh .specify/scripts/powershell/create-new-feature.ps1 -Description "Payments API migration to Azure" -Json` |
+| `sync-records.ps1` | Migrates legacy rollups when requested and regenerates `requirements.md`, `decisions.md`, and `risks.md` from source record folders. | `pwsh .specify/scripts/powershell/sync-records.ps1 -MigrateExisting -Json` |
+| `validate-records.ps1` | Validates record filenames, unique IDs, ADR structure, immutable-status metadata, REQ/NFR/ADR/RSK references, and the independently derived 30-row MEC assessment contract. | `pwsh .specify/scripts/powershell/validate-records.ps1 -Json` |
+| `validate-requirements-transition.ps1` | Validates all authoritative `migration-transition.md`/Section 2A topic dispositions, requirement links, evidence owners, and ADR/risk links before architecture. | `pwsh .specify/scripts/powershell/validate-requirements-transition.ps1 -Json` |
+| `export-sad-contract.ps1` | Extracts the live canonical SAD DOCX into normalized JSON: SHA-256, all blocks/headings, table schemas, guidance/questions, hierarchy, and media count. | `pwsh .specify/scripts/powershell/export-sad-contract.ps1 -Json` |
+| `validate-sad-contract.ps1` | Detects live DOCX drift and validates exact Markdown baseline heading order, ownership coverage, and required upstream architecture/SAD fields. | `pwsh .specify/scripts/powershell/validate-sad-contract.ps1 -Json` |
+| `validate-architecture.ps1` | Validates mandatory C4 Context, C4 Container, Azure deployment/runtime views, SAD 2.6.2 `FLOW-*` reconciliation, Section 7A migration-transition controls/fields/state diagram, and all eight Complexity Calculator V4.1 inputs in Section 8A. | `pwsh .specify/scripts/powershell/validate-architecture.ps1 -Json` |
+| `validate-checklists.ps1` | Validates Spec-Kit quality-checklist metadata, contiguous unique `CHK###` IDs, traceability density, completion status and conformance to any controlled `.specify/checklists/<domain>.md` baseline. | `pwsh .specify/scripts/powershell/validate-checklists.ps1 -ChecklistPath <path> -Json` |
+| `validate-implementation-backlog.ps1` | Validates architecture `IMP-F###`/`IMP-US###`/`IMP-T###` hierarchy and detail, 1:1 plan scheduling, and 1:N agent work-package coverage in `tasks.md`. | `pwsh .specify/scripts/powershell/validate-implementation-backlog.ps1 -ArchitecturePath <architecture.md> -PlanPath <plan.md> -TasksPath <tasks.md> -Json` |
+| `setup-architecture.ps1` | Detects the current feature, copies `architecture-template.md` to `architecture.md` (without overwriting). Run by `/speckit.architecture`, only after `check-prerequisites.ps1 -RequireRequirementsReady` passes. | `pwsh .specify/scripts/powershell/setup-architecture.ps1 -Json` |
+| `setup-spec.ps1` | Detects the current feature, copies `spec-template.md` to `spec.md` (without overwriting). Run by `/speckit.specify`, only after `check-prerequisites.ps1 -RequireArchitectureReady` passes. | `pwsh .specify/scripts/powershell/setup-spec.ps1 -Json` |
+| `setup-plan.ps1` | Detects the current feature, copies `plan-template.md` to `plan.md` and `G-test-plan.md` to the feature (without overwriting), and ensures `research.md` exists. | `pwsh .specify/scripts/powershell/setup-plan.ps1 -Json` |
+| `setup-publication.ps1` | Creates missing application deliverable views and rerun-safe evidence/approval directories, preserves prior versions, and fingerprints current sources. | `pwsh .specify/scripts/powershell/setup-publication.ps1 -Json` |
+| `finalize-publication.ps1` | Injects publication metadata, increments only changed deliverables, and appends per-deliverable and run history. | `pwsh .specify/scripts/powershell/finalize-publication.ps1 -Json` |
+| `validate-publication.ps1` | Validates source freshness, managed outputs, content hashes, contiguous versions, canonical Test Plan placement, and exact-version approval evidence. | `pwsh .specify/scripts/powershell/validate-publication.ps1 -Json` |
+| `test-publication-workflow.ps1` | Proves initial, unchanged-rerun, and changed-rerun version behavior while preserving evidence. | `pwsh .specify/scripts/powershell/test-publication-workflow.ps1 -Json` |
+| `validate-requirements-testing.ps1` | Validates the canonical application testing profile, evidence/conflicts, actions, assets, dispositions, requirement links, owners, environments, exceptions and resolved unit/data/DR/security rules. Supports `Draft`, `ReadyForReview` and `Execution`; the default remains `Execution`. | `pwsh .specify/scripts/powershell/validate-requirements-testing.ps1 -ValidationStage Draft -Json` |
+| `validate-test-plan.ps1` | Validates canonical `G-test-plan.md`, cases, estimates, assets, RACI and evidence. Draft/document review permit owned unresolved readiness and appointment roles; ReadyForReview also requires a linked Review Brief. Reports deferred execution requirements separately. Default `Execution` still requires Ready architecture, named approvers and actual approvals. | `pwsh .specify/scripts/powershell/validate-test-plan.ps1 -ValidationStage ReadyForReview -Json` |
+| `validate-testing-tasks.ps1` | Validates per-test PREP/EXEC/REMEDIATE/EVIDENCE/APPROVAL tasks before implementation. | `pwsh .specify/scripts/powershell/validate-testing-tasks.ps1 -Json` |
+| `export-testing-strategy.ps1` / `validate-testing-strategy.ps1` | Reproducibly extracts the canonical DOCX and detects source, Markdown, index, table and media drift. | `pwsh .specify/scripts/powershell/validate-testing-strategy.ps1 -Json` |
+| `test-testing-workflow.ps1` | Runs a self-contained positive-path smoke test for the testing profile, Test Plan and testing-task validators. | `pwsh .specify/scripts/powershell/test-testing-workflow.ps1 -Json` |
+| `test-implementation-backlog.ps1` | Runs positive and negative architecture-to-plan-to-task regression tests for implementation backlog hierarchy, scheduling and agent handoff. | `pwsh .specify/scripts/powershell/test-implementation-backlog.ps1 -Json` |
+| `check-prerequisites.ps1` | Detects the current feature. Requirements/architecture progression first validates the canonical SAD contract. `-RequireRequirementsReady` also validates `migration-transition.md`; `-RequireArchitectureReady` validates diagrams, transition controls, SAD field markers, all 74 canonical SAD coverage IDs and the architecture implementation backlog. Task and implementation gates also validate plan/task backlog handoffs. Human gates and blocking ADR/risks still apply. | `pwsh .specify/scripts/powershell/check-prerequisites.ps1 -RequireRequirementsReady -Json` |
+
+All scripts support a `-Json` switch for machine-readable output (via `ConvertTo-Json`); omit it
+for concise human-readable status lines. Scripts that block automation (e.g. an open review gate)
+exit with a non-zero exit code and a clear `Write-Error` message.
+
+The testing and publication workflow runners accept `-WorkspaceRoot` for disposable fixture
+folders in an explicitly chosen workspace; use a location outside the framework and application
+workspaces. Fixtures are removed on completion. Default runner behavior is unchanged.
